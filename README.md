@@ -148,10 +148,16 @@ python -m tabaqat.geo.basemap <natural-earth-dizini>   # → site/data/basemap.j
 - **Arama.**
 - **Şahıs sayfası:** atıflar, hocalar ve talebeler (kanıt cümleleriyle), dış hocalar, yerler ve
   mini harita.
-- **Silsile (السلسلة):** bir şahsın bir ya da iki kuşak hoca ve talebesi (adlar kartlarda tam,
-  çizgiler kartların gerçek konumlarından); ayrıca bütün ağın vefat yılına göre zaman eksenli
-  genel görünümü.
-- **Harita:** asır ve atıf türü süzgeçleri, yere tıklayınca oradaki âlimlerin listesi.
+- **Silsile (السلسلة):** bir âlimin hoca ve talebeleri yukarıdan aşağı ağaç olarak (bir ya da iki
+  kuşak). "Ebû Hanîfe’ye bağla" açıkken en üstte Ebû Hanîfe'ye uzanan en kısa belgeli halka dizisi
+  altın çizgiyle gösterilir: önce zayıf olmayan bağlar, her adımda hoca talebeden önce ölmüş ve fark
+  ≤ 100 yıl; vefatı bilinmeyen aracıya talebesinden ~35 yıl önce bir tahmin verilir. Ayrıca bütün
+  ağın vefat yılına göre zaman eksenli genel görünümü. Silsile ve harita "Büyük ekran" ile tam
+  ekrana alınabilir.
+- **Harita:** asır ve atıf türü süzgeçleri; bölge adları (Horasan, Mâverâünnehir…) ve büyük
+  merkezlerin adları (çakışanlar gizlenir); bir şehre tıklayınca yanında yüzen pencerede oradaki
+  fakihlerin listesi.
+- **Biyografi metinleri:** kaynak düğmeleriyle seçilen kitapların metinleri yan yana çerçevelerde.
 
 **Ebû Hanîfe öncesi kişiler** (`review/pre_hanafi.yml`): Ketâib'in "أركان، الأنبياء، أصحاب النبي،
 التابعين" bölümleri (1–94) ve diğer kitaplardaki Ebû Hanîfe'nin Hanefî olmayan hocaları ile erken

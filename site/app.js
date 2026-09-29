@@ -514,9 +514,12 @@ async function viewPerson(view, id) {
     </section>
     <section id="texts"><h2>${T("نصوص الترجمة", "Biyografi metinleri")}<span class="c num">${AR(d.sources.length)}</span>
         ${d.sources.length > 1 ? `<button type="button" class="btn small" id="openall">${T("فتح الكل", "Tümünü aç")}</button>` : ""}</h2>
-      <p class="legend">${T("نص الترجمة في كل كتاب كما هو في الطبعة المعتمدة، مع حواشي المحقق.", "Her kitaptaki biyografi metni, esas alınan neşirdeki hâliyle ve muhakkikin dipnotlarıyla (Arapça).")}</p>
-      ${d.sources.map(([b, cite, h], k) => `<details class="src" data-k="${k}"><summary><span class="bk num">${LANG === "tr" && BOOKS[b] ? `${esc(bookTitle(BOOKS[b]))}, ${esc(citeTr(cite))}` : esc(cite)}</span>
-        <span class="ct" lang="ar" dir="rtl">${esc(h)}</span></summary><div class="body" lang="ar" dir="rtl"><p class="empty">${T("جارٍ التحميل…", "Yükleniyor…")}</p></div></details>`).join("")}
+      <p class="legend">${T("نص الترجمة في كل كتاب كما هو في الطبعة المعتمدة، مع حواشي المحقق. اختر الكتب لتُفتح نصوصها متجاورة.", "Her kitaptaki biyografi metni, esas alınan neşirdeki hâliyle ve muhakkikin dipnotlarıyla (Arapça). Kitapları seçin; metinler yan yana açılır.")}</p>
+      <div class="tchips">${d.sources.map(([b, cite], k) => `<button type="button" class="chip" data-k="${k}" aria-pressed="false">${esc(LANG === "tr" && BOOKS[b] ? bookTitle(BOOKS[b]).split(" fî ")[0] : cite.replace(/\s*[\d٠-٩].*$/, ""))}<span class="num"> ${esc(LANG === "tr" ? citeTr(cite) : cite.replace(/^[^\d٠-٩]*/, ""))}</span></button>`).join("")}</div>
+      <div class="tframes">${d.sources.map(([b, cite, h], k) => `<article class="tframe" data-k="${k}" hidden>
+        <header><div><b>${LANG === "tr" && BOOKS[b] ? `${esc(bookTitle(BOOKS[b]))}, ${esc(citeTr(cite))}` : esc(cite)}</b>
+          <span class="ct" lang="ar" dir="rtl">${esc(h)}</span></div><button type="button" class="x" aria-label="${T("إغلاق", "Kapat")}">×</button></header>
+        <div class="body" lang="ar" dir="rtl"><p class="empty">${T("جارٍ التحميل…", "Yükleniyor…")}</p></div></article>`).join("")}</div>
     </section>`;
   setupTexts(id, d);
   if (!d.places.length) return;
@@ -541,6 +544,7 @@ async function texts(id) {
 function setupTexts(id, d) {
   const sec = $("#texts");
   if (!sec) return;
+  const frames = [...sec.querySelectorAll(".tframe")], chips = [...sec.querySelectorAll(".chip")];
   const fill = async el => {
     if (el.dataset.done) return;
     el.dataset.done = 1;
@@ -548,13 +552,17 @@ function setupTexts(id, d) {
     const t = all.find(x => x.cite === cite) || all[k];
     $(".body", el).innerHTML = t ? renderEntry(t, `${k}`) : `<p class="empty">${T("لا يوجد نص.", "Metin yok.")}</p>`;
   };
-  sec.querySelectorAll("details.src").forEach(el => el.addEventListener("toggle", () => { if (el.open) fill(el); }));
   const btn = $("#openall");
-  if (btn) btn.addEventListener("click", () => {
-    const els = [...sec.querySelectorAll("details.src")], open = !els.every(e => e.open);
-    els.forEach(e => { e.open = open; });
-    btn.textContent = open ? T("طي الكل", "Tümünü kapat") : T("فتح الكل", "Tümünü aç");
-  });
+  const sync = () => {
+    const open = frames.filter(f => !f.hidden).length;
+    sec.querySelector(".tframes").style.setProperty("--n", Math.max(1, open));
+    if (btn) btn.textContent = open === frames.length ? T("طي الكل", "Tümünü kapat") : T("فتح الكل", "Tümünü aç");
+  };
+  const show = (k, on) => { const f = frames[k]; f.hidden = !on; chips[k].classList.toggle("on", on); chips[k].setAttribute("aria-pressed", on); if (on) fill(f); sync(); };
+  chips.forEach((c, k) => c.addEventListener("click", () => { show(k, frames[k].hidden); if (!frames[k].hidden) frames[k].scrollIntoView({ behavior: "smooth", block: "nearest", inline: "nearest" }); }));
+  frames.forEach((f, k) => $(".x", f).addEventListener("click", () => show(k, false)));
+  if (btn) btn.addEventListener("click", () => { const all = frames.every(f => !f.hidden); frames.forEach((_, k) => show(k, !all)); });
+  if (frames.length) show(0, true);   // ilk kaynak açık gelir
 }
 const toArDigits = s => String(s).replace(/\d/g, c => "٠١٢٣٤٥٦٧٨٩"[c]);
 function inline(s, fid, used) {
@@ -613,7 +621,7 @@ async function makeMap(host, opt = {}) {
   host.innerHTML = `<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMid meet" role="img" aria-label="${T("خريطة", "Harita")}">
       <rect x="-5000" y="-5000" width="12000" height="12000" fill="var(--water)"/>
       <path class="land" d="${base.land}"/><path class="lake" d="${base.lakes}"/><path class="river" d="${base.rivers}"/>
-      <g class="routes"></g><g class="pts"></g><g class="labs"></g></svg>
+      <g class="regs"></g><g class="routes"></g><g class="pts"></g><g class="labs"></g></svg>
     <div class="zoom"><button type="button" data-z="1.5" aria-label="${T("تكبير", "Yakınlaştır")}">+</button><button type="button" data-z="0.667" aria-label="${T("تصغير", "Uzaklaştır")}">−</button></div>`;
   const svg = $("svg", host);
   let vb = { x: 0, y: 0, w: W, h: H }, items = [], onPick = opt.onPick;
@@ -622,7 +630,15 @@ async function makeMap(host, opt = {}) {
     svg.setAttribute("viewBox", `${vb.x} ${vb.y} ${vb.w} ${vb.h}`);
     const s = scale();
     svg.querySelectorAll(".pt").forEach(c => c.setAttribute("r", c.dataset.r * s));
-    svg.querySelectorAll(".plab").forEach(t => { t.setAttribute("font-size", 13 * s); t.style.strokeWidth = 3 * s; });
+    svg.querySelectorAll(".plab").forEach(t => { t.setAttribute("font-size", (+t.dataset.f || 13) * s); t.style.strokeWidth = 3 * s; });
+    svg.querySelectorAll(".rlab").forEach(t => { t.setAttribute("font-size", 19 * s); t.setAttribute("letter-spacing", LANG === "tr" ? 3 * s : 0); });
+    // çakışan adları gizle: önce iri şehirler, sonra diğerleri, en son bölgeler
+    const kept = [];
+    [...svg.querySelectorAll(".plab.major"), ...svg.querySelectorAll(".plab:not(.major)"), ...svg.querySelectorAll(".rlab")].forEach(t => {
+      t.style.display = ""; let b; try { b = t.getBBox(); } catch (e) { return; }
+      const pad = 2 * s, hit = kept.some(k => b.x < k.x + k.width + pad && k.x < b.x + b.width + pad && b.y < k.y + k.height && k.y < b.y + b.height);
+      if (hit) t.style.display = "none"; else kept.push(b);
+    });
     svg.querySelectorAll(".route").forEach(r => { r.style.strokeWidth = 2 * s; r.style.strokeDasharray = `${5 * s} ${4 * s}`; });
     svg.querySelector(".land").style.strokeWidth = .6 * s;
     svg.querySelector(".river").style.strokeWidth = 1 * s;
@@ -637,7 +653,8 @@ async function makeMap(host, opt = {}) {
     return [vb.x - ox + (ev.clientX - b.left) * s, vb.y - oy + (ev.clientY - b.top) * s]; };
   svg.addEventListener("wheel", e => { e.preventDefault(); const [x, y] = toSvg(e); zoomAt(e.deltaY < 0 ? 1.25 : 0.8, x, y); }, { passive: false });
   const ptrs = new Map(); let last = null, pinch = 0, moved = 0;
-  svg.addEventListener("pointerdown", e => { svg.setPointerCapture(e.pointerId); ptrs.set(e.pointerId, e); last = e; moved = 0; });
+  let downPt = null;   // işaretçi yakalandığında click hedefi svg olur; tıklanan daire basışta alınır
+  svg.addEventListener("pointerdown", e => { downPt = e.target.closest(".pt"); svg.setPointerCapture(e.pointerId); ptrs.set(e.pointerId, e); last = e; moved = 0; });
   svg.addEventListener("pointermove", e => {
     if (!ptrs.has(e.pointerId)) return;
     ptrs.set(e.pointerId, e);
@@ -653,7 +670,7 @@ async function makeMap(host, opt = {}) {
   });
   const up = e => { ptrs.delete(e.pointerId); if (ptrs.size < 2) pinch = 0; };
   svg.addEventListener("pointerup", up); svg.addEventListener("pointercancel", up);
-  svg.addEventListener("click", e => { const c = e.target.closest(".pt"); if (c && moved < 6 && onPick) onPick(c.dataset.id); });
+  svg.addEventListener("click", e => { const c = downPt || e.target.closest(".pt"); if (moved < 6 && onPick) onPick(c ? c.dataset.id : "", e); });
   host.querySelectorAll(".zoom button").forEach(b => b.addEventListener("click", () => zoomAt(+b.dataset.z, vb.x + vb.w / 2, vb.y + vb.h / 2)));
   new ResizeObserver(apply).observe(svg);
 
@@ -662,9 +679,10 @@ async function makeMap(host, opt = {}) {
       items = list;
       const pts = svg.querySelector(".pts"), labs = svg.querySelector(".labs"), routes = svg.querySelector(".routes");
       pts.innerHTML = list.map(({ pl, r, on }) => { const [x, y] = proj(pl.lon, pl.lat);
-        return `<circle class="pt${on ? " on" : ""}" data-id="${esc(pl.id)}" data-r="${r}" cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${r}"><title>${esc(plName(pl))}</title></circle>`; }).join("");
-      labs.innerHTML = list.filter(x => x.label).map(({ pl, r }) => { const [x, y] = proj(pl.lon, pl.lat);
-        return `<text class="plab" x="${x.toFixed(1)}" y="${y.toFixed(1)}" dy="-0.6em" text-anchor="middle">${esc(plName(pl))}</text>`; }).join("");
+        return `<circle class="pt${on ? " on" : ""}${pl.type === "regions" ? " reg" : ""}" data-id="${esc(pl.id)}" data-r="${r}" cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${r}"><title>${esc(plName(pl))}</title></circle>`; }).join("");
+      labs.innerHTML = list.filter(x => x.label).map(({ pl, r, label }) => { const [x, y] = proj(pl.lon, pl.lat);
+        const f = label === true ? 13 : label;   // büyük merkezler daha iri
+        return `<text class="plab${f >= 15 ? " major" : ""}" data-f="${f}" x="${x.toFixed(1)}" y="${y.toFixed(1)}" dy="-0.7em" text-anchor="middle">${esc(plName(pl).replace(/ \(.*\)$/, ""))}</text>`; }).join("");
       routes.innerHTML = o.route && o.route.length > 1 ? `<path class="route" d="M${o.route.map(pl => proj(pl.lon, pl.lat).map(v => v.toFixed(1)).join(" ")).join("L")}"/>` : "";
       apply();
     },
@@ -677,48 +695,89 @@ async function makeMap(host, opt = {}) {
       vb = { x: (x0 + x1) / 2 - ww / 2, y: (y0 + y1) / 2 - hh / 2, w: ww, h: hh }; apply();
     },
     pick(f) { onPick = f; },
+    regions(list) {   // bölge adları (Horasan, Mâverâünnehir…): soluk, aralıklı büyük yazı
+      svg.querySelector(".regs").innerHTML = list.map(([lon, lat, ar, tr]) => { const [x, y] = proj(lon, lat);
+        return `<text class="rlab" x="${x.toFixed(1)}" y="${y.toFixed(1)}" text-anchor="middle">${esc(LANG === "tr" ? tr : ar)}</text>`; }).join("");
+      apply();
+    },
+    toScreen(pl) { const [x, y] = proj(pl.lon, pl.lat), b = svg.getBoundingClientRect(), s = Math.max(vb.w / b.width, vb.h / b.height);
+      const ox = (b.width * s - vb.w) / 2, oy = (b.height * s - vb.h) / 2; return [(x - vb.x + ox) / s, (y - vb.y + oy) / s]; },
   };
 }
 
+// harita bölgeleri: [boylam, enlem, ar, tr]
+const REGIONS = [[66.3, 40.9, "ما وراء النهر", "MÂVERÂÜNNEHİR"], [59.6, 35.2, "خراسان", "HORASAN"], [59.3, 42.9, "خوارزم", "HÂRİZM"],
+  [45.6, 31.2, "العراق", "IRAK"], [37.6, 34.2, "الشام", "ŞAM"], [30.8, 26.6, "مصر", "MISIR"], [39.8, 23.4, "الحجاز", "HİCAZ"],
+  [45.5, 15.2, "اليمن", "YEMEN"], [32.8, 39.2, "بلاد الروم", "RÛM (ANADOLU)"], [53.2, 29.2, "فارس", "FARS"], [52, 33.6, "الجبال", "CİBÂL"],
+  [75.5, 24.5, "الهند", "HİND"], [41, 36.9, "الجزيرة", "CEZÎRE"], [47.5, 38.8, "أذربيجان", "AZERBAYCAN"], [71.8, 41.4, "فرغانة", "FERGANA"],
+  [67.8, 36.8, "طخارستان", "TOHÂRİSTAN"], [64.5, 33.5, "الغور", "GUR"]];
 async function viewMap(view, sel) {
   const places = await load("places.json");
   const PL = await placesById();
   const cents = new Set(), kinds = new Set(KIND_ORDER);
   view.innerHTML = `<h1>${T("خريطة البلدان", "Şehirler haritası")}</h1>
-    <p class="lede">${T("كل دائرة بلد ورد في التراجم؛ حجمها على عدد الأعلام المرتبطين به بحسب القرن ونوع الصلة المختارين. اضغط على بلد لترى أعلامه.",
-      "Her daire biyografilerde geçen bir şehirdir; büyüklüğü, seçilen yüzyıl ve bağ türüne göre o şehirle ilişkili âlim sayısını gösterir. Âlimlerini görmek için bir şehre tıklayın.")}</p>
-    <div class="filters" id="fk"><span class="label">${T("نوع الصلة", "Bağ türü")}</span>${KIND_ORDER.map(k => `<button type="button" class="btn on" data-k="${k}">${KIND[k]}</button>`).join("")}</div>
+    <p class="lede">${T("كل دائرة بلد ورد في التراجم؛ حجمها على عدد الأعلام المرتبطين به بحسب القرن ونوع الصلة المختارين. اضغط على بلد لترى فقهاءه.",
+      "Her daire biyografilerde geçen bir şehirdir; büyüklüğü, seçilen yüzyıl ve bağ türüne göre o şehirle ilişkili âlim sayısını gösterir. Fakihlerini görmek için bir şehre tıklayın.")}</p>
+    <div class="stage" id="mstage">
+    <div class="filters stagebar" id="fk"><span class="label">${T("نوع الصلة", "Bağ türü")}</span>${KIND_ORDER.map(k => `<button type="button" class="btn on" data-k="${k}">${KIND[k]}</button>`).join("")}
+      <span class="grow"></span>${fsButton()}</div>
     <div class="filters num" id="fc"><span class="label">${T("قرن الوفاة", "Vefat yüzyılı (hicrî)")}</span>${[...Array(14)].map((_, i) => `<button type="button" class="btn" data-c="${i + 1}">${LANG === "tr" ? ROM(i + 1) : AR(i + 1)}</button>`).join("")}
       <button type="button" class="btn" data-c="all">${T("الكل", "Tümü")}</button></div>
-    <div class="mapgrid"><div class="mapwrap big" id="bigmap"></div><aside class="side" id="side"><p class="legend">${T("اختر بلدًا من الخريطة.", "Haritadan bir şehir seçin.")}</p></aside></div>`;
-  const m = await makeMap($("#bigmap"));
+    <div class="mapwrap big" id="bigmap"></div></div>`;
+  const wrap = $("#bigmap");
+  const m = await makeMap(wrap);
+  m.regions(REGIONS);
+  const pop = document.createElement("div"); pop.className = "mpop"; pop.hidden = true; wrap.append(pop);
   const match = (pid, k) => kinds.has(k) && (!cents.size || cents.has(century(P.get(pid)?.d)));
-  let current = sel && PL.get(sel) ? sel : "";
+  let current = sel && PL.get(sel) ? sel : "", at = null;
+  // yüzen pencere: şehre tıklanan noktanın yanında, harita içinde kalacak şekilde
+  const place = () => {
+    const pl = PL.get(current); if (!pl) return;
+    const [x, y] = at || m.toScreen(pl), W = wrap.clientWidth, H = wrap.clientHeight, pw = pop.offsetWidth, ph = pop.offsetHeight;
+    let left = x + 16, top = y - 30;
+    if (left + pw > W - 8) left = x - pw - 16;
+    left = Math.max(8, Math.min(left, W - pw - 8)); top = Math.max(8, Math.min(top, H - ph - 8));
+    pop.style.left = `${left}px`; pop.style.top = `${top}px`;
+  };
   const side = () => {
     const pl = PL.get(current);
-    if (!pl) return;
+    if (!pl) { pop.hidden = true; return; }
     const rows = new Map();
     pl.people.forEach(([pid, k]) => { if (match(pid, k)) { const r = rows.get(pid) || []; r.push(k); rows.set(pid, r); } });
     const list = [...rows.entries()].sort((a, b) => (P.get(a[0])?.d || 9999) - (P.get(b[0])?.d || 9999));
     const byK = {}; pl.people.forEach(([pid, k]) => { if (match(pid, k)) byK[k] = (byK[k] || 0) + 1; });
-    $("#side").innerHTML = `<h3>${esc(plName(pl))}</h3><p class="legend num">${AR(list.length)} ${T("عَلَمًا", "âlim")} · ${KIND_ORDER.filter(k => byK[k]).map(k => `${KIND[k]} ${AR(byK[k])}`).join(" · ")}</p>
-      <ul class="num">${list.map(([pid, ks]) => `<li>${plink(pid)}<span class="k">${deathTxt(P.get(pid) || {})} · ${[...new Set(ks)].map(k => KIND[k]).join(T("، ", ", "))}</span></li>`).join("")}</ul>`;
+    pop.innerHTML = `<div class="mph"><h3>${esc(plName(pl))}</h3><button type="button" class="x" aria-label="${T("إغلاق", "Kapat")}">×</button></div>
+      <p class="legend num">${AR(list.length)} ${T("فقيهًا", "fakih")} · ${KIND_ORDER.filter(k => byK[k]).map(k => `${KIND[k]} ${AR(byK[k])}`).join(" · ")}</p>
+      <ul class="num">${list.map(([pid, ks]) => `<li>${plink(pid)}<span class="k">${deathTxt(P.get(pid) || {})} · ${[...new Set(ks)].map(k => KIND[k]).join(T("، ", ", "))}</span></li>`).join("")
+        || `<li class="none">${T("لا أحد بحسب الاختيار", "Seçime uyan kimse yok")}</li>`}</ul>`;
+    pop.hidden = false; place();
+    $(".x", pop).addEventListener("click", () => { current = ""; at = null; history.replaceState(null, "", "#/map"); redraw(); });
   };
   const redraw = () => {
     const counts = places.map(pl => { const s = new Set(); pl.people.forEach(([pid, k]) => { if (match(pid, k)) s.add(pid); }); return [pl, s.size]; })
       .filter(x => x[1] > 0).sort((a, b) => b[1] - a[1]);
-    m.draw(counts.map(([pl, n], i) => ({ pl, r: 2.5 + Math.sqrt(n) * 1.5, label: i < 28, on: pl.id === current })));
+    // büyük merkezlerin adları her zaman; en kalabalık 8 şehir iri yazı
+    // bölge kayıtları (Horasan, Irak…) daire olarak kalır, adları bölge yazısıyla verilir
+    let rank = 0;
+    m.draw(counts.map(([pl, n]) => { const city = pl.type !== "regions", k = city ? rank++ : 99;
+      return { pl, r: 2.5 + Math.sqrt(n) * 1.5, label: k < 8 ? 17 : k < 40 ? 13 : false, on: pl.id === current }; }));
     side();
   };
-  m.pick(id => { current = id; history.replaceState(null, "", `#/map/${encodeURIComponent(id)}`); redraw(); });
+  m.pick((id, ev) => {
+    if (!id) { if (current) { current = ""; at = null; history.replaceState(null, "", "#/map"); redraw(); } return; }
+    const b = wrap.getBoundingClientRect(); at = ev ? [ev.clientX - b.left, ev.clientY - b.top] : null;
+    current = id; history.replaceState(null, "", `#/map/${encodeURIComponent(id)}`); redraw(); });
+  pop.addEventListener("pointerdown", e => e.stopPropagation());
+  pop.addEventListener("wheel", e => e.stopPropagation());
   $("#fk").addEventListener("click", e => { const b = e.target.closest("[data-k]"); if (!b) return;
     kinds.has(b.dataset.k) ? kinds.delete(b.dataset.k) : kinds.add(b.dataset.k); b.classList.toggle("on"); redraw(); });
   $("#fc").addEventListener("click", e => { const b = e.target.closest("[data-c]"); if (!b) return;
     if (b.dataset.c === "all") { cents.clear(); $("#fc").querySelectorAll(".btn").forEach(x => x.classList.remove("on")); }
     else { const c = +b.dataset.c; cents.has(c) ? cents.delete(c) : cents.add(c); b.classList.toggle("on"); }
     redraw(); });
+  stageToggle($("#mstage"), $("#mstage .fsbtn"), () => { at = null; if (current) m.fit([PL.get(current)]); place(); });
   redraw();
-  if (current) m.fit([PL.get(current)]);
+  if (current) { m.fit([PL.get(current)]); at = null; place(); }
 }
 
 // ---------- network ----------
@@ -734,92 +793,162 @@ async function graph() {
   return G;
 }
 
+// Büyük ekran: sahne öğesini tam ekrana alır (tarayıcı izin vermezse sayfayı kaplayan pencere olur)
+const FS_ICON = `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>`;
+function stageToggle(stage, btn, onChange) {
+  const set = on => {
+    stage.classList.toggle("full", on); document.body.classList.toggle("noscroll", on);
+    btn.classList.toggle("on", on); btn.setAttribute("aria-pressed", String(on));
+    btn.lastChild.textContent = on ? T("تصغير", "Küçült") : T("ملء الشاشة", "Büyük ekran");
+    onChange && requestAnimationFrame(() => onChange(on));
+  };
+  btn.addEventListener("click", () => {
+    const on = !stage.classList.contains("full");
+    set(on);
+    try {
+      if (on && stage.requestFullscreen) stage.requestFullscreen().catch(() => {});
+      else if (!on && document.fullscreenElement) document.exitFullscreen().catch(() => {});
+    } catch (e) {}
+  });
+  document.addEventListener("fullscreenchange", () => { if (!document.fullscreenElement && stage.classList.contains("full")) set(false); });
+  document.addEventListener("keydown", e => { if (e.key === "Escape" && stage.classList.contains("full")) set(false); });
+}
+const fsButton = () => `<button type="button" class="btn fsbtn" aria-pressed="false">${FS_ICON}<span>${T("ملء الشاشة", "Büyük ekran")}</span></button>`;
+
+let LINEAGE = true;
 async function viewNet(view, id) {
   const g = await graph();
   const full = !id;
   view.innerHTML = `<h1>${T("سلسلة الشيوخ والتلاميذ", "Hoca–talebe silsilesi")}</h1>
-    <div class="filters"><a class="btn ${full ? "" : "on"}" href="#/net/${esc(id || "jws1")}">${T("سلسلة عَلَم", "Bir âlimin silsilesi")}</a>
+    <div class="stage" id="nstage">
+    <div class="filters stagebar"><a class="btn ${full ? "" : "on"}" href="#/net/${esc(id || "jws1")}">${T("سلسلة عَلَم", "Bir âlimin silsilesi")}</a>
       <a class="btn ${full ? "on" : ""}" href="#/net">${T("المشهد العام", "Genel görünüm")}</a>
-      ${full ? "" : `<span class="label" style="margin-inline-start:1rem">${T("الطبقات", "Kuşak")}</span><button type="button" class="btn on" data-depth="1">${T("طبقة واحدة", "Bir kuşak")}</button><button type="button" class="btn" data-depth="2">${T("طبقتان", "İki kuşak")}</button>`}</div>
-    <div id="netbody"></div>`;
-  if (full) return fullNet($("#netbody"), g);
+      ${full ? "" : `<span class="label" style="margin-inline-start:1rem">${T("الطبقات", "Kuşak")}</span><button type="button" class="btn on" data-depth="1">${T("طبقة واحدة", "Bir kuşak")}</button><button type="button" class="btn" data-depth="2">${T("طبقتان", "İki kuşak")}</button>
+        <button type="button" class="btn${LINEAGE ? " on" : ""}" id="lin" aria-pressed="${LINEAGE}">${T("الوصل بأبي حنيفة", "Ebû Hanîfe’ye bağla")}</button>`}
+      <span class="grow"></span>${fsButton()}</div>
+    <div id="netbody"></div></div>`;
+  const stage = $("#nstage");
+  if (full) { const redraw = fullNet($("#netbody"), g); stageToggle(stage, $(".fsbtn", stage), () => redraw && redraw()); return; }
   const i = g.byId.get(id);
   if (i === undefined) { $("#netbody").innerHTML = `<p class="empty">${plink(id)} ${T("ليس له شيوخ ولا تلاميذ من المترجمين.", ": biyografisi bulunanlar arasında hocası ya da talebesi yok.")}</p>`; return; }
   let depth = 1;
-  const draw = () => egoNet($("#netbody"), g, i, depth);
+  const draw = () => egoNet($("#netbody"), g, i, depth, LINEAGE);
   view.querySelectorAll("[data-depth]").forEach(b => b.addEventListener("click", () => {
     depth = +b.dataset.depth; view.querySelectorAll("[data-depth]").forEach(x => x.classList.toggle("on", x === b)); draw(); }));
+  $("#lin").addEventListener("click", e => { LINEAGE = !LINEAGE; e.currentTarget.classList.toggle("on", LINEAGE); e.currentTarget.setAttribute("aria-pressed", LINEAGE); draw(); });
+  stageToggle(stage, $(".fsbtn", stage));
   draw();
 }
 
-/* سلسلة عَلَم: أعمدة من اليمين (الأقدم) إلى اليسار؛ البطاقات HTML تلتف أسماؤها كاملة،
-   والخطوط تُرسم بعد التخطيط من مواضع البطاقات الفعلية. */
-function egoNet(host, g, me, depth) {
-  const MAXC = 60;
-  const cols = new Map([[0, [me]]]);
+/* Âlimin silsilesi: yukarıdan aşağı ağaç. En üstte Ebû Hanîfe'ye uzanan halka dizisi, sonra
+   hocaların hocaları, hocalar, silsile sahibi, talebeler... Kartlar HTML'dir (adlar tam sarılır);
+   çizgiler yerleşimden sonra kartların gerçek konumlarından çizilir. */
+// Ebû Hanîfe'ye en kısa hoca yolu: vefatlarla tutarlı (hoca önce ölmüş, fark ≤ 100 yıl), önce kuvvetli bağlar
+function pathToImam(g, me, root = "jws1") {
+  const R = g.byId.get(root);
+  if (R === undefined || me === R) return null;
+  // vefatı bilinmeyen halkaya talebesinden ~35 yıl önce bir tahmin verilir; böylece bilinmeyen
+  // bir aracı üzerinden yüzyıllar atlanamaz (her adımda fark 0 < … ≤ 100)
+  const ok = (dt, eff) => !dt || !eff || (eff - dt > 0 && eff - dt <= 100);
+  for (const allowWeak of [false, true]) {
+    const prev = new Map([[me, -1]]), eff = new Map([[me, g.nodes[me].d || null]]); let q = [me];
+    while (q.length && !prev.has(R)) {
+      const nq = [];
+      for (const x of q) for (const [t, , weak] of [...g.up[x]].sort((u, v) => g.nodes[v[0]].deg - g.nodes[u[0]].deg)) {
+        const dt = g.nodes[t].d, ex = eff.get(x);
+        if ((weak && !allowWeak) || prev.has(t) || !ok(dt, ex)) continue;
+        prev.set(t, x); eff.set(t, dt || (ex ? ex - 35 : null)); nq.push(t);
+      }
+      q = nq;
+    }
+    if (prev.has(R)) { const out = [R]; while (out[out.length - 1] !== me) out.push(prev.get(out[out.length - 1])); return out; }   // Ebû Hanîfe → … → me
+  }
+  return null;
+}
+function egoNet(host, g, me, depth, lineage = true) {
+  const MAXR = 60;
+  const rows = new Map([[0, [me]]]);
   const seen = new Set([me]);
   for (let k = 1; k <= depth; k++) {
     for (const [dir, adj] of [[-1, g.up], [1, g.down]]) {
-      const prev = cols.get(dir * (k - 1)) || [], next = [];
+      const prev = rows.get(dir * (k - 1)) || [], next = [];
       prev.forEach(i => adj[i].forEach(([j]) => { if (!seen.has(j)) { seen.add(j); next.push(j); } }));
-      cols.set(dir * k, next);
+      rows.set(dir * k, next);
     }
   }
-  const more = {};
-  const keys = [...cols.keys()].sort((a, b) => a - b);
   const byYear = (a, b) => (g.nodes[a].d || 9999) - (g.nodes[b].d || 9999);
-  // الطبقة الأولى بالوفاة؛ الثانية بمركز ثقل صلاتها في الطبقة الأولى (تقليل تقاطع الخطوط)
-  [-1, 1].forEach(c => cols.has(c) && cols.get(c).sort(byYear));
+  [-1, 1].forEach(c => rows.has(c) && rows.get(c).sort(byYear));
   [-2, 2].forEach(c => {
-    if (!cols.has(c)) return;
-    const ref = cols.get(c / 2), at = new Map(ref.map((i, r) => [i, r]));
+    if (!rows.has(c)) return;
+    const ref = rows.get(c / 2), at = new Map(ref.map((i, r) => [i, r]));
     const adj = c < 0 ? g.down : g.up;
     const bc = i => { const r = adj[i].map(([j]) => at.get(j)).filter(v => v !== undefined); return r.length ? r.reduce((a, b) => a + b) / r.length : 1e9; };
-    cols.get(c).sort((a, b) => bc(a) - bc(b) || byYear(a, b));
+    rows.get(c).sort((a, b) => bc(a) - bc(b) || byYear(a, b));
   });
-  for (const [c, l] of cols) if (l.length > MAXC) { more[c] = l.length - MAXC; cols.set(c, l.slice(0, MAXC)); }
-  const head = LANG === "tr" ? { "-2": "Hocalarının hocaları", "-1": "Hocaları", "0": "Silsile sahibi", "1": "Talebeleri", "2": "Talebelerinin talebeleri" }
-    : { "-2": "شيوخ شيوخه", "-1": "شيوخه", "0": "صاحب السلسلة", "1": "تلاميذه", "2": "تلاميذ تلاميذه" };
+  // Ebû Hanîfe'ye uzanan yol: ağaçta görünen kuşakların üstüne tek kartlık satırlar olarak eklenir
+  const path = lineage ? pathToImam(g, me) : null;
+  const onPath = new Set(path || []), pathEdge = new Set();
+  if (path) for (let k = 0; k + 1 < path.length; k++) pathEdge.add(`${path[k]}>${path[k + 1]}`);
+  const lin = [];
+  if (path) {
+    // yoldaki kişi zaten -1/-2 satırındaysa oraya öne alınır; üstündekiler ayrı satır olur
+    const up = path.slice(0, -1).reverse();   // me'nin hocası, onun hocası … Ebû Hanîfe
+    up.forEach((i, k) => {
+      const lvl = -(k + 1);
+      if (k < depth && rows.has(lvl)) { const r = rows.get(lvl); if (!r.includes(i)) r.unshift(i); else { r.splice(r.indexOf(i), 1); r.unshift(i); } seen.add(i); }
+      else lin.unshift(i);
+    });
+  }
+  const more = {};
+  for (const [c, l] of rows) if (l.length > MAXR) { const keep = l.filter(i => onPath.has(i)); more[c] = l.length - MAXR; rows.set(c, [...keep, ...l.filter(i => !onPath.has(i))].slice(0, MAXR)); }
+  const head = LANG === "tr" ? { "-2": "Hocalarının hocaları", "-1": "Hocaları", "0": "", "1": "Talebeleri", "2": "Talebelerinin talebeleri" }
+    : { "-2": "شيوخ شيوخه", "-1": "شيوخه", "0": "", "1": "تلاميذه", "2": "تلاميذ تلاميذه" };
   const card = i => { const n = g.nodes[i], p = P.get(n.id) || {};
     const yr = n.d ? (LANG === "tr" ? `(${yearTxt(n.d, n.guess || p.est)})` : yearTxt(n.d, n.guess || p.est)) : "";
     const tr = n.salaf ? `<span class="tag weak" title="${T("قبل أبي حنيفة؛ ليس له ترجمة في هذا الفهرس", "Ebû Hanîfe öncesi; bu dizinde biyografisi yok")}">${T("من السلف", "selef")}</span>`
       : `<a class="tr" href="#/p/${esc(n.id)}" title="${T("ترجمته", "Biyografisi")}">${T("ترجمة", "biyografi")}</a>`;
+    const cls = `card${i === me ? " me" : ""}${n.salaf ? " salaf" : ""}${onPath.has(i) && i !== me ? " onpath" : ""}`;
     return i === me
-      ? `<div class="card me${n.salaf ? " salaf" : ""}" data-i="${i}">${n.salaf ? `<span class="nm">${esc(n.name)}</span>` : `<a class="nm" href="#/p/${esc(n.id)}">${esc(n.name)}</a>`}
-          <span class="meta num"><span>${yr}</span>${n.salaf ? tr : ""}</span>
-          ${n.salaf ? "" : `<a class="tr" href="#/p/${esc(n.id)}">${T("قراءة الترجمة ←", "Biyografiyi oku →")}</a>`}</div>`
-      : `<div class="card${n.salaf ? " salaf" : ""}" data-i="${i}"><a class="nm" href="#/net/${esc(n.id)}" title="${T("سلسلته", "Silsilesi")}">${esc(n.name)}</a>
+      ? `<div class="${cls}" data-i="${i}">${n.salaf ? `<span class="nm">${esc(n.name)}</span>` : `<a class="nm" href="#/p/${esc(n.id)}">${esc(n.name)}</a>`}
+          <span class="meta num"><span>${yr}</span>${n.salaf ? tr : `<a class="tr" href="#/p/${esc(n.id)}">${T("قراءة الترجمة ←", "Biyografiyi oku →")}</a>`}</span></div>`
+      : `<div class="${cls}" data-i="${i}"><a class="nm" href="#/net/${esc(n.id)}" title="${T("سلسلته", "Silsilesi")}">${esc(n.name)}</a>
           <span class="meta num"><span>${yr}</span>${tr}</span></div>`; };
-  host.innerHTML = `<div class="chainwrap"><div class="chain">
+  const keys = [...rows.keys()].sort((a, b) => a - b);
+  const linHtml = lin.length ? `<div class="gen lin"><div class="genh">${T("السلسلة إلى أبي حنيفة", "Ebû Hanîfe’ye uzanan silsile")}</div>
+      ${lin.map(i => `<div class="cards1">${card(i)}</div>`).join("")}</div>` : "";
+  host.innerHTML = `<div class="treewrap"><div class="tree">
       <svg class="links" aria-hidden="true"></svg>
-      ${keys.map(c => `<div class="col${c === 0 ? " mid" : ""}"><div class="colh">${head[c]}<span class="num"> ${c ? AR(cols.get(c).length + (more[c] || 0)) : ""}</span></div>
-        ${cols.get(c).length ? cols.get(c).map(card).join("") : `<p class="none">—</p>`}
+      ${linHtml}
+      ${keys.map(c => `<div class="gen${c === 0 ? " mid" : ""}">${head[c] ? `<div class="genh">${head[c]}<span class="num"> ${AR(rows.get(c).length + (more[c] || 0))}</span></div>` : ""}
+        <div class="cardsrow">${rows.get(c).length ? rows.get(c).map(card).join("") : `<p class="none">—</p>`}</div>
         ${more[c] ? `<p class="none">${T(`و${AR(more[c])} غيرهم`, `ve ${more[c]} kişi daha`)}</p>` : ""}</div>`).join("")}
     </div></div>
-    <p class="legend">${T("الأقدم يمينًا. اضغط على اسم لتنتقل إلى سلسلته، أو على «ترجمة» لتقرأ ترجمته. الخط المتقطع: ربط بترجيح النسبة أو الشهرة.",
-      "En eskiler solda. Bir ada tıklayınca onun silsilesine, “biyografi”ye tıklayınca biyografisine gidilir. Kesikli çizgi: nisbe ya da şöhretle tercih edilen bağ.")}</p>`;
-  const chain = $(".chain", host), svg = $(".links", host);
-  const colOf = new Map(); keys.forEach(c => cols.get(c).forEach(i => colOf.set(i, c)));
+    <p class="legend">${path ? T("الخط الذهبي: أقصر سلسلة تفقّه موثّقة إلى أبي حنيفة، متّسقة مع سني الوفاة. ", "Altın çizgi: vefat yıllarıyla tutarlı, belgeli en kısa silsile (Ebû Hanîfe’ye kadar). ")
+      : (lineage && me !== g.byId.get("jws1") ? T("لم توجد سلسلة موثّقة إلى أبي حنيفة. ", "Ebû Hanîfe’ye uzanan belgeli bir silsile bulunamadı. ") : "")}${T("اضغط على اسم لتنتقل إلى سلسلته، أو على «ترجمة» لتقرأ ترجمته. الخط المتقطع: ربط بترجيح النسبة أو الشهرة.",
+      "Bir ada tıklayınca onun silsilesine, “biyografi”ye tıklayınca biyografisine gidilir. Kesikli çizgi: nisbe ya da şöhretle tercih edilen bağ.")}</p>`;
+  const tree = $(".tree", host), svg = $(".links", host);
   const drawLinks = () => {
-    const box = chain.getBoundingClientRect();
-    svg.setAttribute("width", chain.scrollWidth); svg.setAttribute("height", chain.scrollHeight);
-    const at = new Map([...chain.querySelectorAll(".card")].map(el => [+el.dataset.i, el.getBoundingClientRect()]));
+    const box = tree.getBoundingClientRect();
+    svg.setAttribute("width", tree.scrollWidth); svg.setAttribute("height", tree.scrollHeight);
+    const els = [...tree.querySelectorAll(".card")], at = new Map(els.map(el => [+el.dataset.i, el.getBoundingClientRect()]));
     const paths = [];
     for (const [i, r] of at) g.down[i].forEach(([j, n, weak]) => {
-      if (!at.has(j) || colOf.get(j) !== colOf.get(i) + 1) return;
-      const r2 = at.get(j);   // الشيخ يمينًا، التلميذ يسارًا (tr: hoca solda, talebe sağda)
-      const rtl = LANG === "ar";
-      const x1 = (rtl ? r.left : r.right) - box.left, y1 = r.top + r.height / 2 - box.top, x2 = (rtl ? r2.right : r2.left) - box.left, y2 = r2.top + r2.height / 2 - box.top;
-      const mx = (x1 + x2) / 2;
-      paths.push(`<path class="lk${weak ? " weak" : ""}${i === me || j === me ? " hot" : ""}" stroke-width="${Math.min(3.5, 1 + Math.log2(n) / 2)}" d="M${x1} ${y1}C${mx} ${y1} ${mx} ${y2} ${x2} ${y2}"/>`);
+      const r2 = at.get(j);
+      if (!r2 || r2.top <= r.bottom - 2) return;   // yalnız aşağıdaki kartlara
+      const hot = pathEdge.has(`${i}>${j}`);
+      if (!hot && !(i === me || j === me) && Math.abs(r2.top - r.bottom) > 140) return;   // uzak kuşaklar arası karmaşayı önle
+      const x1 = r.left + r.width / 2 - box.left, y1 = r.bottom - box.top, x2 = r2.left + r2.width / 2 - box.left, y2 = r2.top - box.top;
+      const my = (y1 + y2) / 2;
+      paths.push(`<path class="lk${weak ? " weak" : ""}${i === me || j === me ? " hot" : ""}${hot ? " path" : ""}" stroke-width="${hot ? 3 : Math.min(3, 1 + Math.log2(n) / 2)}" d="M${x1} ${y1}C${x1} ${my} ${x2} ${my} ${x2} ${y2}"/>`);
     });
+    // altın yol en üstte görünsün
+    paths.sort((a, b) => a.includes(" path") - b.includes(" path"));
     svg.innerHTML = paths.join("");
   };
-  const wrap = $(".chainwrap", host);
-  const ro = new ResizeObserver(drawLinks); ro.observe(chain);
+  const ro = new ResizeObserver(drawLinks); ro.observe(tree);
   (document.fonts ? document.fonts.ready : Promise.resolve()).then(() => {
     drawLinks();
-    const m = chain.querySelector(".card.me");   // صاحب السلسلة في منتصف العرض
+    const m = tree.querySelector(".card.me"), wrap = $(".treewrap", host);
     if (m && wrap.scrollWidth > wrap.clientWidth)
       wrap.scrollLeft += (m.getBoundingClientRect().left + m.offsetWidth / 2) - (wrap.getBoundingClientRect().left + wrap.clientWidth / 2);
   });
@@ -889,6 +1018,7 @@ function fullNet(host, g) {
     tx = mx - (mx - tx) * f; ty = my - (my - ty) * f; sc *= f; draw(); }, { passive: false });
   new ResizeObserver(() => { draw(); }).observe(cv);
   fit(); draw();
+  return () => { fit(); draw(); };
 }
 
 // ---------- about ----------

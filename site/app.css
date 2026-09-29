@@ -313,7 +313,22 @@ details.ev p mark { background: var(--mark); color: var(--ink); }
 .pt { fill: var(--rubric); fill-opacity: .55; stroke: var(--paper); stroke-width: .8; cursor: pointer; }
 .pt:hover, .pt.on { fill-opacity: .9; }
 .pt.on { fill: var(--gold); }
+.pt.reg { fill: var(--rubric); fill-opacity: .08; stroke: var(--rubric); stroke-opacity: .5; stroke-dasharray: 3 2; }
+.pt.reg.on { fill: var(--gold); fill-opacity: .3; }
 .plab { font-family: var(--f-head); fill: var(--ink); paint-order: stroke; stroke: var(--land); stroke-width: 3px; pointer-events: none; }
+.plab.major { font-weight: 700; fill: var(--indigo); }
+.rlab { font-family: var(--f-head); font-style: italic; fill: var(--muted); fill-opacity: .55; pointer-events: none; }
+/* yüzen şehir penceresi */
+.mpop { position: absolute; z-index: 5; width: min(21rem, calc(100% - 16px)); max-height: min(60%, 26rem); overflow: auto; background: var(--paper);
+  border: 1px solid var(--line); border-top: 3px solid var(--gold); border-radius: 16px; padding: .6rem .9rem .7rem; box-shadow: 0 12px 32px rgba(40, 30, 10, .22); touch-action: auto; cursor: auto; }
+.mpop .mph { display: flex; align-items: center; justify-content: space-between; gap: .5rem; position: sticky; top: -.6rem; background: var(--paper); padding-top: .1rem; }
+.mpop h3 { font-size: 1.25rem; color: var(--gold); }
+.mpop .x { border: 0; background: var(--mark); color: var(--ink); width: 1.8rem; height: 1.8rem; border-radius: 50%; font-size: 1.2rem; line-height: 1; cursor: pointer; }
+.mpop ul { list-style: none; padding: 0; margin: .3rem 0 0; }
+.mpop li { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 0 .6rem; padding: .15rem 0; font-size: .92rem; border-bottom: 1px dotted var(--line); }
+.mpop li .k { color: var(--muted); font-size: .8rem; }
+.stage.full #netbody { flex: 1; display: flex; flex-direction: column; min-height: 0; }
+.stage.full .lede { display: none; }
 .route { fill: none; stroke: var(--teal); stroke-width: 2; stroke-dasharray: 5 4; }
 .zoom { position: absolute; inset-inline-end: 8px; top: 8px; display: flex; flex-direction: column; gap: 4px; }
 .zoom button, .btn {
@@ -353,16 +368,35 @@ footer.foot .brand { color: var(--on-navy); }
 .flinks a { color: var(--on-navy); }
 
 /* سلسلة الشيوخ والتلاميذ */
-.chainwrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 8px; background: var(--paper); }
-.chain { position: relative; display: flex; gap: 3.5rem; align-items: flex-start; padding: 1rem 1.25rem 1.5rem; width: max-content; margin-inline: auto; }
-.chain .links { position: absolute; inset-inline-start: 0; top: 0; left: 0; pointer-events: none; overflow: visible; }
-.chain .lk { fill: none; stroke: var(--muted); stroke-opacity: .45; }
-.chain .lk.hot { stroke: var(--gold); stroke-opacity: .65; }
-.chain .lk.weak { stroke-dasharray: 4 3; }
-.chain .col { position: relative; z-index: 1; display: flex; flex-direction: column; gap: .45rem; width: 15.5rem; }
-.chain .col.mid { width: 17rem; }
-.chain .colh { font-family: var(--f-head); color: var(--gold); text-align: center; font-size: 1.05rem; padding-bottom: .2rem; border-bottom: 1px solid var(--line); margin-bottom: .2rem; }
-.chain .none { color: var(--muted); text-align: center; margin: .2rem 0; font-size: .9rem; }
+/* silsile ağacı: yukarıdan aşağı kuşaklar */
+.treewrap { overflow: auto; border: 1px solid var(--line); border-radius: 8px; background: var(--paper); }
+.tree { position: relative; display: flex; flex-direction: column; align-items: center; gap: 2.4rem; padding: 1.2rem 1.25rem 1.8rem; min-width: min-content; }
+.tree .links { position: absolute; left: 0; top: 0; pointer-events: none; overflow: visible; }
+.tree .lk { fill: none; stroke: var(--muted); stroke-opacity: .4; }
+.tree .lk.hot { stroke: var(--teal); stroke-opacity: .45; }
+.tree .lk.weak { stroke-dasharray: 4 3; }
+.tree .lk.path { stroke: var(--gold); stroke-opacity: .95; }
+.tree .gen { position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; gap: .5rem; width: 100%; }
+.tree .gen.lin { gap: 1.6rem; }
+.tree .genh { position: relative; z-index: 2; background: var(--paper); font-family: var(--f-head); color: var(--gold); font-size: 1.05rem; padding: 0 1rem .15rem; border-bottom: 1px solid var(--line); }
+.tree .cardsrow { display: flex; flex-wrap: wrap; justify-content: center; gap: .6rem .7rem; max-width: 76rem; }
+.tree .cardsrow .card, .tree .cards1 .card { width: 14.5rem; }
+.tree .gen.mid .card { width: 19rem; }
+.tree .none { color: var(--muted); text-align: center; margin: .2rem 0; font-size: .9rem; }
+.card.onpath { border-color: var(--gold); box-shadow: 0 0 0 2px color-mix(in srgb, var(--gold) 30%, transparent); }
+@media (max-width: 600px) { .tree { padding-inline: .6rem; } .tree .cardsrow { width: 100%; } .tree .cardsrow .card { width: calc(50% - .35rem); } .tree .cards1 .card { width: 13rem; } .tree .gen.mid .card { width: 15rem; } }
+/* büyük ekran sahnesi */
+.stagebar { display: flex; flex-wrap: wrap; align-items: center; gap: .4rem; }
+.stagebar .grow { flex: 1; }
+.fsbtn { display: inline-flex; align-items: center; gap: .35rem; }
+.fsbtn svg { width: 1rem; height: 1rem; }
+.stage.full { position: fixed; inset: 0; z-index: 200; background: var(--bg); padding: calc(env(safe-area-inset-top, 0px) + .8rem) 1rem 1rem; overflow: auto; display: flex; flex-direction: column; gap: .6rem; }
+.stage.full .treewrap { flex: 1; }
+.stage.full .netwrap { flex: 1; height: auto; min-height: 0; }
+.stage.full .netwrap canvas { height: 100%; }
+.stage.full .mapwrap.big { flex: 1; height: auto; min-height: 0; }
+.stage:fullscreen { background: var(--bg); }
+body.noscroll { overflow: hidden; }
 .card { display: flex; flex-direction: column; gap: .05rem; background: var(--bg); border: 1px solid var(--line); border-radius: 6px; padding: .35rem .7rem .3rem; line-height: 1.55; }
 .card:hover { border-color: var(--gold); }
 .card .nm { color: var(--ink); font-size: .95rem; overflow-wrap: anywhere; }
@@ -420,3 +454,19 @@ sup.fn a { color: var(--rubric); padding: 0 .1em; }
   .home .top-search { display: none; }
   nav.tabs a { padding: .05rem .45rem; font-size: .95rem; }
 }
+
+/* biyografi metinleri: yan yana çerçeveler */
+.tchips { display: flex; flex-wrap: wrap; gap: .4rem; margin: .4rem 0 .8rem; }
+.chip { font: inherit; font-size: .9rem; border: 1px solid var(--line); background: var(--paper); color: var(--ink); border-radius: 999px; padding: .2rem .8rem; cursor: pointer; }
+.chip .num { color: var(--muted); font-size: .8rem; }
+.chip:hover { border-color: var(--gold); }
+.chip.on { background: var(--indigo); border-color: var(--indigo); color: var(--paper); }
+.chip.on .num { color: color-mix(in srgb, var(--paper) 75%, transparent); }
+.tframes { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(min(100%, 25rem), calc((100% - (var(--n, 1) - 1) * 1rem) / var(--n, 1))); gap: 1rem; overflow-x: auto; padding-bottom: .4rem; align-items: start; scroll-snap-type: x proximity; }
+.tframe { display: flex; flex-direction: column; background: var(--paper); border: 1px solid var(--line); border-radius: 14px; box-shadow: var(--shadow); max-height: 78vh; min-width: 0; scroll-snap-align: start; position: relative; }
+.tframe::before { content: ""; position: absolute; inset: 5px; border: 1px solid color-mix(in srgb, var(--gold) 35%, transparent); border-radius: 10px; pointer-events: none; }
+.tframe > header { display: flex; justify-content: space-between; align-items: flex-start; gap: .5rem; padding: .7rem 1rem .5rem; border-bottom: 1px solid var(--line); background: var(--mark); border-radius: 14px 14px 0 0; }
+.tframe > header b { display: block; font-family: var(--f-head); font-size: 1.05rem; line-height: 1.35; }
+.tframe > header .ct { display: block; color: var(--muted); font-size: .85rem; }
+.tframe > header .x { flex: none; border: 0; background: transparent; color: var(--muted); font-size: 1.3rem; line-height: 1; cursor: pointer; padding: .1rem .3rem; }
+.tframe .body { overflow: auto; padding: .8rem 1.2rem 1.1rem; }
