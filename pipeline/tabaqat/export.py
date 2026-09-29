@@ -281,6 +281,12 @@ def export(root: Path) -> dict:
             f = [x.strip() for x in v.split("|")]
             books[bid].update(cite_tr=f[0], cite_tr_s=f[1], cite_ar=f[2], cite_ar_s=f[3])
     cite = {s["key"]: s["cite"] for p in persons for s in p["sources"]}
+    # "Proje hakkında" sayfası için kitap başına madde ve cilt sayısı
+    for s in {s["key"]: s for p in persons for s in p["sources"]}.values():
+        if s["book"] in books:
+            b = books[s["book"]]
+            b["entries"] = b.get("entries", 0) + 1
+            b["vols"] = max(b.get("vols", 1), s.get("vol") or 1)
     info = {p["id"]: p for p in persons}
     # Türkçe adlar (DİA yazımı): tam ad, kısa ad
     namer = Namer(root)

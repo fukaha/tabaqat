@@ -535,3 +535,39 @@ sup.fn a { color: var(--rubric); padding: 0 .1em; }
 .etext p { text-align: justify; text-justify: inter-word; hyphens: none; }
 .etext p.verse { text-align: center; }
 .tframe > header b.isnad { font-family: var(--f-body); font-weight: 400; font-size: .92rem; line-height: 1.5; }
+
+/* proje hakkında */
+.about { max-width: 64rem; }
+.about section { margin-top: 2.2rem; }
+.about .lede.big { font-size: 1.12rem; color: var(--ink); max-width: 46rem; }
+.about .lede { max-width: 46rem; }
+.afigs { display: grid; grid-template-columns: repeat(4, 1fr); gap: .8rem; margin: 1.6rem 0 0; }
+.afigs div { border-top: 2px solid var(--gold); padding-top: .5rem; }
+.afigs dd { margin: 0; font-family: var(--f-head); font-size: 1.9rem; line-height: 1.2; color: var(--ink); }
+.afigs dt { color: var(--muted); font-size: .9rem; }
+.lead-card { display: grid; grid-template-columns: 4.5rem 1fr; gap: 1.2rem; background: var(--paper); border: 1px solid var(--line); border-radius: 8px; padding: 1.2rem 1.4rem; max-width: 50rem; }
+.lead-card .lc-ic { color: var(--gold); }
+.lead-card .lc-ic svg { width: 4.5rem; height: 4.5rem; }
+.lead-card .kicker { margin: 0; color: var(--gold); font-size: .82rem; letter-spacing: .06em; text-transform: uppercase; }
+.lead-card h3 { margin: .1rem 0 .2rem; font-family: var(--f-head); font-size: 1.4rem; }
+.lead-card p { margin: .4rem 0; }
+.bauth { color: var(--muted); font-size: .92rem; margin: .1rem 0 .5rem; }
+.bcards { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 22rem), 1fr)); gap: 1rem; margin-top: 1rem; }
+.bcard { background: var(--paper); border: 1px solid var(--line); border-inline-start: 4px solid var(--gold); border-radius: 6px; padding: .9rem 1.1rem; display: flex; flex-direction: column; min-width: 0; }
+.bcard h3 { margin: 0; font-family: var(--f-head); font-size: 1.15rem; line-height: 1.45; }
+.bcard h3 a { color: var(--ink); }
+.bcard > p { margin: .3rem 0 .6rem; font-size: .95rem; }
+.bcard .legend { margin: .5rem 0 0; }
+.bnums { display: grid; grid-template-columns: repeat(4, 1fr); gap: .4rem; margin: auto 0 0; padding-top: .6rem; border-top: 1px solid var(--line); }
+.bnums dd { margin: 0; font-weight: 700; font-size: 1.05rem; color: var(--ink); }
+.bnums dt { color: var(--muted); font-size: .78rem; line-height: 1.3; }
+.bnums div { display: flex; flex-direction: column-reverse; }
+.howto { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 22rem), 1fr)); gap: 1rem 1.6rem; }
+.howto section { margin: 0; }
+.howto h3 { margin: 0 0 .3rem; font-family: var(--f-head); font-size: 1.1rem; color: var(--gold); }
+.howto p { margin: 0; line-height: 1.7; }
+@media (max-width: 640px) {
+  .afigs { grid-template-columns: repeat(2, 1fr); }
+  .lead-card { grid-template-columns: 1fr; }
+  .lead-card .lc-ic svg { width: 3rem; height: 3rem; }
+}

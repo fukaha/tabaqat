@@ -132,8 +132,8 @@ function setupTheme() {
 const UI = {   // index.html'deki sabit metinler (data-i18n)
   brand: ["طبقات الحنفية", "Hanefî Tabakātı"], home: ["الرئيسة", "Ana sayfa"], net: ["السلسلة", "Silsile"], map: ["الخريطة", "Harita"],
   search: ["البحث المفصّل", "Detaylı arama"], about: ["عن المشروع", "Proje hakkında"], q: ["ابحث عن عَلَم…", "Âlim ara…"],
-  fabout: ["فهرس موحّد لتراجم الحنفية من تسعة من كتب الطبقات، بمواضعها في الكتب، وشيوخ كل عَلَم وتلاميذه، والبلدان التي ارتبط بها.",
-    "Dokuz tabakāt kitabındaki Hanefî biyografilerinin birleşik dizini: her âlimin kitaplardaki yerleri, hocaları, talebeleri ve bağlı olduğu şehirler."],
+  fabout: ["فهرس موحّد لتراجم الحنفية من ثمانية من كتب الطبقات، بمواضعها في الكتب، وشيوخ كل عَلَم وتلاميذه، والبلدان التي ارتبط بها.",
+    "Sekiz tabakāt kitabındaki Hanefî biyografilerinin birleşik dizini: her âlimin kitaplardaki yerleri, hocaları, talebeleri ve bağlı olduğu şehirler."],
   links: ["روابط", "Bağlantılar"], fnet: ["سلسلة الشيوخ والتلاميذ", "Hoca–talebe silsilesi"], fmap: ["خريطة البلدان", "Şehirler haritası"],
   fabout2: ["عن المشروع والمصادر", "Proje ve kaynaklar"], open: ["المصادر المفتوحة", "Açık kaynaklar"],
   coords: ["الإحداثيات: مشروع الثريا (CC BY 4.0)", "Koordinatlar: al-Thurayya (CC BY 4.0)"], maps: ["الخرائط: Natural Earth", "Haritalar: Natural Earth"],
@@ -327,7 +327,7 @@ async function viewHome(view) {
     [T("علماء سمرقند", "Semerkant âlimleri"), atPlace("SAMARQAND_670E396N_S"), "#/map/SAMARQAND_670E396N_S"],
     [T("قضاة القاهرة ومدرّسوها", "Kahire kadıları ve müderrisleri"), atPlace("QAHIRA_312E300N_S", ["office"]), "#/map/QAHIRA_312E300N_S"],
   ].filter(c => c[1].length);
-  const bk = Object.keys(BOOKS).length;
+  const bk = new Set(Object.entries(BOOKS).map(([id, b]) => b.cite_tr_s || id)).size;   // el-Gurefü’l-aliyye’nin iki cildi tek kitap
   view.innerHTML = `
     <section class="hero" style="margin:0">${zemin()}<div class="inner">
       <div class="txt">
@@ -1274,30 +1274,117 @@ function fullNet(host, g) {
 }
 
 // ---------- about ----------
+// kitap tanıtımları (Türkçe, Arapça); el-Gurefü’l-aliyye'nin iki cildi tek kart
+const BOOK_DESC = {
+  qand: ["Semerkant’ta yetişmiş ya da şehre gelmiş âlimlerin alfabetik tarihi. Eserin aslı günümüze tam olarak ulaşmamış, bir seçmesi kalmıştır. Yalnız Hanefîlere ayrılmadığından Mâverâünnehir’in erken dönem muhaddis ve fakihleri için ayrıca değerlidir.",
+    "تاريخ لمن نشأ بسمرقند أو دخلها من العلماء، مرتّب على الحروف. لم يصل الأصل كاملًا، وإنما بقي منتخب منه. ولأنه غير مقصور على الحنفية فهو مصدر نفيس لمحدّثي ما وراء النهر وفقهائه في القرون الأولى."],
+  jawahir: ["Hanefî mezhebinin ilk müstakil ve kapsamlı tabakātı. Harf sırasına göre düzenlenmiştir. Sonunda künyeler, “İbn…” diye tanınanlar, nisbeler ve lakaplar için ayrı bölümler vardır. Sonraki bütün Hanefî tabakātının ana kaynağıdır.",
+    "أول كتاب جامع مستقل في طبقات الحنفية، مرتّب على حروف المعجم، وفي آخره أبواب للكنى والأبناء والأنساب والألقاب. وعليه عوّل كل من صنّف في طبقات الحنفية بعده."],
+  taj_tarajim: ["Eser telif etmiş Hanefî âlimlere ayrılmış muhtasar bir tabakāt. Her biyografide âlimin eserleri sayılır. Kureşî’nin kitabından yararlanır, ona bazı ekler yapar.",
+    "مختصر في تراجم من صنّف من الحنفية، يذكر مع كل عَلَم مصنفاته، استفاد فيه من الجواهر المضية وزاد عليها."],
+  ghuraf_v1: ["Müteahhir Hanefîlere, özellikle VIII–X. (XIV–XVI.) yüzyıllarda Şam, Mısır ve Anadolu’da yaşayanlara ayrılmış bir zeyl. Müellif çağdaşlarının ve hocalarının biyografilerini doğrudan tanıklıkla verir.",
+    "ذيل في تراجم متأخري الحنفية، ولا سيما أهل الشام ومصر والروم في القرون الثامن إلى العاشر، يترجم فيه المؤلف لشيوخه ومعاصريه عن مشاهدة."],
+  kataib: ["Ebû Hanîfe’den müellifin zamanına kadar Hanefî fakihlerini tabakalara (kuşaklara) göre sıralar. Osmanlı ulemâsı için erken ve önemli bir kaynaktır.",
+    "رتّب فيه فقهاء الحنفية على الطبقات من أبي حنيفة إلى زمان المؤلف، وهو من أوائل المصادر وأهمها في علماء الدولة العثمانية."],
+  tabaqat_saniyya: ["Harf sırasına göre düzenlenmiş, dönemin en hacimli Hanefî tabakātı. Önceki kitapları derler ve Memlük–Osmanlı dönemi Mısır, Şam ve Rûm âlimleriyle genişletir.",
+    "أوسع كتب طبقات الحنفية في عصره، مرتّب على الحروف، جمع ما في الكتب قبله وزاد عليها كثيرًا من علماء مصر والشام والروم في العهدين المملوكي والعثماني."],
+  athmar: ["Kureşî’nin el-Cevâhir’ine dayanan muhtasar bir Hanefî tabakātı. Sonunda nisbeler için kısa bir sözlük (kitâbü’l-ensâb) vardır. Bu sözlüğün maddeleri âlim sayılmaz; haritada ilgili şehrin penceresinde nisbe notu olarak gösterilir.",
+    "مختصر في طبقات الحنفية مبني على الجواهر المضية، وفي آخره «كتاب الأنساب» في ضبط النسب. ومواد هذا الباب ليست تراجم، فتظهر في الخريطة تعليقاتٍ على البلد المنسوب إليه."],
+  fawaid: ["Kefevî’nin Ketâib’inden seçilmiş biyografiler ve Leknevî’nin eklemeleri. Müellifin et-Ta‘lîkātü’s-seniyye adlı kendi hâşiyesiyle basılmıştır. Hint alt kıtası Hanefîleri için de başvuru kaynağıdır.",
+    "انتخبه اللكنوي من كتائب أعلام الأخيار للكفوي وزاد عليه، وطُبع مع حاشيته «التعليقات السنية». وهو مرجع أيضًا لحنفية بلاد الهند."],
+};
 function viewAbout(view) {
-  const books = `<div class="books">${Object.values(BOOKS).map(b => `<div class="book"><b>${esc(bookTitle(b))}</b><span>${esc(bookAuthor(b))}</span></div>`).join("")}</div>`;
-  if (LANG === "tr") {
-    view.innerHTML = `<h1>Proje hakkında</h1>
-    <section><h2>Kitaplar</h2>${books}</section>
+  const tr = LANG === "tr", n = x => AR(Number(x).toLocaleString(tr ? "tr-TR" : "en-US"));
+  // kitaplar: aynı kısa künyeyi taşıyan ciltler tek kartta, müellifin vefatına göre sıralı
+  const groups = new Map();
+  Object.entries(BOOKS).forEach(([id, b]) => { const k = b.cite_tr_s || id; if (!groups.has(k)) groups.set(k, []); groups.get(k).push([id, b]); });
+  const cards = [...groups.values()].sort((a, b) => (a[0][1].death || 0) - (b[0][1].death || 0)).map(g => {
+    const ids = g.map(x => x[0]), b = g[0][1];
+    const entries = g.reduce((s, [, x]) => s + (x.entries || 0), 0), vols = g.length > 1 ? g.length : b.vols || 1;
+    const inBook = IDX.filter(p => p.books.some(x => ids.includes(x))).length;
+    const only = IDX.filter(p => p.books.length && p.books.every(x => ids.includes(x))).length;
+    const ed = ((tr ? b.cite_tr : b.cite_ar) || "").match(/\(([^()]*)\)\s*$/)?.[1] || "";
+    const title = tr ? (b.title_tr || b.title).replace(/\s*\([IVX]+\. cilt\)$/, "") : b.title.replace(/\s*—.*$/, "");
+    const desc = (BOOK_DESC[ids[0]] || ["", ""])[tr ? 0 : 1];
+    return `<article class="bcard">
+      <h3><a href="#/b/${esc(ids[0])}">${esc(title)}</a></h3>
+      <p class="bauth">${esc(bookAuthor(b))}${ed ? ` · <span class="bed">${esc(ed)}</span>` : ""}</p>
+      <p>${esc(desc)}</p>
+      <dl class="bnums num">
+        <div><dt>${T("مادة", "madde")}</dt><dd>${n(entries)}</dd></div>
+        <div><dt>${T("مجلد", "cilt")}</dt><dd>${n(vols)}</dd></div>
+        <div><dt>${T("عَلَمًا في الموقع", "âlim (sitede)")}</dt><dd>${n(inBook)}</dd></div>
+        <div><dt>${T("لا يوجد إلا فيه", "yalnız bu kitapta")}</dt><dd>${n(only)}</dd></div>
+      </dl>
+      ${ids.length > 1 ? `<p class="legend">${ids.map(i => `<a href="#/b/${esc(i)}">${esc(bookTitle(BOOKS[i]).match(/\(([^)]*)\)$/)?.[1] || BOOKS[i].title.split("—")[1] || i)}</a>`).join(" · ")}</p>` : ""}
+    </article>`;
+  }).join("");
+  const totE = Object.values(BOOKS).reduce((s, b) => s + (b.entries || 0), 0);
+  const multi = IDX.filter(p => p.books.length > 1).length;
+  const nBooks = groups.size;
+  const figs = `<dl class="afigs num">
+      <div><dd>${n(nBooks)}</dd><dt>${T("كتب طبقات", "tabakāt kitabı")}</dt></div>
+      <div><dd>${n(totE)}</dd><dt>${T("ترجمة (مادة)", "biyografi maddesi")}</dt></div>
+      <div><dd>${n(IDX.length)}</dd><dt>${T("عَلَمًا بعد التوحيد", "birleştirilmiş âlim")}</dt></div>
+      <div><dd>${n(multi)}</dd><dt>${T("مترجَمًا في أكثر من كتاب", "birden çok kitapta")}</dt></div></dl>`;
+  const lead = `<article class="lead-card">
+      <div class="lc-ic" aria-hidden="true">${ILL.divit}</div>
+      <div><p class="kicker">${T("مدير المشروع", "Proje yürütücüsü")}</p>
+      <h3>${T("د. حسن سَلَك", "Dr. Arş. Gör. Hasan Selek")}</h3>
+      <p class="bauth">${T("جامعة أنقرة يلدرم بايزيد، كلية العلوم الإسلامية، قسم الفقه الإسلامي", "Ankara Yıldırım Beyazıt Üniversitesi, İslâmî İlimler Fakültesi, İslâm Hukuku Anabilim Dalı")}</p>
+      <p>${T("وُلد في شُحوت من أعمال أفيون قره حصار، وتخرّج في كلية الإلهيات بجامعة نجم الدين أربكان (٢٠١٨). نجح سنة ٢٠١٩ في مسابقة مساعدي الخبراء بالمجلس الأعلى للشؤون الدينية، وعُيّن في السنة نفسها باحثًا مساعدًا في قسم الفقه الإسلامي بجامعة أنقرة يلدرم بايزيد، وفيها أتمّ الماجستير (٢٠٢٠) والدكتوراه. تدور أبحاثه حول الفكر الأصولي والفروعي في المذهب الحنفي الكلاسيكي، وتقاليد الاختصار والشرح، وشروح «الهداية» وحواشيها في العصر العثماني الكلاسيكي.",
+        "Afyonkarahisar Şuhut’ta doğdu. Necmettin Erbakan Üniversitesi İlahiyat Fakültesi’nden mezun oldu (2018). 2019’da Din İşleri Yüksek Kurulu uzman yardımcılığı sınavını kazandı. Aynı yıl Ankara Yıldırım Beyazıt Üniversitesi İslâm Hukuku Anabilim Dalı’nda araştırma görevlisi oldu. Yüksek lisansını (2020) ve doktorasını bu üniversitede tamamladı. Klasik Hanefî usul ve fürû düşüncesi, ihtisar ve şerh geleneği ile Osmanlı klasik dönemi Hidâye şerh ve hâşiyeleri üzerine çalışmaktadır.")}</p>
+      <p><a href="https://avesis.aybu.edu.tr/hselek" target="_blank" rel="noopener">${T("صفحته في AVESİS", "AVESİS sayfası")} ↗</a></p></div></article>`;
+  const use = tr ? [
+    ["Arama", "Ana sayfadaki kutuya bir âlimin adını, künyesini, nisbesini ya da lakabını Türkçe veya Arapça yazın: “Serahsî”, “Ebû Hafs el-Kebîr”, “السرخسي”. Arama harekeye, uzatmaya, hemzeye ve Türkçe şapkalı harflere duyarsızdır; “serahsi” de “Serahsî”yi bulur. Sonuçlar ↑/↓ ile gezilir, Enter ile açılır."],
+    ["Detaylı arama", "Ad ile birlikte vefat yüzyılı aralığı (hicrî), kitap, şehir ve “silsilede hocası ya da talebesi olanlar” süzgeçleri birlikte kullanılabilir. Örneğin yalnız el-Kand’da geçen ve Buhara ile ilişkili V. yüzyıl âlimleri tek sorguyla listelenir."],
+    ["Âlim sayfası", "Başta DİA yazımıyla tam ad, Arapça asıl ad ve vefat tarihi (hicrî/milâdî) yer alır. “Kaynaklar” bölümünde âlimin geçtiği her kitap cilt, sayfa ve madde numarasıyla verilir; atıflar İSNAD 2. edisyon dipnot biçimindedir. Ardından hocalar ve talebeler bağ türüyle (fıkıh, hadis/rivayet, kıraat, sohbet…) sıralanır. Her bağın “Kanıt” düğmesi, bağın çıkarıldığı cümleyi kaynağıyla gösterir. Mini harita âlimin doğduğu, yaşadığı, gittiği ve vefat ettiği yerleri; sayfanın sonu ise her kitaptaki biyografi metnini muhakkik dipnotlarıyla tam olarak verir."],
+    ["Silsile", "“Bir âlimin silsilesi” görünümü seçilen âlimi ortaya alır; hocaları üstte, talebeleri altta kartlar hâlinde dizilir ve çizgiler kartların üzerinden geçmez. “İki kuşak” her kartın içinde hocanın hocalarını ya da talebenin talebelerini gösterir. “Ebû Hanîfe’ye bağla”, hadisçilerin isnadı gibi âlimden Ebû Hanîfe’ye uzanan en kısa ve vefat tarihleriyle tutarlı hoca zincirini altın çizgiyle çizer. Silsile PNG ya da SVG olarak indirilebilir; tam ekran düğmesi görünümü büyütür. “Genel görünüm” bütün ağı gösterir; oradaki arama kutusu seçilen âlime yakınlaşır ve bağlarını vurgular."],
+    ["Harita", "Her daire biyografilerde geçen bir şehirdir. Dairenin ve adın büyüklüğü o şehirle ilişkili âlim sayısını gösterir. Üstteki düğmelerle bağ türü (doğum, vefat, ikamet, seyahat, görev…) ve vefat yüzyılı süzülür. Bir şehre tıklanınca açılan pencerede el-Süreyyâ’dan şehrin bölgesi ve türü, Yâkût’un Mu‘cemü’l-büldân’ından kısa bir alıntı, varsa el-Esmârü’l-ceniyye’nin nisbe notu ve o şehirle ilişkili âlimler yer alır. Tekerlek ya da iki parmakla yakınlaşılır, sürükleyerek kaydırılır; arama kutusu şehri bulup ona yakınlaşır."],
+    ["Dil, tema ve bağlantılar", "Sağ üstteki düğmelerle arayüz Arapça ile Türkçe, açık ile koyu tema arasında değiştirilir; seçim tarayıcıda hatırlanır. Her sayfanın kendi adresi vardır (ör. #/p/jw821, #/map/SAMARQAND_670E396N_S); bu adresler kopyalanıp paylaşılabilir ve atıf olarak kullanılabilir."],
+  ] : [
+    ["البحث", "اكتب في مربع البحث في الصفحة الرئيسة اسم العَلَم أو كنيته أو نسبته أو لقبه بالعربية أو التركية: «السرخسي»، «أبو حفص الكبير»، «Serahsî». والبحث لا يتأثر بالحركات والتطويل وصور الهمزة. وتتنقل بين النتائج بالسهمين وتفتحها بمفتاح الإدخال."],
+    ["البحث المفصّل", "يُجمع فيه بين الاسم وحدود قرن الوفاة والكتاب والبلد وقيد «من له شيوخ أو تلاميذ في السلسلة»؛ فيمكن مثلًا أن تُعرض أعلام القرن الخامس المرتبطون ببخارى ممن لم يُترجموا إلا في القند باستعلام واحد."],
+    ["صفحة العَلَم", "في أعلاها الاسم الكامل وسنة الوفاة، ثم «المصادر» بمواضع الترجمة في كل كتاب بالجزء والصفحة ورقم الترجمة، بصيغة الإحالة العلمية. ثم الشيوخ والتلاميذ مع نوع الصلة (تفقّه، رواية، صحبة…)، وزر «الشاهد» يعرض العبارة التي استُخرجت منها الصلة مع موضعها. وتُظهر الخريطة الصغيرة بلدان المولد والإقامة والرحلة والوفاة، وفي آخر الصفحة نصوص التراجم كاملة من كل كتاب مع حواشي المحققين."],
+    ["السلسلة", "«سلسلة عَلَم» تضع العَلَم في الوسط، وشيوخه فوقه وتلاميذه تحته في بطاقات لا تتقاطع خطوطها معها. و«طبقتان» تعرض داخل كل بطاقة شيوخ الشيخ أو تلاميذ التلميذ. و«الوصل بأبي حنيفة» يرسم بخط ذهبي أقصر سلسلة شيوخ متسقة مع الوفيات من العَلَم إلى الإمام، على طريقة الإسناد. ويمكن تنزيل السلسلة صورةً (PNG) أو رسمًا متجهيًا (SVG)، وتكبيرها بملء الشاشة. أما «المشهد العام» فيعرض الشبكة كلها، ومربع البحث فيه يقرّب العَلَم المختار ويبرز صلاته."],
+    ["الخريطة", "كل دائرة بلد ورد في التراجم، وحجمها وحجم اسمها على عدد الأعلام المرتبطين به. وتُصفّى بنوع الصلة (المولد، الوفاة، الإقامة، الرحلة، الولاية…) وبقرن الوفاة. وعند الضغط على بلد تظهر نافذة فيها إقليمه ونوعه من مشروع الثريا، ومقتطف من معجم البلدان لياقوت، وتعليق النسبة من الأثمار الجنية إن وُجد، وأسماء الأعلام المرتبطين به. ويُكبَّر بعجلة الفأرة أو بإصبعين، ويُحرَّك بالسحب، ومربع البحث يجد البلد ويقرّبه."],
+    ["اللغة والمظهر والروابط", "تغيّر الأزرار في أعلى الصفحة لغة الواجهة بين العربية والتركية، والمظهر بين الفاتح والداكن، ويُحفظ الاختيار في المتصفح. ولكل صفحة رابطها الخاص (مثل ‎#/p/jw821‎)، فيمكن نسخه ومشاركته والإحالة إليه."],
+  ];
+  const useHtml = `<div class="howto">${use.map(([h, p]) => `<section><h3>${h}</h3><p>${p}</p></section>`).join("")}</div>`;
+  if (tr) {
+    view.innerHTML = `<div class="about">
+    <h1>Proje hakkında</h1>
+    <p class="lede big">Hanefî Tabakātı, Hanefî mezhebine mensup âlimlerin biyografilerini veren tabakāt kitaplarını tek bir dizinde birleştiren bir dijital beşerî bilimler projesidir. Aynı âlim farklı kitaplarda farklı adlarla, farklı ayrıntılarla ve bazen farklı vefat tarihleriyle anılır. Proje bu maddeleri tek bir âlim başlığı altında toplar ve her kaynağa cilt, sayfa ve madde numarasıyla atıf yapar.</p>
+    <p class="lede">Biyografilerde geçen “filandan fıkıh öğrendi”, “ondan rivayet etti” gibi ifadelerden hoca–talebe ilişkileri çıkarılır. Bu ilişkilerle Ebû Hanîfe’den XIV. (XX.) yüzyıla uzanan bir ilim silsilesi kurulur. Doğum, vefat, ikamet, seyahat ve görev yerleri de haritaya dökülür; böylece mezhebin hangi şehirlerde, hangi yüzyıllarda ve kimler eliyle yayıldığı görülebilir. Amaç, araştırmacıya kaynağa dönmeyi kolaylaştıran güvenilir bir başvuru aracı sunmaktır: her bilgi, çıktığı metne ve sayfaya bağlanır.</p>
+    ${figs}
+    <section><h2>Yürütücü</h2>${lead}</section>
+    <section><h2>Kitaplar</h2><p class="lede">Kitaplar müelliflerinin vefat tarihine göre sıralıdır. “Madde” kitaptaki biyografi sayısı, “âlim (sitede)” bu maddelerin birleştirildiği âlim sayısı, “yalnız bu kitapta” başka hiçbir kitapta biyografisi bulunmayan âlim sayısıdır.</p><div class="bcards">${cards}</div></section>
+    <section><h2>Kullanım</h2>${useHtml}</section>
     <section><h2>Yöntem</h2>
       <p class="lede" style="color:var(--ink)">Bir âlimin farklı kitaplardaki biyografileri; ad, nesep, künye, nisbe, vefat yılı ve kitapların birbirine yaptığı atıflar karşılaştırılarak tek başlık altında toplandı; şüpheli eşleştirmeler elle gözden geçirildi.
       Hocalar ve talebeler biyografilerdeki ifadelerden («تفقّه على», «أخذ عن», «روى عنه», «من أصحاب»…) çıkarıldı; geçen ad nesep, künye ve nisbe uyumuna, vefat yıllarının yakınlığına ve biyografilerin birbirini doğrulamasına bakılarak sahibine bağlandı. Kesinleşmeyenler incelenmek üzere silsilenin dışında bırakıldı.
       Şehirler doğum, vefat, defin, seyahat, ikamet ve görev ifadelerinden ve nisbelerden çıkarıldı.
       Biyografi metinleri, her kitaptan ayrı ayrı ve muhakkik dipnotlarıyla, her âlimin sayfasının sonunda Arapça aslıyla yayımlanmaktadır.</p>
       <p class="lede" style="color:var(--ink)">Şahıs, eser ve yer adları TDV İslâm Ansiklopedisi (DİA) yazım usulüyle verilmiştir: Ebû Hanîfe, Muhammed b. Hasan eş-Şeybânî, Şemsüleimme el-Halvânî, el-Cevâhirü’l-muziyye… Adlar künye, isim, nesep, nisbe ve lakap sözlüklerinden otomatik kurulur; unvan ve tavsifler atılır. Tarihler hicrî/milâdî olarak verilir: (ö. 150/767). Milâdî yıl, hicrî yılın ortasına göre hesaplanmıştır; ay ve gün bilinmediğinden bir yıl sapabilir.</p>
-      <p class="legend">“tercih” etiketli bağlar yalnız nisbe ya da şöhretle kurulmuştur. “[?]” işaretli vefat tarihleri kaynakta yoktur; hoca ve talebelerin vefatlarından tahmin edilmiştir. Hicrî yüzyıllar DİA’daki gibi yazılır: V. (XI.) yüzyıl.</p></section>
-    <section><h2>Açık kaynaklar</h2><p class="lede">Koordinatlar al-Thurayya Gazetteer’dan (CC BY 4.0), Osmanlı ve Hint şehirleri için elle yapılan eklemelerle; kara ve nehir sınırları Natural Earth’ten (kamu malı).</p></section>`;
+      <p class="legend">“tercih” etiketli bağlar yalnız nisbe ya da şöhretle kurulmuştur. “[?]” işaretli vefat tarihleri kaynakta yoktur; hoca ve talebelerin vefatlarından tahmin edilmiştir. Hicrî yüzyıllar DİA’daki gibi yazılır: V. (XI.) yüzyıl. Eşleştirme ve çıkarımlar otomatik yapıldığından hata içerebilir; bildirimleriniz için yürütücüye yazabilirsiniz.</p></section>
+    <section><h2>Açık kaynaklar</h2><p class="lede">Koordinatlar, şehirlerin bölge ve türleri ile Yâkūt, Himyerî ve Sem‘ânî’den alıntılar al-Thurayya Gazetteer’dan (CC BY 4.0) alınmıştır; Osmanlı ve Hint şehirleri için elle eklemeler yapılmıştır. Kara ve nehir sınırları Natural Earth’ten (kamu malı). Sitenin kodu ve üretilen veriler <a href="https://github.com/fukaha/tabaqat" target="_blank" rel="noopener">GitHub</a>’da açıktır.</p></section></div>`;
     return;
   }
-  view.innerHTML = `<h1>عن المشروع</h1>
-    <section><h2>الكتب</h2>${books}</section>
+  view.innerHTML = `<div class="about">
+    <h1>عن المشروع</h1>
+    <p class="lede big">«طبقات الحنفية» مشروع رقمي يجمع كتب طبقات الحنفية في فهرس واحد. فالعَلَم الواحد يُذكر في الكتب المختلفة بأسماء مختلفة وتفاصيل متفاوتة، وربما بوفيات مختلفة؛ فيجمع المشروع تراجمه تحت عنوان واحد، ويحيل إلى كل مصدر بالجزء والصفحة ورقم الترجمة.</p>
+    <p class="lede">وتُستخرج صلات الشيوخ والتلاميذ من عبارات التراجم مثل «تفقّه على فلان» و«روى عنه»، فتقوم منها سلسلة علمية من أبي حنيفة إلى القرن الرابع عشر. وتُرسم على الخريطة بلدان المولد والوفاة والإقامة والرحلة والولاية، فيظهر أين انتشر المذهب ومتى وعلى يد من. والغاية أداة مرجعية موثوقة تيسّر الرجوع إلى الأصول: فكل معلومة موصولة بالنص الذي أُخذت منه وبموضعها.</p>
+    ${figs}
+    <section><h2>مدير المشروع</h2>${lead}</section>
+    <section><h2>الكتب</h2><p class="lede">الكتب مرتبة على وفيات مؤلفيها. «مادة» عدد التراجم في الكتاب، و«عَلَمًا في الموقع» عدد الأعلام الذين وُحّدت فيهم هذه التراجم، و«لا يوجد إلا فيه» عدد من لا ترجمة له في غيره.</p><div class="bcards">${cards}</div></section>
+    <section><h2>طريقة الاستعمال</h2>${useHtml}</section>
     <section><h2>المنهج</h2>
       <p class="lede" style="color:var(--ink)">جُمعت تراجم العَلَم الواحد من الكتب المختلفة تحت عنوان واحد بمقارنة الاسم والنسب والكنية والنسبة وسنة الوفاة وإحالات الكتب بعضها على بعض، وراجع الإنسان ما التبس منها.
       واستُخرج الشيوخ والتلاميذ من عبارات التراجم («تفقّه على»، «أخذ عن»، «روى عنه»، «من أصحاب»…) ورُبط الاسم بصاحبه بموافقة النسب والكنية والنسبة، مع مراعاة تقارب الوفيات وتقاطع التراجم؛ وما لم يترجّح بقي خارج السلسلة للمراجعة.
       واستُخرجت البلدان من عبارات المولد والوفاة والدفن والرحلة والإقامة والولاية، ومن النسبة.
       ونصوص التراجم منشورة كاملة في آخر صفحة كل عَلَم، كلُّ كتاب على حدة مع حواشي محققه.</p>
-      <p class="legend">ما وُسم «ترجيح» ربطٌ بالنسبة أو الشهرة وحدها. الوفيات المسبوقة بـ«نحو» تقدير من طبقة الشيوخ والتلاميذ.</p></section>
-    <section><h2>المصادر المفتوحة</h2><p class="lede">الإحداثيات من مشروع الثريا (al-Thurayya Gazetteer، رخصة CC BY 4.0) مع إضافات يدوية لبلدان العهد العثماني والهند؛ وحدود اليابسة والأنهار من Natural Earth (ملك عام).</p></section>`;
+      <p class="legend">ما وُسم «ترجيح» ربطٌ بالنسبة أو الشهرة وحدها. الوفيات المسبوقة بـ«نحو» تقدير من طبقة الشيوخ والتلاميذ. ولأن التوحيد والاستخراج آليّان فقد يقع فيهما خطأ، ويُرجى إبلاغ مدير المشروع بما يُلحظ منه.</p></section>
+    <section><h2>المصادر المفتوحة</h2><p class="lede">الإحداثيات وأقاليم البلدان وأنواعها والمقتطفات من ياقوت والحميري والسمعاني من مشروع الثريا (al-Thurayya Gazetteer، رخصة CC BY 4.0) مع إضافات يدوية لبلدان العهد العثماني والهند؛ وحدود اليابسة والأنهار من Natural Earth (ملك عام). وشفرة الموقع وبياناته مفتوحة على <a href="https://github.com/fukaha/tabaqat" target="_blank" rel="noopener">GitHub</a>.</p></section></div>`;
 }
 
 init().catch(e => { $("#view").innerHTML = `<p class="empty">${T("تعذّر تحميل البيانات", "Veriler yüklenemedi")}: ${esc(e.message)}</p>`; });
