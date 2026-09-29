@@ -97,7 +97,7 @@ function viewHome(view, c) {
     <div class="stats num">
       <div><b>${AR(IDX.length)}</b><span>عَلَمًا</span></div>
       <div><b>${AR(multi)}</b><span>مترجمًا في أكثر من كتاب</span></div>
-      <div><b>${AR(linked)}</b><span>في شبكة الشيوخ والتلاميذ</span></div>
+      <div><b>${AR(linked)}</b><span>في سلسلة الشيوخ والتلاميذ</span></div>
       <div><b>${AR(Object.keys(BOOKS).length)}</b><span>كتب</span></div>
     </div>
     <section><h2>الأعلام بحسب قرن الوفاة</h2>
@@ -141,7 +141,7 @@ async function viewPerson(view, id) {
     <div class="phead">
       <h1>${esc(d.name)}</h1>
       <div class="death num">${d.death ? esc(d.death) : p.d ? `نحو ${AR(p.d)}هـ <span class="est">(تقدير من طبقة شيوخه وتلاميذه)</span>` : `<span class="est">لم تُذكر وفاته</span>`}</div>
-      <div class="filters">${p.nt || p.ns ? `<a class="btn" href="#/net/${id}">في شبكة الشيوخ والتلاميذ</a>` : ""}</div>
+      <div class="filters">${p.nt || p.ns ? `<a class="btn" href="#/net/${id}">سلسلة شيوخه وتلاميذه</a>` : ""}</div>
     </div>
     <section><h2>مواضع الترجمة<span class="c num">${AR(d.sources.length)}</span></h2>
       <ul class="srcs num">${d.sources.map(([b, cite, h]) => `<li>${esc(cite)}<span class="h">${esc(h)}</span></li>`).join("")}</ul></section>
@@ -159,7 +159,14 @@ async function viewPerson(view, id) {
       ${d.places.length ? `<div class="grid2"><ul class="places" id="plist"></ul><div class="mapwrap mini" id="pmap"></div></div>
         <p class="legend">الخط المتقطع يصل البلدان على ترتيب ورودها في الترجمة (المولد والنسبة أولًا، والوفاة والمدفن آخرًا)، وهو تقريب لا تأريخ.</p>`
         : `<p class="empty">لم يُستخرج له بلد.</p>`}
+    </section>
+    <section id="texts"><h2>نصوص الترجمة<span class="c num">${AR(d.sources.length)}</span>
+        ${d.sources.length > 1 ? `<button type="button" class="btn small" id="openall">فتح الكل</button>` : ""}</h2>
+      <p class="legend">نص الترجمة في كل كتاب كما هو في الطبعة المعتمدة، مع حواشي المحقق.</p>
+      ${d.sources.map(([b, cite, h], k) => `<details class="src" data-k="${k}"><summary><span class="bk num">${esc(cite)}</span>
+        <span class="ct">${esc(h)}</span></summary><div class="body"><p class="empty">جارٍ التحميل…</p></div></details>`).join("")}
     </section>`;
+  setupTexts(id, d);
   if (!d.places.length) return;
   const PL = await placesById();
   $("#plist").innerHTML = KIND_ORDER.filter(k => byKind[k]).map(k => `<li><span class="k">${KIND[k]}</span>
@@ -173,6 +180,67 @@ async function viewPerson(view, id) {
   m.draw(uniq.map(pl => ({ pl, r: 5, label: true })), { route: seq.map(id => PL.get(id)).filter(Boolean) });
   m.fit(uniq);
 }
+
+// ---------- texts ----------
+async function texts(id) {
+  const s = await load(`t/${String(shardOf(id)).padStart(2, "0")}.json`);
+  return s[id] || [];
+}
+function setupTexts(id, d) {
+  const sec = $("#texts");
+  if (!sec) return;
+  const fill = async el => {
+    if (el.dataset.done) return;
+    el.dataset.done = 1;
+    const all = await texts(id), k = +el.dataset.k, cite = d.sources[k][1];
+    const t = all.find(x => x.cite === cite) || all[k];
+    $(".body", el).innerHTML = t ? renderEntry(t, `${k}`) : `<p class="empty">لا يوجد نص.</p>`;
+  };
+  sec.querySelectorAll("details.src").forEach(el => el.addEventListener("toggle", () => { if (el.open) fill(el); }));
+  const btn = $("#openall");
+  if (btn) btn.addEventListener("click", () => {
+    const els = [...sec.querySelectorAll("details.src")], open = !els.every(e => e.open);
+    els.forEach(e => { e.open = open; });
+    btn.textContent = open ? "طي الكل" : "فتح الكل";
+  });
+}
+const toArDigits = s => String(s).replace(/\d/g, c => "٠١٢٣٤٥٦٧٨٩"[c]);
+function inline(s, fid, used) {
+  return esc(s)
+    .replace(/\[\^(\w+)\]/g, (_, n) => { used.add(n); return `<sup class="fn"><a href="#" data-fn="fn-${fid}-${n}" id="fr-${fid}-${n}">${toArDigits(n)}</a></sup>`; })
+    .replace(/«([^«»]{1,120})»/g, "«<span class=\"q\">$1</span>»");
+}
+function renderBlocks(text, fid, used) {
+  return text.split(/\n{2,}/).map(b => b.trim()).filter(Boolean).map(b => {
+    const h = b.match(/^#{1,6}\s+(.*)$/);
+    if (h) return `<h4>${inline(h[1], fid, used)}</h4>`;
+    // بيت شعر: شطران بينهما «…»
+    const v = b.split(/\s+…\s+/);
+    if (v.length === 2 && b.length < 160 && !/[.؟!]\s*$/.test(v[0])) return `<div class="bayt"><span>${inline(v[0], fid, used)}</span><span>${inline(v[1], fid, used)}</span></div>`;
+    return `<p>${inline(b, fid, used).replace(/\n/g, "<br>")}</p>`;
+  }).join("");
+}
+function renderEntry(t, fid) {
+  const used = new Set();
+  const [main, ...rest] = t.text.split(/\n*<hr>\n*/);
+  let html = `<div class="etitle">${esc(t.heading)}</div><div class="etext">${renderBlocks(main, fid, used)}</div>`;
+  const notes = Object.entries(t.notes || {});
+  if (notes.length || rest.length || (t.refs || []).length) {
+    html += `<div class="notes"><div class="label">حواشي المحقق</div>`;
+    if ((t.refs || []).length) html += t.refs.map(r => `<p class="refs">${esc(r)}</p>`).join("");
+    if (notes.length) html += `<ol>${notes.map(([n, v]) => `<li id="fn-${fid}-${esc(n)}" value="${parseInt(n) || ""}"><a href="#" class="back" data-fn="fr-${fid}-${esc(n)}" aria-label="ارجع إلى الموضع">${toArDigits(n)}</a> ${esc(v)}</li>`).join("")}</ol>`;
+    if (rest.length) html += `<div class="extra">${renderBlocks(rest.join("\n\n"), fid, used)}</div>`;
+    html += `</div>`;
+  }
+  return html;
+}
+document.addEventListener("click", e => {   // الحواشي: انتقال داخل الصفحة دون المساس بعنوان الصفحة
+  const a = e.target.closest("[data-fn]");
+  if (!a) return;
+  e.preventDefault();
+  const el = document.getElementById(a.dataset.fn);
+  if (el) { el.scrollIntoView({ behavior: "smooth", block: "center" }); el.classList.add("flash"); setTimeout(() => el.classList.remove("flash"), 1400); }
+});
 
 // ---------- map ----------
 let PLACES_BY_ID;
@@ -311,10 +379,10 @@ async function graph() {
 async function viewNet(view, id) {
   const g = await graph();
   const full = !id;
-  view.innerHTML = `<h1>شبكة الشيوخ والتلاميذ</h1>
-    <div class="filters"><a class="btn ${full ? "on" : ""}" href="#/net">الشبكة كاملة</a>
-      <a class="btn ${full ? "" : "on"}" href="#/net/${esc(id || "jws1")}">شيوخ عَلَم وتلاميذه</a>
-      ${full ? "" : `<span class="label">العمق</span><button type="button" class="btn on" data-depth="1">طبقة</button><button type="button" class="btn" data-depth="2">طبقتان</button>`}</div>
+  view.innerHTML = `<h1>سلسلة الشيوخ والتلاميذ</h1>
+    <div class="filters"><a class="btn ${full ? "" : "on"}" href="#/net/${esc(id || "jws1")}">سلسلة عَلَم</a>
+      <a class="btn ${full ? "on" : ""}" href="#/net">المشهد العام</a>
+      ${full ? "" : `<span class="label" style="margin-inline-start:1rem">الطبقات</span><button type="button" class="btn on" data-depth="1">طبقة واحدة</button><button type="button" class="btn" data-depth="2">طبقتان</button>`}</div>
     <div id="netbody"></div>`;
   if (full) return fullNet($("#netbody"), g);
   const i = g.byId.get(id);
@@ -326,48 +394,72 @@ async function viewNet(view, id) {
   draw();
 }
 
+/* سلسلة عَلَم: أعمدة من اليمين (الأقدم) إلى اليسار؛ البطاقات HTML تلتف أسماؤها كاملة،
+   والخطوط تُرسم بعد التخطيط من مواضع البطاقات الفعلية. */
 function egoNet(host, g, me, depth) {
-  const MAXC = 40, BW = 230, BH = 30, GAP = 70, RH = 38;
+  const MAXC = 60;
   const cols = new Map([[0, [me]]]);
   const seen = new Set([me]);
   for (let k = 1; k <= depth; k++) {
     for (const [dir, adj] of [[-1, g.up], [1, g.down]]) {
       const prev = cols.get(dir * (k - 1)) || [], next = [];
       prev.forEach(i => adj[i].forEach(([j]) => { if (!seen.has(j)) { seen.add(j); next.push(j); } }));
-      next.sort((a, b) => g.nodes[b].deg - g.nodes[a].deg);
       cols.set(dir * k, next);
     }
   }
   const more = {};
-  for (const [c, l] of cols) { if (l.length > MAXC) { more[c] = l.length - MAXC; cols.set(c, l.slice(0, MAXC)); } }
-  // ترتيب داخل العمود: بالوفاة ثم بمركز الثقل
-  const pos = new Map();
   const keys = [...cols.keys()].sort((a, b) => a - b);
-  keys.forEach(c => cols.get(c).sort((a, b) => (g.nodes[a].d || 9999) - (g.nodes[b].d || 9999)));
-  const maxRows = Math.max(...keys.map(c => cols.get(c).length));
-  const H = maxRows * RH + 70, W = keys.length * (BW + GAP) + 20;
-  // RTL: الأقدم (الشيوخ) يمينًا
-  keys.forEach((c, ci) => {
-    const l = cols.get(c), x = W - 10 - (ci + 1) * (BW + GAP) + GAP, y0 = 50 + (maxRows - l.length) * RH / 2;
-    l.forEach((i, r) => pos.set(i, [x, y0 + r * RH]));
+  const byYear = (a, b) => (g.nodes[a].d || 9999) - (g.nodes[b].d || 9999);
+  // الطبقة الأولى بالوفاة؛ الثانية بمركز ثقل صلاتها في الطبقة الأولى (تقليل تقاطع الخطوط)
+  [-1, 1].forEach(c => cols.has(c) && cols.get(c).sort(byYear));
+  [-2, 2].forEach(c => {
+    if (!cols.has(c)) return;
+    const ref = cols.get(c / 2), at = new Map(ref.map((i, r) => [i, r]));
+    const adj = c < 0 ? g.down : g.up;
+    const bc = i => { const r = adj[i].map(([j]) => at.get(j)).filter(v => v !== undefined); return r.length ? r.reduce((a, b) => a + b) / r.length : 1e9; };
+    cols.get(c).sort((a, b) => bc(a) - bc(b) || byYear(a, b));
   });
-  const links = [];
-  const colOf = new Map(); for (const [c, l] of cols) l.forEach(i => colOf.set(i, c));
-  for (const [i, [x, y]] of pos) g.down[i].forEach(([j, n, weak]) => { if (pos.has(j) && colOf.get(j) === colOf.get(i) + 1) {
-    const [x2, y2] = pos.get(j); links.push(`<path class="lk${weak ? " weak" : ""}" stroke-width="${Math.min(4, 1 + Math.log2(n))}" d="M${x} ${y + BH / 2}C${x - GAP / 2} ${y + BH / 2} ${x2 + BW + GAP / 2} ${y2 + BH / 2} ${x2 + BW} ${y2 + BH / 2}"/>`); } });
-  const head = { "-2": "شيوخ شيوخه", "-1": "شيوخه", "0": "", "1": "تلاميذه", "2": "تلاميذ تلاميذه" };
-  const clip = (s, d) => { const m = d ? 28 : 34; return s.length > m ? s.slice(0, m - 1) + "…" : s; };
-  const boxes = [...pos.entries()].map(([i, [x, y]]) => { const n = g.nodes[i];
-    return `<g class="${i === me ? "me" : "nd"}" data-id="${esc(n.id)}"><title>${esc(n.name)}</title><rect x="${x}" y="${y}" width="${BW}" height="${BH}" rx="6"/>
-      <text x="${x + BW - 8}" y="${y + 20}" font-size="13">${esc(clip(n.name, n.d))}</text>
-      <text class="yr" x="${x + 8}" y="${y + 20}" direction="ltr" text-anchor="start">${n.d ? (n.guess ? "~" : "") + AR(n.d) : ""}</text></g>`; }).join("");
-  const heads = keys.map((c, ci) => { const x = W - 10 - (ci + 1) * (BW + GAP) + GAP + BW / 2;
-    return `<text class="colh" x="${x}" y="28" text-anchor="middle">${head[c] || ""}${more[c] ? ` (و${AR(more[c])} غيرهم)` : ""}</text>`; }).join("");
-  host.innerHTML = `<div class="netwrap ego"><svg class="egosvg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">${heads}${links.join("")}${boxes}</svg></div>
-    <p class="legend">الخط المتقطع: ربط بترجيح النسبة أو الشهرة. اضغط على اسم لتنتقل إلى شبكته، أو ${plink(g.nodes[me].id)} لترجمته.</p>`;
-  const wrap = $(".netwrap", host); wrap.scrollLeft = wrap.scrollWidth;
-  host.querySelectorAll(".nd").forEach(el => el.addEventListener("click", () => location.hash = `#/net/${el.dataset.id}`));
-  host.querySelector(".me").addEventListener("click", () => location.hash = `#/p/${g.nodes[me].id}`);
+  for (const [c, l] of cols) if (l.length > MAXC) { more[c] = l.length - MAXC; cols.set(c, l.slice(0, MAXC)); }
+  const head = { "-2": "شيوخ شيوخه", "-1": "شيوخه", "0": "صاحب السلسلة", "1": "تلاميذه", "2": "تلاميذ تلاميذه" };
+  const card = i => { const n = g.nodes[i], p = P.get(n.id) || {};
+    const yr = n.d ? `${n.guess || p.est ? "نحو " : "ت "}${AR(n.d)}هـ` : "";
+    return i === me
+      ? `<div class="card me" data-i="${i}"><a class="nm" href="#/p/${esc(n.id)}">${esc(n.name)}</a>
+          <span class="meta num"><span>${yr}</span></span>
+          <a class="tr" href="#/p/${esc(n.id)}">قراءة الترجمة ←</a></div>`
+      : `<div class="card" data-i="${i}"><a class="nm" href="#/net/${esc(n.id)}" title="سلسلته">${esc(n.name)}</a>
+          <span class="meta num"><span>${yr}</span><a class="tr" href="#/p/${esc(n.id)}" title="ترجمته">ترجمة</a></span></div>`; };
+  host.innerHTML = `<div class="chainwrap"><div class="chain">
+      <svg class="links" aria-hidden="true"></svg>
+      ${keys.map(c => `<div class="col${c === 0 ? " mid" : ""}"><div class="colh">${head[c]}<span class="num"> ${c ? AR(cols.get(c).length + (more[c] || 0)) : ""}</span></div>
+        ${cols.get(c).length ? cols.get(c).map(card).join("") : `<p class="none">—</p>`}
+        ${more[c] ? `<p class="none">و${AR(more[c])} غيرهم</p>` : ""}</div>`).join("")}
+    </div></div>
+    <p class="legend">الأقدم يمينًا. اضغط على اسم لتنتقل إلى سلسلته، أو على «ترجمة» لتقرأ ترجمته. الخط المتقطع: ربط بترجيح النسبة أو الشهرة.</p>`;
+  const chain = $(".chain", host), svg = $(".links", host);
+  const colOf = new Map(); keys.forEach(c => cols.get(c).forEach(i => colOf.set(i, c)));
+  const drawLinks = () => {
+    const box = chain.getBoundingClientRect();
+    svg.setAttribute("width", chain.scrollWidth); svg.setAttribute("height", chain.scrollHeight);
+    const at = new Map([...chain.querySelectorAll(".card")].map(el => [+el.dataset.i, el.getBoundingClientRect()]));
+    const paths = [];
+    for (const [i, r] of at) g.down[i].forEach(([j, n, weak]) => {
+      if (!at.has(j) || colOf.get(j) !== colOf.get(i) + 1) return;
+      const r2 = at.get(j);   // الشيخ يمينًا، التلميذ يسارًا
+      const x1 = r.left - box.left, y1 = r.top + r.height / 2 - box.top, x2 = r2.right - box.left, y2 = r2.top + r2.height / 2 - box.top;
+      const mx = (x1 + x2) / 2;
+      paths.push(`<path class="lk${weak ? " weak" : ""}${i === me || j === me ? " hot" : ""}" stroke-width="${Math.min(3.5, 1 + Math.log2(n) / 2)}" d="M${x1} ${y1}C${mx} ${y1} ${mx} ${y2} ${x2} ${y2}"/>`);
+    });
+    svg.innerHTML = paths.join("");
+  };
+  const wrap = $(".chainwrap", host);
+  const ro = new ResizeObserver(drawLinks); ro.observe(chain);
+  (document.fonts ? document.fonts.ready : Promise.resolve()).then(() => {
+    drawLinks();
+    const m = chain.querySelector(".card.me");   // صاحب السلسلة في منتصف العرض
+    if (m && wrap.scrollWidth > wrap.clientWidth)
+      wrap.scrollLeft += (m.getBoundingClientRect().left + m.offsetWidth / 2) - (wrap.getBoundingClientRect().left + wrap.clientWidth / 2);
+  });
 }
 
 function fullNet(host, g) {
@@ -416,7 +508,7 @@ function fullNet(host, g) {
   };
   const near = (mx, my) => { let b = -1, bd = 100; N.forEach((n, i) => { if (!ok(n)) return; const d = (tx + sc * X(n) - mx) ** 2 + (ty + sc * Y(n) - my) ** 2; if (d < bd) { bd = d; b = i; } }); return b; };
   const select = i => { sel = i; hl.clear(); if (i >= 0) { hl.add(i); g.up[i].forEach(([j]) => hl.add(j)); g.down[i].forEach(([j]) => hl.add(j));
-      const n = N[i]; $("#nsel").innerHTML = `${plink(n.id)} · ${AR(g.up[i].length)} شيوخ · ${AR(g.down[i].length)} تلاميذ · <a href="#/net/${n.id}">شبكته</a>`; }
+      const n = N[i]; $("#nsel").innerHTML = `${plink(n.id)} · ${AR(g.up[i].length)} شيوخ · ${AR(g.down[i].length)} تلاميذ · <a href="#/net/${n.id}">سلسلته</a>`; }
     else $("#nsel").innerHTML = ""; draw(); };
   let drag = null, moved = 0;
   cv.addEventListener("pointerdown", e => { cv.setPointerCapture(e.pointerId); drag = [e.clientX, e.clientY]; moved = 0; });
@@ -441,8 +533,9 @@ function viewAbout(view) {
     <section><h2>الكتب</h2><div class="books">${Object.values(BOOKS).map(b => `<div class="book"><b>${esc(b.title)}</b><span>${esc(b.author)}${b.death ? ` (ت ${AR(b.death)}هـ)` : ""}</span></div>`).join("")}</div></section>
     <section><h2>المنهج</h2>
       <p class="lede" style="color:var(--ink)">جُمعت تراجم العَلَم الواحد من الكتب المختلفة تحت عنوان واحد بمقارنة الاسم والنسب والكنية والنسبة وسنة الوفاة وإحالات الكتب بعضها على بعض، وراجع الإنسان ما التبس منها.
-      واستُخرج الشيوخ والتلاميذ من عبارات التراجم («تفقّه على»، «أخذ عن»، «روى عنه»، «من أصحاب»…) ورُبط الاسم بصاحبه بموافقة النسب والكنية والنسبة، مع مراعاة تقارب الوفيات وتقاطع التراجم؛ وما لم يترجّح بقي خارج الشبكة للمراجعة.
-      واستُخرجت البلدان من عبارات المولد والوفاة والدفن والرحلة والإقامة والولاية، ومن النسبة.</p>
+      واستُخرج الشيوخ والتلاميذ من عبارات التراجم («تفقّه على»، «أخذ عن»، «روى عنه»، «من أصحاب»…) ورُبط الاسم بصاحبه بموافقة النسب والكنية والنسبة، مع مراعاة تقارب الوفيات وتقاطع التراجم؛ وما لم يترجّح بقي خارج السلسلة للمراجعة.
+      واستُخرجت البلدان من عبارات المولد والوفاة والدفن والرحلة والإقامة والولاية، ومن النسبة.
+      ونصوص التراجم منشورة كاملة في آخر صفحة كل عَلَم، كلُّ كتاب على حدة مع حواشي محققه.</p>
       <p class="legend">ما وُسم «ترجيح» ربطٌ بالنسبة أو الشهرة وحدها. الوفيات المسبوقة بـ«نحو» تقدير من طبقة الشيوخ والتلاميذ.</p></section>
     <section><h2>المصادر المفتوحة</h2><p class="lede">الإحداثيات من مشروع الثريا (al-Thurayya Gazetteer، رخصة CC BY 4.0) مع إضافات يدوية لبلدان العهد العثماني والهند؛ وحدود اليابسة والأنهار من Natural Earth (ملك عام).</p></section>`;
 }

@@ -122,10 +122,13 @@ python -m tabaqat.geo.basemap <natural-earth-dizini>   # → site/data/basemap.j
 - **Arama.**
 - **Şahıs sayfası:** atıflar, hocalar ve talebeler (kanıt cümleleriyle), dış hocalar, yerler ve
   mini harita.
-- **Ağ:** bir şahsın bir ya da iki kuşak hoca ve talebesi; ayrıca bütün ağ, vefat yılına göre
-  zaman eksenli.
+- **Silsile (السلسلة):** bir şahsın bir ya da iki kuşak hoca ve talebesi (adlar kartlarda tam,
+  çizgiler kartların gerçek konumlarından); ayrıca bütün ağın vefat yılına göre zaman eksenli
+  genel görünümü.
 - **Harita:** asır ve atıf türü süzgeçleri, yere tıklayınca oradaki âlimlerin listesi.
 
-Madde metinlerinin tamamı yayımlanmaz; yalnız atıflar ve kısa kanıt cümleleri yer alır.
+Şahıs sayfasının altında her kaynağın madde metni tam olarak, açılır kapanır bölümler hâlinde
+yer alır. Muhakkik dipnotları, "ترجمته في" listeleri ve beyitler ayrı biçimlenir. Metinler
+`site/data/t/NN.json` parçalarından yalnız açılınca yüklenir.
 `.github/workflows/pages.yml`, `main` dalına her gönderimde siteyi GitHub Pages'e yayımlar. Bunun
 için depo ayarlarında Pages kaynağı "GitHub Actions" seçilmelidir.

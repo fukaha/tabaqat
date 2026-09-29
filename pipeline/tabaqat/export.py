@@ -4,7 +4,8 @@ index.json   kitaplar + şahıs listesi (arama)
 p/NN.json    şahıs ayrıntıları, kimliğin sayısal kısmı % 64'e göre parçalı (tembel yükleme)
 graph.json   hoca–talebe ağı (düğüm + kenar)
 places.json  yerler, ağırlıklar ve yerle ilişkili şahıslar
-Madde metinlerinin kendisi yayımlanmaz; yalnız atıf ve kısa kanıt cümleleri.
+t/NN.json    madde metinleri (her kaynak: başlık, metin, dipnotlar, "ترجمته في"), p/ ile aynı parçalama;
+             şahıs sayfasında açılınca yüklenir
 """
 from __future__ import annotations
 
@@ -69,6 +70,26 @@ def _layout(years, edges, col=10, sweeps=24):
     return [v for v in y], [round(pos_y[i], 1) for i in range(n)], guessed
 
 
+def _texts(root: Path, persons: list[dict]) -> dict[int, dict]:
+    entries = {}
+    for f in sorted((root / "data" / "entries").glob("*.json")):
+        for e in json.loads(f.read_text(encoding="utf-8")):
+            entries[f"{e['book_id']}:{e['seq']}"] = e
+    out: dict[int, dict] = defaultdict(dict)
+    for p in persons:
+        items = []
+        for s in p["sources"]:
+            e = entries.get(s["key"])
+            if not e:
+                continue
+            items.append({"book": s["book"], "cite": s["cite"], "heading": e.get("heading_raw") or "",
+                          "text": (e.get("text") or "").strip(), "notes": e.get("footnotes") or {},
+                          "refs": e.get("references") or []})
+        if items:
+            out[shard(p["id"])][p["id"]] = items
+    return out
+
+
 def export(root: Path) -> dict:
     data, out = root / "data", root / "site" / "data"
     persons = json.loads((data / "persons.json").read_text(encoding="utf-8"))
@@ -123,6 +144,9 @@ def export(root: Path) -> dict:
     _dump(out / "index.json", {"books": books, "persons": index})
     for k, v in shards.items():
         _dump(out / "p" / f"{k:02d}.json", v)
+    texts = _texts(root, persons)
+    for k, v in texts.items():
+        _dump(out / "t" / f"{k:02d}.json", v)
 
     in_net = sorted({x for e in rel for x in (e["teacher"], e["student"])})
     pos = {pid: i for i, pid in enumerate(in_net)}

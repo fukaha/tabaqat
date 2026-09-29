@@ -82,6 +82,7 @@ def build(root: Path) -> dict:
     for _ in range(2):
         edges, unresolved, ext, stats = _pass(**ctx, prev=edges)
     stats["death_estimated"] = len(est)
+    stats["reverse_dropped"] = _drop_reverse(edges, by_pid)
     out = []
     names = {p["id"]: p["name"] for p in persons}
     for (t, s), ev in edges.items():
@@ -105,6 +106,25 @@ def build(root: Path) -> dict:
     stats["edges"] = len(out)
     stats["persons_in_network"] = len({x for e in out for x in (e["teacher"], e["student"])})
     return dict(stats)
+
+
+def _drop_reverse(edges, by_pid) -> int:
+    """Aynı çift iki yönde bağlıysa ("من أصحاب ابن المبارك مثل ... محمد بن الحسن" gibi yanlış
+    okunmuş cümleler): hocası belirgin biçimde daha geç ölmüş yön, yoksa kanıtı az olan yön düşer."""
+    dropped = 0
+    for (t, s) in list(edges):
+        if (s, t) not in edges or (t, s) not in edges:
+            continue
+        dt, ds = by_pid[t].death, by_pid[s].death
+        if dt and ds and abs(dt - ds) > 5:
+            bad = (t, s) if dt > ds else (s, t)
+        elif len(edges[(t, s)]) != len(edges[(s, t)]):
+            bad = (t, s) if len(edges[(t, s)]) < len(edges[(s, t)]) else (s, t)
+        else:
+            continue
+        del edges[bad]
+        dropped += 1
+    return dropped
 
 
 def _estimate_deaths(edges, by_pid) -> dict[str, int]:

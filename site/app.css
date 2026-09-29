@@ -144,18 +144,58 @@ details.ev p mark { background: var(--mark); color: var(--ink); }
 
 /* network */
 .netwrap { position: relative; border: 1px solid var(--line); border-radius: 10px; background: var(--paper); overflow: hidden; }
-.netwrap.ego { overflow-x: auto; }
 .netwrap canvas { display: block; width: 100%; height: min(72vh, 680px); cursor: grab; touch-action: none; }
-.egosvg text { font-family: "Noto Naskh Arabic", serif; fill: var(--ink); }
-.egosvg .me rect { fill: var(--mark); stroke: var(--rubric); }
-.egosvg .nd rect { fill: var(--paper); stroke: var(--line); }
-.egosvg .nd:hover rect { stroke: var(--rubric); }
-.egosvg .nd { cursor: pointer; }
-.egosvg .yr { fill: var(--muted); font-size: 11px; }
-.egosvg .lk { fill: none; stroke: var(--muted); stroke-opacity: .5; }
-.egosvg .lk.weak { stroke-dasharray: 4 3; }
-.egosvg .colh { fill: var(--muted); font-size: 13px; font-family: "Amiri", serif; }
 .tip { position: absolute; pointer-events: none; background: var(--paper); border: 1px solid var(--line); border-radius: 6px; padding: .1rem .5rem; font-size: .9rem; white-space: nowrap; }
 .axis { color: var(--muted); font-size: .85rem; }
 .empty { color: var(--muted); padding: 2rem 0; }
 footer { max-width: 72rem; margin: 0 auto; padding: 1rem 16px 2rem; color: var(--muted); font-size: .85rem; border-top: 1px solid var(--line); }
+
+/* سلسلة الشيوخ والتلاميذ */
+.chainwrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 10px; background: var(--paper); }
+.chain { position: relative; display: flex; gap: 3.5rem; align-items: flex-start; padding: 1rem 1.25rem 1.5rem; width: max-content; margin-inline: auto; }
+.chain .links { position: absolute; inset-inline-start: 0; top: 0; left: 0; pointer-events: none; overflow: visible; }
+.chain .lk { fill: none; stroke: var(--muted); stroke-opacity: .45; }
+.chain .lk.hot { stroke: var(--rubric); stroke-opacity: .45; }
+.chain .lk.weak { stroke-dasharray: 4 3; }
+.chain .col { position: relative; z-index: 1; display: flex; flex-direction: column; gap: .45rem; width: 15.5rem; }
+.chain .col.mid { width: 17rem; }
+.chain .colh { font-family: "Amiri", serif; color: var(--muted); text-align: center; font-size: 1rem; padding-bottom: .2rem; border-bottom: 1px solid var(--line); margin-bottom: .2rem; }
+.chain .none { color: var(--muted); text-align: center; margin: .2rem 0; font-size: .9rem; }
+.card { display: flex; flex-direction: column; gap: .05rem; background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: .35rem .7rem .3rem; line-height: 1.55; }
+.card:hover { border-color: var(--rubric); }
+.card .nm { color: var(--ink); font-size: .95rem; overflow-wrap: anywhere; }
+.card .nm:hover { color: var(--rubric); text-decoration: none; }
+.card .meta { display: flex; justify-content: space-between; gap: .5rem; color: var(--muted); font-size: .8rem; }
+.card .tr { font-size: .78rem; }
+.card.me { background: var(--mark); border-color: var(--rubric); padding: .6rem .9rem; }
+.card.me .nm { font-family: "Amiri", serif; font-size: 1.2rem; font-weight: 700; color: var(--rubric); }
+@media (max-width: 600px) { .chain { gap: 2rem; } .chain .col { width: 12.5rem; } .chain .col.mid { width: 13.5rem; } }
+
+/* نصوص الترجمة */
+.btn.small { font-size: .85rem; padding: 0 .6rem; margin-inline-start: .8rem; vertical-align: middle; }
+details.src { border: 1px solid var(--line); border-radius: 10px; background: var(--paper); margin-bottom: .6rem; }
+details.src > summary { cursor: pointer; list-style: none; display: flex; flex-wrap: wrap; justify-content: space-between; gap: .3rem 1rem; padding: .55rem 1rem; }
+details.src > summary::-webkit-details-marker { display: none; }
+details.src > summary::before { content: "◂"; color: var(--rubric); margin-inline-end: .5rem; transition: transform .15s; display: inline-block; }
+details.src[open] > summary::before { transform: rotate(-90deg); }
+details.src > summary .bk { font-family: "Amiri", serif; font-size: 1.1rem; font-weight: 700; flex: 1 1 auto; }
+details.src > summary .ct { color: var(--muted); font-size: .9rem; }
+details.src[open] > summary { border-bottom: 1px solid var(--line); }
+details.src .body { padding: .8rem 1.25rem 1.1rem; }
+.etitle { font-family: "Amiri", serif; font-size: 1.25rem; color: var(--rubric); margin-bottom: .4rem; }
+.etext { max-width: 46rem; font-size: 1.08rem; line-height: 2.05; }
+.etext p { margin: 0 0 .6rem; text-align: justify; }
+.etext h4 { font-family: "Amiri", serif; font-size: 1.15rem; margin: 1rem 0 .4rem; }
+.etext .q { color: var(--teal); }
+.bayt { display: grid; grid-template-columns: 1fr 1fr; gap: 2.5rem; max-width: 36rem; margin: .2rem auto .5rem; font-family: "Amiri", serif; font-size: 1.12rem; }
+.bayt span:first-child { text-align: left; }
+.bayt span:last-child { text-align: right; }
+@media (max-width: 600px) { .bayt { grid-template-columns: 1fr; gap: 0; } .bayt span:first-child, .bayt span:last-child { text-align: center; } }
+sup.fn { font-size: .7em; line-height: 0; }
+sup.fn a { color: var(--rubric); padding: 0 .1em; }
+.notes { margin-top: 1rem; padding-top: .6rem; border-top: 1px solid var(--line); font-size: .9rem; color: var(--muted); max-width: 46rem; }
+.notes ol { padding-inline-start: 0; list-style: none; margin: .3rem 0; }
+.notes li { margin: .2rem 0; }
+.notes .back { color: var(--rubric); font-weight: 600; margin-inline-end: .3rem; }
+.notes .refs, .notes .extra p { margin: .3rem 0; }
+.flash { background: var(--mark); transition: background .3s; border-radius: 4px; }
