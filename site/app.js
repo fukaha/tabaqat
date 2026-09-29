@@ -606,7 +606,7 @@ async function viewPerson(view, id) {
         <button type="button" class="btn" data-go="texts">${T("نصوص الترجمة", "Biyografi metinleri")}</button>${shareBtn()}</div>
     </div>
     <div class="pgrid">
-      <div class="pcard">
+      <div class="relcard">
         <section><h2>${T("شيوخه", "Hocaları")}<span class="c num">${AR(d.teachers.length)}</span></h2>
           ${d.teachers.length ? `<ul class="rlist">${d.teachers.map(r => relItem(r)).join("")}</ul>` : `<p class="empty">${T("لم يُذكر له شيخ من المترجمين.", "Biyografisi bulunanlardan bir hocası zikredilmemiş.")}</p>`}
           ${extT.length ? `<h3>${T("شيوخ من غير المترجمين في هذه الكتب", "Bu kitaplarda biyografisi olmayan hocaları")}</h3><ul class="rel">${extList(extT)}</ul>` : ""}
@@ -1075,7 +1075,7 @@ const fsButton = () => `<button type="button" class="btn icon fsbtn" aria-presse
 /* Silsileyi dışa aktarma (PNG / SVG). Ekrandaki ağaç ölçülüp bir sahneye çevrilir: kutular (kartlar,
    etiketler), çizgiler ve satır satır yazılar. PNG tuvalde çizilir (sayfa yazı tipleriyle); SVG aynı
    sahneden yazılır ve yazı tiplerini Google Fonts'tan çağırır. */
-const FONT_CSS = "https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Noto+Naskh+Arabic:wght@400;600;700&family=EB+Garamond:ital,wght@0,500;0,700;1,500&family=Noto+Serif:wght@400;600;700&display=swap";
+const FONT_CSS = "https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Noto+Naskh+Arabic:wght@400;600;700&family=EB+Garamond:ital,wght@0,500;0,700;1,500&family=Noto+Serif:wght@400;600;700&family=Noto+Sans:wght@400;600&display=swap";
 const DL_ICON = `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
 // tek indirme simgesi: üzerine gelince ya da tıklayınca PNG / SVG seçimi açılır
 const expButtons = () => `<span class="dlmenu"><button type="button" class="btn icon dlbtn" aria-haspopup="true" aria-expanded="false" title="${T("تنزيل السلسلة", "Silsileyi indir")}" aria-label="${T("تنزيل", "İndir")}">${DL_ICON}</button>
@@ -1633,154 +1633,134 @@ const TI = {   // zaman haritası düğmeleri
   np: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11 5l7 7-7 7M4 12h13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
   fit: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h18M6 9l-3 3 3 3M18 9l3 3-3 3" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
 };
+/* Zaman haritası: her bölge bir satır; âlimler vefat yılına yerleştirilir, adları hep görünür.
+   Ad etiketleri üst üste binmesin diye her satırda şeritlere (lane) dizilir; yakınlaştırınca yeniden dizilir.
+   Kutu yerel olarak iki yönde kaydırılır; cetvel üstte, bölge adları başta sabit kalır. */
+const AH = ce => (ce - 622.54 - .485) / 0.970224 + 1;
 async function viewTime(view, sel) {
   const [PL, g, places] = await Promise.all([placesById(), graph(), load("places.json")]);
   const rtl = LANG === "ar";
   const lab = { ...REG_EXTRA };
   places.forEach(pl => { const f = pl.info; if (f && f.region_tr && pl.region && !REG_EXTRA[pl.region]) lab[pl.region] = [f.region_ar, f.region_tr]; });
-  const regName = r => (lab[r] || [r, r])[LANG === "ar" ? 0 : 1];
-  const items = IDX.filter(p => p.d).map(p => ({ p, reg: PL.get(p.place)?.region || "?", s: p.b && p.b < p.d ? p.b : p.d }));
+  const items = IDX.filter(p => p.d).map(p => ({ p, reg: PL.get(p.place)?.region || "?", s: p.b && p.b < p.d ? p.b : p.d,
+    nm: LANG === "tr" ? p.trs || p.tr : String(p.ar).split("،")[0] }));
   const byReg = new Map(); items.forEach(it => { if (!byReg.has(it.reg)) byReg.set(it.reg, []); byReg.get(it.reg).push(it); });
   const ord = r => r === "?" ? 999 : REG_ORDER.includes(r) ? REG_ORDER.indexOf(r) : 500;
-  const LH = 9, PADR = 12;
-  let top = 0;
-  const rows = [...byReg.keys()].sort((a, b) => ord(a) - ord(b)).map(r => {
-    const l = byReg.get(r).sort((a, b) => a.s - b.s || a.p.d - b.p.d), ends = [], last = [];
-    l.forEach(it => { let L = ends.findIndex(e => e + 4 < it.s); if (L < 0) { L = ends.length; ends.push(0); }
-      if (last[L]) last[L].next = it.s; ends[L] = it.p.d + 1; last[L] = it; it.lane = L; });
-    const row = { r, items: l, top, h: ends.length * LH + PADR * 2 }; top += row.h; l.forEach(it => it.row = row); return row;
-  });
-  const TOTAL = top, Y0 = Math.min(...items.map(i => i.s)), Y1 = Math.max(...items.map(i => i.p.d));
+  const rows = [...byReg.keys()].sort((a, b) => ord(a) - ord(b)).map(r => ({ r, items: byReg.get(r).sort((a, b) => a.s - b.s || a.p.d - b.p.d) }));
+  rows.forEach(row => row.items.forEach(it => it.row = row));
+  const Y0 = Math.floor((Math.min(...items.map(i => i.s)) - 10) / 10) * 10, Y1 = Math.max(...items.map(i => i.p.d)) + 60;
   const order = [...items].sort((a, b) => a.p.d - b.p.d || ord(a.reg) - ord(b.reg)), byId = new Map(items.map(it => [it.p.id, it]));
-  view.innerHTML = `<h1>${T("خريطة الزمن", "Zaman haritası")}</h1>
-    <p class="lede">${T("كل صف إقليم (بحسب البلد الأشهر للعَلَم)، وكل نقطة وفاة عَلَم، والخط قبلها عمره إن عُرف مولده. اضغط على نقطة لترى صلاته، وتنقّل بين الأعلام بالسهمين.",
-      "Her satır bir bölgedir (âlimin başlıca şehrine göre); her nokta bir âlimin vefatı, önündeki çizgi doğumu biliniyorsa ömrüdür. Bağlarını görmek için bir noktaya tıklayın; ←/→ ile âlimler arasında gezinin.")}</p>
-    <div class="stage" id="tstage">
-    <div class="stagebar"><span id="tsearch"></span>
-      <span class="segs" role="group" aria-label="${T("التنقل", "Gezinme")}">
-        <button type="button" class="btn icon" data-nav="-1" title="${T("العَلَم السابق (←)", "Önceki âlim (←)")}" aria-label="${T("العَلَم السابق", "Önceki âlim")}">${rtl ? TI.np : TI.pp}</button>
-        <button type="button" class="btn icon" data-nav="1" title="${T("العَلَم اللاحق (→)", "Sonraki âlim (→)")}" aria-label="${T("العَلَم اللاحق", "Sonraki âlim")}">${rtl ? TI.pp : TI.np}</button></span>
+  items.forEach((it, k) => it.k = k);
+  view.innerHTML = `<div class="stage tlstage" id="tstage">
+    <div class="stagebar tlbar"><h1>${T("خريطة الزمن", "Zaman haritası")}</h1><span id="tsearch"></span>
+      <span class="tlhint">${T("تنقّل بين الأعلام بالسهمين ← →، ويظهر العمر خطًّا لمن عُرف مولده ووفاته.", "←→ tuşlarıyla önceki ve sonraki âlime geçebilirsiniz. Doğum ve vefatı bilinenlerde ömür çizgi hâlinde gösterilir.")}</span>
       <span class="grow"></span>
-      <span class="segs" role="group" aria-label="${T("التحريك والتكبير", "Kaydır ve yakınlaştır")}">
-        <button type="button" class="btn icon" data-pan="-1" title="${T("إلى اليسار", "Sola kaydır")}" aria-label="${T("إلى اليسار", "Sola kaydır")}">${TI.prev}</button>
-        <button type="button" class="btn icon" data-pan="1" title="${T("إلى اليمين", "Sağa kaydır")}" aria-label="${T("إلى اليمين", "Sağa kaydır")}">${TI.next}</button>
-        <button type="button" class="btn icon" data-z="0.67" title="${T("تصغير (−)", "Uzaklaştır (−)")}" aria-label="${T("تصغير", "Uzaklaştır")}">−</button>
-        <button type="button" class="btn icon" data-z="1.5" title="${T("تكبير (+)", "Yakınlaştır (+)")}" aria-label="${T("تكبير", "Yakınlaştır")}">+</button>
-        <button type="button" class="btn icon" data-fit title="${T("عرض الكل", "Tümünü göster")}" aria-label="${T("عرض الكل", "Tümünü göster")}">${TI.fit}</button></span>
+      <button type="button" class="btn icon" data-nav="-1" title="${T("العَلَم السابق", "Önceki âlim")}" aria-label="${T("العَلَم السابق", "Önceki âlim")}">${rtl ? TI.next : TI.prev}</button>
+      <button type="button" class="btn icon" data-nav="1" title="${T("العَلَم اللاحق", "Sonraki âlim")}" aria-label="${T("العَلَم اللاحق", "Sonraki âlim")}">${rtl ? TI.prev : TI.next}</button>
+      <button type="button" class="btn icon" data-z="0.7" title="${T("تصغير (−)", "Uzaklaştır (−)")}" aria-label="${T("تصغير", "Uzaklaştır")}">−</button>
+      <button type="button" class="btn icon" data-z="1.4" title="${T("تكبير (+)", "Yakınlaştır (+)")}" aria-label="${T("تكبير", "Yakınlaştır")}">+</button>
       ${shareBtn()}${fsButton()}</div>
-    <div class="netwrap tl"><canvas role="img" aria-label="${T("خريطة الزمن", "Zaman haritası")}"></canvas><div class="tip" hidden></div><div class="icard" hidden></div></div></div>
-    <p class="legend">${T(`${AR(items.length)} عَلَمًا معروف الوفاة، منهم ${AR(items.filter(i => i.p.b).length)} معروف المولد. النقطة المفرغة: وفاة مقدّرة. الخط الذهبي: شيوخ المختار، والنيلي: تلاميذه.`,
-      `Vefatı bilinen ${items.length} âlim; ${items.filter(i => i.p.b).length} tanesinin doğumu da biliniyor. İçi boş nokta: tahminî vefat. Altın eğri: seçilenin hocaları, çivit: talebeleri. Kısayollar: ←/→ önceki/sonraki âlim, +/− yakınlaştır.`)}</p>`;
-  const wrap = $(".netwrap", view), cv = $("canvas", view), ctx = cv.getContext("2d"), tip = $(".tip", view), card = $(".icard", view);
-  let kx = 1, tx = 0, sy = 0, cur = null, hov = null;
-  const LW = () => cv.clientWidth < 600 ? 86 : 150, RH = 42;
-  const U = y => tx + y * kx, SX = y => { const w = cv.clientWidth, u = U(y); return rtl ? w - LW() - u : LW() + u; };
-  const SY = it => RH + it.row.top + PADR + it.lane * LH + LH / 2 - sy;
-  const clampY = () => { sy = Math.max(0, Math.min(sy, TOTAL - (cv.clientHeight - RH) + 20)); if (TOTAL < cv.clientHeight - RH) sy = 0; };
-  const rel = new Set();
-  const setSel = it => { cur = it; rel.clear(); if (!it) return; const gi = g.byId.get(it.p.id);
-    if (gi !== undefined) { g.up[gi].forEach(([j]) => rel.add(g.nodes[j].id)); g.down[gi].forEach(([j]) => rel.add(g.nodes[j].id)); } };
-  const draw = () => {
-    const [w, h] = sizeCanvas(cv, ctx), lw = LW(), pw = w - lw;
-    const ink = cssVar("--ink"), muted = cssVar("--muted"), gold = cssVar("--gold"), teal = cssVar("--teal"), rub = cssVar("--rubric"), paper = cssVar("--paper"), mark = cssVar("--mark"), line = cssVar("--line");
-    const yearAt = sx => ((rtl ? w - lw - sx : sx - lw) - tx) / kx;
-    const yl = Math.floor(Math.min(yearAt(rtl ? w - lw : lw), yearAt(rtl ? 0 : w))), yr_ = Math.ceil(Math.max(yearAt(rtl ? w - lw : lw), yearAt(rtl ? 0 : w)));
-    // satır zeminleri
-    rows.forEach((r, k) => { const y = RH + r.top - sy; if (y > h || y + r.h < RH) return;
-      if (k % 2 === 0) { ctx.fillStyle = mark; ctx.fillRect(0, y, w, r.h); }
-      ctx.fillStyle = line; ctx.fillRect(0, y + r.h - 1, w, 1); });
-    // asır çizgileri
-    const step = [5, 10, 25, 50, 100, 200].find(s => s * kx >= 64) || 200;
-    for (let y = Math.ceil(yl / step) * step; y <= yr_; y += step) { const x = SX(y); if ((rtl ? x > w - lw : x < lw)) continue;
-      ctx.fillStyle = line; ctx.globalAlpha = y % 100 ? .5 : 1; ctx.fillRect(Math.round(x), RH, 1, h - RH); ctx.globalAlpha = 1; }
-    // bağlar
-    const curve = (a, b, c) => { const ax = SX(a.p.d), ay = SY(a), bx = SX(b.p.d), by = SY(b), my = (ay + by) / 2 - Math.min(60, Math.abs(ax - bx) / 3);
-      ctx.strokeStyle = c; ctx.beginPath(); ctx.moveTo(ax, ay); ctx.bezierCurveTo(ax, my, bx, my, bx, by); ctx.stroke(); };
-    if (cur) { const gi = g.byId.get(cur.p.id); ctx.lineWidth = 1.5; ctx.globalAlpha = .8;
-      if (gi !== undefined) { g.up[gi].forEach(([j]) => { const t = byId.get(g.nodes[j].id); t && curve(t, cur, gold); });
-        g.down[gi].forEach(([j]) => { const t = byId.get(g.nodes[j].id); t && curve(cur, t, teal); }); }
-      ctx.globalAlpha = 1; }
-    // ömür çizgileri, vefat noktaları, adlar
-    const names = kx >= 3.2; ctx.font = FONT(w < 600 ? 10 : 11); ctx.textBaseline = "middle"; ctx.textAlign = rtl ? "right" : "left";
-    items.forEach(it => {
-      const y = SY(it); if (y < RH - 6 || y > h + 6) return;
-      const xd = SX(it.p.d), xs = SX(it.s); if (Math.max(xd, xs) < 0 || Math.min(xd, xs) > w) return;
-      const on = it === cur || rel.has(it.p.id), dim = cur && !on;
-      ctx.globalAlpha = dim ? .3 : 1;
-      if (it.s < it.p.d) { ctx.strokeStyle = gold; ctx.lineWidth = on ? 2.4 : 1.6; ctx.globalAlpha = dim ? .2 : .75; ctx.beginPath(); ctx.moveTo(xs, y); ctx.lineTo(xd, y); ctx.stroke(); ctx.globalAlpha = dim ? .3 : 1; }
-      ctx.beginPath(); ctx.arc(xd, y, on ? 3.6 : 2.8, 0, 7);
-      if (it.p.est) { ctx.strokeStyle = rub; ctx.lineWidth = 1.2; ctx.fillStyle = paper; ctx.fill(); ctx.stroke(); } else { ctx.fillStyle = it === cur ? teal : rub; ctx.fill(); }
-      if (names || on) { const room = it.next ? (it.next - it.p.d) * kx - 10 : 160;
-        if (room > 24 || on) { const t = clip(ctx, LANG === "tr" ? it.p.trs : it.p.ar.split("،")[0], on ? 220 : Math.min(room, 200)), x = xd + (rtl ? -6 : 6);
-          if (on) { ctx.lineWidth = 3.5; ctx.strokeStyle = paper; ctx.strokeText(t, x, y); } ctx.fillStyle = on ? ink : muted; ctx.fillText(t, x, y); } }
-    });
-    ctx.globalAlpha = 1;
-    if (cur) { const y = SY(cur), x = SX(cur.p.d); ctx.strokeStyle = teal; ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(x, y, 8, 0, 7); ctx.stroke(); }
-    // cetvel (üstte): hicrî ve milâdî
-    ctx.fillStyle = paper; ctx.fillRect(0, 0, w, RH); ctx.fillStyle = line; ctx.fillRect(0, RH - 1, w, 1);
-    ctx.textAlign = "center";
-    for (let y = Math.ceil(yl / step) * step; y <= yr_; y += step) { const x = SX(y); if ((rtl ? x > w - lw - 10 : x < lw + 10) || x < 0 || x > w) continue;
-      ctx.fillStyle = y % 100 ? muted : ink; ctx.font = FONT(12); ctx.fillText(LANG === "tr" ? String(y) : `${AR(y)}هـ`, x, 14);
-      ctx.fillStyle = muted; ctx.font = FONT(10); ctx.fillText(LANG === "tr" ? String(CE(y)) : `${AR(CE(y))}م`, x, 30); }
-    // bölge adları sütunu
-    const lx = rtl ? w - lw : 0;
-    ctx.fillStyle = paper; ctx.fillRect(lx, 0, lw, h); ctx.fillStyle = line; ctx.fillRect(rtl ? lx : lw - 1, 0, 1, h);
-    ctx.textAlign = rtl ? "right" : "left"; ctx.fillStyle = muted; ctx.font = FONT(10);
-    ctx.fillText(T("هجري", "hicrî"), rtl ? w - 8 : 8, 14); ctx.fillText(T("ميلادي", "milâdî"), rtl ? w - 8 : 8, 30);
-    rows.forEach(r => { const y = RH + r.top - sy; if (y > h || y + r.h < RH) return;
-      const yy = Math.max(RH + 10, Math.min(y + 14, y + r.h - 16));
-      ctx.fillStyle = ink; ctx.font = FONT(w < 600 ? 10.5 : 12.5); ctx.fillText(clip(ctx, regName(r.r), lw - 14), rtl ? w - 8 : 8, yy);
-      ctx.fillStyle = muted; ctx.font = FONT(9.5); ctx.fillText(`${AR(r.items.length)}`, rtl ? w - 8 : 8, yy + 14); });
-    // kaydırma çubuğu (dikey)
-    const vis = h - RH; if (TOTAL > vis) { const bh = Math.max(24, vis * vis / TOTAL), by = RH + (vis - bh) * sy / (TOTAL - vis);
-      ctx.fillStyle = muted; ctx.globalAlpha = .35; ctx.fillRect(rtl ? 2 : w - 5, by, 3, bh); ctx.globalAlpha = 1; }
+    <div class="netwrap tl"><div class="tlbox" tabindex="0" aria-label="${T("خريطة الزمن", "Zaman haritası")}"><div class="tlgrid"></div></div><div class="icard" hidden></div></div></div>
+    <p class="legend">${T(`${AR(items.length)} عَلَمًا معروف الوفاة، منهم ${AR(items.filter(i => i.p.b).length)} معروف المولد. النقطة المفرغة: وفاة مقدّرة. الأحمر: المختار وشيوخه وتلاميذه.`,
+      `Vefatı bilinen ${items.length} âlim; ${items.filter(i => i.p.b).length} tanesinin doğumu da biliniyor. İçi boş nokta: tahminî vefat. Kırmızı: seçilen âlim, hocaları ve talebeleri. Sürükleyerek ya da kaydırarak gezinin; Ctrl + tekerlek yakınlaştırır.`)}</p>`;
+  const box = $(".tlbox", view), grid = $(".tlgrid", view), card = $(".icard", view);
+  const narrow = () => box.clientWidth < 600;
+  const LW = () => narrow() ? 92 : 160, RH = 46, LH = 24, PAD = 10, MAXW = 240;
+  let kx = 5, cur = null, els = [];
+  // etiket genişlikleri (bir kez ölçülür)
+  const mctx = document.createElement("canvas").getContext("2d");
+  const measure = () => { mctx.font = `${narrow() ? 12 : 13}px ${getComputedStyle(grid).fontFamily}`; items.forEach(it => it.w = Math.min(MAXW, mctx.measureText(it.nm).width)); };
+  const X = y => LW() + 16 + (y - Y0) * kx;
+  const layout = () => {
+    let top = 0;
+    rows.forEach(row => { const ends = [];
+      row.items.forEach(it => { const x0 = X(it.s) - 6, x1 = X(it.p.d) + 14 + it.w; let L = ends.findIndex(e => e + 10 <= x0);
+        if (L < 0) { L = ends.length; ends.push(0); } ends[L] = x1; it.lane = L; });
+      row.top = top; row.h = Math.max(ends.length * LH + PAD * 2, 70); top += row.h; });
+    return top;
   };
-  const near = (mx, my) => { let b = null, bd = 12 * 12;
-    items.forEach(it => { const y = SY(it); if (Math.abs(y - my) > 8) return; const xd = SX(it.p.d), xs = SX(it.s);
-      const d = (mx - xd) ** 2 + (my - y) ** 2, onLine = Math.min(xd, xs) - 2 <= mx && mx <= Math.max(xd, xs) + 2 ? (my - y) ** 2 + 30 : 1e9;
-      const dd = Math.min(d, onLine); if (dd < bd) { bd = dd; b = it; } }); return b; };
-  const regLine = it => { const pl = PL.get(it.p.place); return `<span>${esc(regName(it.reg))}${pl ? ` · ${esc(plName(pl))}` : ""}</span>`; };
-  const pick = (it, center) => { setSel(it);
-    if (it) { infoCard(card, it.p.id, regLine(it)); history.replaceState(null, "", `#/zaman/${it.p.id}`);
-      if (center) { const w = cv.clientWidth; kx = Math.max(kx, 3.2); const u = (w - LW()) / 2; tx = u - it.p.d * kx; sy = it.row.top + it.lane * LH - (cv.clientHeight - RH) / 2; clampY(); } }
+  const render = () => {
+    const H = layout(), W = X(Y1) + 40, lw = LW(), tick = [10, 25, 50, 100].find(s => s * kx >= 110) || 100, fine = tick >= 50 ? 10 : 5;
+    const ceStep = tick, ceA = Math.ceil(CE(Y0) / ceStep) * ceStep, ceB = CE(Y1);
+    let ruler = "", lines = "";
+    for (let y = Math.ceil(Y0 / fine) * fine; y <= Y1; y += fine) {
+      const x = X(y).toFixed(1), major = y % tick === 0;
+      lines += `<i class="tlg${y % 100 === 0 ? " c" : major ? " m" : ""}" style="inset-inline-start:${x}px"></i>`;
+      if (major && y > 0) ruler += `<span class="h num" style="inset-inline-start:${x}px">${LANG === "tr" ? y : AR(y)}</span>`;
+    }
+    for (let c = ceA; c <= ceB; c += ceStep) ruler += `<span class="m num" style="inset-inline-start:${X(AH(c)).toFixed(1)}px">${LANG === "tr" ? c : AR(c)}</span>`;
+    const regs = rows.map((r, k) => { const [ar, tr] = lab[r.r] || [r.r, r.r];
+      return `<div class="tlrow${k % 2 ? " odd" : ""}" style="top:${r.top}px;height:${r.h}px"><div class="tlreg"><div>
+        <b lang="ar">${esc(ar)}</b>${LANG === "tr" ? `<span>${esc(tr)}</span>` : ""}<small class="num">${AR(r.items.length)}</small></div></div></div>`; }).join("");
+    const its = items.map(it => { const y = it.row.top + PAD + it.lane * LH, xd = X(it.p.d), xs = X(it.s);
+      return `${it.s < it.p.d ? `<b class="tll" data-k="${it.k}" style="inset-inline-start:${xs.toFixed(1)}px;width:${(xd - xs).toFixed(1)}px;top:${y + LH / 2}px"></b>` : ""}<a class="tli${it.p.est ? " est" : ""}" data-k="${it.k}" href="#/zaman/${esc(it.p.id)}" style="inset-inline-start:${(xd - 5).toFixed(1)}px;top:${y}px;max-width:${MAXW + 20}px" title="${esc(it.p.name)} · ${esc(deathTxt(it.p))}"><i></i><span>${esc(it.nm)}</span></a>`; }).join("");
+    grid.style.width = `${W}px`; grid.style.setProperty("--lw", `${lw}px`);
+    grid.innerHTML = `<div class="tlruler" style="width:${W}px"><div class="tlcorner"><b>${T("هجري", "Hicrî")}</b><span>${T("ميلادي", "Milâdî")}</span></div>${ruler}</div>
+      <div class="tlbody" style="height:${H}px">${regs}${lines}<i class="tlsel" hidden></i>${its}</div>`;
+    els = []; grid.querySelectorAll("[data-k]").forEach(el => { const k = +el.dataset.k; (els[k] = els[k] || []).push(el); });
+    mark();
+  };
+  // scrollLeft RTL kutuda negatiftir; "baştan" uzaklık olarak okunur/yazılır
+  const sL = () => Math.abs(box.scrollLeft), setSL = v => { box.scrollLeft = rtl ? -v : v; };
+  const yearAtCenter = () => Y0 + (sL() + (box.clientWidth + LW()) / 2 - LW() - 16) / kx;
+  const center = (year, top) => { setSL(X(year) - (box.clientWidth + LW()) / 2); if (top != null) box.scrollTop = top - (box.clientHeight - RH) / 2; };
+  const rel = new Set();
+  const mark = () => {
+    grid.querySelectorAll(".on, .rel").forEach(el => el.classList.remove("on", "rel"));
+    const ln = $(".tlsel", grid);
+    if (!cur) { ln.hidden = true; return; }
+    rel.forEach(id => { const it = byId.get(id); it && (els[it.k] || []).forEach(el => el.classList.add("rel")); });
+    (els[cur.k] || []).forEach(el => el.classList.add("on"));
+    ln.hidden = false; ln.style.insetInlineStart = `${X(cur.p.d)}px`;
+  };
+  const regLine = it => { const pl = PL.get(it.p.place), [ar, tr] = lab[it.reg] || [it.reg, it.reg]; return `<span>${esc(LANG === "tr" ? tr : ar)}${pl ? ` · ${esc(plName(pl))}` : ""}</span>`; };
+  const pick = (it, go) => {
+    cur = it; rel.clear();
+    if (it) { const gi = g.byId.get(it.p.id);
+      if (gi !== undefined) { g.up[gi].forEach(([j]) => rel.add(g.nodes[j].id)); g.down[gi].forEach(([j]) => rel.add(g.nodes[j].id)); }
+      infoCard(card, it.p.id, regLine(it)); history.replaceState(null, "", `#/zaman/${it.p.id}`);
+      document.title = `${T("الزمن", "Zaman")}: ${it.p.name} — ${UI.brand[LANG === "ar" ? 0 : 1]}`;
+      if (go) center(it.p.d, RH + it.row.top + PAD + it.lane * LH); }
     else { card.hidden = true; history.replaceState(null, "", "#/zaman"); }
-    draw(); };
+    mark();
+  };
   card.addEventListener("click", e => { if (e.target.closest(".x")) pick(null); });
-  const zoomAt = (f, mx) => { const w = cv.clientWidth, lw = LW(), u = rtl ? w - lw - mx : mx - lw, y = (u - tx) / kx;
-    const minK = (w - lw - 20) / (Y1 - Y0 + 20), nk = Math.max(minK, Math.min(40, kx * f)); kx = nk; tx = u - y * kx; draw(); };
-  panZoom(cv, {
-    pan: (dx, dy) => { tx += rtl ? -dx : dx; sy -= dy; clampY(); draw(); },
-    zoom: (f, mx) => zoomAt(f, mx),
-    click: (x, y) => pick(near(x, y)),
-    hover: (x, y) => { const it = near(x, y); if (it !== hov) { hov = it; cv.style.cursor = it ? "pointer" : ""; }
-      hoverTip(tip, wrap, x, y, it ? tipHtml(it.p.id, `<br>${regLine(it)}`) : ""); },
-    leave: () => { tip.hidden = true; },
-  });
-  const fit = () => { const w = cv.clientWidth, lw = LW(); kx = (w - lw - 30) / (Y1 - Y0 + 10); tx = 12 - (Y0 - 5) * kx; };
-  const step = dir => {   // dir: +1 sonraki (vefatı daha geç), -1 önceki
-    const i = cur ? order.indexOf(cur) : dir > 0 ? -1 : order.length;
+  grid.addEventListener("click", e => { const a = e.target.closest("a.tli"); if (!a) return; e.preventDefault(); if (drag.moved < 6) pick(items[+a.dataset.k]); });
+  const zoom = f => { const y = cur ? cur.p.d : yearAtCenter(), nk = Math.max(1.2, Math.min(24, kx * f)); if (nk === kx) return;
+    const fy = cur ? null : box.scrollTop / Math.max(1, box.scrollHeight);
+    kx = nk; render(); if (cur) center(y, RH + cur.row.top + PAD + cur.lane * LH); else { center(y); box.scrollTop = fy * box.scrollHeight; } };
+  // fareyle sürükleyerek kaydırma (dokunmatikte tarayıcının kendi kaydırması)
+  const drag = { on: false, moved: 0 };
+  box.addEventListener("pointerdown", e => { if (e.pointerType !== "mouse" || e.button) return; drag.on = true; drag.moved = 0; drag.x = e.clientX; drag.y = e.clientY; });
+  addEventListener("pointermove", e => { if (!drag.on || !box.isConnected) return; const dx = e.clientX - drag.x, dy = e.clientY - drag.y; drag.x = e.clientX; drag.y = e.clientY;
+    drag.moved += Math.abs(dx) + Math.abs(dy); if (drag.moved > 5) { box.classList.add("drag"); box.scrollLeft -= dx; box.scrollTop -= dy; } });
+  addEventListener("pointerup", () => { drag.on = false; box.classList.remove("drag"); setTimeout(() => { drag.moved = 0; }, 0); });
+  box.addEventListener("wheel", e => { if (!(e.ctrlKey || e.metaKey)) return; e.preventDefault(); zoom(e.deltaY < 0 ? 1.15 : 1 / 1.15); }, { passive: false });
+  const step = dir => { const i = cur ? order.indexOf(cur) : dir > 0 ? -1 : order.length;
     const it = order[Math.max(0, Math.min(order.length - 1, i + dir))]; if (it) pick(it, true); };
   view.querySelectorAll("[data-nav]").forEach(b => b.addEventListener("click", () => step(+b.dataset.nav)));
-  view.querySelectorAll("[data-pan]").forEach(b => b.addEventListener("click", () => { tx += (rtl ? 1 : -1) * +b.dataset.pan * (cv.clientWidth - LW()) * .3; draw(); }));
-  view.querySelectorAll("[data-z]").forEach(b => b.addEventListener("click", () => zoomAt(+b.dataset.z, cur ? SX(cur.p.d) : (cv.clientWidth + (rtl ? -LW() : LW())) / 2)));
-  $("[data-fit]", view).addEventListener("click", () => { fit(); sy = 0; draw(); });
+  view.querySelectorAll("[data-z]").forEach(b => b.addEventListener("click", () => zoom(+b.dataset.z)));
   const key = e => {
-    if (!document.body.contains(cv)) { document.removeEventListener("keydown", key); return; }
+    if (!document.body.contains(box)) { document.removeEventListener("keydown", key); return; }
     if (e.ctrlKey || e.metaKey || e.altKey || /^(input|select|textarea)$/i.test(e.target.tagName || "")) return;
-    if (e.key === "ArrowRight" || e.key === "ArrowLeft") { e.preventDefault(); const right = e.key === "ArrowRight"; step((right ? 1 : -1) * (rtl ? -1 : 1)); }
-    else if (e.key === "+" || e.key === "=") zoomAt(1.5, cur ? SX(cur.p.d) : cv.clientWidth / 2);
-    else if (e.key === "-") zoomAt(.67, cur ? SX(cur.p.d) : cv.clientWidth / 2);
+    if (e.key === "ArrowRight" || e.key === "ArrowLeft") { e.preventDefault(); step((e.key === "ArrowRight" ? 1 : -1) * (rtl ? -1 : 1)); }
+    else if (e.key === "+" || e.key === "=") zoom(1.4);
+    else if (e.key === "-") zoom(.7);
   };
   document.addEventListener("keydown", key);
-  $("#tsearch").replaceWith(localSearch(T("ابحث عن عَلَم…", "Âlim bul…"), q => findPersons(q, 40).filter(p => byId.has(p.id)).slice(0, 12)
+  $("#tsearch").replaceWith(localSearch(T("ابحث عن عَلَم…", "Âlim bul"), q => findPersons(q, 40).filter(p => byId.has(p.id)).slice(0, 12)
     .map(p => ({ id: p.id, html: `<span>${esc(p.name)}</span><span class="d num">${deathTxt(p)}</span>` })), id => pick(byId.get(id), true)));
-  stageToggle($("#tstage"), $("#tstage .fsbtn"), () => { clampY(); draw(); });
-  new ResizeObserver(() => { clampY(); draw(); }).observe(cv);
-  fit();
+  let lastW = 0;
+  const refit = () => { if (!document.body.contains(box)) return; const nw = narrow(); if (nw === lastW) return; lastW = nw;
+    const y = cur ? cur.p.d : null; measure(); render(); if (cur) center(y, RH + cur.row.top + PAD + cur.lane * LH); };
+  stageToggle($("#tstage"), $("#tstage .fsbtn"), () => {});
+  new ResizeObserver(refit).observe(box);
+  measure(); lastW = narrow(); render();
   const it0 = sel && byId.get(sel);
-  if (it0) { pick(it0, true); document.title = `${T("الزمن", "Zaman")}: ${it0.p.name} — ${UI.brand[LANG === "ar" ? 0 : 1]}`; } else draw();
+  if (it0) pick(it0, true); else center(300, null);
   if (sel && !it0) toast(T("لا يُعرف لهذا العَلَم سنة وفاة", "Bu âlimin vefat yılı bilinmiyor"));
-  (document.fonts ? document.fonts.ready : Promise.resolve()).then(() => document.body.contains(cv) && draw());
+  (document.fonts ? document.fonts.ready : Promise.resolve()).then(() => { if (!document.body.contains(box)) return;
+    const y = cur ? cur.p.d : yearAtCenter(), t = box.scrollTop; measure(); render(); if (cur) center(y, RH + cur.row.top + PAD + cur.lane * LH); else { center(y); box.scrollTop = t; } });
 }
 
 // ---------- about ----------
@@ -1850,7 +1830,7 @@ function viewAbout(view) {
     ["Detaylı arama", "Ad ile birlikte vefat yüzyılı aralığı (hicrî), kitap, şehir ve “silsilede hocası ya da talebesi olanlar” süzgeçleri birlikte kullanılabilir. Örneğin yalnız el-Kand’da geçen ve Buhara ile ilişkili V. yüzyıl âlimleri tek sorguyla listelenir."],
     ["Âlim sayfası", "Başta DİA yazımıyla tam ad, Arapça asıl ad ve vefat tarihi (hicrî/milâdî) yer alır. “Kaynaklar” bölümünde âlimin geçtiği her kitap cilt, sayfa ve madde numarasıyla verilir; atıflar İSNAD 2. edisyon dipnot biçimindedir. Ardından solda bir bilgi kartında hocalar ve talebeler bağ türüyle (fıkıh, hadis/rivayet, kıraat, sohbet…) sıralanır; her bağın “Kanıt” düğmesi bağın çıkarıldığı cümleyi kaynağıyla gösterir, “silsilesi” o kişinin silsilesini açar. Sağdaki harita âlimin doğduğu, yaşadığı, gittiği ve vefat ettiği yerleri gösterir. Haritadaki çizgi şehirleri biyografideki sırasıyla birleştirir (önce doğum ve nisbe, sonra vefat ve defin); bir yaklaşımdır, kronoloji değildir. Düz çizgi el-Süreyyâ’daki Mukaddesî yol ağını izler; kesikli çizgi, bilinen bir yol bulunmayan yerde kuş uçuşudur. Altında yalnız bu âlimin hoca–talebe ağı, en sonda da her kitaptaki biyografi metni yer alır: metinler esas alınan neşirdeki hâliyledir (Arapça; dipnotsuz, tarama kaynaklı boşluk ve satır kaymaları giderilmiş); kitaplar seçilince metinler yan yana açılır."],
     ["Silsile", "Üstteki üç simge görünümü seçer. “Âlimin silsilesi” seçilen âlimi ortaya alır; hocaları üstte, talebeleri altta kartlar hâlinde dizilir ve çizgiler kartların üzerinden geçmez. “1 / 2” düğmeleri kuşak sayısıdır: iki kuşakta her kartın içinde hocanın hocaları ya da talebenin talebeleri görünür. Zincir simgesi (Ebû Hanîfe’ye bağla), hadisçilerin isnadı gibi âlimden Ebû Hanîfe’ye uzanan en kısa ve vefat tarihleriyle tutarlı hoca zincirini altın çizgiyle çizer. İndirme simgesinin üzerine gelince PNG ya da SVG seçilir. “Asırlar” görünümü bütün âlimleri hicrî asır sütunlarına dizer; bir âlim seçilince hocaları altın, talebeleri çivit eğrilerle bağlanır, üzerine gelince adı, vefatı ve bağ sayısı görünür. “Genel görünüm” bütün ağı zaman ekseninde gösterir. Her görünümdeki arama kutusu âlimi bulur: silsile görünümünde onun silsilesine geçer, diğerlerinde ona yakınlaşır."],
-    ["Zaman haritası", "Her satır bir bölgedir (Mâverâünnehir, Horasan, Irak, Şam, Mısır, Rûm…); âlim, başlıca şehrinin bölgesine yerleşir. Üstte hicrî ve altında milâdî yıl cetveli vardır. Her nokta bir vefattır; doğumu biliniyorsa önündeki altın çizgi ömrünü gösterir, içi boş nokta tahminî vefattır. Bir noktaya tıklayınca âlimin hocaları ve talebeleri eğrilerle bağlanır ve bilgi kartı açılır. “Âlim bul” kutusu âlimi bulup ortalar; ←/→ tuşları ya da oklu düğmeler vefat sırasına göre önceki ve sonraki âlime geçer. ‹ › kaydırır, − + yakınlaştırır; tekerlek, sürükleme ve iki parmak da çalışır."],
+    ["Zaman haritası", "Her satır bir bölgedir (Mâverâünnehir, Horasan, Irak, Şam, Mısır, Rûm…); âlim, başlıca şehrinin bölgesine yerleşir. Üstte hicrî ve altında milâdî yıl cetveli vardır. Her nokta bir vefattır ve adı yanında yazılıdır; doğumu biliniyorsa önündeki çizgi ömrünü gösterir, içi boş nokta tahminî vefattır. Bir ada tıklayınca âlim kırmızıyla işaretlenir, vefat yılında dikey bir çizgi çekilir, hocaları ve talebeleri de kırmızı noktayla gösterilir; bilgi kartı açılır. “Âlim bul” kutusu âlimi bulup ortalar; ←/→ tuşları ya da ‹ › düğmeleri vefat sırasına göre önceki ve sonraki âlime geçer. Harita sürükleyerek ya da kaydırarak gezilir; − + (ya da Ctrl + tekerlek) yakınlaştırır."],
     ["Harita", "Her daire biyografilerde geçen bir şehirdir. Dairenin ve adın büyüklüğü o şehirle ilişkili âlim sayısını gösterir. Alttaki küçük düğmelerle bağ türü (doğum, vefat, ikamet, seyahat, görev…) ve vefat yüzyılı süzülür. Bir şehre tıklanınca açılan pencerede el-Süreyyâ’dan şehrin bölgesi ve türü, Yâkût’un Mu‘cemü’l-büldân’ından kısa bir alıntı, varsa el-Esmârü’l-ceniyye’nin nisbe notu ve o şehirle ilişkili âlimler yer alır. Arama kutusu şehir yanında âlim de bulur: bir âlim seçilince yalnız onun şehirleri ve biyografideki sırayla güzergâhı gösterilir. Güzergâh, el-Süreyyâ’daki Mukaddesî yol ağı üzerinden en kısa yolla çizilir; yol bulunmayan yerde kesikli düz çizgi kullanılır. Yol simgesi bütün yol ağını soluk olarak gösterir."],
     ["Dil, tema, bağlantılar ve kısayollar", "Sağ üstteki düğmelerle arayüz Arapça ile Türkçe, açık ile koyu tema arasında değiştirilir; seçim tarayıcıda hatırlanır. Her sayfanın, seçili âlim ya da şehir dahil, kendi adresi vardır (ör. #/p/jw821, #/zaman/jw821, #/map/@jw821); bağlantı simgesi bu adresi kopyalar. Klavyede “/” arama kutusuna gider, “?” kısayol listesini açar, “g” ardından h/s/z/m ana sayfa, silsile, zaman ve haritaya geçer."],
   ] : [
@@ -1858,7 +1838,7 @@ function viewAbout(view) {
     ["البحث المفصّل", "يُجمع فيه بين الاسم وحدود قرن الوفاة والكتاب والبلد وقيد «من له شيوخ أو تلاميذ في السلسلة»؛ فيمكن مثلًا أن تُعرض أعلام القرن الخامس المرتبطون ببخارى ممن لم يُترجموا إلا في القند باستعلام واحد."],
     ["صفحة العَلَم", "في أعلاها الاسم الكامل وسنة الوفاة، ثم «المصادر» بمواضع الترجمة في كل كتاب بالجزء والصفحة ورقم الترجمة، بصيغة الإحالة العلمية. ثم بطاقة فيها الشيوخ والتلاميذ مع نوع الصلة (تفقّه، رواية، صحبة…)، وزر «الشاهد» يعرض العبارة التي استُخرجت منها الصلة مع موضعها، و«سلسلته» يفتح سلسلة ذلك العَلَم. وبجانبها خريطة بلدان المولد والإقامة والرحلة والوفاة؛ ويصل الخطّ البلدانَ على ترتيب ورودها في الترجمة (المولد والنسبة أولًا، والوفاة والمدفن آخرًا)، وهو تقريب لا تأريخ، والخط المتصل يسير على طرق المقدسي من مشروع الثريا، والمتقطع خط مستقيم حيث لا طريق معروف. وتحتهما شبكة صلات العَلَم وحده، وفي آخر الصفحة نص الترجمة في كل كتاب كما هو في الطبعة المعتمدة دون الحواشي، وتُفتح النصوص متجاورة باختيار الكتب."],
     ["السلسلة", "تختار الأيقونات الثلاث في الأعلى طريقة العرض. «سلسلة عَلَم» تضع العَلَم في الوسط، وشيوخه فوقه وتلاميذه تحته في بطاقات لا تتقاطع خطوطها معها. وزرّا «١ / ٢» عدد الطبقات. وأيقونة السلسلة (الوصل بأبي حنيفة) ترسم بخط ذهبي أقصر سلسلة شيوخ متسقة مع الوفيات من العَلَم إلى الإمام، على طريقة الإسناد. وعند المرور على أيقونة التنزيل يُختار PNG أو SVG. و«القرون» تضع الأعلام في أعمدة القرون الهجرية، فإذا اختير عَلَم وُصل بشيوخه بمنحنيات ذهبية وبتلاميذه بمنحنيات نيلية. و«المشهد العام» يعرض الشبكة كلها على محور الزمن. ومربع البحث في كل عرض يجد العَلَم."],
-    ["خريطة الزمن", "كل صف إقليم (ما وراء النهر، خراسان، العراق، الشام، مصر، الروم…) بحسب البلد الأشهر للعَلَم، وفي الأعلى مسطرة بالسنين الهجرية والميلادية. وكل نقطة وفاة عَلَم، والخط الذهبي قبلها عمره إن عُرف مولده، والنقطة المفرغة وفاة مقدّرة. وبالضغط على نقطة تظهر صلاته ببطاقة تعريف. ومربع البحث يجد العَلَم ويضعه في الوسط، وسهما لوحة المفاتيح ينقلان إلى العَلَم السابق واللاحق في الوفاة."],
+    ["خريطة الزمن", "كل صف إقليم (ما وراء النهر، خراسان، العراق، الشام، مصر، الروم…) بحسب البلد الأشهر للعَلَم، وفي الأعلى مسطرة بالسنين الهجرية والميلادية. وكل نقطة وفاة عَلَم، واسمه مكتوب بجانبها، والخط قبلها عمره إن عُرف مولده، والنقطة المفرغة وفاة مقدّرة. وبالضغط على اسم يُعلَّم العَلَم بالأحمر مع خط عمودي عند سنة وفاته، وتُعلَّم نقاط شيوخه وتلاميذه بالأحمر، وتظهر بطاقة تعريفه. ومربع البحث يجد العَلَم ويضعه في الوسط، وسهما لوحة المفاتيح ينقلان إلى العَلَم السابق واللاحق في الوفاة."],
     ["الخريطة", "كل دائرة بلد ورد في التراجم، وحجمها وحجم اسمها على عدد الأعلام المرتبطين به. وتُصفّى بنوع الصلة (المولد، الوفاة، الإقامة، الرحلة، الولاية…) وبقرن الوفاة. وعند الضغط على بلد تظهر نافذة فيها إقليمه ونوعه من مشروع الثريا، ومقتطف من معجم البلدان لياقوت، وتعليق النسبة من الأثمار الجنية إن وُجد، وأسماء الأعلام المرتبطين به. ويُكبَّر بعجلة الفأرة أو بإصبعين، ويُحرَّك بالسحب. ومربع البحث يجد البلد أو العَلَم: فإذا اختير عَلَم ظهرت بلدانه وطريقه على ترتيب ورودها في الترجمة، مرسومًا على طرق المقدسي من مشروع الثريا بأقصر طريق، وحيث لا طريق معروف فبخط مستقيم متقطع. وأيقونة الطرق تُظهر شبكة الطرق كلها باهتة."],
     ["اللغة والمظهر والروابط", "تغيّر الأزرار في أعلى الصفحة لغة الواجهة بين العربية والتركية، والمظهر بين الفاتح والداكن، ويُحفظ الاختيار في المتصفح. ولكل صفحة رابطها الخاص (مثل ‎#/p/jw821‎ و‎#/zaman/jw821‎)، وأيقونة الرابط تنسخه. وفي لوحة المفاتيح: «/» للبحث، و«؟» لقائمة الاختصارات."],
   ];
