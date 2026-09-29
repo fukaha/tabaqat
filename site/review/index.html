@@ -1,0 +1,291 @@
+<title>مراجعة مطابقات التراجم</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=IBM+Plex+Sans+Arabic:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* Layout: sabit üst şerit (ilerleme + süzgeç) · sağda çift listesi · solda iki madde yan yana · altta karar çubuğu */
+:root {
+  --bg: #f2f4f3; --panel: #ffffff; --fg: #1c2321; --muted: #5e6b67; --line: #d6dcda;
+  --accent: #0e6655; --accent-soft: #dcefe9;
+  --same: #2e7d4f; --same-soft: #dff1e6; --diff: #b3362b; --diff-soft: #f8e1de;
+  --unsure: #9a6a00; --unsure-soft: #f6ecd2;
+  --f-text: "Amiri", "Noto Naskh Arabic", "Traditional Arabic", serif;
+  --f-ui: "IBM Plex Sans Arabic", "Segoe UI", Tahoma, sans-serif;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #111615; --panel: #182020; --fg: #e3e9e7; --muted: #95a4a0; --line: #2b3735;
+  --accent: #52b8a0; --accent-soft: #1d3530;
+  --same: #62c28a; --same-soft: #1b3326; --diff: #ef7f73; --diff-soft: #3a211f;
+  --unsure: #e0b24d; --unsure-soft: #3a3020; color-scheme: dark; } }
+:root[data-theme="dark"] {
+  --bg: #111615; --panel: #182020; --fg: #e3e9e7; --muted: #95a4a0; --line: #2b3735;
+  --accent: #52b8a0; --accent-soft: #1d3530;
+  --same: #62c28a; --same-soft: #1b3326; --diff: #ef7f73; --diff-soft: #3a211f;
+  --unsure: #e0b24d; --unsure-soft: #3a3020; color-scheme: dark; }
+
+html, body { height: 100%; }
+body { background: var(--bg); color: var(--fg); font-family: var(--f-ui); font-size: 15px; }
+.app { display: grid; grid-template-rows: auto 1fr auto; height: 100%; }
+button { font: inherit; color: inherit; cursor: pointer; }
+button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* üst şerit */
+.top { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px; padding: 12px 16px;
+  border-bottom: 1px solid var(--line); background: var(--panel); }
+.top h1 { font-family: var(--f-text); font-size: 1.45rem; margin: 0; font-weight: 700; }
+.progress { display: flex; align-items: center; gap: 10px; flex: 1 1 260px; min-width: 0; }
+.bar { flex: 1; height: 8px; border-radius: 4px; background: var(--line); overflow: hidden; display: flex; }
+.bar span { display: block; height: 100%; }
+.counts { font-size: .85rem; color: var(--muted); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.filters { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip { border: 1px solid var(--line); background: transparent; border-radius: 999px; padding: 3px 12px; font-size: .85rem; }
+.chip[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--panel); }
+#q { font: inherit; padding: 5px 10px; border: 1px solid var(--line); border-radius: 6px; background: var(--bg); color: var(--fg); width: 14rem; max-width: 100%; }
+.store { font-size: .8rem; color: var(--muted); }
+.store.off { color: var(--diff); }
+
+/* gövde */
+.body { display: grid; grid-template-columns: 19rem 1fr; min-height: 0; }
+.list { overflow-y: auto; border-inline-end: 1px solid var(--line); background: var(--panel); min-height: 0; }
+.row { display: grid; grid-template-columns: 10px 1fr auto; gap: 8px; align-items: start; width: 100%; text-align: start;
+  padding: 8px 12px; border: 0; border-bottom: 1px solid var(--line); background: transparent; }
+.row[aria-current="true"] { background: var(--accent-soft); }
+.row .dot { width: 10px; height: 10px; border-radius: 50%; margin-top: 7px; border: 1.5px solid var(--muted); }
+.dot.same { background: var(--same); border-color: var(--same); }
+.dot.different { background: var(--diff); border-color: var(--diff); }
+.dot.unsure { background: var(--unsure); border-color: var(--unsure); }
+.row .names { font-family: var(--f-text); font-size: 1.02rem; line-height: 1.45; min-width: 0; overflow-wrap: anywhere; }
+.row .names small { display: block; color: var(--muted); }
+.row .sc { font-size: .75rem; color: var(--muted); font-variant-numeric: tabular-nums; padding-top: 4px; }
+.more { padding: 10px 12px; color: var(--muted); font-size: .85rem; }
+
+.main { overflow-y: auto; min-height: 0; padding-block: 16px; padding-inline: 16px; display: flex; flex-direction: column; gap: 14px; }
+.meta { display: flex; flex-wrap: wrap; gap: 6px 10px; align-items: center; font-size: .85rem; color: var(--muted); }
+.tag { border-radius: 4px; padding: 1px 8px; background: var(--accent-soft); color: var(--fg); }
+.tag.warn { background: var(--unsure-soft); }
+.tag.bad { background: var(--diff-soft); }
+.pair { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.card { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 14px 16px; display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+.card h2 { font-family: var(--f-text); font-size: 1.4rem; line-height: 1.5; margin: 0; font-weight: 700; text-wrap: balance; }
+.cite { font-size: .9rem; color: var(--accent); font-weight: 500; }
+.kv { font-size: .85rem; color: var(--muted); }
+.group { border-top: 1px dashed var(--line); padding-top: 8px; font-size: .85rem; }
+.group b { font-weight: 600; }
+.group ul { margin: 4px 0 0; padding-inline-start: 18px; }
+.group li { font-family: var(--f-text); font-size: .98rem; line-height: 1.5; }
+.group li span { font-family: var(--f-ui); color: var(--muted); font-size: .8rem; }
+.text { font-family: var(--f-text); font-size: 1.12rem; line-height: 1.95; max-height: 46vh; overflow-y: auto;
+  white-space: pre-wrap; border-top: 1px solid var(--line); padding-top: 8px; overflow-wrap: anywhere; }
+.text mark { background: var(--accent-soft); color: inherit; }
+.empty { margin: auto; text-align: center; color: var(--muted); max-width: 30rem; line-height: 1.8; }
+
+/* karar çubuğu */
+.decide { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; padding: 10px 16px;
+  padding-bottom: calc(10px + env(safe-area-inset-bottom, 0px)); border-top: 1px solid var(--line); background: var(--panel); }
+.btn { border: 1.5px solid var(--line); background: var(--bg); border-radius: 6px; padding: 7px 16px; font-weight: 600; }
+.btn kbd { font-family: var(--f-ui); font-size: .75rem; color: var(--muted); margin-inline-start: 6px; }
+.btn.same { border-color: var(--same); color: var(--same); }
+.btn.different { border-color: var(--diff); color: var(--diff); }
+.btn.unsure { border-color: var(--unsure); color: var(--unsure); }
+.btn.same[aria-pressed="true"] { background: var(--same); color: var(--panel); }
+.btn.different[aria-pressed="true"] { background: var(--diff); color: var(--panel); }
+.btn.unsure[aria-pressed="true"] { background: var(--unsure); color: var(--panel); }
+.btn:disabled { opacity: .45; cursor: not-allowed; }
+.spacer { flex: 1; }
+.nav { display: flex; gap: 6px; align-items: center; font-variant-numeric: tabular-nums; color: var(--muted); font-size: .85rem; }
+.msg { font-size: .85rem; color: var(--muted); }
+
+@media (max-width: 820px) {
+  .body { grid-template-columns: 1fr; }
+  .list { display: none; }
+  .pair { grid-template-columns: 1fr; }
+  .text { max-height: none; }
+}
+@media (prefers-reduced-motion: no-preference) { .row, .chip, .btn { transition: background-color .15s, color .15s; } }
+</style>
+
+<div class="app">
+  <header class="top">
+    <h1>مراجعة المطابقات</h1>
+    <div class="progress">
+      <div class="bar" aria-hidden="true"><span id="b-same" style="background:var(--same)"></span><span id="b-diff" style="background:var(--diff)"></span><span id="b-uns" style="background:var(--unsure)"></span></div>
+      <span class="counts" id="counts">…</span>
+    </div>
+    <div class="filters" role="group" aria-label="تصفية">
+      <button class="chip" data-f="open" aria-pressed="true">لم يُحسم</button>
+      <button class="chip" data-f="all" aria-pressed="false">الكل</button>
+      <button class="chip" data-f="same" aria-pressed="false">شخص واحد</button>
+      <button class="chip" data-f="different" aria-pressed="false">شخصان</button>
+      <button class="chip" data-f="unsure" aria-pressed="false">مؤجَّل</button>
+    </div>
+    <input id="q" type="search" placeholder="بحث في الأسماء…" aria-label="بحث في الأسماء">
+    <span class="store" id="store">جارٍ الاتصال بقاعدة القرارات…</span>
+  </header>
+
+  <div class="body">
+    <nav class="list" id="list" aria-label="الأزواج"></nav>
+    <main class="main" id="main"><div class="empty">جارٍ تحميل الأزواج…</div></main>
+  </div>
+
+  <footer class="decide">
+    <button class="btn same" id="d-same" data-k="same">شخص واحد<kbd>1</kbd></button>
+    <button class="btn different" id="d-diff" data-k="different">شخصان مختلفان<kbd>2</kbd></button>
+    <button class="btn unsure" id="d-uns" data-k="unsure">أؤجِّل<kbd>3</kbd></button>
+    <span class="msg" id="msg"></span>
+    <span class="spacer"></span>
+    <div class="nav">
+      <button class="btn" id="prev" aria-label="السابق">→</button>
+      <span id="pos">–</span>
+      <button class="btn" id="next" aria-label="التالي">←</button>
+    </div>
+  </footer>
+</div>
+
+<script>
+(() => {
+  const SHARDS = 16;
+  const LABEL = { same: "شخص واحد", different: "شخصان مختلفان", unsure: "مؤجَّل" };
+  const $ = (id) => document.getElementById(id);
+  let data = null, decisions = {}, filter = "open", query = "", view = [], cur = 0, db = null, canWrite = true;
+
+  const norm = (s) => (s || "").replace(/[ً-ْـ]/g, "").replace(/[أإآٱ]/g, "ا").replace(/ى/g, "ي").replace(/ة/g, "ه");
+  const esc = (s) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+  const shardOf = (id) => { let h = 0; for (const c of id) h = (h * 31 + c.codePointAt(0)) >>> 0; return "s" + (h % SHARDS); };
+  const bookOf = (k) => k.split(":")[0];
+
+  function counts() {
+    const n = data.pairs.length; const c = { same: 0, different: 0, unsure: 0 };
+    for (const p of data.pairs) { const k = decisions[p.id]; if (k && c[k] !== undefined) c[k]++; }
+    const done = c.same + c.different;
+    $("counts").textContent = `حُسم ${done.toLocaleString("ar-EG")} من ${n.toLocaleString("ar-EG")} · شخص واحد ${c.same.toLocaleString("ar-EG")} · شخصان ${c.different.toLocaleString("ar-EG")} · مؤجَّل ${c.unsure.toLocaleString("ar-EG")}`;
+    $("b-same").style.width = (100 * c.same / n) + "%";
+    $("b-diff").style.width = (100 * c.different / n) + "%";
+    $("b-uns").style.width = (100 * c.unsure / n) + "%";
+  }
+
+  function computeView(keepId) {
+    const q = norm(query.trim());
+    view = data.pairs.filter((p) => {
+      const k = decisions[p.id];
+      if (filter === "open" && (k === "same" || k === "different")) return false;
+      if (["same", "different", "unsure"].includes(filter) && k !== filter) return false;
+      if (q) { const a = data.entries[p.a], b = data.entries[p.b]; if (!norm(a.name + " " + b.name).includes(q)) return false; }
+      return true;
+    });
+    const i = keepId ? view.findIndex((p) => p.id === keepId) : -1;
+    cur = i >= 0 ? i : Math.min(cur, Math.max(0, view.length - 1));
+  }
+
+  const LIST_MAX = 400;
+  function renderList() {
+    const el = $("list");
+    const rows = view.slice(0, LIST_MAX).map((p, i) => {
+      const a = data.entries[p.a], b = data.entries[p.b], k = decisions[p.id] || "";
+      return `<button class="row" data-i="${i}" aria-current="${i === cur}"><span class="dot ${k}"></span>` +
+        `<span class="names">${esc(a.name.slice(0, 60))}<small>${esc(b.name.slice(0, 60))}</small></span>` +
+        `<span class="sc">${p.score}</span></button>`;
+    }).join("");
+    el.innerHTML = rows + (view.length > LIST_MAX ? `<div class="more">و${(view.length - LIST_MAX).toLocaleString("ar-EG")} زوجًا آخر؛ استعمل البحث أو التالي.</div>` : "");
+    el.querySelectorAll(".row").forEach((r) => r.addEventListener("click", () => { cur = +r.dataset.i; render(); }));
+    const act = el.querySelector('[aria-current="true"]'); if (act) act.scrollIntoView({ block: "nearest" });
+  }
+
+  function card(key, other) {
+    const e = data.entries[key], per = data.persons[e.person];
+    const others = per.sources.filter((s) => s[0] !== key);
+    const grp = others.length
+      ? `<div class="group"><b>مجموع حاليًا مع:</b> ${esc(per.heading)}<ul>${others.map((s) => `<li>${esc(s[2].slice(0, 90))} <span>— ${esc(s[1])}</span></li>`).join("")}</ul></div>`
+      : `<div class="group"><b>لا يرتبط الآن بمادة أخرى.</b></div>`;
+    const text = esc(e.text).replace(/\[\^\d+\]/g, "").replace(/^### (.*)$/gm, "<b>$1</b>");
+    return `<article class="card"><h2>${esc(e.name)}</h2>` +
+      `<div class="cite">${esc(e.cite)}</div>` +
+      `<div class="kv">العنوان في الكتاب: ${esc(e.heading.slice(0, 200))}${e.death ? ` · الوفاة المستخرجة: ${e.death}هـ` : ""}</div>` +
+      grp + `<div class="text">${text || "<i>لا نص.</i>"}</div></article>`;
+  }
+
+  function render() {
+    counts(); renderList();
+    const main = $("main");
+    const p = view[cur];
+    $("pos").textContent = view.length ? `${(cur + 1).toLocaleString("ar-EG")} / ${view.length.toLocaleString("ar-EG")}` : "–";
+    ["d-same", "d-diff", "d-uns"].forEach((id) => { $(id).disabled = !p || !canWrite; });
+    if (!p) {
+      main.innerHTML = `<div class="empty">${filter === "open" ? "حُسمت كل الأزواج في هذا التصفية. أخبر Claude ليطبق القرارات ويعيد المطابقة." : "لا أزواج تطابق هذا التصفية."}</div>`;
+      return;
+    }
+    const k = decisions[p.id];
+    ["same", "different", "unsure"].forEach((x) => document.querySelector(`.btn[data-k="${x}"]`).setAttribute("aria-pressed", String(k === x)));
+    const kind = p.kind === "xref" ? "إحالة محقق" : "تشابه الاسم";
+    const notes = p.notes.map((n) => `<span class="tag${n.startsWith("تعارض") || n.startsWith("اختلاف") ? " bad" : n.startsWith("للمادة") || n.startsWith("الكنية تصدق") ? " warn" : ""}">${esc(n)}</span>`).join("");
+    main.innerHTML = `<div class="meta"><span>${kind}</span><span>الدرجة ${p.score}</span><span>تشابه الكلمات ${Math.round(p.sim * 100)}٪</span>${k ? `<span class="tag">القرار: ${LABEL[k]}</span>` : ""}${notes}</div>` +
+      `<div class="pair">${card(p.a)}${card(p.b)}</div>`;
+    main.scrollTop = 0;
+  }
+
+  async function decide(k) {
+    const p = view[cur]; if (!p || !canWrite) return;
+    const prev = decisions[p.id];
+    const val = prev === k ? null : k;  // aynı düğmeye yeniden basmak kararı kaldırır
+    if (val) decisions[p.id] = val; else delete decisions[p.id];
+    const id = p.id;
+    if (val && filter === "open" && val !== "unsure") {
+      const nextOpen = view.findIndex((q, i) => i > cur && !decisions[q.id]);
+      computeView(nextOpen >= 0 ? view[nextOpen].id : null);
+    } else if (val) { computeView(id); if (cur < view.length - 1) cur++; }
+    else computeView(id);
+    render();
+    if (!db) { $("msg").textContent = "القرار غير محفوظ: قاعدة القرارات غير متاحة."; return; }
+    const ref = db.doc("decisions/" + shardOf(id));
+    const body = { d: { [id]: { k: val, t: Date.now() } } };
+    try { await ref.update(body); $("msg").textContent = "حُفظ."; }
+    catch (e) {
+      if (e && (e.code === "invalid_argument")) {
+        try {
+          const snap = await ref.get();
+          if (!snap.exists) { await ref.set(body); $("msg").textContent = "حُفظ."; return; }
+          canWrite = false; render();
+          $("msg").textContent = "لا تملك صلاحية تسجيل القرارات في هذه الصفحة.";
+        } catch (e2) { $("msg").textContent = "تعذّر الحفظ؛ حاول مرة أخرى."; }
+      } else { $("msg").textContent = "تعذّر الحفظ؛ حاول مرة أخرى."; }
+    }
+  }
+
+  document.querySelectorAll(".chip").forEach((c) => c.addEventListener("click", () => {
+    filter = c.dataset.f;
+    document.querySelectorAll(".chip").forEach((x) => x.setAttribute("aria-pressed", String(x === c)));
+    cur = 0; computeView(); render();
+  }));
+  $("q").addEventListener("input", (e) => { query = e.target.value; cur = 0; computeView(); render(); });
+  document.querySelectorAll(".btn[data-k]").forEach((b) => b.addEventListener("click", () => decide(b.dataset.k)));
+  $("prev").addEventListener("click", () => { if (cur > 0) { cur--; render(); } });
+  $("next").addEventListener("click", () => { if (cur < view.length - 1) { cur++; render(); } });
+  document.addEventListener("keydown", (e) => {
+    if (e.target.tagName === "INPUT" || e.metaKey || e.ctrlKey || e.altKey) return;
+    if (e.key === "1") decide("same");
+    else if (e.key === "2") decide("different");
+    else if (e.key === "3") decide("unsure");
+    else if (e.key === "ArrowLeft" || e.key === "j") { $("next").click(); }
+    else if (e.key === "ArrowRight" || e.key === "k") { $("prev").click(); }
+  });
+
+  fetch("data.json").then((r) => r.json()).then((d) => {
+    data = d; computeView(); render();
+  }).catch(() => { $("main").innerHTML = `<div class="empty">تعذّر تحميل بيانات الأزواج.</div>`; });
+
+  (async () => {
+    try { db = window.claude ? await window.claude.use("db") : null; } catch { db = null; }
+    const st = $("store");
+    if (!db) { st.textContent = "قاعدة القرارات غير متاحة: القرارات لن تُحفظ."; st.classList.add("off"); return; }
+    st.textContent = "القرارات تُحفظ تلقائيًا.";
+    db.collection("decisions").onSnapshot((snap) => {
+      const next = {};
+      for (const doc of snap.docs) {
+        const d = (doc.data() || {}).d || {};
+        for (const [id, v] of Object.entries(d)) if (v && v.k) next[id] = v.k;
+      }
+      decisions = next;
+      if (data) { const id = view[cur] && view[cur].id; computeView(id); render(); }
+    }, () => { st.textContent = "انقطع الاتصال بقاعدة القرارات؛ أعد تحميل الصفحة."; st.classList.add("off"); });
+  })();
+})();
+</script>

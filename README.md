@@ -38,3 +38,16 @@ python -m tabaqat.cli match      # (pipeline/ içinde) → data/persons.json, re
   komutu yeniden çalıştırın.
 - `review/decisions.yml`: verilen kararlar burada kalıcı olarak saklanır.
 - `review/overrides.yml`: başlığı ad olmayan maddeler için elle ad ve vefat düzeltmesi.
+
+### Onay sayfası
+
+`site/review/` sayfası şüpheli çiftleri yan yana gösterir ve kararları sayfanın kendi veritabanında
+saklar. Sayfa, Claude artifact'ı olarak yayınlanır. Veri dosyası `site/review/data.json`, her
+`match` koşusunda yeniden üretilir.
+
+Sayfadaki kararlar `{"a|b": "same" | "different"}` biçiminde bir JSON dosyasına alınıp şu komutla
+`review/decisions.yml`'e işlenir; ardından `match` yeniden çalıştırılır:
+
+```
+python -m tabaqat.cli apply-review karar.json
+```

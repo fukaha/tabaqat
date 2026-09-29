@@ -191,6 +191,8 @@ def run(root: Path) -> dict:
                                                 encoding="utf-8")
     write_decisions(review, res.same, res.diff)
     write_pending(review, pending, res.recs, res.cid)
+    from .review import write_review_data
+    write_review_data(root, pending, res.recs, res.cid, persons)
     multi = sum(1 for p in persons if len(p["sources"]) > 1)
     return {"entries": len(res.recs), "persons": len(persons), "multi_source": multi,
             "auto_links": sum(1 for l in links if l.status == "auto"), "pending": len(pending),

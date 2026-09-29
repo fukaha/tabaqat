@@ -762,7 +762,7 @@
   gerekce:
   - 'nisbe: الكماري'
   - vefat 479
-  - 'çakışma: tabaqat_saniyya kitabında zaten başka bir madde var'
+  - 'çakışma: jawahir kitabında zaten başka bir madde var'
 - 'no': 40
   karar: ''
   a: tabaqat_saniyya:873
@@ -2675,7 +2675,7 @@
   gerekce:
   - 'atıf: الجواهر المضية:١/ ٢٤٢؛ التميمي، الطبقات السنية:٢/ ١٦.'
   - künye
-  - 'çakışma: jawahir kitabında zaten başka bir madde var'
+  - 'çakışma: tabaqat_saniyya kitabında zaten başka bir madde var'
 - 'no': 143
   karar: ''
   a: jawahir:78
@@ -2693,7 +2693,7 @@
   benzerlik: 1.0
   gerekce:
   - 'nisbe: الجوزجاني'
-  - 'çakışma: jawahir kitabında zaten başka bir madde var'
+  - 'çakışma: tabaqat_saniyya kitabında zaten başka bir madde var'
 - 'no': 144
   karar: ''
   a: tabaqat_saniyya:147
@@ -9473,7 +9473,7 @@
   benzerlik: 1.0
   gerekce:
   - 'atıf: الطبقات السنية:١/ ٣٢٩؛ اللكنوي، الفوائد البهية: ص ١٦؛'
-  - 'çakışma: jawahir kitabında zaten başka bir madde var'
+  - 'çakışma: athmar kitabında zaten başka bir madde var'
 - 'no': 523
   karar: ''
   a: kataib:165
@@ -13034,7 +13034,7 @@
   gerekce:
   - künye
   - vefat 370
-  - 'çakışma: kataib kitabında zaten başka bir madde var'
+  - 'çakışma: taj_tarajim kitabında zaten başka bir madde var'
 - 'no': 708
   karar: ''
   a: jawahir:211
