@@ -1,0 +1,15 @@
+pyproject.toml
+tabaqat/__init__.py
+tabaqat/schema.py
+tabaqat.egg-info/PKG-INFO
+tabaqat.egg-info/SOURCES.txt
+tabaqat.egg-info/dependency_links.txt
+tabaqat.egg-info/requires.txt
+tabaqat.egg-info/top_level.txt
+tabaqat/build/__init__.py
+tabaqat/extract/__init__.py
+tabaqat/match/__init__.py
+tabaqat/normalize/__init__.py
+tabaqat/normalize/arabic.py
+tabaqat/parse/__init__.py
+tests/test_arabic.py

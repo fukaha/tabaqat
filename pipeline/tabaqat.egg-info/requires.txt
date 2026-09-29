@@ -1,0 +1,6 @@
+pyyaml
+beautifulsoup4
+lxml
+
+[dev]
+pytest
