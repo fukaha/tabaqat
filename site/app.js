@@ -623,6 +623,9 @@ async function viewPerson(view, id) {
           : `<p class="empty">${T("لم يُستخرج له بلد.", "Şehir tespit edilemedi.")}</p>`}
       </section>
     </div>
+    ${d.works && d.works.length ? `<section id="works"><h2>${T("مؤلفاته", "Eserleri")}<span class="c num">${AR(d.works.length)}</span></h2>
+      <ol class="works">${d.works.map(w => `<li lang="tr">${esc(w)}</li>`).join("")}</ol>
+      <p class="legend">${esc(d.works_src)}.</p></section>` : ""}
     ${p.nt || p.ns ? `<section id="pnetsec"><h2>${T("شبكة صلاته", "İlişki ağı")}<a class="btn small" href="#/net/${id}">${T("في السلسلة", "Silsilede aç")}</a></h2><div id="pnet"></div></section>` : ""}
     <section id="texts"><h2>${T("نصوص الترجمة", "Biyografi metinleri")}<span class="c num">${AR(d.sources.length)}</span>
         ${d.sources.length > 1 ? `<button type="button" class="btn small" id="openall">${T("فتح الكل", "Tümünü aç")}</button>` : ""}</h2>
@@ -1861,6 +1864,7 @@ function viewAbout(view) {
       Biyografi metinleri, her kitaptan ayrı ayrı ve muhakkik dipnotlarıyla, her âlimin sayfasının sonunda Arapça aslıyla yayımlanmaktadır.</p>
       <p class="lede" style="color:var(--ink)">Şahıs, eser ve yer adları TDV İslâm Ansiklopedisi (DİA) yazım usulüyle verilmiştir: Ebû Hanîfe, Muhammed b. Hasan eş-Şeybânî, Şemsüleimme el-Halvânî, el-Cevâhirü’l-muziyye… Adlar künye, isim, nesep, nisbe ve lakap sözlüklerinden otomatik kurulur; unvan ve tavsifler atılır. Tarihler hicrî/milâdî olarak verilir: (ö. 150/767). Milâdî yıl, hicrî yılın ortasına göre hesaplanmıştır; ay ve gün bilinmediğinden bir yıl sapabilir.</p>
       <p class="legend">“tercih” etiketli bağlar yalnız nisbe ya da şöhretle kurulmuştur. “[?]” işaretli vefat tarihleri kaynakta yoktur; hoca ve talebelerin vefatlarından tahmin edilmiştir. Hicrî yüzyıllar DİA’daki gibi yazılır: V. (XI.) yüzyıl. Eşleştirme ve çıkarımlar otomatik yapıldığından hata içerebilir; bildirimleriniz için yürütücüye yazabilirsiniz.</p></section>
+    <section><h2>Türkçe başvuru kaynağı</h2><p class="lede">Ahmet Özel’in <i>Hanefî Fıkıh Âlimleri</i> (Ankara: Türkiye Diyanet Vakfı) adlı eserindeki maddeler sitedeki âlimlerle tek tek eşleştirilmiştir (213 kişi). Eşleşen âlimlerde kitaptaki vefat ve doğum tarihleri esas alınmış, sitedeki ad kitaptakiyle çeliştiğinde tam ad ve kısa ad kitaba göre düzeltilmiş (yalnız eksik olan doğru adlara dokunulmamıştır), kitapta açıkça geçen hoca–talebe bağları eklenmiş ve eser listeleri âlim sayfasına “Eserleri” başlığıyla konmuştur. Bu bağların “Kanıt” bölümünde kitaptaki cümle ve sayfa numarası görünür. Kitabın dipnotları metne karışık olduğundan bilgi yalnız madde metinlerinden alınmıştır.</p></section>
     <section><h2>Açık kaynaklar</h2><p class="lede">Koordinatlar, şehirlerin bölge ve türleri, Mukaddesî’nin yol ağı ile Yâkūt, Himyerî ve Sem‘ânî’den alıntılar al-Thurayya Gazetteer’dan (CC BY 4.0) alınmıştır; Osmanlı ve Hint şehirleri için elle eklemeler yapılmıştır. Kara ve nehir sınırları Natural Earth’ten (kamu malı). Sitenin kodu ve üretilen veriler <a href="https://github.com/fukaha/tabaqat" target="_blank" rel="noopener">GitHub</a>’da açıktır.</p></section></div>`;
     return;
   }
@@ -1879,6 +1883,7 @@ function viewAbout(view) {
       واستُخرجت سنو المولد من عبارات «ولد / مولده سنة…» أو من العمر المذكور عند الوفاة («عن ثمانين سنة»)، وأُسقط ما خالف الوفاة.
       ونصوص التراجم منشورة كاملة في آخر صفحة كل عَلَم، كلُّ كتاب على حدة مع حواشي محققه.</p>
       <p class="legend">ما وُسم «ترجيح» ربطٌ بالنسبة أو الشهرة وحدها. الوفيات المسبوقة بـ«نحو» تقدير من طبقة الشيوخ والتلاميذ. ولأن التوحيد والاستخراج آليّان فقد يقع فيهما خطأ، ويُرجى إبلاغ مدير المشروع بما يُلحظ منه.</p></section>
+    <section><h2>المرجع التركي</h2><p class="lede">طوبقت مواد كتاب «فقهاء الحنفية» (Hanefî Fıkıh Âlimleri) لأحمد أوزل على أعلام الموقع علمًا علمًا (٢١٣ علمًا)، فاعتُمدت فيه سنوات الوفاة والولادة، وصُحّح الاسم التركي إذا خالفه، وأضيفت صلات الشيوخ والتلاميذ المصرّح بها فيه مع العبارة ورقم الصفحة، وقوائم المؤلفات تحت عنوان «مؤلفاته». ولم يؤخذ من حواشي الكتاب شيء لاختلاطها بالمتن.</p></section>
     <section><h2>المصادر المفتوحة</h2><p class="lede">الإحداثيات وأقاليم البلدان وأنواعها وشبكة طرق المقدسي والمقتطفات من ياقوت والحميري والسمعاني من مشروع الثريا (al-Thurayya Gazetteer، رخصة CC BY 4.0) مع إضافات يدوية لبلدان العهد العثماني والهند؛ وحدود اليابسة والأنهار من Natural Earth (ملك عام). وشفرة الموقع وبياناته مفتوحة على <a href="https://github.com/fukaha/tabaqat" target="_blank" rel="noopener">GitHub</a>.</p></section></div>`;
 }
 

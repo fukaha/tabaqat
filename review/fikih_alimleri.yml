@@ -1,31 +1,1959 @@
-# "Hanefî Fıkıh Âlimleri" (Türkçe çalışma metni) esas alınarak yapılan düzeltme ve eklemeler.
-# Yalnız metnin kendisinden alınır; dipnotlar karışık olduğu için dipnot atıfları kullanılmaz.
-# Ad düzeltmeleri review/tr/override.tsv'de; burada kişi kimliği → eklenecek bilgi:
-#   vefat, dogum            hicrî yıl (tabakat kitaplarındaki okumayı düzeltir)
-#   hocalar, talebeler      [kimlik, bağ türü]  (fiqh, took, hadith, read, companion)
-#   dis_hocalar             [Arapça ad, Türkçe ad, vefat, bağ türü]  biyografisi bu kitaplarda olmayanlar
-#   yerler                  [yer kimliği, tür]  (nisba, origin, birth, residence, travel, activity, office, death, burial)
-#   kanit                   bağlar ve yerler için metinden kısa alıntı (bilgi kartında "Kanıt" altında görünür)
-jw596:   # Züfer b. Hüzeyl
-  madde: Züfer b. Hüzeyl
-  hocalar:
-    - [jws1, fiqh]
-  dis_hocalar:
-    - [سليمان بن مهران الأعمش, A‘meş, 148, hadith]
-    - [إسماعيل بن أبي خالد, İsmâil b. Ebû Hâlid, 146, hadith]
-    - [محمد بن إسحاق, Muhammed b. İshak, 151, hadith]
-    - [الحجاج بن أرطاة, Haccâc b. Ertât, 145, hadith]
+# Ahmet Özel, Hanefî Fıkıh Âlimleri (Ankara: TDV, 1990; genişletilmiş baskı) esas alınarak yapılan düzeltme ve eklemeler.
+# Kitabın metni depoda yoktur; burada yalnız eşleştirilen kişiler için çıkarılan bilgiler ve kısa kanıt cümleleri durur.
+# Dipnotlar metne karışık olduğu için dipnot satırları ayıklanmış, bilgi yalnız madde metninden alınmıştır.
+# Kişi kimliği → alanlar:
+#   madde, sayfa        kitaptaki madde başlığı ve sayfası (kanıt atfı için)
+#   ad, kisa            tam ad ve kısa ad (sitedeki ad kitaptakiyle çelişiyorsa; kısa ad değişmez). Sitedeki ad kitabınkinin
+#                       içinde kalıyorsa (yalnız eksikse) dokunulmaz; imlâ sitenin (DİA) imlâsına çevrilmiştir.
+#   vefat, dogum        hicrî yıl; yaklasik: true → kitapta "…’den sonra", "civarı", "?" (site tahminî gösterir)
+#   eserler             kitaptaki eser listesi
+#   hocalar, talebeler  [kimlik, bağ türü]  (fiqh, took, hadith, read, companion); kanit: kimlik → metinden cümle
+#   dis_hocalar         [Arapça ad, Türkçe ad, vefat, bağ türü]  biyografisi bu kitaplarda olmayanlar
+#   yerler              [yer kimliği, tür]
+jw540:
+  madde: Hâmmâd (120/738)
+  sayfa: 14
   talebeler:
-    - [jw448, took]
-    - [qd194, took]
-  yerler:
-    - [ISBAHAN_516E326N_S, origin]
-    - [BASRA_477E304N_S, residence]
-    - [BASRA_477E304N_S, office]
+  - [jw328, hadith]
   kanit:
-    jws1: Önceleri hadis ehli olan Züfer, reye meylederek Ebû Hanîfe'den fıkıh tahsil etmiştir.
-    jw448: Hasan b. Ziyâd gibi hocasının pek çok talebesi vefatından sonra kendisine öğrencilik yapmıştır.
-    qd194: Şeddâd b. Hakîm önde gelen öğrencilerindendir.
-    dis: Ameş, İsmail b. Ebî Halid, Muhammed b. İshak, Haccâc b. Ertât gibi isimlerden rivayetlerde bulunmuştur.
-    ISBAHAN_516E326N_S: Ebû Hanîfe'nin önde gelen büyük talebelerinden olup Isfahan asıllıdır.
-    BASRA_477E304N_S: Basra'da hayatını sürdürmüş ve kadılık yapmıştır.
+    jw328: Ondan da Ebû Hanîfe, oğlu İsmail b. Hammâd, A'meş, Süfyân es-Sevrî, Hammâd b. Seleme, Şu'be b. Haccâc ve başkaları rivayette bulundu.
+kt79:
+  madde: İbrahim en-Nehaî (46-96/666-714)
+  sayfa: 14
+  dogum: 46
+kt83:
+  madde: Şa’bî (19-104/640-722)
+  sayfa: 15
+  dogum: 19
+  talebeler:
+  - [jw540, hadith]
+  - [jws1, hadith]
+  kanit:
+    jw540: Ondan da Hammâd b. Ebî Süleyman, İbn Avn, Mekhûl, İbn Sîrîn, İbn Şübrüme, Ebû Hanîfe ve başkaları rivayette bulundu.
+    jws1: Ondan da Hammâd b. Ebî Süleyman, İbn Avn, Mekhûl, İbn Sîrîn, İbn Şübrüme, Ebû Hanîfe ve başkaları rivayette bulundu.
+kt57:
+  madde: Alkame b. Kays (62/682)
+  sayfa: 15
+jw596:
+  madde: Züfer b. Hüzeyl (110-158/728-775)
+  sayfa: 19
+  hocalar:
+  - [jws1, took]
+  kanit:
+    jws1: Önceleri ashab-ı hadistendi, daha sonra re’ye meyletti. Ebû Hanîfe’den fıkıh okudu.
+    dis: Ameş, İsmail b. Ebî Halid, Muhammed b. İshak, Haccâc b. Ertât ve başkalarından rivayette bulundu.
+    ISBAHAN_516E326N_S: Isfahan asıllı olup babası Hüzeyl Basra valisiydi.
+    BASRA_477E304N_S: Züfer, Basra’da yaşadı, kadılık yaptı ve orada vefat etti.
+    jw448: Ebû Hanîfe’nin birçok talebesi kendisinden sonra Züfer’den ders aldı.
+  talebeler:
+  - [qd194, took]
+  - [jw448, took]
+  dis_hocalar:
+  - [سليمان بن مهران الأعمش, A‘meş, 148, hadith]
+  - [إسماعيل بن أبي خالد, İsmâil b. Ebî Hâlid, 146, hadith]
+  - [محمد بن إسحاق, Muhammed b. İshak, 151, hadith]
+  - [الحجاج بن أرطاة, Haccâc b. Ertât, 145, hadith]
+  yerler:
+  - [ISBAHAN_516E326N_S, origin]
+  - [BASRA_477E304N_S, residence]
+  - [BASRA_477E304N_S, office]
+jw393:
+  madde: Nuh b. Ebi Meryem (173/789)
+  sayfa: 20
+  ad: Ebû İsme Nûh b. Ebî Meryem Ca‘vane el-Kureşî el-Mervezî
+  kisa: Nûh b. Ebî Meryem
+jw1118:
+  madde: Kâsım b. Ma’n (175/791)
+  sayfa: 20
+  eserler: [en-Nevâdir fi’l-luğa]
+  hocalar:
+  - [jws1, took]
+  kanit:
+    jws1: Ebû Hanîfe’nin talebesi.
+jw1825:
+  madde: Ebû Yusuf (113-182/731-798)
+  sayfa: 20
+  dogum: 113
+  eserler: [Kitâbü’l-Harâc, İhtilâfu Ebî Hanîfe ve İbn Ebî Leylâ, Kitâbü’r-Red ale’s-Siyeri’l-Evzâî]
+ats3:
+  madde: Ebû Yusuf (113-182/731-798)
+  sayfa: 20
+  eserler: [Kitâbü’l-Harâc, İhtilâfu Ebî Hanîfe ve İbn Ebî Leylâ, Kitâbü’r-Red ale’s-Siyeri’l-Evzâî]
+ats10:
+  madde: Yahya b. Zekeriya (183/799)
+  sayfa: 23
+  hocalar:
+  - [jws1, took]
+  kanit:
+    jws1: Ebû Hanîfe'nin önde gelen on talebesinden biri, muhaddis fakih.
+jw1270:
+  madde: Şeybânî (132-189/749-805)
+  sayfa: 26
+  dogum: 132
+  eserler:
+  - el-Asl
+  - ez-Ziyâdât
+  - el-Câmiu’s-sağîr
+  - el-Câmiu’l-kebîr
+  - es-Siyeru’l-kebîr
+  - es-Siyeru’s-sağîr
+  - Kitâbü’l-Âsâr
+  - Kitâbü’l-Mehâric ve’l-hiyel
+  - Ziyâdâtü’z-Ziyâdât
+jw307:
+  madde: Esed b. Amr el-Becelî (190/806)
+  sayfa: 27
+  vefat: 190
+jw530:
+  madde: Hafs b. Ğıyâs (117-194/735-810)
+  sayfa: 27
+  vefat: 194
+jw1785:
+  madde: Vekî’ b. el-Cerrâh (129-197/746-812)
+  sayfa: 27
+  vefat: 197
+fws476:
+  madde: Vekî’ b. el-Cerrâh (129-197/746-812)
+  sayfa: 27
+  vefat: 197
+  dogum: 129
+jw1980:
+  madde: Ebû Mutî’ el-Belhî (199/814)
+  sayfa: 28
+  vefat: 199
+  eserler: [el-Fıkhul-ekber]
+jw448:
+  madde: Hasan b. Ziyâd (116-204/734-819)
+  sayfa: 28
+  dogum: 116
+  hocalar:
+  - [jw1825, fiqh]
+  kanit:
+    jw1825: Ebû Hanîfe’den sonra önde gelen talebeleri Züfer ve Ebû Yusuf’tan, ayrıca Ebû Hanîfe’nin oğlu Hammâd ve Dâvud et-Tâî’den fıkıh okudu.
+jw328:
+  madde: İsmail b. Hammâd (212/827)
+  sayfa: 29
+jw104:
+  madde: Ebû Hafs el-Kebîr (150-216/767-831)
+  sayfa: 29
+  vefat: 216
+  dogum: 150
+  hocalar:
+  - [jw1785, hadith]
+  kanit:
+    jw1785: Hüşeym b. Beşîr, Vekî’ b. el-Cerrâh ve Ebû Üsâme’den hadis dinledi.
+jw370:
+  madde: Bişr b. Ğıyâs el-Merîsî (218/833)
+  sayfa: 30
+  ad: Ebû Abdirrahmân Bişr b. Gıyâs b. Ebî Kerîme el-Merîsî el-Adevî el-Bağdâdî
+  kisa: Bişr b. Gıyâs el-Merîsî
+  vefat: 218
+  hocalar:
+  - [jws1, took]
+  kanit:
+    jws1: Ebû Hanîfe’nin talebelerinden.
+jw1086:
+  madde: İsa b. Ebân (221/836)
+  sayfa: 30
+jw1322:
+  madde: İbn Semâa (130-233/747-848)
+  sayfa: 31
+jw373:
+  madde: Bişr b. Velîd el-Kîndî (150-238/767-853)
+  sayfa: 31
+  dogum: 150
+jw1779:
+  madde: Hilâl er-Re’y (245/860)
+  sayfa: 32
+  hocalar:
+  - [jw1825, took]
+  - [jw596, took]
+  kanit:
+    jw1825: Ebû Hanîfe’nin talebeleri Ebû Yusuf ve Züfer’den ders aldı.
+    jw596: Ebû Hanîfe’nin talebeleri Ebû Yusuf ve Züfer’den ders aldı.
+jw160:
+  madde: Hassaf (181-261/797-875)
+  sayfa: 33
+  dogum: 181
+  eserler: [Edebü’l-kâdî, Ahkâmu’l-vakf, Kitâbu’n-Nefekât, el-Mehâdir ve’s-sicillât]
+jw1326:
+  madde: İbnü’s-Selcî (181-266/797-879)
+  sayfa: 34
+gh199:
+  madde: Bekkâr b. Kuteybe (182-270/798-884)
+  sayfa: 35
+jw758:
+  madde: Ebû Hâzîm el-Kâdî (292/905)
+  sayfa: 36
+jw103:
+  madde: Ebû Saïd el-Berdaî (317/929)
+  sayfa: 36
+  eserler: [Mesâilü’l-hilâf]
+jw204:
+  madde: Tahâvî (239-321/853-933)
+  sayfa: 36
+  ad: Ebû Ca‘fer Ahmed b. Muhammed b. Selâme b. Abdilmelik el-Ezdî et-Tahâvî
+  kisa: Ebû Ca‘fer et-Tahâvî
+  dogum: 239
+  eserler:
+  - el-Muhtasar
+  - Meânî’l-âsâr
+  - Müşkilü’l-âsâr
+  - İhtilâfü’l-ulemâ
+  - eş-Şurûtu’s-sağîr
+  - el-Akîdetûl-Tahâviyye
+  - Ahkâmûl-Kur’ân
+jw1532:
+  madde: Mâturîdî (333/944)
+  sayfa: 38
+  eserler: [Te’vîlâtü’l-Kur’ân, Kitâbü’t-Tevhîd]
+  talebeler:
+  - [jw1733, took]
+  kanit:
+    jw1733: Kendisinden de Ebû Ahmed el-İyâzî, Ali b. Said el-Rustufeğnî, İshak b. Muhammed es-Semerkandî ve Abdülkerim b. Musa el-Pezdevî ders almıştır.
+jw1477:
+  madde: Hâkim eş-Şehîd (334/945)
+  sayfa: 39
+  ad: Ebü’l-Fazl Muhammed b. Muhammed b. Ahmed b. Abdillâh el-Mervezî el-Belhî el-Hâkim eş-Şehîd
+  kisa: Hâkim eş-Şehîd
+  eserler: [el-Kâfî, el-Müntekâ, el-Muhtasar]
+jw894:
+  madde: Kerhî (260-340/874-952)
+  sayfa: 41
+  eserler: [el-Muhtasar, er-Risâle, Şerhu’l-Câmii’s-sağîr]
+jw734:
+  madde: Sebezmûnî (258-340/871-952)
+  sayfa: 41
+  ad: Ebû Muhammed Abdullah b. Muhammed b. Ya‘kūb el-Kelâbâzî es-Sebezmûnî
+  kisa: Ebû Muhammed es-Sebezmûnî
+jw301:
+  madde: el-Hakîm es-Semerkandî (342/953)
+  sayfa: 41
+  eserler: [er-Red âlâ ashâbi’l-hevâ]
+jw191:
+  madde: Ebû Alî eş-Şâşî (344/955)
+  sayfa: 42
+jw973:
+  madde: Rustufeğnî (345/956)
+  sayfa: 44
+  ad: Ebü’l-Hasen Alî b. Saîd er-Rustufeğnî
+  kisa: Ebü’l-Hasen er-Rustufeğnî
+  vefat: 345
+jw1345:
+  madde: Ebû Ca'fer el-Hındüvânî (362/973)
+  sayfa: 44
+jw155:
+  madde: Cessâs (305-370/917-981)
+  sayfa: 44
+  vefat: 370
+  eserler:
+  - Ahkâmü’l-Kur’ân
+  - Şerhu Edebi’l-kâdî li’l-Hassâf
+  - İhtisâru İhtilâfi’l-fukahâ li’t-Tahâvî
+  - el-İcmâ’
+  - Usûlü’l-fikh
+  - Şerhu Muhtasari’l-Kerhî
+  - Şerhu Muhtasari’t-Tahâvî
+  - Şerhu’l-Câmii’l-kebîr
+  talebeler:
+  - [jw1573, took]
+  kanit:
+    jw1573: Talebeleri arasında İbnü’l-Mesleme ve Ebû Bekir Ahmed b. Musa el-Hârizmî, Muhammed b. Yahya el-Cürcânî, Muhammed b. Ahmed ez-Za’ferânî, Ebû Ca’fer el-Üsrûşenî gibi âlimlerin adları anılır.
+jw1743:
+  madde: Ebü’l-Leys es-Semerkandî (373/983 veya 393/1003)
+  sayfa: 47
+  eserler:
+  - Bustânu’l-ârifîn
+  - Tenbîhü’l-ğâfilîn
+  - Uyûnü’l-mesâil
+  - en-Nevâzil
+  - el-Mukaddime fî’s-salât
+  - et-Tefsir
+  - Hizânetu’l-fikh
+  - Şerhu’l-Câmii’s-sağîr
+jw326:
+  madde: Beyhakî (328-402/939-1011)
+  sayfa: 47
+  vefat: 402
+  dogum: 328
+jw1550:
+  madde: Ebûbekr el-Hârizmî (403/1013)
+  sayfa: 47
+jw1913:
+  madde: Nesefî (424/1033)
+  sayfa: 47
+  ad: Ebû Alî Hüseyin b. Hıdır b. Muhammed en-Nesefî el-Feşîdiyzecî
+  kisa: Ebû Alî en-Nesefî
+  vefat: 424
+jw179:
+  madde: Kudûrî (362-428/973-1037)
+  sayfa: 48
+  ad: Ebü’l-Hüseyn Ahmed b. Muhammed b. Ahmed b. Ca‘fer el-Kudûrî
+  kisa: Ebü’l-Hüseyn el-Kudûrî
+  eserler: [el-Muhtasar, et-Tecrîd, Şerhu Muhtasarî’l-Kerhî, et-Takrîb]
+  hocalar:
+  - [jw1573, hadith]
+  kanit:
+    jw1573: Muhammed b. Yahya el-Cürcânî'den fikir, Muhammed b. Ali el-Müeddib'den hadis okudu.
+qd597:
+  madde: Debûsî (430/1039)
+  sayfa: 49
+  eserler: [Te’sîsü’n-nazar, Takvîmü’l-edille, el-Esrar fi’l-furû’]
+jw406:
+  madde: Mustağfirî (350-432/961-1041)
+  sayfa: 51
+  eserler: [Tıbbü’n-Nebî, Fezâilü’l-Kur’ân]
+jw508:
+  madde: Saymerî (351-436/962-1045)
+  sayfa: 51
+  eserler: [Ahbâru Ebî Hanîfe ve ashâbih, Kitâbu Mesâili’l-hilâf fî usûli’fıkh, Şerhu Muhtasari’t-Tahâvî]
+jw221:
+  madde: Nâtıfî (446/1054)
+  sayfa: 51
+  eserler: [el-Ecnâs ve’l-furûk, Vâkıâtu’n-Nâtıfî, Ahkâmü’n-Nâtıfî]
+  hocalar:
+  - [jw1573, took]
+  kanit:
+    jw1573: Ebû Abdullah Muhammed b. Yahya el-Cürcânî ve Ebû Hafs İbn Şâhîn'den ilim tahsil etti.
+jw701:
+  madde: Nâsıhî (373-447/984-1055)
+  sayfa: 53
+  dogum: 373
+  eserler:
+  - el-Mes’ûdî fi’l-fürûi’l-Hanefiyye
+  - Kitâbü’l-Muhtelef beyne Ebî Hanîfe ve’ş-Şâfiî
+jw1564:
+  madde: Ebû Alî es-Semerkandî (450/1058’den sonra)
+  sayfa: 53
+  vefat: 450
+  yaklasik: true
+tj265:
+  madde: Ebû Alî es-Semerkandî (450/1058’den sonra)
+  sayfa: 53
+  vefat: 450
+  yaklasik: true
+jw821:
+  madde: Halvânî (452/1060)
+  sayfa: 53
+  vefat: 452
+  eserler:
+  - el-Mebsût
+  - Sıfatu eşrâtî’s-sâa ve makâmâtî’l-kıyâme
+qd757:
+  madde: Suğdî (461/1068)
+  sayfa: 54
+  talebeler:
+  - [qd655, took]
+  kanit:
+    qd655: Öğrencileri arasında Şemsüleimme es-Serahsî ve Osman b. İbrahim el-Fadlî el-Buhârî zikredilmektedir.
+jw233:
+  madde: el-Akta’ (474/1081)
+  sayfa: 56
+jw1425:
+  madde: Dâmeğânî (398-478/1007-1085)
+  sayfa: 56
+jw1424:
+  madde: Dâmeğânî (398-478/1007-1085)
+  sayfa: 56
+  dogum: 398
+jw260:
+  madde: İsbîcâbî (480/1087)
+  sayfa: 56
+  vefat: 480
+qd765:
+  madde: Pezdevî (400-482/1010-1089)
+  sayfa: 57
+  eserler:
+  - Usûlü’l-Pezdevî
+  - Şerhu’z-Ziyâdât
+  - Şerhu’l-Câmiî’s-sağîr
+  - Mebsût fî’l-fetâvâ
+  - Şerhu’l-Fıkhîl-ekber
+jw1289:
+  madde: Hâherzâde (483/1090)
+  sayfa: 58
+  eserler: [Şerhu Muhtasari’l-Kudûrî, Şerhu’l-Câmiî’l-kebîr]
+at233:
+  madde: Hâherzâde (483/1090)
+  sayfa: 58
+  eserler: [Şerhu Muhtasari’l-Kudûrî, Şerhu’l-Câmiî’l-kebîr]
+jw1219:
+  madde: Serahsî (400-483/1009-1090)
+  sayfa: 59
+  vefat: 483
+  dogum: 400
+  eserler:
+  - el-Mebsût
+  - Şerhu’s-Siyeri’l-kebîr
+  - Usûlü’s-Serahsî
+  - en-Nüket
+  - Şerhu’l-Câmii’s-sağîr
+at494:
+  madde: Serahsî (400-483/1009-1090)
+  sayfa: 59
+  vefat: 483
+  dogum: 400
+  eserler:
+  - el-Mebsût
+  - Şerhu’s-Siyeri’l-kebîr
+  - Usûlü’s-Serahsî
+  - en-Nüket
+  - Şerhu’l-Câmii’s-sağîr
+jw1139:
+  madde: Hasîrî (500/1107)
+  sayfa: 61
+jw1725:
+  madde: Nesefî (438-508/1047-1115)
+  sayfa: 61
+  dogum: 438
+  eserler: [Tebsıratü’l-edille, et-Temhîd li-kavâidi’t-tevhîd, Bahru’l-kelâm]
+  talebeler:
+  - [gh479, took]
+  kanit:
+    gh479: Talebeleri arasında Ebû Hafs Necmüddin en-Nesefî, Alâüddin es-Semerkandî, İsmail b. Adî et-Tâlekânî, Ahmed b. Ferah es-Suğdî, Ebû’l-Hasan el-Belhî gibi âlimler vardır. 25 Zilhicce 508 (22 Mayıs
+      1115) tarihinde muhtemelen Buhara’da vefat…
+qd655:
+  madde: Fadlî (508/1114)
+  sayfa: 63
+jw380:
+  madde: Zerencerî (427-512/1036-1118)
+  sayfa: 63
+  ad: Ebü’l-Fazl Şemsüleimme Bekr b. Muhammed b. Alî el-Ensârî el-Hazrecî ez-Zerencerî el-Buhârî
+  kisa: Ebü’l-Fazl ez-Zerencerî
+jw1647:
+  madde: Kuşânî (520/1126)
+  sayfa: 63
+  ad: Ebû Saîd Rükneddin Mes‘ûd b. Hüseyin b. Hasan b. Muhammed b. İbrâhim el-Küşânî
+  kisa: Ebû Saîd el-Küşânî
+  talebeler:
+  - [jw469, took]
+  kanit:
+    jw469: Ondan Husâmüddin İbn Mâze ve Zahîruddin Hasan b. Ali el-Merğinânî gibi âlimler tahsilde bulundu. 73 yaşında vefat etti.
+jw510:
+  madde: Lâmişî (441-522/1049-1128)
+  sayfa: 63
+  dogum: 441
+jw1848:
+  madde: Cürcânî (522/1128’den sonra)
+  sayfa: 64
+  vefat: 522
+  yaklasik: true
+jw995:
+  madde: İsbicâbî (454-535/1062-1140)
+  sayfa: 64
+jw1053:
+  madde: Sadruşşehid (483-536/1090-1141)
+  sayfa: 66
+  ad: Ebû Muhammed Hüsâmeddin Ömer b. Abdilazîz b. Ömer b. Mâze el-Buhârî
+  kisa: Sadrüşşehîd
+  eserler:
+  - el-Fetâva’l-kübrâ
+  - el-Fetâva’s-suğrâ
+  - Vâkıâtu’l-Husâmî
+  - Şerhu Edebi’l-kâdî
+  - Umdetü’l-fetâvâ
+  - Şerhu Kitâbi’n-Nefekât
+  - Şerhu’l-Câmii’s-sağîr
+gh479:
+  madde: Nesefî (461-537/1068-1142)
+  sayfa: 66
+  dogum: 461
+  eserler:
+  - el-Manzûmetü’n-Nesefiyye fî’l-hilâf
+  - et-Teysîr fî ilmi’t-tefşîr
+  - Tilbetu’t-talebe
+  - Tuhfetü’l-mülûk
+  - el-Hasâil fi’l-mesâil
+  - Fetâva’n-Nesefî
+  - el-Hasâil fi’l-furû
+jw1628:
+  madde: Zemahşerî (467-538/1075-1144)
+  sayfa: 68
+  eserler:
+  - el-Keşşâf an hakâiki’t-Tenzîl ve uyûnu’l-akâvîl fî vucûhi’t-te’vîl
+  - Esâsü’l-belâğa
+  - el-Fâik fî ğaribi’l-hadîs
+  - Rebîu’l-ebrâr ve nusûsu’l-ahbâr
+  - el-Mufassal
+jw1898:
+  madde: Semerkandî (539/1144)
+  sayfa: 70
+  vefat: 539
+  eserler: [Tuhfetü’l-fukahâ, Mîzânü’l-usûl]
+  talebeler:
+  - [jw1900, took]
+  kanit:
+    jw1900: Tanınmış talebeleri arasında kızı Fâtima es-Semerkandiyye ve damadı Kâsânî bulunmaktadır. 1 Cem'aziyeelevvel 539'da (30 Ekim 1144) Buhara'da vefat eden Semerkandî'nin vefat tarihi 538 ve 540
+      olarak da geçmektedir. onunla evlendirdi.
+jw809:
+  madde: Velvâlicî (467-540/1075-1146)
+  sayfa: 72
+  vefat: 540
+  dogum: 467
+jw666:
+  madde: Buhârî (482-542/1090-1147)
+  sayfa: 72
+  eserler: [Hulâsatu’l-fetâvâ, Hizânetü’l-fetâvâ]
+jw781:
+  madde: Kirmânî (457-543/1065-1149)
+  sayfa: 72
+  ad: Ebü’l-Fazl Rükneddin Abdurrahman b. Muhammed b. Emîrveyh el-Kirmânî
+  kisa: Ebü’l-Fazl el-Kirmânî
+  eserler: [et-Tecrîdü’r-Rüknî, Şerhu’l-Câmii’l-kebîr]
+qd800:
+  madde: el-Burhânû'l-belhî (548/1153)
+  sayfa: 73
+kt392:
+  madde: Keşşî (550/1155'den sonra)
+  sayfa: 74
+  vefat: 550
+  yaklasik: true
+jw1356:
+  madde: Üsmendî (488-552/1095-1157)
+  sayfa: 74
+  ad: Ebü’l-Feth Alâeddin Muhammed b. Abdilhamîd b. Hüseyin el-Üsmendî es-Semerkandî
+  kisa: Ebü’l-Feth el-Üsmendî
+  eserler:
+  - Tarîkatü’l-hilâf beyne’l-eimmeti’l-eslâf
+  - Bezlü’n-nazar fi’l-usûl
+  - Lübâbü’l-kelâm
+  - Şerhu’l-Manzûmeti’n-Nesefiyye
+jw1586:
+  madde: Semerkandî (556/1161)
+  sayfa: 76
+  ad: Ebü’l-Kāsım Nâsırüddin Muhammed b. Yûsuf b. Muhammed b. Alî el-Alevî el-Hüseynî el-Medenî es-Semerkandî
+  kisa: Ebü’l-Kāsım es-Semerkandî
+  eserler: [el-Mültekat fi’l-fetâva’l-Hanefiyye, en-Nâfî’, Câmiu’l-fetâvâ]
+jw840:
+  madde: Kerderî (562/1166-1167)
+  sayfa: 77
+  eserler: [el-Muftîd vel-mezîd, Hiyeretu’l-fukahâ, Şerhu’z-Ziyâdât]
+gh562:
+  madde: Bakkâlî (562/1167)
+  sayfa: 77
+  vefat: 562
+  eserler: [Kitâbüt-Tefsir, Miftâhut-Tenzil li-hulâsati’t-tevîl, Kitâbüt-Terâcim bi-lisâni’l-eâcim]
+jw2077:
+  madde: Bakkâlî (562/1167)
+  sayfa: 77
+  ad: Ebü’l-Fazl Muhammed b. Ebi’l-Kāsım b. Bâbcuk el-Hârizmî el-Bakkâlî
+  kisa: Ebü’l-Fazl el-Bakkâlî
+  vefat: 562
+  eserler: [Kitâbüt-Tefsir, Miftâhut-Tenzil li-hulâsati’t-tevîl, Kitâbüt-Terâcim bi-lisâni’l-eâcim]
+jw1530:
+  madde: Serahisi (571/1176)
+  sayfa: 78
+  vefat: 571
+  eserler: [el-Muhîtü’r-Radavî, el-Vasît, el-Vecîz, el-Muhît]
+jw1245:
+  madde: İmâmzâde (491-573/1098-1177)
+  sayfa: 79
+  vefat: 573
+  dogum: 491
+  eserler: [Şir’atü’l-İslâm ilâ dâri’s-selâm, Ukûdül-akâid fî fünûni’l-fevâid, Şürûtü’s-salât]
+  hocalar:
+  - [jw380, took]
+  kanit:
+    jw380: Muhammed b. Abdullah es-Sürhaketî, Ali b. Ahmed el-Kelâbâzî, Radıyyüddin en-Nîsâbûrî, Hâce Yusuf el-Hemedânî ve Şemsüleimme Bekr b. Muhammed ez-Zerencerî’den ilim tahsil etti.
+jw985:
+  madde: Üşî (575/1179)
+  sayfa: 80
+  vefat: 575
+  eserler: [el-Emâlî, Ğureru’l-ahbâr ve dürerü’l-eş’âr, Nisâbü’l-ahbâr]
+jw1071:
+  madde: Akilî (576/1180)
+  sayfa: 82
+  ad: Ebû Hafs Ömer b. Muhammed b. Ömer b. Muhammed el-Akîlî el-Ensârî
+  kisa: Ebû Hafs el-Akîlî
+jw222:
+  madde: Attâbî (586/1190)
+  sayfa: 83
+  eserler:
+  - el-Fetâva’l-Attâbiyye
+  - Şerhu’z-Ziyâdât
+  - Şerhu’l-Câmii’l-kebîr
+  - Şerhu’l-Câmii’s-sağîr
+  - Tefsîru’l-Kur’ân
+jw1900:
+  madde: Kâsânî (587/1191)
+  sayfa: 84
+jw485:
+  madde: Kâdîhân (592/1196)
+  sayfa: 85
+  ad: Ebü’l-Mehâsin Fahreddin Hasan b. Mansûr b. Mahmûd Kâdîhân el-Uzcendî el-Fergānî
+  kisa: Kâdîhân
+  eserler: [Fetâvâ Kâdîhân, Şerhu’l-Câmii’s-sağîr, Şerhu’z-Ziyâdât]
+jw1030:
+  madde: Merğînânî (593/1197)
+  sayfa: 86
+  eserler: [el-Hidâye, et-Tecnîs vel-mezîd fîl-fetâvâ, Muhtâratü’n-nevâzil, Şerhu’l-Câmii’l-kebîr]
+  talebeler:
+  - [fws94, took]
+  kanit:
+    fws94: Ondan da Şemsüleimme el-Kerderî, Burhânü’l-İslâm ez-Zernûcî, Mahmud b. Hüseyin el-Üsrûşenî ve birçokları ilim tahsil etti.
+jw856:
+  madde: Dînârî (517-593/1123-1197)
+  sayfa: 88
+jw236:
+  madde: Ğaznevî (593/1197’den sonra)
+  sayfa: 88
+  eserler:
+  - el-Hâvi’l-Kudsî
+  - el-Mukaddimetü’l-Gaznevîyye fi’l-fürûi’l-Hanefiyye
+  - Ravdatu’l-mütekellimîn
+  - Kitâbü’l-Furûk fi’l-furû’
+  - el-Mûcez fi’l-fıkh
+jw1500:
+  madde: Secâvendî (596/1200’den sonra)
+  sayfa: 91
+  vefat: 596
+  yaklasik: true
+  eserler: [es-Sirâciyye, el-Fetâva’s-Sirâciyye, et-Tecnîs fi’l-hisâb]
+jw1549:
+  madde: Kirmânî (597/1201)
+  sayfa: 93
+  vefat: 597
+jw1444:
+  madde: Nisâbûrî (598/1201)
+  sayfa: 93
+jw950:
+  madde: Râzî (598/1201)
+  sayfa: 93
+  eserler: [Tekmiletül-Kudûrî, Hulâsatüd-delâil fî tenkîhi’l-mesâil]
+jw83:
+  madde: Timurtâşî (601/1205)
+  sayfa: 94
+  vefat: 601
+  eserler: [Şerhu’l-Câmii’s-sağîr, Fetâva’t-Timurtâşî]
+jw1726:
+  madde: Mutarrizî (538-610/1143-1213)
+  sayfa: 94
+  ad: Ebü’l-Feth Burhâneddin Nâsır b. Abdisseyyid b. Alî el-Mutarrizî el-Hârizmî
+  kisa: Ebü’l-Feth el-Mutarrizî
+  dogum: 538
+  eserler: [el-Misbâh, el-Muğrib fî tertibi’l-Mu’rib, Muhtasaru İslâhi’l-mantık]
+  hocalar:
+  - [gh562, took]
+  kanit:
+    gh562: Babasından ve Zemahşerî’nin talebesi Muvaffak b. Ahmed el-Mekkî ve Muhammed b. Ebû’l-Kâsım el-Bakkâlî’den ders aldı.
+jw1529:
+  madde: Rüknüddin el-Amidî (615/1218)
+  sayfa: 95
+  eserler: [en-Nefâis]
+jw1188:
+  madde: Buhârî (619/1222)
+  sayfa: 98
+  eserler: [el-Fetava’z-Zahîriyye, el-Fevâidü’z-Zahîriyye fi’l-fetâvâ]
+jw1838:
+  madde: Sekkâkî (555-626/1160-1299)
+  sayfa: 98
+jw1611:
+  madde: Hasîrî (546-636/1151-1238)
+  sayfa: 99
+  eserler:
+  - et-Tahrîr
+  - et-Tarîkatü’l-Hasîrîyye fî ilmi’l-hilâf beyne’ş-Şâfîiyye ve’l-Hanefiyye
+  - el-Hayru’l-matlûb fi’l-fikh
+  - Şerhu’l-Câmii’s-sağîr
+  - Şerhu’s-Siyeri’l-kebîr
+gh740:
+  madde: Üsrüşeni (592-637/1196-1240?)
+  sayfa: 102
+  eserler: [Ahkâmu’s-sığâr, el-Fusûlü’l-Üsrûşenîyye, el-Es’ile vel-ecvibe, el-Fetâva’l-Üsrûşenîyye]
+gh866:
+  madde: Sicistânî (639/1240)
+  sayfa: 102
+  ad: Yûsuf b. Ebî Saîd Ahmed es-Sicistânî
+  kisa: Yûsuf es-Sicistânî
+  vefat: 639
+  eserler: [Münyetü’l-müftî, Ğunyetü’l-fukahâ]
+jw1377:
+  madde: Kerderî (559-642/1164-1244)
+  sayfa: 102
+  ad: Ebü’l-Vecd Şemseddin Muhammed b. Abdissettâr b. Muhammed el-İmâdî el-Berâtakīnî Şemsüleimme el-Kerderî
+  kisa: Ebü’l-Vecd el-Kerderî
+jw1505:
+  madde: Ahsikesi (644/1247)
+  sayfa: 104
+jw475:
+  madde: Sâğânî (577-650/1181-1252)
+  sayfa: 104
+  eserler:
+  - ed-Dürrü’l-mültekat fî tebyîni’l-galat ve nefyil-lagat
+  - Risâle fî’l-ehâdîsi’l-mevzû’a
+  - et-Tekmile ve’z-zeyl ve’s-sıla li-kitâbi Tâci’l-luğa ve Sıhâhi’l-’Arabiyye
+  - el-Ubâbü’z-zâhir vel-lübâbü’l-fâhir
+  - eş-Şevârid fi’l-luğa
+  - Kitâbü’l-Ezdâd
+  - Kitâbü Yef’ül
+  - el-Mürtecel fî şerhi’l-Kilâdeti’s-simtiyye fî tevşîhi’d-Düreydiyye
+  - Mecma’u’l-bahreyn ve matla’u’n-neyyireyn
+  - Nak’atu’s-sadyân fî men fî subbetihim nazar mine’s-sahâbe ve gayri zâlik
+  - Derrû’s-sehâbe fî beyâni mevâzı’i vefeyâti’s-sahâbe
+  - Esâmî şüyûhi’l-Buhârî
+jw1334:
+  madde: Hılâtî (652/1254)
+  sayfa: 106
+  ad: Ebû Abdillâh Sadreddin Muhammed b. Abbâd b. Melik Dâd b. Hasan b. Dâvûd el-Hılâtî
+  kisa: Ebû Abdillâh el-Hılâtî
+  eserler: [Telhîsu’l-Câmiî’l-kebîr, Maksadü’l-Müsned]
+jw1642:
+  madde: Zâhidî (658/1260)
+  sayfa: 107
+  ad: Ebü’r-Recâ Necmeddin Muhtâr b. Mahmûd b. Muhammed ez-Zâhidî el-Ğazmînî
+  kisa: Ebü’r-Recâ ez-Zâhidî
+  eserler: [er-Risâletü’n-Nâsıriyye, Zâdü’l-eimme fî fezâili hasîsati’l-ümme, el-Câmi’ fi’l-hayz]
+jw1037:
+  madde: İbnü'l-Adîm (588-660/1192-1262)
+  sayfa: 108
+  eserler: [Buğyetü’t-taleb fî târîhi Haleb, Zübdetü’l-Haleb min târîhi Haleb, Kitâbü’d-Derârî fî zikrî’z-zerârî]
+jw1000:
+  madde: Hamidüddin ed-Darîr (666/1268)
+  sayfa: 109
+  eserler: [Hâşiyetü’l-Hidâye, Şerhün-Nâfî’, Şerhül-Câmiil-kebîr]
+tj221:
+  madde: Râzî (666/1268'den sonra)
+  sayfa: 113
+  vefat: 666
+  yaklasik: true
+  eserler:
+  - Muhtârü’s-Sıhâh
+  - Tuhfetü’l-mülûk
+  - Ravzatü’l-fesâha
+  - Kitâbül-Emsâl ve’l-hikem
+  - Meâni’l-meânî
+  - Tefsîru ğarîbi’l-Kur’âni’l-azîm
+  - Esiletü’l-Kur’ân
+  - Tefsîru sûreti’l-En’âm
+  - el-Hidâye mine’l-i’tikad
+  - Hadâikul-hakâik
+kt551:
+  madde: Merğinânî (670/1271)
+  sayfa: 113
+  vefat: 670
+fws195:
+  madde: Merğinânî (670/1271)
+  sayfa: 113
+  vefat: 670
+jw1630:
+  madde: Lü’lüî (627-671/1229-1272)
+  sayfa: 113
+jw738:
+  madde: Mevsilî (599-683/1203-1284)
+  sayfa: 113
+  eserler: [el-Muhtâr li’l-fetvâ, el-İhtiyâr li-taʾlili’l-Muhtâr, el-Müşteril âlâ mesâili’l-Muhtasar, Şerhu’l-Câmii’l-kebîr]
+gh689:
+  madde: Nesefî (600-687/1204-1289)
+  sayfa: 115
+  vefat: 687
+  eserler:
+  - el-Mukaddimetü’l-Burhâniyye fi’l-hilâf
+  - Menşeü’n-nazar fi ilmi’l hilaf
+  - en-Nikâtü’z-zarûriyyetü’l-erbainiyye
+  - Muhtasaru Nihâyeti’l-ukûl
+  - Meşârıkul-envâr fi şerhi esmâi’llâhi’l-husnâ
+gh932:
+  madde: Nesefî (600-687/1204-1289)
+  sayfa: 115
+  dogum: 600
+  eserler:
+  - el-Mukaddimetü’l-Burhâniyye fi’l-hilâf
+  - Menşeü’n-nazar fi ilmi’l hilaf
+  - en-Nikâtü’z-zarûriyyetü’l-erbainiyye
+  - Muhtasaru Nihâyeti’l-ukûl
+  - Meşârıkul-envâr fi şerhi esmâi’llâhi’l-husnâ
+jw1072:
+  madde: Habbâzî (629-691/1232-1292)
+  sayfa: 115
+  eserler: [el-Muğnî fî usûli’l-fikh, Hâşiyetü’l-Hidâye, el-Hâdî fî usûli’d-dîn]
+jw147:
+  madde: İbnü’s-Sââtî (694-1295)
+  sayfa: 116
+  eserler: [Mecmaul-bahreyn ve mültekân-neyyireyn, el-Bedî]
+jw1637:
+  madde: Kelâbâzî (644-700/1246-1300)
+  sayfa: 120
+  ad: Ebü’l-Alâ Şemseddin Mahmûd b. Ebî Bekr el-Kelâbâzî el-Buhârî el-Faradî
+  kisa: Ebü’l-Alâ el-Kelâbâzî
+  eserler:
+  - Dav’u’s-Sirâc
+  - Hallü’l-karâiz fî fenni’l-ferâiz
+  - Telkihu’l-efhâm fî şerhi mesâili zevi’l-erhâm
+  - Meşyaha
+jw692:
+  madde: Nesefî (710/1310)
+  sayfa: 122
+  vefat: 710
+  eserler:
+  - Kenzü’d-dekâik
+  - Menâru’l-envâr
+  - el-Kâfî
+  - el-Müstasfâ
+  - el-Musaffâ
+  - Medâriku’t-Tenzil ve hakâiku’t-tevîl
+  - Şerhu’l-Umde
+jw66:
+  madde: Serûcî (637-710/1239-1310)
+  sayfa: 124
+  ad: Ebü’l-Abbas Ahmed b. İbrâhim b. Abdilganî b. Ebî İshak es-Serûcî
+  kisa: Ebü’l-Abbas es-Serûcî
+  eserler:
+  - el-Ğâye
+  - Edebü’l-kadâ’
+  - Tuhfetü’l-ashâb ve nüzhetü zevi’l-elbâb
+  - Risâle fî kerâheti ekli lahmi’l-hayl
+  - Nefehâtü’n-nesemât fî vüsûli ihdâ’i’s-sevâb ile’l-emvât
+jw507:
+  madde: Sığnâkî (714/1314)
+  sayfa: 128
+  vefat: 714
+  eserler:
+  - en-Nihâye
+  - el-Vâfî Şerhu Muntahabi’l-Ahsikesî
+  - el-Kâfî Şerhu Usûli’l-Pezdevî
+  - et-Tesdîd şerhu’t-Temhîd fî kavâidi’t-tevhîd
+  - el-Muvassal
+  - en-Necâhu’t-tâlî tilvel-merâh
+  - Fetâva’r-ri’âye fî tecdîdi mesâ’ili’l-Hidâye
+  talebeler:
+  - [jw2013, took]
+  - [gh722, took]
+  - [fws105, took]
+  - [gh355, took]
+  kanit:
+    jw2013: Sığnâkî'nin talebeleri arasında Kıvâmüddin el-Kâkî, Emîr Kâtib el-İtkânî, Celâlüddin el-Hârizmî el-Kürlânî, Celâlüddin Ahmed b. Mahmud el-Gucdüvânî, Şemsüddin Abdullah b. Haccâc el-Kâşğarî ve
+      İbnü'l-Fasîh'in adları geçer.
+    gh722: Sığnâkî'nin talebeleri arasında Kıvâmüddin el-Kâkî, Emîr Kâtib el-İtkânî, Celâlüddin el-Hârizmî el-Kürlânî, Celâlüddin Ahmed b. Mahmud el-Gucdüvânî, Şemsüddin Abdullah b. Haccâc el-Kâşğarî ve
+      İbnü'l-Fasîh'in adları geçer.
+    fws105: Sığnâkî'nin talebeleri arasında Kıvâmüddin el-Kâkî, Emîr Kâtib el-İtkânî, Celâlüddin el-Hârizmî el-Kürlânî, Celâlüddin Ahmed b. Mahmud el-Gucdüvânî, Şemsüddin Abdullah b. Haccâc el-Kâşğarî ve
+      İbnü'l-Fasîh'in adları geçer.
+    gh355: Sığnâkî'nin talebeleri arasında Kıvâmüddin el-Kâkî, Emîr Kâtib el-İtkânî, Celâlüddin el-Hârizmî el-Kürlânî, Celâlüddin Ahmed b. Mahmud el-Gucdüvânî, Şemsüddin Abdullah b. Haccâc el-Kâşğarî ve
+      İbnü'l-Fasîh'in adları geçer.
+jw343:
+  madde: İbnü’l-Muallim (623-714/1226-1315)
+  sayfa: 128
+jw820:
+  madde: Buhârî (730/1330)
+  sayfa: 129
+  eserler: [et-Tahkîk]
+jw954:
+  madde: İbn Belebân (675-739/1276-1339)
+  sayfa: 130
+  ad: Ebü’l-Hasen Alâeddin Alî b. Belebân b. Abdillâh el-Fârisî el-Mısrî
+  kisa: İbn Belebân
+  eserler:
+  - el-Îhsân fî takrîbi Sahîhi İbn Hibbân
+  - Telhîsu’l-İlmâm fî ehâdîsi’l-ahkâm
+  - Umdetü’s-sâlik fî’l-menâsik
+  - Tenbîhü’l-hâtır alâ zelleti’l-kari’i’z-zâkir
+  hocalar:
+  - [jw343, fiqh]
+  kanit:
+    jw343: Ebü’l-Abbâs es-Serûcî, Reşîdüddin İbnü’l-Muallim ve Fahruddin İbnü’t-Türkmânî’den fıkıh, Alâüddin el-Konevî’den mantık ve usûl, Ebû Hayyân el-Endelüsî’den nahiv, Abdülmü’min b. Halef ed-Dimyâtî,
+      İbnü’s-Savvâf el-Kureşî, Kutbüddin el-Halebî…
+jw925:
+  madde: Zeylaî (743/1343)
+  sayfa: 132
+  ad: Ebû Muhammed Fahreddin Osman b. Alî b. Mihcen ez-Zeylaî el-Bâriî
+  kisa: Ebû Muhammed ez-Zeylaî
+  eserler: [Kenzü’d-dekâik]
+gh389:
+  madde: Sadruşşerîa (747/1346)
+  sayfa: 132
+  eserler: [et-Tenkîh, Şerhu’l-Vikâye, en-Nukâye, Tâdîlü’l-ulûm]
+ts1383:
+  madde: Sadruşşerîa (747/1346)
+  sayfa: 132
+  eserler: [et-Tenkîh, Şerhu’l-Vikâye, en-Nukâye, Tâdîlü’l-ulûm]
+gh722:
+  madde: Kâkî (749/1348)
+  sayfa: 136
+  ad: Kıvâmüddin Muhammed b. Muhammed b. Ahmed el-Kâkî el-Hucendî es-Sincârî
+  kisa: Kıvâmüddin el-Kâkî
+  eserler:
+  - Mi’râcü’d-dirâye ilâ şerhi’l-Hidâye
+  - Uyûnü’l-mezâhibî
+  - Câmiu’l-esrâr fî şerhi’l-Menâr
+  - Beyânü’l-vusûl fî şerhi’l-Usûl li’l-Pezdevî
+jw984:
+  madde: İbnü’t-Türkmânî (683-750/1284-1349)
+  sayfa: 136
+  eserler:
+  - el-Cevheru’n-nakî fi’r-red alel-Beyhakî
+  - Behcetü’l-erîb fî beyâni mâ fî Kitâbillâhi mine’l-garîb
+  - el-Kifâye fî ma’rifeti ahâdîsi’l-Hidâye
+  - Muhtasaru Ulûmi’l-hadîs
+gh108:
+  madde: İbnü’l-Fasih (680-755/1281-1354)
+  sayfa: 137
+  ad: Ebû Tâlib Fahreddin Ahmed b. Alî b. Ahmed el-Hemedânî el-Kûfî
+  kisa: İbnü’l-Fasih
+  eserler:
+  - Müstahsenü’t-tarâik fî nazmi Kenzî’d-dekâik
+  - Nazmü Menâri’l-envâr
+  - Hallü’r-rumûz
+jw2013:
+  madde: İtkânî (685-758/1286-1357)
+  sayfa: 139
+  eserler:
+  - Ğâyetul-beyân ve nâdiretul-akrân fî âhiri’z-zamân
+  - et-Tebyîn
+  - Risâle fî terki ref’i’l-yedeyn
+  - eş-Şâmil fî şerhi Usûli’l-Pezdevî
+  - Verdetü’l-ervâh fî’l-esmâi’l-merviyye fî’l-mü’enneseti’s-semâiyye
+  - el-Lübâb fî ilmi’l-hisâb
+at140:
+  madde: İtkânî (685-758/1286-1357)
+  sayfa: 139
+  vefat: 758
+  dogum: 685
+  eserler:
+  - Ğâyetul-beyân ve nâdiretul-akrân fî âhiri’z-zamân
+  - et-Tebyîn
+  - Risâle fî terki ref’i’l-yedeyn
+  - eş-Şâmil fî şerhi Usûli’l-Pezdevî
+  - Verdetü’l-ervâh fî’l-esmâi’l-merviyye fî’l-mü’enneseti’s-semâiyye
+  - el-Lübâb fî ilmi’l-hisâb
+gh370:
+  madde: Zeylaî (762/1360)
+  sayfa: 143
+  hocalar:
+  - [jw925, took]
+  kanit:
+    jw925: Fahruddin ez-Zeylaî, Alâüddin İbnü’t-Türkmânî ve Bahâüddin İbn Akîl’den ders aldı.
+gh67:
+  madde: Ayıntâbî (705-767/1305-1367)
+  sayfa: 144
+  dogum: 705
+  eserler: [el-Menba, Şerhu’l-Muğnî]
+gh384:
+  madde: İbn Vehbân (768/1366)
+  sayfa: 145
+  eserler: [İkdü’l-kalâid fî halli Kaydi’ş-şerâid, İmtisâlü’l-emr fî kırâeti Ebî Amr]
+gh22:
+  madde: Tarsûsî (721-758/1321-1357)
+  sayfa: 140
+  eserler:
+  - Enfau’l-vesâil ilâ tahrîri’l-mesâil
+  - Tuhfetü’t-Türk fîmâ yecibü en yu’mele fi’l-mülk
+  - el-Fevâidü’l-fikhiyye
+  - Urcûze fî vefeyâti’l-a’yân min mezhebi Ebî Hanîfeti’n-Nu’mân
+  - el-İ’lâm bi-mustalahi’ş-şuhûd vel-hukkâm
+  - Îzâhu’l-esrâri’l-hafiyye fî kitâbi vakfî’l-mezra’ati’l-Asrûniyye
+  - en-Nûru’l-Lâmi’ fîmâ yu’melü bihî fi’l-câmi’
+  - Risâle fî cevâzi ikâmeti’l-cum’a fî mevzi’ayn min mısr vâhid
+  - Risâle fî cevâzi nakli’ş-şehîd
+  - Urcûze fî ma’rifeti mâ beyne’l-Eşâire ve’l-Hanefiyye mine’l-hilâf fî usûli’d-dîn
+fws105:
+  madde: Kürlânî (767/1366)
+  sayfa: 144
+  ad: Celâleddin b. Şemseddin el-Hârizmî el-Kürlânî
+  kisa: Celâleddin el-Kürlânî
+  vefat: 767
+  hocalar:
+  - [jw820, took]
+  kanit:
+    jw820: Hüsâmüddin es-Sığnâkî ve Abdülaziz el-Buhârî'den ders aldı.
+jw1614:
+  madde: Konevî (692-770/1293-1369)
+  sayfa: 146
+  vefat: 770
+  dogum: 692
+  eserler:
+  - el-Müntehab min vakfeyi’l-Hilâl ve’l-Hassâf
+  - Hulâsatü’n-Nihâye fî fevâidi’l-Hidâye
+  - el-Buğye
+  - el-Ğunye fî’l-fetâvâ
+  - el-Î’câz fî’l-i’tirâz ale’l-edilleti’ş-şer’iyye
+  - el-Kalâid fî şerhi’l-Akâid
+  - el-Mu’temed fî ehâdîsi’l-Müsned
+  - Müntehab mine’l-Fetâva’l-kübrâ
+fws177:
+  madde: Hârizmî (771/1369)
+  sayfa: 148
+  vefat: 771
+gh468:
+  madde: es-Sirâcü’l-hindî (704-773/1304-1372)
+  sayfa: 148
+  eserler:
+  - et-Tevşîh
+  - Şerhu’l-Akîdeti’t- Tahâviyye
+  - el-Ğurretü’l-münîfe fî tahkîki ba’zi mesâili’l-İmâm Ebî Hanîfe
+  - Zübdetü’l-ahkâm fî’htilâfi’l-mezâhibi’l-eimmeti’l-erbaati’l-a’lâm
+  - Şerhu’l-Muğnî
+  - Şerhu’l-Bedî’
+gh349:
+  madde: Kureşi (696-775/1297-1373)
+  sayfa: 150
+  eserler:
+  - el-Cevâhiru’l-mudiyye fî tabakâti’l-Hanefiyye
+  - el-İnâye fî tahrîci ahâdîsi’l-Hidâye
+  - Tehzibül-ésmâi’l-vâkıa fi’l-Hidâye ve’l-Hulâsa
+  - el-Vesâil
+  hocalar:
+  - [jw984, fiqh]
+  - [jw343, fiqh]
+  kanit:
+    jw984: Ebü'l-Hasan İbnü's-Savvâf, İmâdüddin İbnü's-Sükkerî, Ebü'l-Abbas el-Haccâr, Sittülvüzerâ, Reşîdüddin İbnü'l-Muallim ve Kutbüddin el-Halebî'den hadis, Fahruddin Osman b. İbrahim İbnü't-Türkmânî
+      ile iki oğlu Alâüddin İbnü't-Türkmânî ve…
+    jw343: Ebü'l-Hasan İbnü's-Savvâf, İmâdüddin İbnü's-Sükkerî, Ebü'l-Abbas el-Haccâr, Sittülvüzerâ, Reşîdüddin İbnü'l-Muallim ve Kutbüddin el-Halebî'den hadis, Fahruddin Osman b. İbrahim İbnü't-Türkmânî
+      ile iki oğlu Alâüddin İbnü't-Türkmânî ve…
+gh632:
+  madde: İbnü's-Sâiğ (704-776/1304-1375)
+  sayfa: 152
+  ad: Ebû Abdillâh Şemseddin Muhammed b. Abdirrahmân b. Alî ez-Zümürrüdî
+  kisa: İbnü’s-Sâiğ
+  eserler:
+  - Şerhu’l-Muğnî fî usûli’l-Fıkh
+  - el-Vad’ul-bâhir fî refî ef’âli’z-zâhir
+  - el-Mirkât fî i’râbi’ lâ-ilâhe illellâh
+  - Şerhu Kasîdeti’l-Bürde
+  - Tahmîsu Kasîdeti’l-Bürde
+  hocalar:
+  - [jw984, took]
+  - [jw925, took]
+  kanit:
+    jw984: Alâüddin el-Konevî, Takıyyüddin İbnü's-Sâiğ, Tâcüddin İbnü't-Türkmânî, Alâüddin İbnü't-Türkmânî, Fahruddin ez-Zeylaî, Şihâbüddin İbnü'l-Murahhil, Hatîb el-Kazvînî, Ebû Hayyân el-Endelüsî ve el-Fahru'r-Rebîî'den
+      ilim tahsil etti.
+    jw925: Alâüddin el-Konevî, Takıyyüddin İbnü's-Sâiğ, Tâcüddin İbnü't-Türkmânî, Alâüddin İbnü't-Türkmânî, Fahruddin ez-Zeylaî, Şihâbüddin İbnü'l-Murahhil, Hatîb el-Kazvînî, Ebû Hayyân el-Endelüsî ve el-Fahru'r-Rebîî'den
+      ilim tahsil etti.
+gh705:
+  madde: Bâbertî (714-786/1314-1384)
+  sayfa: 152
+  dogum: 714
+  eserler:
+  - el-İnâye
+  - Şerhu Akîdeti’t-Tahâvî
+  - Şerhu’t-Telhîs
+  - Şerhu Vasıyyeti’l-İmâmi’l-A’zam
+  - et-Takrîr
+  - el-İrşâd fî şerhi’l-Fıkhi’l-ekber
+  - Tuhfetü’l-ebrâr fî şerhi Meşâriki’l-envâr
+  - Hâşiyetü’l-Keşşâf
+  - el-Envâr Şerhu’l-Menâr
+  - Şerhu Telhîsi’l-Câmii’l-kebîr li’l-Hılâtî
+  - Şerhu Muhtasari İbni’l-Hâcib
+  - Şerhu’s-Sirâciyye
+  talebeler:
+  - [gh455, fiqh]
+  kanit:
+    gh455: Derin fıkıh bilgisi yanında hadis, kelâm, Arap dili ve edebiyatına da vakıf olup talebeleri arasında Seyyid Şerîf el-Cürcânî, Molla Fenârî ve İbn Kâdî Semâve gibi âlimler bulunmaktadır.
+at588:
+  madde: Bâbertî (714-786/1314-1384)
+  sayfa: 152
+  dogum: 714
+  eserler:
+  - el-İnâye
+  - Şerhu Akîdeti’t-Tahâvî
+  - Şerhu’t-Telhîs
+  - Şerhu Vasıyyeti’l-İmâmi’l-A’zam
+  - et-Takrîr
+  - el-İrşâd fî şerhi’l-Fıkhi’l-ekber
+  - Tuhfetü’l-ebrâr fî şerhi Meşâriki’l-envâr
+  - Hâşiyetü’l-Keşşâf
+  - el-Envâr Şerhu’l-Menâr
+  - Şerhu Telhîsi’l-Câmii’l-kebîr li’l-Hılâtî
+  - Şerhu Muhtasari İbni’l-Hâcib
+  - Şerhu’s-Sirâciyye
+ts1015:
+  madde: Alîm b. el-Alâ' (786/1384)
+  sayfa: 154
+  vefat: 786
+gh799:
+  madde: Konevî (715-788/1315-1386)
+  sayfa: 156
+  dogum: 715
+  eserler:
+  - Düreru’l-bihâr fî’l-mezâhibi’l-erba’ati’l-ahyâr
+  - Risâle fî hakikati’t-tevhîd
+  - Risâle fî cevâzi icâreti’l-iktâ’
+  - Şerhu’ş-Şecereti’n-Nu’mâniyye fî’d-Devleti’l-Osmâniyye
+kt643:
+  madde: Cemâlüddin Aksarayî (791/1388-89)
+  sayfa: 157
+  vefat: 791
+  eserler:
+  - Ahlâk-ı Cemâlî
+  - Şerhu’l-Îzâh
+  - Hâşiye alâ Şerhi Mecmai’l-bahreyn
+  - Hâşiye ale’l-Keşşâf
+  - el-Es’ile vel-ecvibe
+  - Şerhu’l-Erbaine hadisen
+  talebeler:
+  - [gh592, took]
+  kanit:
+    gh592: Talebeleri arasında Molla Fenârî de vardı.
+gh825:
+  madde: Teftâzânî (722-792/1322-1390)
+  sayfa: 158
+  vefat: 792
+  eserler:
+  - et-Telvîh fî keşfî hakâiki’t-Tavdîh
+  - Şerhu’l-Akâid
+  - el-Mutavvel fi’l-meânî vel-beyân
+  - el-Muhtasar
+  - Şerhu’t-Tasrîf
+  - el-Makâsıd
+  - Tehzîbü’l-mantık vel-kelâm
+  - Hâşiye alâ Şerhi Muhtasari Müntehe’s-sûl vel-emel
+  - Şerhu’ş-Şemsiyye fi’l-mantık
+kt645:
+  madde: Kara Hoca (800/1397)
+  sayfa: 161
+  vefat: 800
+  eserler: [el-İnâye, Kunûzu’l-envâr]
+gh455:
+  madde: Seyyid Şerif Cürcânî (740-816/1340-1413)
+  sayfa: 164
+  ad: Ebü’l-Hasen Alî b. Muhammed b. Alî Seyyid Şerîf el-Cürcânî
+  kisa: Seyyid Şerîf Cürcânî
+  vefat: 816
+  dogum: 740
+  eserler:
+  - et-Ta’rifât
+  - Şerhu’s-Sirâciyye
+  - Şerhu’l-Mevâkıf
+  - Hâşiyetü’t-Tecrîd
+  - Hâşiye alâ Metâlii’l-enzâr şerhi Tavâlii’l-envâr
+  - Hâşiye alâ Levâmii’l-esrâr şerhi Metâlii’l-envâr
+  - Hâşiye alâ Şerhi Hikmeti’l-ayn
+  - Hâşiye alâ Şerhi Hidâyeti’l-hikme
+  - Hâşiye ale’l-Mutavvel
+  - Hâşiye alâ Şerhi’l-Kâfiye
+  - Şerhu’l-Kâfiye
+  - Hâşiye alâ Şerhi Muhtasari’l-müntehâ
+  - Hâşiye ale’t-Telvîh
+  - Hâşiye ale’l-Keşşâf
+  - ed-Dîbâcü’l-müzheb
+  - Şerhu’l-Akâidi’l-Adudiyye
+  - Şerhu esmâi’l-hüsnâ
+  - Risâle fî’l-mantık
+  - Şerhu’l-Mülahhas fî’l-heye
+  - Risâle fî âdâbi’l-bahs
+  - Şerhu Âdâbi’l-Bahs
+  - Şerhu Kenzî’d-dekâik
+  - Hâşiyetü’l-Hidâye
+  talebeler:
+  - [kt692, took]
+  kanit:
+    kt692: Yetiştirdiği öğrenciler arasında ünlü matematikçi Kadızâde-i Rûmî, Fahruddin-i Acemî ve Fethullah eş-Şirvânî gibi âlimler bulunmaktadır.
+fws220:
+  madde: ' (821/1418''den sonra)'
+  sayfa: 167
+  vefat: 821
+  yaklasik: true
+  eserler:
+  - Şerhu’l-Menâr
+  - Şerhu’l-Mecma’
+  - Mebâriku’l-ezhâr fî şerhi Meşâriki’l-envâr
+  - Firişteoğlu Lugatı
+  - Şerhu’l-Vikâye
+  - Şerhu Tuhfeti’l-mülûk
+  - Hâşiyetü Acemzâde
+  - Risâle fî mechûli’n-neseb
+gh725:
+  madde: Bezzâzî (827/1424)
+  sayfa: 171
+  eserler: [el-Fetâva’l-Bezzâziyye, Menâkıbü’l-İmâmi’l-Azam Ebî Hanîfe]
+gh475:
+  madde: Kâriu'l-Hidâye (829/1426)
+  sayfa: 173
+  ad: Ebû Hafs Sirâceddin Ömer b. Alî b. Fâris el-Kinânî el-Hüseynî el-Kāhirî Kâriu’l-Hidâye
+  kisa: Kâriu’l-Hidâye
+kt533:
+  madde: Nebîre-i Ömer (832/1429)
+  sayfa: 173
+  vefat: 832
+fws503:
+  madde: Nebîre-i Ömer (832/1429)
+  sayfa: 173
+  vefat: 832
+gh592:
+  madde: Molla Fenârî (751-834/1350-1431)
+  sayfa: 174
+  ad: Şemseddin Mehmed b. Hamza Fenârî
+  kisa: Molla Fenârî
+  eserler:
+  - Fusûlü’l-bedâyi’ fî usûli’ş-şerâi’
+  - Aynül-a’yân
+  - el-Fevâidü’l-Fenâriyye
+  - Şerhu’l-Ferâizi’s-Sirâciyye
+  - Şerhu Telhîsi’l-Câmi’i’l-kebîr
+  - Misbâhu’l-üns beyne’l-makul ve’l-meşhûd fî şerhi Miftâhi’l-gayb
+  - Şerhu Fikhi’l-Keydânî
+  - Şerhu dibâceti’l
+  - Tahkîku hakâiki’l-eşyâ’ ve dekâiki’l-ulûm vel-ârâ’
+  - Ta’likâ alâ İstilâhâti’s-sûfiyye
+  - Avîsatü’l-efkâr fi’htibâri üli’l-ebsâr
+  - Hâşiye ale’d-Dav’
+kt686:
+  madde: Mehmed Şah Fenârî (839/1435 ?)
+  sayfa: 177
+  eserler:
+  - Hâşiye alâ Fusûli’l-bedâyi’ li-usûli’ş-şerâyi’
+  - Telhîsu’l-Fusûl ve tersîsü’l-usûl
+  - Şerhu Ferâizi’s-Secâvendî
+  - Ünmüzecü’l-ulûm
+  - Hâşiye alâ Tefsîri
+  - Hâşiye alâ Hâşiyeti’s-Seyyid li-Şerhi Tecrîd
+  - Es’ile fi’l-hikme
+  - Te’sîsü’l-kavâid harfen bi-harfin fî şerhi makâsıdı Esâsi’s-sarf
+  - Şerhu’l-Manzûmeti’l-mensûbe ilâ Şemsiddîn el-Fenârî
+  - Risâle fî ilmi’l-beyân
+  - Şerhu’l-elğâz
+  - Şerhu Manzûmeti’l-elğâz li’l-fârih
+fws387:
+  madde: Mehmed Şah Fenârî (839/1435 ?)
+  sayfa: 177
+  vefat: 839
+  yaklasik: true
+  eserler:
+  - Hâşiye alâ Fusûli’l-bedâyi’ li-usûli’ş-şerâyi’
+  - Telhîsu’l-Fusûl ve tersîsü’l-usûl
+  - Şerhu Ferâizi’s-Secâvendî
+  - Ünmüzecü’l-ulûm
+  - Hâşiye alâ Tefsîri
+  - Hâşiye alâ Hâşiyeti’s-Seyyid li-Şerhi Tecrîd
+  - Es’ile fi’l-hikme
+  - Te’sîsü’l-kavâid harfen bi-harfin fî şerhi makâsıdı Esâsi’s-sarf
+  - Şerhu’l-Manzûmeti’l-mensûbe ilâ Şemsiddîn el-Fenârî
+  - Risâle fî ilmi’l-beyân
+  - Şerhu’l-elğâz
+  - Şerhu Manzûmeti’l-elğâz li’l-fârih
+gh614:
+  madde: Mehmed Şah Fenârî (839/1435 ?)
+  sayfa: 177
+  eserler:
+  - Hâşiye alâ Fusûli’l-bedâyi’ li-usûli’ş-şerâyi’
+  - Telhîsu’l-Fusûl ve tersîsü’l-usûl
+  - Şerhu Ferâizi’s-Secâvendî
+  - Ünmüzecü’l-ulûm
+  - Hâşiye alâ Tefsîri
+  - Hâşiye alâ Hâşiyeti’s-Seyyid li-Şerhi Tecrîd
+  - Es’ile fi’l-hikme
+  - Te’sîsü’l-kavâid harfen bi-harfin fî şerhi makâsıdı Esâsi’s-sarf
+  - Şerhu’l-Manzûmeti’l-mensûbe ilâ Şemsiddîn el-Fenârî
+  - Risâle fî ilmi’l-beyân
+  - Şerhu’l-elğâz
+  - Şerhu Manzûmeti’l-elğâz li’l-fârih
+gh546:
+  madde: İbnü’d-Diyâ (789-854/1387-1450)
+  sayfa: 179
+  ad: Ebü’l-Bekā Bahâeddin Muhammed b. Ahmed b. Muhammed b. ed-Diyâ el-Umerî el-Kureşî es-Sâġânî el-Mekkî
+  kisa: İbnü’d-Diyâ
+  dogum: 789
+  eserler:
+  - Şerhu’l-Mecma
+  - Şerhu’l-Kenz
+  - ed-Diyâu’l-ma’nevî
+  - el-Bahru’l-amîk fî menâsiki’l-mu’temir vel-hâc ilel-beyti’l-atîk
+  - Tenzîhül-Mescidi’l-Harâm an bida’i ceheleti’l-avâm
+  - Muhtasaru’l-Müsned li-Ebî Hanîfe
+  - el-Mütedârik ale’l-medârik fi’t-tefsîr
+  hocalar:
+  - [gh475, took]
+  kanit:
+    gh475: Kâriu’l-Hidâye, İzzüddin İbn Cemâa, İbn Hacer el-Askalânî, Ebû Hüreyre İbnü’z-Zehebî, Şerefüddin İbnü’l-Küveyk, Şihâbüddin İbnü’n-Nâsıh, Bulkînî, Irâkî, Şihâbüddin İbn Zahîre, Heysemî, Tenûhî
+      ve İbnü’l-Mülakkın’den ders aldı. 825 (1422)…
+gh802:
+  madde: Aynî (762-855/1361-1451)
+  sayfa: 181
+  eserler:
+  - Umdetü’l-kârî
+  - Nuhabü’l-efkâr fî tenkîhi Mebâni’l-ahbâr fî serhi Meâni’l-âsâr
+  - Şerhu’l-Hidâye
+  - Şerhu’l-Kenz
+  - Şerhu’l-Mecmâ’
+  - İkdü’l-cümân fî târîhi ehli’z-zamân
+  - el-Makâsidü’n-nahviyye fî şerhi şevâhidi şurûhi’l-Elfiyye
+  - eş-Seyfü’l-mühenned fî sîreti’l-Meliki’l-Müeyyed
+  - el-Alemü’l-heyyib fî şerhi’l-Kelimi’t-tayyib
+  - Keşfu’l-kınâi’l-mürnâ an mühimmâti’l-esâmî vel-künâ
+  - er-Ravdu’z-zâhir fî sîreti’l-Meliki’z-Zâhir
+  - Meğâni’l-ahyâr fî ricâli Meâni’l-âsâr
+gh749:
+  madde: İbnü'l-Hümâm (790-861/1388-1457)
+  sayfa: 184
+  ad: Kemâleddin Muhammed b. Abdilvâhid b. Abdilhamîd b. Mes‘ûd İbnü’l-Hümâm es-Sivâsî el-İskenderî
+  kisa: İbnü’l-Hümâm
+  eserler:
+  - Fethu’l-Kadîr
+  - el-Müsâyere fi’l-akâidi’l-mûnciye fi’l-âhire
+  - et-Tahrîr
+  - Zâdü’l-fakîr
+  - et-Tergîb fi’l-kesb
+  - Fetâvâ İbn Hümâm
+  - Fihristü Fetâvâ Kâril-Hidâye
+  - Es’ile ve ecvibe
+ts822:
+  madde: Hızır Bey (810-863/1407-1459)
+  sayfa: 185
+  eserler:
+  - en-Nûniyye fi’l-akâid
+  - Terceme-i Metâlii’l-envâr
+  - Terceme-i Külliyyâtı Hoca Ubeydullah
+  - Tefsiri Yâsîni Şerîf
+  - Tuhfe-i Sultân Murâd Han
+kt713:
+  madde: Hızır Bey (810-863/1407-1459)
+  sayfa: 185
+  vefat: 863
+  dogum: 810
+  eserler:
+  - en-Nûniyye fi’l-akâid
+  - Terceme-i Metâlii’l-envâr
+  - Terceme-i Külliyyâtı Hoca Ubeydullah
+  - Tefsiri Yâsîni Şerîf
+  - Tuhfe-i Sultân Murâd Han
+kt683:
+  madde: Molla Yegân (865/1461 civarı)
+  sayfa: 188
+  vefat: 865
+  yaklasik: true
+gh261:
+  madde: İbnü’d-Deyrî (768-867/1366-1463)
+  sayfa: 189
+  eserler:
+  - el-Habs fi’t-töhme ve’l-imtihân alâ talebi’l-ikrâr ve izhâri’l-mâl
+  - el-Mesâilü’ş-şerîfe fî edilleti’l-İmâm Ebî Hanîfe
+  - es-Sihâmül-mârika fî kebidi’z-zenâdıka
+  - Fetva an ehli’l-cezbe mine’s-sûfiyyin
+fws164:
+  madde: İbnü’d-Deyrî (768-867/1366-1463)
+  sayfa: 189
+  ad: Ebü’s-Saâdât Sa‘deddin Sa‘d b. Muhammed b. Abdillâh b. Sa‘d b. Ebî Bekr en-Nâblusî el-Makdisî ed-Dımaşkī
+  kisa: İbnü’d-Deyrî
+  vefat: 867
+  eserler:
+  - el-Habs fi’t-töhme ve’l-imtihân alâ talebi’l-ikrâr ve izhâri’l-mâl
+  - el-Mesâilü’ş-şerîfe fî edilleti’l-İmâm Ebî Hanîfe
+  - es-Sihâmül-mârika fî kebidi’z-zenâdıka
+  - Fetva an ehli’l-cezbe mine’s-sûfiyyin
+gh130:
+  madde: Şümünnî (801-872/1399-1468)
+  sayfa: 190
+  eserler:
+  - Kemâlü’d-dirâye fî şerhi’n-Nukâye
+  - el-Âli’r-rütbe fî şerhi Nazmi’n-Nuhbe
+  - Müzîlü’l-hafâ’ alâ elfâzi’ş-Şifâ
+  - el-Münsif mine’l-kelâm alâ Muğni İbn Hişâm
+  - Menhecü’s-sâlik ilâ Elfiyyeti İbn Mâlik
+  - el-Umûru’n-nâciha fî keşfi esrâri’l-Fâtiha
+ts399:
+  madde: Hayâlî (875/1470)
+  sayfa: 194
+  vefat: 875
+  eserler:
+  - Hâşiye alâ Şerhi’l-Akâidi’n-Nesefiyye
+  - Şerhu’l-Kasîdeti’n-nûniyye
+  - Hâşiye alâ Şerhi Tecrîdi’l-akâid
+  - Hâşiye alâ Şerhi’l-Makâsid
+  - Hâşiye alâ Risâleti isbâti’l-vâcib
+  - Hâşiye alâ Şerhi Muhtasari’l-Müntehâ
+  - Hâşiye alâ Şerhi’l-Vikâye
+  - Hâşiyetü’t-Telvîh
+  - Müsveddâtü Hayâlî ale’l-Keşşâf
+  - et-Ta’likât ale’l-Mutavvel
+  hocalar:
+  - [fws272, took]
+  kanit:
+    fws272: Sonra Alâüddin Ali et-Tûsî ve Bursa Sultaniye Medresesi'nde Hızır Bey'den ilim tahsil etti, onun yardımcısı oldu.
+gh716:
+  madde: İbn Emîr el-Hâc (825-879/1422-1474)
+  sayfa: 196
+  ad: Muhammed b. Muhammed b. Muhammed b. Hasan İbn Emîr el-Hâc el-Halebî
+  kisa: İbn Emîr el-Hâc
+  vefat: 879
+  dogum: 825
+  eserler:
+  - et-Takrîr ve’t-tahbîr
+  - Hilyetü’l
+  - el-Fetâvâ
+  - Risâle fî kırâeti “innâ enzelnâhu” fî esnâi’l-vudû’
+  - Tahsîsu vakfî’z-zahîre
+  - Ta’rîfü’l-müsterşid hükme’l-ğaras fî’l-mescid
+gh608:
+  madde: Kâfiyeci (788-879/1386-1474)
+  sayfa: 197
+  ad: Ebû Abdillâh Muhyiddin Muhammed b. Süleyman b. Saîd b. Mes‘ûd el-Kâfiyecî er-Rûmî
+  kisa: Ebû Abdillâh el-Kâfiyecî
+  vefat: 879
+  dogum: 788
+  eserler:
+  - et-Teysîr fî kavâidi ilmi’t-tefsîr
+  - el-Envâr fî ilmi’t-tevhîd
+  - el-Ferah ve’s-sürûr fî beyâni’l-mezâhibi’l-erbaa fi’l-usûr
+  - et-Tergîb fî keşfi rumûzi’t-Tehzîb
+  - Seyfü’l-kudât ale’l-buğât
+  - Seyfül-mülük vel-hükkâmi’l-mürşid lehüm ile’l-hak ve sebîli’l-ahkâm
+  - el-Muhtasar fî ilmi’t-târîh
+  - Şerhu Kavâidi’l-i’râb
+  - el-Muhtasar fî ilmi’l-eser
+  - Kitâbü’r-Ravh fî ilmi’r-rûh
+  - Menâzilül-ervâh
+  - en-Niseb li-ehlî’l-edeb
+  - et-Temhîd fî şerhi’t-tahmîd
+  - Hulâsatül-akvâl fî hadîsi "innemel-amâl bi’n-niyyât"
+  - Nüzhetül-ihvân fî tefsîri kavlihi Teâlâ "Yâ Lût innâ"
+  - er-Rahme fî beyani ahvâli âlemi’l-berzah
+  hocalar:
+  - [gh592, took]
+  kanit:
+    gh592: Molla Fenârî’den ders aldı.
+kt688:
+  madde: Kâfiyeci (788-879/1386-1474)
+  sayfa: 197
+  vefat: 879
+  eserler:
+  - et-Teysîr fî kavâidi ilmi’t-tefsîr
+  - el-Envâr fî ilmi’t-tevhîd
+  - el-Ferah ve’s-sürûr fî beyâni’l-mezâhibi’l-erbaa fi’l-usûr
+  - et-Tergîb fî keşfi rumûzi’t-Tehzîb
+  - Seyfü’l-kudât ale’l-buğât
+  - Seyfül-mülük vel-hükkâmi’l-mürşid lehüm ile’l-hak ve sebîli’l-ahkâm
+  - el-Muhtasar fî ilmi’t-târîh
+  - Şerhu Kavâidi’l-i’râb
+  - el-Muhtasar fî ilmi’l-eser
+  - Kitâbü’r-Ravh fî ilmi’r-rûh
+  - Menâzilül-ervâh
+  - en-Niseb li-ehlî’l-edeb
+  - et-Temhîd fî şerhi’t-tahmîd
+  - Hulâsatül-akvâl fî hadîsi "innemel-amâl bi’n-niyyât"
+  - Nüzhetül-ihvân fî tefsîri kavlihi Teâlâ "Yâ Lût innâ"
+  - er-Rahme fî beyani ahvâli âlemi’l-berzah
+fws339:
+  madde: Kâfiyeci (788-879/1386-1474)
+  sayfa: 197
+  ad: Ebû Abdillâh Muhyiddin Muhammed b. Süleyman b. Saîd b. Mes‘ûd el-Kâfiyecî er-Rûmî
+  kisa: Ebû Abdillâh el-Kâfiyecî
+  vefat: 879
+  eserler:
+  - et-Teysîr fî kavâidi ilmi’t-tefsîr
+  - el-Envâr fî ilmi’t-tevhîd
+  - el-Ferah ve’s-sürûr fî beyâni’l-mezâhibi’l-erbaa fi’l-usûr
+  - et-Tergîb fî keşfi rumûzi’t-Tehzîb
+  - Seyfü’l-kudât ale’l-buğât
+  - Seyfül-mülük vel-hükkâmi’l-mürşid lehüm ile’l-hak ve sebîli’l-ahkâm
+  - el-Muhtasar fî ilmi’t-târîh
+  - Şerhu Kavâidi’l-i’râb
+  - el-Muhtasar fî ilmi’l-eser
+  - Kitâbü’r-Ravh fî ilmi’r-rûh
+  - Menâzilül-ervâh
+  - en-Niseb li-ehlî’l-edeb
+  - et-Temhîd fî şerhi’t-tahmîd
+  - Hulâsatül-akvâl fî hadîsi "innemel-amâl bi’n-niyyât"
+  - Nüzhetül-ihvân fî tefsîri kavlihi Teâlâ "Yâ Lût innâ"
+  - er-Rahme fî beyani ahvâli âlemi’l-berzah
+gh507:
+  madde: İbn Kutluboğa (802-879/1399-1474)
+  sayfa: 201
+  dogum: 802
+  eserler:
+  - Şerhu’l-Müsâyere fi’l-akâidi’l-munciye fi’l-âhire
+  - Tashîhu’l-Kudûrî
+  - Tâcü’t-terâcim fî tabakâti’l-Hanefiyye
+  - Münçetü’l-elmaî fîmâ fâte min tahrîci ehâdîsi’l-Hidâye li’z-Zeylaî
+  - Şerhu Muhtasari’l-Menâr
+  - Mücebâtü’l-ahkâm ve vâkıâtü’l-eyyâm
+  - et-Ta’rîf ve’l-ihbâr bi-tahrici ehâdîsi’l-İhtiyâr
+  - Hâşiye alâ Şerhi’n-Nuhbe
+  - Men ravâ an ebîhi an ceddih
+  - Avâli’l-Leys b
+  - Hükmü’l-İslâm fî luhûmi’l-hayl
+  - Hâşiyetü Şerhi’l-Mecma’
+  - Şerhu’n-Nukâye
+  - el-Hâtime fi’l-imân
+  - el-Vâkıât
+  - Hâşiye alâ Fethi’l-muğîs
+  - Tertîbü’s-sikât mine’r-ruvât
+  - el-Fetâval-Kâsımiyye
+kt712:
+  madde: Molla Husrev (885/1480)
+  sayfa: 203
+  eserler:
+  - Düreru’l-hukkâm
+  - Mirkâtü’l-vusûl
+  - Hâşiye alâ Hâşiyeti’l-Muhtasar
+  - Şerhu Usûli’l-Pezdevî
+  - Hâşiye alâ Envâri’t-tenzil
+  - Hâşiye ale’l-Mutavvel
+  - Risâle fi’l-velâ
+  - Esâsü’l-iktibâs Tercümesi
+  hocalar:
+  - [kt683, took]
+  kanit:
+    kt683: Edirne’de Teftâzânî’nin talebelerinden Burhânüddin Haydar el-Herevî ile Molla Yegân ve Şeyh Hamza’dan öğrenim gördü.
+ts820:
+  madde: Molla Husrev (885/1480)
+  sayfa: 203
+  eserler:
+  - Düreru’l-hukkâm
+  - Mirkâtü’l-vusûl
+  - Hâşiye alâ Hâşiyeti’l-Muhtasar
+  - Şerhu Usûli’l-Pezdevî
+  - Hâşiye alâ Envâri’t-tenzil
+  - Hâşiye ale’l-Mutavvel
+  - Risâle fi’l-velâ
+  - Esâsü’l-iktibâs Tercümesi
+  hocalar:
+  - [kt683, took]
+  kanit:
+    kt683: Edirne’de Teftâzânî’nin talebelerinden Burhânüddin Haydar el-Herevî ile Molla Yegân ve Şeyh Hamza’dan öğrenim gördü.
+fws272:
+  madde: Ali Tûsî (887/1482)
+  sayfa: 205
+  vefat: 887
+  eserler:
+  - Tehâfütü’l-felâsife
+  - Hâşiye alâ Şerhi’l-Mevâkıf
+  - Hâşiye alâ Şerhi Muhtasari’l-Müntehâ
+  - Hâşiye alâ Hâşiyeti’s-Seyyid Şerîf alâ Şerhi Muhtasari’l-Müntehâ
+kt741:
+  madde: Ya’küb Paşa (891/1486)
+  sayfa: 207
+  eserler: [Hâşiyetü Sadrişserîa, Şerhu’l-Mevâkıf, Şerhu Nazmi’d-Dürr fi’l-ferâiz, Şerhu’l-Maksûd]
+kt740:
+  madde: Sinan Paşa (891/1486)
+  sayfa: 208
+  ad: Sinâneddin Yûsuf b. Hızır Bey b. Celâleddin
+  kisa: Sinân Paşa
+  vefat: 891
+  eserler:
+  - Tazarrunâme
+  - Maârifnâme
+  - Tezkiretü’l-evliyâ
+  - Hâşiye alâ Şerhi’l-Mülahhas
+  - Fethu’l-Fethiyye
+  - Hâşiye alâ Sadrişerîa ale’l-Vikâye
+  - Hâşiyetü Envârü’t-tenzîl ve esrârü’t-tevîl
+  - Mesâil-i Fıkhiyye Mecmuası
+fws500:
+  madde: Sinan Paşa (891/1486)
+  sayfa: 208
+  ad: Sinâneddin Yûsuf b. Hızır Bey b. Celâleddin
+  kisa: Sinân Paşa
+  eserler:
+  - Tazarrunâme
+  - Maârifnâme
+  - Tezkiretü’l-evliyâ
+  - Hâşiye alâ Şerhi’l-Mülahhas
+  - Fethu’l-Fethiyye
+  - Hâşiye alâ Sadrişerîa ale’l-Vikâye
+  - Hâşiyetü Envârü’t-tenzîl ve esrârü’t-tevîl
+  - Mesâil-i Fıkhiyye Mecmuası
+ts714:
+  madde: Hasan Çelebi (840-891/1436-1486)
+  sayfa: 209
+  vefat: 891
+  eserler:
+  - Hâşiyetü’t-Telvîh
+  - Hâşiyetu Şerhi’l-Mevâkıf
+  - Hâşiye ale’l-Muhtasar fi’l-meânî
+  - Hâşiye alâ Hâşiyeti’l-Hayâlî
+  - Hâşiye ale’l-Keşşâf
+  - Hâşiye alâ evâili Şerhi’l-Vikâye
+  - Hâşiye alâ dîbâceti’ş-Şerhi’l-cedîd li’t-Tecrîd
+kt745:
+  madde: Hasan Çelebi (840-891/1436-1486)
+  sayfa: 209
+  vefat: 891
+  dogum: 840
+  eserler:
+  - Hâşiyetü’t-Telvîh
+  - Hâşiyetu Şerhi’l-Mevâkıf
+  - Hâşiye ale’l-Muhtasar fi’l-meânî
+  - Hâşiye alâ Hâşiyeti’l-Hayâlî
+  - Hâşiye ale’l-Keşşâf
+  - Hâşiye alâ evâili Şerhi’l-Vikâye
+  - Hâşiye alâ dîbâceti’ş-Şerhi’l-cedîd li’t-Tecrîd
+fws456:
+  madde: Hocazâde (893/1488)
+  sayfa: 212
+  eserler:
+  - Tehâfütü’l-felâsife
+  - Hâşiye alâ Şerhi’l-Mevâkıf
+  - Hâşiyetü Şerhi Hidayeti’l-hikme
+  - Hâşiye alâ Şerhi’t-Tavâli’
+  - Şerhu’l-İzzî fi’t-tasrîf
+  - Hâşiye alâ Şerhi Telhîsi’l-Miftâh
+  - Risale fî şerhi hadîsi "inne lillahi Teâlâ sebîne elf hicâb"
+  - Risâle fi’l-i’tirâz alâ delîli isbâti vücûdiyyeti’l-Bârî
+  talebeler:
+  - [kt752, took]
+  kanit:
+    kt752: Yetiştirdiği talebeler arasında Molla Bahâüddin, Molla Sirâcüddin, Yarhisarlı Molla Mustafa Muslihuddin, Yusuf b. Hüseyin Kirmâstî, Nûruddin Yusuf Karesî, Zeyrekzâde Ahmed Rükneddin, Kadızâde
+      Kutbüddin Mehmed, Mirîm Çelebi, Paşa Çelebi ve…
+ts143:
+  madde: Molla Gürânî (813-893/1410-1488)
+  sayfa: 212
+  ad: Şemseddin Ahmed b. İsmâil b. Osman el-Kûrânî
+  kisa: Molla Gürânî
+  vefat: 893
+  eserler:
+  - Ğâyetül-emânî fî tefsîri’s-Sebi’l-mesânî
+  - el-Kevseru’l-cârî ilâ riyâzi Sahîhi’l-Buhârî
+  - ed-Düreru’l-levâmi’ Şerhu Cemî’l-cevâmi’
+  - el-Abkarî fî havâşî’l-Ca’berî
+  - Levâmiu’l-ğurer fî şerhi Fevâidi’d-dürer
+  - Ref‘u’l-bitâm an vakfî Hamza ve Hişâm
+  - eş-Şâfiye fi’l-arûz ve’l-kafiye
+fws84:
+  madde: Molla Gürânî (813-893/1410-1488)
+  sayfa: 212
+  dogum: 813
+  eserler:
+  - Ğâyetül-emânî fî tefsîri’s-Sebi’l-mesânî
+  - el-Kevseru’l-cârî ilâ riyâzi Sahîhi’l-Buhârî
+  - ed-Düreru’l-levâmi’ Şerhu Cemî’l-cevâmi’
+  - el-Abkarî fî havâşî’l-Ca’berî
+  - Levâmiu’l-ğurer fî şerhi Fevâidi’d-dürer
+  - Ref‘u’l-bitâm an vakfî Hamza ve Hişâm
+  - eş-Şâfiye fi’l-arûz ve’l-kafiye
+fws186:
+  madde: Molla Câmî (817-898/1414-1492)
+  sayfa: 215
+  eserler:
+  - el-Fevâidü’z-Ziyâiyye
+  - Nefehâtü’l-üns
+  - Nakdü’n-nusûs fî şerhi Nakşî’l-Fusûs
+  - Şerhu Fusûsi’l-hikem
+  - Eşiatü’l-Lemeât
+  - Şevâhidü’n-nübüvve
+  - ed-Dürretü’l-fâhire
+  - Risâle-i Münşeât
+  - Divân
+  - Levâih
+  - Heft Evreng
+kt704:
+  madde: Molla Câmî (817-898/1414-1492)
+  sayfa: 215
+  dogum: 817
+  eserler:
+  - el-Fevâidü’z-Ziyâiyye
+  - Nefehâtü’l-üns
+  - Nakdü’n-nusûs fî şerhi Nakşî’l-Fusûs
+  - Şerhu Fusûsi’l-hikem
+  - Eşiatü’l-Lemeât
+  - Şevâhidü’n-nübüvve
+  - ed-Dürretü’l-fâhire
+  - Risâle-i Münşeât
+  - Divân
+  - Levâih
+  - Heft Evreng
+kt752:
+  madde: Kirmâstî (900/1494)
+  sayfa: 218
+  vefat: 900
+  eserler:
+  - Zübdetü’l-vüsûl ilâ ilmi’l-usûl
+  - el-Vecîz fî usûli’l-fikh
+  - el-Medârikü’l-asliyye ile’l-makâsıdi’l-fer’iyye
+  - Usûlü’l-ahkâm
+  - Risâle fi’l-vakf
+  - Risâle fi’r-rehn
+  - Hâşiye alâ Şerhi’l-Mevâkıf
+  - Risâle fî akâidi’l-fırkati’n-nâciye
+  - et-Tebyîn fi’l-me’ânî vel-beyân
+  - el-Muhtâr fi’l-meânî vel-beyân
+  - et-Tibyân
+  - el-Müntehab
+  - Usûlü’l-ıstılâhâti’l-beyâniyye
+  - Muhtasar fi ilmi’l-münâzara
+fws498:
+  madde: Kirmâstî (900/1494)
+  sayfa: 218
+  eserler:
+  - Zübdetü’l-vüsûl ilâ ilmi’l-usûl
+  - el-Vecîz fî usûli’l-fikh
+  - el-Medârikü’l-asliyye ile’l-makâsıdi’l-fer’iyye
+  - Usûlü’l-ahkâm
+  - Risâle fi’l-vakf
+  - Risâle fi’r-rehn
+  - Hâşiye alâ Şerhi’l-Mevâkıf
+  - Risâle fî akâidi’l-fırkati’n-nâciye
+  - et-Tebyîn fi’l-me’ânî vel-beyân
+  - el-Muhtâr fi’l-meânî vel-beyân
+  - et-Tibyân
+  - el-Müntehab
+  - Usûlü’l-ıstılâhâti’l-beyâniyye
+  - Muhtasar fi ilmi’l-münâzara
+kt744:
+  madde: Hatibzâde (901/1496)
+  sayfa: 220
+  ad: Muhyiddin Mehmed Efendi
+  kisa: Hatîbzâde
+  eserler:
+  - Hâşiye alâ Şerhîl-Vikâye
+  - Hâşiye alâ Şerhîl-Muhtasar
+  - Hâşiye alâ Şerhîl-Mevâkıf
+  - Hâşiye ale’l-Mukaddimâtü’l-erbaa
+  - Hâşiye alâ Hâşiyeti’t-Tecrîd
+  - Hâşiye alâ Hâşiyeti’l-Keşşâf
+  - el-Cezrü’l-esam
+  - Risâle fî fezâili’l-cihâd
+  hocalar:
+  - [fws272, took]
+  kanit:
+    fws272: İznik'te müderris olan Babası Hatibzâde Tâcüddin İbrahim'den, Alâüddin Ali et-Tûsî ve Hızır Bey'den ders aldı.
+fws422:
+  madde: Hatibzâde (901/1496)
+  sayfa: 220
+  ad: Muhyiddin Mehmed Efendi
+  kisa: Hatîbzâde
+  eserler:
+  - Hâşiye alâ Şerhîl-Vikâye
+  - Hâşiye alâ Şerhîl-Muhtasar
+  - Hâşiye alâ Şerhîl-Mevâkıf
+  - Hâşiye ale’l-Mukaddimâtü’l-erbaa
+  - Hâşiye alâ Hâşiyeti’t-Tecrîd
+  - Hâşiye alâ Hâşiyeti’l-Keşşâf
+  - el-Cezrü’l-esam
+  - Risâle fî fezâili’l-cihâd
+fws266:
+  madde: Ali Fenârî (903/1497?)
+  sayfa: 222
+  eserler:
+  - Şerhu Kasmi’t-tecnîs
+  - Hâşiye alâ Şerhi’l-Miftâh
+  - Şerhu’l-Kâfiye
+  - Zahîretü’l-ukbâ fî şerhi Sadrişerîati’l-uzmâ
+  - Zübdetü’t-ta’rîfât
+  - Talîkat alâ Tefsîri’l-Beyzâvî
+  - Tercüme-i Ferâiz-i Sirâciyye
+ts1124:
+  madde: İbnü’ş-Şıhne (851-921/1448-1515)
+  sayfa: 225
+  vefat: 921
+  eserler:
+  - Şerhu’l-Vehbâniyye
+  - ez-Zehâiru’l-Eşrefiyye fi’l-elğâzi’l-Hanefiyye
+  - Şerhu Kenzî’d-dekâik
+  - el-Kelâm fî tenfîzi mâ sebete bi’ş-şehâde ale’l-hat
+  - Şerhu’l-Manzûmeti’l-Halebiyye fi’s-sîreti’n-nebeviyye
+  - Muhtasarü’l-Fevâid
+  - Nazmû’l-mesâili’lleti’s-sükût fîhâ rızâ
+  - el-Manzumetü’l-ayniyye fî’l-furûk
+  talebeler:
+  - [gh167, took]
+  - [gh683, took]
+  kanit:
+    gh167: Yetiştirdiği talebeler arasında Şihâbüddin İbnü’ş-Şelebî, Kutbüddin İbn Sultân, Nûruddin et-Tarâblusî, Nizâmüddin Yahya b. Yusuf el-Halebî gibi âlimler bulunmaktadır.
+    gh683: Yetiştirdiği talebeler arasında Şihâbüddin İbnü’ş-Şelebî, Kutbüddin İbn Sultân, Nûruddin et-Tarâblusî, Nizâmüddin Yahya b. Yusuf el-Halebî gibi âlimler bulunmaktadır.
+ts98:
+  madde: Tarâblusî (853-922/1449-1516)
+  sayfa: 227
+  vefat: 922
+  dogum: 853
+  eserler: [Mevâhibü’r-Rahmân fî mezhebi’n-Nu’mân, el-Burhân, el-İs’âf fî ahkâmi’l-evkâf]
+  talebeler:
+  - [gh167, took]
+  kanit:
+    gh167: Öğrencileri arasında Şihâbüddin Ahmed b. Yunus İbnü'ş-Şelebî, Muhibbüddin Muhammed et-Türkmânî, Tâcüddin Abdülvehhab b. Ahmed, Zeynüddin Ömer es-Saidî, Radiyyüddin Muhammed b. Muhammed el-Evcâkī'nin
+      adları anılmaktadır.
+ts1176:
+  madde: Müeyyedzâde (860-922/1456-1516)
+  sayfa: 228
+  eserler:
+  - Mecmûatu İbni’l-Müeyyed
+  - Hâşiye alâ Hâşiyeti Mîr Ebi’l-Feth alâ Şerhi Âdâbi’l-Adudî
+  - Hâşiyetu Şerhi’l-Miftâh
+  - Hâşiyetu Şerhi’l-Mevâkıf
+  - Risale fî taʿzîmi’n-Nebî
+  - Risâle fî’l-cüz’i’l-lâyetecezze’
+ts48:
+  madde: İbnü’l-Kerekî (835-922/1432-1516)
+  sayfa: 230
+  vefat: 922
+  eserler:
+  - Feyzu’l-Kerekî
+  - Hâşiyetü Evdâhi’l-mesâlik ilâ Efiyyeti İbn Mâlik
+  hocalar:
+  - [gh261, took]
+  - [gh130, took]
+  - [kt688, took]
+  kanit:
+    gh261: İbnü’l-Kerekî Kahire’de tahsil gördü; Alemüddin Salih b. Ömer el-Bulkînî, Alâüddin el-Kalkasendî, Sa’duddin İbnü’d-Deyrî, Emînüddin el-Aksarâyî, İzzüddin İbn Abdisselâm, Takıyyüddin el-Hısnî,
+      Takıyyüddin eş-Şümünnî, İbn Hacer el-Askalânî,…
+    gh130: İbnü’l-Kerekî Kahire’de tahsil gördü; Alemüddin Salih b. Ömer el-Bulkînî, Alâüddin el-Kalkasendî, Sa’duddin İbnü’d-Deyrî, Emînüddin el-Aksarâyî, İzzüddin İbn Abdisselâm, Takıyyüddin el-Hısnî,
+      Takıyyüddin eş-Şümünnî, İbn Hacer el-Askalânî,…
+    kt688: İbnü’l-Kerekî Kahire’de tahsil gördü; Alemüddin Salih b. Ömer el-Bulkînî, Alâüddin el-Kalkasendî, Sa’duddin İbnü’d-Deyrî, Emînüddin el-Aksarâyî, İzzüddin İbn Abdisselâm, Takıyyüddin el-Hısnî,
+      Takıyyüddin eş-Şümünnî, İbn Hacer el-Askalânî,…
+ts753:
+  madde: Husâm Çelebi (926/1520)
+  sayfa: 231
+  eserler:
+  - Hâşiye alâ Hâşiyeti’s-Seyyid li-Şerhi Tecrîdi’l-Akâid
+  - Hâşiye alâ Şerhi’l-Vikâye li-Sadrîşerîa
+  - Risale fî cevazi istihlâfi’l-hatîb
+  - Hâşiye alâ Şerhi’l-Mevâkıf
+  - Risâle fî raksi’l-mutasavvife
+  - Risâle fî sebbi’n-Nebî
+  - Risâle fî beyâni kavsi kuzah
+  - Risâle ma’lûme li-beyâni ahvâli’l-kenâisi şer’an
+  - Ta’lika alâ ba’dî mevâdii’s-Sadrîşerîa
+  - Ta’lika alâ mevâdi’ mine’l-Hidâye
+  - Risâle fî nakli’ş-şehâde
+  - Risâle fî ta’rîfi ilmi’l-Kelâm
+  hocalar:
+  - [fws456, took]
+  kanit:
+    fws456: Efdalzâde, Müeyyedzâde Abdurrahman ve Hocazâde’den ders aldı.
+fws242:
+  madde: Ali Cemâlî Efendi (932/1525)
+  sayfa: 232
+  eserler: [Muhtârâtü’l-fetâvâ, Hâşiye alâ Envâri’t-tenzîl, Âdâbü’l-evsîyâ]
+  hocalar:
+  - [kt712, took]
+  kanit:
+    kt712: Molla Husrev, Husâmüddin Muslihuddin (Husâmzâde) ve Hamza Karamanî’den ders aldı.
+kt768:
+  madde: Ali Cemâlî Efendi (932/1525)
+  sayfa: 232
+  vefat: 932
+  eserler: [Muhtârâtü’l-fetâvâ, Hâşiye alâ Envâri’t-tenzîl, Âdâbü’l-evsîyâ]
+fws22:
+  madde: Kemalpaşazâde (873-940/1469-1534)
+  sayfa: 235
+  ad: Şemseddin Ahmed b. Süleyman b. Kemâl Paşa İbn Kemâl
+  kisa: Kemalpaşazâde
+  dogum: 873
+  eserler:
+  - Târîh-i Âl-i Osman
+  - Dîvân
+  - Tağyirü’t-Tenkîh
+  - Islâhu’l-Vikâye
+  - Şerhu’l-Hidâye
+  - Hâşiye ale’t-Telvîh
+  - Mühimmâtü’l-müftî
+  - Şerhu’l-Ferâizi’s-Sirâciyye
+  - Hâşiye alâ Tehâfüti’l-felâsife li-Hocazâde
+  - Hâşiye alâ evveli’l-ilâhiyyât min Şerhi’l-Mevâkıf
+  - Hâşiye alâ Hâşiyeti’l-Celâl ale’t-Tecrîd
+  - Hâşiye alâ Envâri’t-tenzîl
+  - Tabakâtü’l-fukahâ
+  - Tabakâtü’l-müctehidîn
+  - Akâid-i İslâm
+  - el-Felâh şerhu’l-Merâh
+  - et-Tenbîh alâ ğalati’l-câhil ve’n-nebîh
+  - Risâle fî’s-seb
+  - Efdaliyyetü Muhammed aleyhi’s-selâm
+  - Resâilu İbn Kemâlbâşâ el-lugaviyye
+  - Risâletu meziyyeti’l-lisâni’l-Fârisî alâ sâiri’l-elsine mâ hala’l-Arabiyye
+  - Risâle fî tahkîki ta’rîbi’l-kelimâti’l-A’cemiyye
+  - Resâilü İbn Kemâl
+ts906:
+  madde: Sa’di Çelebi (945/1539)
+  sayfa: 239
+  ad: Sa‘dullah b. Îsâ b. Emîrhân Sa‘dî Çelebi
+  kisa: Sa‘dî Çelebi
+  eserler:
+  - Hâşiyetü’l-İnâye
+  - Hâşiye alâ Tefsîri’l-Beyzâvî
+  - Fetâvâ-yı Sa’diyye
+  - er-Risâletü’s-Sa’diyye
+  - el-Makâlâtü’l-âdâbiyye
+  - Terceme-i Hilye-i Şerîf
+  - Manzûme fî’s-salât
+gh167:
+  madde: İbnü’ş-Şelebî (947/1540)
+  sayfa: 240
+  eserler: [Fetâvâ İbnü’ş-Şelebî, Hâşiyetü’z-Zeylaî]
+  talebeler:
+  - [ts894, took]
+  kanit:
+    ts894: Ondan da Zeynüddin İbn Nüceym ders aldı. 60 küsur yaşlarında vefat etti.
+gh683:
+  madde: İbn Sultân (870-950/1465-1544)
+  sayfa: 240
+  dogum: 870
+  eserler:
+  - Keşfu’l-hakâik
+  - el-Cevâhiru’l-mudiyye fî eyyâmi’d-devleti’l-Osmâniyye
+  hocalar:
+  - [ts98, took]
+  kanit:
+    ts98: Seriyyüddin Abdülber İbnü’ş-Şıhne, Burhânüddin et-Tarâblusî ve Burhânüddin en-Nâcî’den ders aldı.
+ts68:
+  madde: Halebî (956-1549)
+  sayfa: 247
+  vefat: 956
+  eserler:
+  - Mültekal’-ebhur
+  - Ğunyetü’l-mütemellî fî şerhi Münyetü’l-musallî
+  - el-Fevâidü’l-muntahaba mine’l-Fetâva’t-Tâtârhâniyye
+  - Ta’likât ale’l-Hidâye
+  - Ta’likât ale’l-Islâh ve’l-Îzâh
+  - Muhtasaru’l-Cevâhiri’l-mudıyye fî tabakâti’l-Hanefiyye
+  - Ni’metü’z-zerîa fî nusreti’ş-şerîa
+  - el-Hilyetü’ş-şerîfe
+  - er-Rahs ve’l-vaks li-müstehillî’r-raks
+  - el-Kıyâm inde zikri vilâdeti Resûlillâh
+ts894:
+  madde: İbn Nüceym (926-970/1520-1563)
+  sayfa: 254
+  ad: Zeynüddin b. İbrâhim b. Muhammed b. Nüceym el-Mısrî
+  kisa: İbn Nüceym
+  eserler:
+  - el-Bahru’r-râik
+  - el-Eşbâh ve’n-nezâir
+  - Fethu’l-Ğaffâr
+  - er-Resâilu’l-fikhiyye
+  - Lubbû’l-usûl
+  - Hâşiyetü Câmii’l-fusûleyn
+fws170:
+  madde: Ebussuûd Efendi (896-982/1490-1574)
+  sayfa: 264
+  ad: Ebü’s-Suûd Muhammed b. Muhammed b. Mustafa el-İmâdî
+  kisa: Ebussuûd Efendi
+  eserler:
+  - İrşâdü’l-akli’s-selîm ilâ mezâya’l-Kur’âni’l-Kerîm
+  - Fetâvâ-yı Ebussuûd Efendi
+  - Arâzî-yi Harâciyye ve Öşriyye Hakkında Kanun ve Fetvâlar
+  - Risâle fî vakfî’l-menkûl ve’n-nukûd
+  - Bidâatü’l-kadî li-ihtiyâcihî fî’l-müstakbel ve’l-mâdî
+  - Fetâvâ Kâtiblerine Tenbîh
+  - el-Fetva’l-müteallika bi-beyâni’l-vakti’l-mu’tebere li’l-basâd ve istihkâki’l-gallât
+  - Ğamezâtü’l-melîh fî evveli mebâhisi kasri’l-âmm mine’t-Telvîh
+  - Sevâkıbül-enzâr fî evâili Menâri’l-envâr
+  - Hasmü’l-hilâf fi’l-mesh alel-hifâf
+  - Risâle fî vakfîl-arâzî ve bazı ahkâmi’l-vakf
+  - Öşür Hakkında Risâle
+  - Galatât-ı Ebussuûd
+  - Münşeât-ı Ebussuûd
+  - Risâle fî beyâni’l-kazâ vel-kader
+  - Duânâme-i Ebussuûd
+  hocalar:
+  - [fws22, took]
+  kanit:
+    fws22: Babasından, Müeyyedzâde Abdurrahman Efendi, Mevlânâ Seydi Karamanî ve Kemalpaşazâde’den ders aldı.
+    ts993: Yetiştirdiği birçok talebe arasında Şeyhülislâm Mâulzâde Seyyid Mehmed, Abdülkadir Şeyhî, Hoca Sa’deddin, Bostanzâde Mehmed, Sunullah Efendi, Bostanzâde Mustafa, Cenâbî Mustafa Efendi, Şair Bâkî,
+      Hâce-i Sultânî Atâullah, Âşık Çelebi,…
+  talebeler:
+  - [ts993, took]
+ts881:
+  madde: Zekeriyya Efendi (920-1001/1514-1593)
+  sayfa: 277
+  vefat: 1001
+  dogum: 920
+  eserler: [Hâşiye alâ Sadri’ş-şerîa, Şerh alel-Hidâye, Hâşiye alâ Şerhi’l-Miftâh]
+ts1133:
+  madde: Ahîzâde (963-1013/1556-1604)
+  sayfa: 286
+  ad: Abdülhalîm b. Mehmed b. Nurullah b. Yûsuf Ahîzâde er-Rûmî
+  kisa: Ahîzâde
+  vefat: 1013
+  dogum: 963
+  eserler:
+  - Şerhu’l-Hidâye
+  - Muhtasaru’d-Dürer ve’l-Ğurer
+  - Terceme-i Şevâhidü’n-nübüvve
+  - Hâşiye alâ Sûreti’l-Enbiyâ
+  - Mürşidü’l-ahyâr fî beyâni şurûti sıhhatı’l-cum’ati fî’l-emsâr
+  - Risâle fî mebhası mefhimı’l-muhâlefe
+  - Risâle fî mebhası’l-istishâb
+  - el-Mesâilü’l-fikhiyyetü’l-mültekata
+  - Mesâilü tercihi’l-beyyinât
+  hocalar:
+  - [fws170, took]
+  kanit:
+    fws170: Ebussuûd Efendi’den ders aldı.
