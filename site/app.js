@@ -35,10 +35,12 @@ const century = d => d ? Math.floor((d - 1) / 100) + 1 : 0;
 
 // ---------- data ----------
 const cache = {};
+// yayında dosyalar sürüm damgasıyla istenir (app.js?v=…), böylece tarayıcı eski kopyayı kullanmaz
+const VER = (/[?&]v=([\w-]+)/.exec(document.currentScript?.src || "") || [])[1] || "";
 // başarısız istek önbellekte kalmaz (sonraki denemede yeniden yüklenir); geçici ağ hatasında bir kez yeniden dener
 const load = p => cache[p] || (cache[p] = (async () => {
   for (let i = 0; ; i++) {
-    try { const r = await fetch("data/" + p); if (!r.ok) throw new Error(`${p} (${r.status})`); return await r.json(); }
+    try { const r = await fetch("data/" + p + (VER ? "?v=" + VER : "")); if (!r.ok) throw new Error(`${p} (${r.status})`); return await r.json(); }
     catch (e) { if (i >= 1 || /\(4\d\d\)/.test(e.message)) { delete cache[p]; throw e; } await new Promise(res => setTimeout(res, 800)); }
   }
 })());

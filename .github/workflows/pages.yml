@@ -27,6 +27,9 @@ jobs:
           cp site/index.html site/app.js site/app.css _site/
           cp -r site/data _site/data
           touch _site/.nojekyll
+          v=${GITHUB_SHA::8}
+          sed -i -e "s|href=\"app.css\"|href=\"app.css?v=$v\"|" -e "s|src=\"app.js\"|src=\"app.js?v=$v\"|" _site/index.html
+          grep -q "app.js?v=$v" _site/index.html
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with: { path: _site }
