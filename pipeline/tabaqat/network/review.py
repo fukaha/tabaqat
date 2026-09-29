@@ -32,6 +32,7 @@ def write_review_data(root: Path) -> dict:
         amb.append({"id": f"{u['key']}|{u['text']}", "key": u["key"], "cite": cite.get(u["key"], ""),
                     "subj": subj, "role": u["role"], "rel": u["rel"], "text": u["text"],
                     "kin": u["kin"], "cands": u["candidates"], "f": freq[u["text"]],
+                    "why": u.get("reason", ""),
                     "snippet": u.get("snippet", "")})
         used.add(subj)
         used.update(u["candidates"])

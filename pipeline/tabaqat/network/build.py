@@ -14,8 +14,9 @@ from pathlib import Path
 import yaml
 
 from ..match.records import load_records
+from ..normalize.arabic import normalize
 from .extract import extract
-from .resolve import Person, Resolution, Resolver
+from .resolve import External, Person, Resolution, Resolver, _exact_key
 
 REL_TR = {"fiqh": "تفقه", "took": "أخذ", "hadith": "سماع/رواية", "read": "قراءة",
           "companion": "صحبة"}
@@ -57,22 +58,30 @@ def build(root: Path) -> dict:
             aliases[f"@{f} {k}"] = cid[key]
     decisions = _load_yaml(root / "review" / "relations.yml")
     rejected = {tuple(x) for x in decisions.get("reject") or []}
-    res = Resolver(people, aliases)
+    externals: dict[str, list[External]] = defaultdict(list)
+    for group in _load_yaml(root / "review" / "external.yml").values():
+        for k, (death, name) in group.items():
+            for alt in str(k).split("|"):
+                externals[alt.strip()].append(External(name, int(death)))
+    res = Resolver(people, aliases, externals)
     entries = {}
     for b in {r.book_id for r in recs.values()}:
         for e in json.loads((root / "data" / "entries" / f"{b}.json").read_text(encoding="utf-8")):
             entries[f"{b}:{e['seq']}"] = e
+    recip = _Recip(entries, cid, people, res)
 
     chosen = {(c["key"], c["text"]): c["pid"] for c in decisions.get("choose") or []}
-    edges, unresolved, stats = _pass(entries, recs, cid, by_pid, res, rejected, chosen)
+    ctx = dict(entries=entries, recs=recs, cid=cid, by_pid=by_pid, res=res, rejected=rejected,
+               chosen=chosen, recip=recip)
+    edges, unresolved, ext, stats = _pass(**ctx, prev=None)
     # Vefatı bilinmeyenlere ağdan tahmin: hocalarının vefatı + 30 / talebelerinin − 30
     est = _estimate_deaths(edges, by_pid)
     for pid, d in est.items():
         by_pid[pid].death, by_pid[pid].sure = d, False
+    # 2. ve 3. tur: belirsizler önceki turun bağlarıyla (çapraz kayıt) ve yakın vefatla çözülür
+    for _ in range(2):
+        edges, unresolved, ext, stats = _pass(**ctx, prev=edges)
     stats["death_estimated"] = len(est)
-    edges, unresolved, stats2 = _pass(entries, recs, cid, by_pid, res, rejected, chosen)
-    stats2["death_estimated"] = len(est)
-    stats = stats2
     out = []
     names = {p["id"]: p["name"] for p in persons}
     for (t, s), ev in edges.items():
@@ -90,6 +99,9 @@ def build(root: Path) -> dict:
                                                   encoding="utf-8")
     (root / "data" / "relations_unresolved.json").write_text(
         json.dumps(unresolved, ensure_ascii=False, indent=1), encoding="utf-8")
+    (root / "data" / "relations_external.json").write_text(
+        json.dumps(ext, ensure_ascii=False, indent=1), encoding="utf-8")
+    _write_doubtful(root, unresolved, names)
     stats["edges"] = len(out)
     stats["persons_in_network"] = len({x for e in out for x in (e["teacher"], e["student"])})
     return dict(stats)
@@ -112,9 +124,46 @@ def _estimate_deaths(edges, by_pid) -> dict[str, int]:
     return out
 
 
-def _pass(entries, recs, cid, by_pid, res, rejected, chosen):
+class _Recip:
+    """Çapraz kayıt: adayın kendi maddelerinde öznenin ayırt edici adı geçiyor mu?"""
+
+    def __init__(self, entries, cid, people, res: Resolver):
+        texts: dict[str, list[str]] = defaultdict(list)
+        for key, e in entries.items():
+            if key in cid and e["text"]:
+                texts[cid[key]].append(normalize(e["text"]))
+        self.text = {pid: " ".join(t) for pid, t in texts.items()}
+        self.keys: dict[str, set[str]] = {}
+        for p in people:
+            ks = {h for h in (_exact_key(x) for x in p.headings) if len(h.split()) >= 2
+                  and len(h) >= 9}
+            for n in p.names:
+                if len(n.chain) >= 3:
+                    ks.add(" بن ".join(n.chain[:3]))
+                for x in n.nisbas:
+                    if n.kunya:
+                        ks.add(f"{n.kunya} {x}")
+                    if len(res.by_nisba.get(x, ())) <= 2 and len(x) >= 7:
+                        ks.add(x)
+            self.keys[p.pid] = ks
+        self._memo: dict[tuple, bool] = {}
+
+    def __call__(self, cand: str, subj: str) -> bool:
+        k = (cand, subj)
+        if k not in self._memo:
+            t = self.text.get(cand, "")
+            self._memo[k] = any(x in t for x in self.keys.get(subj, ()))
+        return self._memo[k]
+
+
+def _pass(entries, recs, cid, by_pid, res, rejected, chosen, recip, prev):
     edges: dict[tuple[str, str], list[dict]] = defaultdict(list)
-    unresolved = []
+    linked: dict[tuple[str, str], set[str]] = defaultdict(set)   # (özne, rol) → önceki bağlar
+    if prev:
+        for (t, s) in prev:
+            linked[(s, "teacher")].add(t)
+            linked[(t, "student")].add(s)
+    unresolved, external = [], []
     stats = Counter()
     for key, e in entries.items():
         if key not in cid or not e["text"]:
@@ -137,12 +186,29 @@ def _pass(entries, recs, cid, by_pid, res, rejected, chosen):
                                 context=m.snippet, kin=bool(m.kin))
             if m.kin and (r is None or r.pid is None) and ctx is not None:
                 r = res.kin(m.kin, m.text, ctx)
+            # Dış kişi (Buhârî, İbn Maîn…): Hanefî aday güçlü değilse ve vefat uyuyorsa
+            if r is not None and not m.kin and r.how not in ("insan", "elle", "tam ad") and (
+                    r.pid is None or r.score < 6 or "meşhur" in r.how or "zayıf" in r.how):
+                x = res.external(m.text, role, ctx, bool(r.scored) and m.rel != "hadith")
+                hanafi = (r.pid and m.rel == "fiqh" and res.chron(r.pid, ctx, role) == "near")
+                if x and not hanafi:
+                    r = Resolution(None, "external", external=(x.name, x.death))
+            if r is not None and r.status == "ambiguous" and prev is not None:
+                r = res.disambiguate(r, m.text, role, ctx, linked.get((ctx.pid, role), set())
+                                     if ctx else set(), (lambda c, _s=ctx: _s is not None and recip(c, _s.pid)))
             if m.role in ("teacher", "chain"):
                 chain_pid[m.extra.get("raw", m.text)] = r.pid if r else None
+            if r is not None and r.status == "external":
+                stats["external"] += 1
+                external.append({"key": key, "subject": subj.pid, "role": m.role, "rel": m.rel,
+                                 "text": m.text, "name": r.external[0], "death": r.external[1],
+                                 "snippet": m.snippet[:220]})
+                continue
             if r is None or r.pid is None:
                 stats[r.status if r else "unresolved"] += 1
                 unresolved.append({"key": key, "role": m.role, "rel": m.rel, "text": m.text,
                                    "kin": m.kin, "status": r.status if r else "unresolved",
+                                   "reason": r.reason if r else "",
                                    "candidates": r.candidates if r else [],
                                    "snippet": m.snippet[:220]})
                 continue
@@ -160,4 +226,42 @@ def _pass(entries, recs, cid, by_pid, res, rejected, chosen):
                 continue
             edges[(t, s)].append({"key": key, "rel": m.rel, "via": m.role, "text": m.text,
                                   "how": r.how, "snippet": m.snippet[:220]})
-    return edges, unresolved, stats
+    return edges, unresolved, external, stats
+
+
+REASON_TR = {"yalnız ism": "Adaylarla yalnız ism uyuşuyor (ör. \"أحمد\", \"إبراهيم الصفار\"); aday çok.",
+             "birden çok yakın aday": "Vefatı uyan birden çok aday var.",
+             "vefatı bilinmeyen aday var": "Vefatı uyan tek aday var ama vefatı bilinmeyen başka adaylar da var.",
+             "vefat bilinmiyor": "Madde sahibinin vefatı bilinmiyor; adaylar ayırt edilemiyor.",
+             "adayların vefatı bilinmiyor": "Adayların vefatı bilinmiyor.",
+             "vefat uymuyor": "Hiçbir adayın vefatı uymuyor (muhtemelen başka bir kişi).",
+             "ad uyumu zayıf": "Ad unsurları adaylara zayıf uyuyor (ör. künye çelişiyor).",
+             "": "Aday puanları eşit."}
+
+
+def _write_doubtful(root: Path, unresolved: list[dict], names: dict[str, str]) -> None:
+    """Belirlenemeyen / çok şüpheli atıflar: review/supheli_atiflar.md (sonra dönülecek)."""
+    amb = [u for u in unresolved if u["status"] == "ambiguous"]
+    by_reason: dict[str, list[dict]] = defaultdict(list)
+    for u in amb:
+        by_reason[u.get("reason", "")].append(u)
+    lines = ["# Şüpheli ve belirlenemeyen atıflar", "",
+             "Ağ inşasında adayı tek kişiye indirilemeyen atıflar. Onay sayfasının \"أسماء ملتبسة\" "
+             "sekmesinde de aynı liste var; karar verildikçe buradan düşer.", "",
+             f"Toplam: {len(amb)} atıf.", ""]
+    for reason, items in sorted(by_reason.items(), key=lambda x: -len(x[1])):
+        lines += [f"## {REASON_TR.get(reason, reason)} ({len(items)})", "",
+                  "| madde | ad | ilişki | adaylar | cümle |", "|---|---|---|---|---|"]
+        for u in sorted(items, key=lambda u: (u["text"], u["key"])):
+            c = "، ".join(names.get(p, p)[:40] for p in u["candidates"][:4])
+            snip = u["snippet"][:90].replace("|", "/").replace("\n", " ")
+            lines.append(f"| {u['key']} | {u['text']} | {u['role']}/{u['rel']} | {c} | {snip} |")
+        lines.append("")
+    miss = Counter(u["text"] for u in unresolved if u["status"] == "unresolved" and u["text"])
+    lines += [f"## Hiçbir maddeye uymayan adlar ({sum(miss.values())} atıf, {len(miss)} ad)", "",
+              "Kitaplarda maddesi olmayan kişiler (çoğu muhaddis ya da Hanefî olmayan âlimler); "
+              "sık geçenler review/external.yml'e eklenerek dış kişi olarak ağa bağlanabilir.", "",
+              "| ad | kaç kez |", "|---|---|"]
+    lines += [f"| {t} | {n} |" for t, n in miss.most_common() if n >= 2]
+    lines.append("")
+    (root / "review" / "supheli_atiflar.md").write_text("\n".join(lines), encoding="utf-8")

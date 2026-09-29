@@ -73,3 +73,19 @@ def test_bare_muhammad_needs_near_death(rel):
     sh = cid["jawahir:1271"]
     assert (sh, cid["kataib:110"]) not in edges       # Züfer (v. 158) İmam Muhammed'in talebesi değil
     assert (sh, cid["qand:192"]) not in edges         # "ابنه محمد": Şakîk'in oğlu
+
+
+def test_external_scholars():
+    path = ROOT / "data" / "relations_external.json"
+    if not path.exists():
+        pytest.skip("ağ üretilmemiş")
+    ext = json.loads(path.read_text(encoding="utf-8"))
+    # Ali b. el-Ca'd (v. 230) maddesindeki "روى عنه البخاري" İmam Buhârî'dir, Hanefî bir Buhârî değil
+    assert any(x["key"] == "jawahir:956" and x["death"] == 256 for x in ext)
+
+
+def test_clean_mention():
+    from tabaqat.network.resolve import clean_mention
+    assert clean_mention("بن المديني") == "ابن المديني"
+    assert clean_mention("ابن حجر الكثير") == "ابن حجر"
+    assert clean_mention("جعفر بن") == "جعفر"

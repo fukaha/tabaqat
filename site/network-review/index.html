@@ -191,6 +191,11 @@ button:focus-visible, input:focus-visible { outline: 2px solid var(--accent); ou
     return t && s.includes(t) ? s.replace(t, `<mark>${t}</mark>`) : s;
   }
 
+  const WHY = {"yalnız ism": "لا يوافق إلا الاسم المفرد", "birden çok yakın aday": "أكثر من مرشح توافق وفاته",
+    "vefatı bilinmeyen aday var": "مرشح موافق ومرشحون مجهولو الوفاة", "vefat bilinmiyor": "وفاة صاحب الترجمة مجهولة",
+    "adayların vefatı bilinmiyor": "وفيات المرشحين مجهولة", "vefat uymuyor": "لا توافق وفاة أحد",
+    "ad uyumu zayıf": "موافقة الاسم ضعيفة"};
+
   function renderMain() {
     const it = view[cur];
     if (!it) { $("main").innerHTML = `<div class="empty">${filter === "open" ? "حُسم كل ما في هذا القسم." : "لا شيء هنا."}</div>`; $("btns").innerHTML = ""; return; }
@@ -199,6 +204,7 @@ button:focus-visible, input:focus-visible { outline: 2px solid var(--accent); ou
       $("main").innerHTML = `
         <div class="meta"><span class="tag">${esc(ROLE[it.role])}</span><span class="tag">${esc(REL[it.rel] || it.rel)}</span>
           ${it.kin ? `<span class="tag warn">${esc(KIN[it.kin] || it.kin)}</span>` : ""}
+          ${it.why && WHY[it.why] ? `<span class="tag warn">${esc(WHY[it.why])}</span>` : ""}
           ${it.f > 1 ? `<span>ورد هذا الاسم ${it.f} مرات</span>` : ""}</div>
         <section class="card"><span class="label">صاحب الترجمة</span><h2>${esc(P(it.subj)[0])}</h2>
           <span class="cite">${esc(it.cite)}</span>
