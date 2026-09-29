@@ -18,7 +18,7 @@ def test_kinds_and_pronoun(gz):
     t = ("ولد ببخارى سنة ثلاث وتسعين، وقدم بغداد وحدث بها، ثم رحل إلى مكة فجاور بها، "
          "وتوفي في رجب سنة خمس وعشرين وخمسمائة بسمرقند، ودفن بجاكرديزه.")
     got = [(m.kind, gz.places[m.place].name) for m in extract(t, gz)]
-    assert got == [("birth", "بخارة"), ("travel", "بغداد"), ("activity", "بغداد"),
+    assert got == [("birth", "بخارى"), ("travel", "بغداد"), ("activity", "بغداد"),
                    ("travel", "مكة"), ("residence", "مكة"), ("death", "سمرقند"),
                    ("burial", "سمرقند")]
 

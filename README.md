@@ -70,7 +70,62 @@ python -m tabaqat.cli apply-network kararlar.json   # onay sayfası kararları �
   yıllarıyla süzülür. Yalnız ism ya da yalnız künye hiçbir zaman yetmez. Yalnız nisbe ancak tek ve
   çok kaynaklı bir adayda kabul edilir. Vefatı bilinmeyenlere ağdan tahmini vefat verilir
   (ikinci tur).
-- **Elle eşleme**: `review/aliases.yml` (أبو حنيفة، أبو يوسف، محمد [yalnız zincirde]، زفر…).
+- **Belirsiz atıflar** üç turda çözülür. Adayın önceki turda aynı yönde bağı varsa ya da
+  adayın kendi maddesinde madde sahibi anılıyorsa bu "çapraz kayıt" sayılır. Ardından tek
+  "yakın vefat"lı aday aranır (hoca, talebeden en çok 80 yıl önce ölmüş olmalı). En son şöhrete
+  bakılır. Çözülemeyenler gerekçeleriyle `review/supheli_atiflar.md` dosyasına yazılır.
+- **Dış kişiler**: `review/external.yml` dosyasındaki kişilerin bu kitaplarda maddesi yok
+  (Buhârî, İbn Maîn, Zehebî…). Vefatları uyarsa `data/relations_external.json` dosyasına
+  kaydedilirler.
+- **Elle eşleme**: `review/aliases.yml` (أبو حنيفة، أبو يوسف، زفر…). `@zincir` bayrağı eşlemeyi
+  yalnız zincirlerde geçerli kılar. `@yakın` bayrağı zincir dışında da uygular; bunun için vefat
+  yakın olmalı ya da cümlede Ebû Yûsuf, Züfer veya Hasan b. Ziyâd da anılmalı. Tek başına "محمد"
+  bu yolla İmam Muhammed'e bağlanır. Elle eşlemeler de kronolojiye uymak zorundadır.
 - **İnsan kararları**: `review/relations.yml` üç liste tutar. `choose`, belirsiz atıf için seçilen
   şahıstır. `reject`, yanlış bağdır. `ok`, doğrulanmış bağdır.
 - Her kenar kanıtlarını taşır: madde, ilişki türü, atıf metni, cümle.
+
+## Coğrafya
+
+```
+python -m tabaqat.cli geo            # → data/places.json, data/person_places.json
+```
+
+- **Gazetteer**: `data/gazetteer/thurayya.tsv` dosyası el-Süreyyâ'dan (al-Thurayya, CC BY 4.0)
+  gelir. `review/places_extra.yml` şunları ekler:
+  - yazım eşlemeleri (بخارى، مصر → القاهرة);
+  - Osmanlı ve Hind şehirleri ile bölgeler;
+  - düzensiz nisbeler (الرازي → الري);
+  - yer sanılan yaygın kelimeler (عنه، جده، ثمانين…).
+- **Çıkarım** (`geo/extract.py`): tetikleyici kelimeden sonra, aynı cümlede gelen ilk yer adı
+  alınır. Tetikleyiciler şu türlere ayrılır:
+  - doğum: ولد;
+  - vefat: مات/توفي;
+  - defin: دفن;
+  - yolculuk: رحل/قدم/دخل;
+  - ikamet: سكن/نزل/جاور;
+  - görev: ولي قضاء/درّس;
+  - faaliyet: حدّث/سمع;
+  - köken: من أهل.
+
+  "بها / فيها" en son anılan yere döner. Nisbeler de yere bağlanır (البخاري → بخارى).
+
+## Site
+
+```
+python -m tabaqat.cli site           # → site/data/ (index, p/NN parçaları, graph, places)
+python -m tabaqat.geo.basemap <natural-earth-dizini>   # → site/data/basemap.json (bir kez)
+```
+
+`site/` dizinindeki statik site Arapça ve RTL'dir; dış kütüphane kullanmaz. Bölümleri:
+
+- **Arama.**
+- **Şahıs sayfası:** atıflar, hocalar ve talebeler (kanıt cümleleriyle), dış hocalar, yerler ve
+  mini harita.
+- **Ağ:** bir şahsın bir ya da iki kuşak hoca ve talebesi; ayrıca bütün ağ, vefat yılına göre
+  zaman eksenli.
+- **Harita:** asır ve atıf türü süzgeçleri, yere tıklayınca oradaki âlimlerin listesi.
+
+Madde metinlerinin tamamı yayımlanmaz; yalnız atıflar ve kısa kanıt cümleleri yer alır.
+`.github/workflows/pages.yml`, `main` dalına her gönderimde siteyi GitHub Pages'e yayımlar. Bunun
+için depo ayarlarında Pages kaynağı "GitHub Actions" seçilmelidir.

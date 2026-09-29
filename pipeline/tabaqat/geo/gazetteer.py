@@ -80,6 +80,9 @@ class Gazetteer:
             if pid in self.places:
                 self.by_name[key(n)] = [pid]
                 self.places[pid].names.add(key(n))
+        for pid, name in (extra.get("label") or {}).items():
+            if pid in self.places:
+                self.places[pid].name = name
         # nisbe → yer: düzenli türetme + elle düzensizler
         self.by_nisba: dict[str, str] = {}
         for n, ids in self.by_name.items():

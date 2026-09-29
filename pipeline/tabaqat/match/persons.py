@@ -63,7 +63,9 @@ def _canonical(members: list[Rec]) -> tuple[str, int | None, str, int | None]:
     manual = [r.death for r in members if r.death_note == "elle"]
     if manual:
         return name, manual[0], death_note(manual[0]), manual[0]
-    years = [r.death for r in members if r.death]
+    # yüzler hanesi düşmüş okumalar ("سنة ست" → 6): 41'den küçük yıl yalnız Ketâib'in sahâbe bölümünde
+    years = [r.death for r in members
+             if r.death and (r.death >= 41 or (r.book == "kataib" and (r.number or 999) < 100))]
     if not years:
         return name, None, "", None
     support = {y: sum(1 for x in years if abs(x - y) <= 1) for y in years}

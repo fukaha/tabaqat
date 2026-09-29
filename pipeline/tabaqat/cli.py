@@ -52,7 +52,7 @@ def parse_book(cfg: dict):
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("cmd", choices=["parse", "report", "clean", "index", "match",
-                                       "apply-review", "network", "apply-network", "geo"])
+                                       "apply-review", "network", "apply-network", "geo", "site"])
     ap.add_argument("book", nargs="?")
     ap.add_argument("--out", default=str(ROOT / "data" / "entries"))
     a = ap.parse_args()
@@ -69,6 +69,10 @@ def main() -> None:
         from .network.review import write_review_data
         print(build(ROOT))
         print(write_review_data(ROOT))
+        return
+    if a.cmd == "site":  # statik site verisi → site/data/
+        from .export import export
+        print(export(ROOT))
         return
     if a.cmd == "geo":  # yer atıfları → data/places.json, data/person_places.json
         from .geo.build import build as build_geo

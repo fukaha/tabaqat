@@ -183,7 +183,13 @@ class Resolver:
         s = clean_mention(prep(text))
         for key in (s, "@zincir " + s if chain else None):
             if key and key in self.aliases:
-                return Resolution(self.aliases[key], "resolved", 9, "elle")
+                pid = self.aliases[key]
+                # elle eşleme de kronolojiye uymalı: "والجوزجاني تلميذ محمد بن الحسن" gibi
+                # başka birini anlatan cümle 4. asır madde sahibine bağlanmasın
+                if subject is None or pid == subject.pid or self._chrono_ok(
+                        self.persons[pid], subject, role):
+                    return Resolution(pid, "resolved", 9, "elle")
+                return Resolution(None, "unresolved", reason="vefat uymuyor")
         pid = self.aliases.get("@yakın " + s)
         if pid and subject is not None and not kin and (
                 pid == subject.pid or self._near(self.persons[pid], subject, role)
