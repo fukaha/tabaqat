@@ -21,3 +21,20 @@
   - 'nisbe: المكي'
   - lakap
   - 'çakışma: kataib kitabında zaten başka bir madde var'
+- 'no': 2
+  karar: ''
+  a: ghuraf_v1:172
+  b: taj_tarajim:64
+  a_ad: إسْحاق بن عبد الله، الوَلْوالِجِي، الحنفي
+  a_yer: الغرف العلية 1/350 (رقم 172)
+  a_vefat: 540
+  b_ad: إسحاق الولوالجي
+  b_yer: تاج التراجم 129 (رقم 64)
+  b_vefat: null
+  a_sahis: gh172
+  b_sahis: tj64
+  tur: isim
+  puan: 3.0
+  benzerlik: 1.0
+  gerekce:
+  - 'nisbe: الولوالجي'
