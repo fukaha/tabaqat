@@ -845,9 +845,6 @@ async function viewNet(view, id) {
   draw();
 }
 
-/* Âlimin silsilesi: yukarıdan aşağı ağaç. En üstte Ebû Hanîfe'ye uzanan halka dizisi, sonra
-   hocaların hocaları, hocalar, silsile sahibi, talebeler... Kartlar HTML'dir (adlar tam sarılır);
-   çizgiler yerleşimden sonra kartların gerçek konumlarından çizilir. */
 // Ebû Hanîfe'ye en kısa hoca yolu: vefatlarla tutarlı (hoca önce ölmüş, fark ≤ 100 yıl), önce kuvvetli bağlar
 function pathToImam(g, me, root = "jws1") {
   const R = g.byId.get(root);
@@ -870,93 +867,136 @@ function pathToImam(g, me, root = "jws1") {
   }
   return null;
 }
+/* Âlimin silsilesi, hadis isnad şemaları gibi: en üstte Ebû Hanîfe'ye uzanan tek sütunluk isnad,
+   altında hocalar, ortada silsile sahibi, altta talebeler. Hoca ve talebeler eşit sütunlu bir ızgaraya
+   dizilir; çizgiler kartların üzerinden geçmez: her kart iki sütun arasındaki boşluktan (oluk) inen
+   dikey hatta kısa bir kolla bağlanır, oluklar ortak bir yatay hatta, o da silsile sahibine birleşir. */
 function egoNet(host, g, me, depth, lineage = true) {
-  const MAXR = 60;
-  const rows = new Map([[0, [me]]]);
-  const seen = new Set([me]);
-  for (let k = 1; k <= depth; k++) {
-    for (const [dir, adj] of [[-1, g.up], [1, g.down]]) {
-      const prev = rows.get(dir * (k - 1)) || [], next = [];
-      prev.forEach(i => adj[i].forEach(([j]) => { if (!seen.has(j)) { seen.add(j); next.push(j); } }));
-      rows.set(dir * k, next);
-    }
-  }
-  const byYear = (a, b) => (g.nodes[a].d || 9999) - (g.nodes[b].d || 9999);
-  [-1, 1].forEach(c => rows.has(c) && rows.get(c).sort(byYear));
-  [-2, 2].forEach(c => {
-    if (!rows.has(c)) return;
-    const ref = rows.get(c / 2), at = new Map(ref.map((i, r) => [i, r]));
-    const adj = c < 0 ? g.down : g.up;
-    const bc = i => { const r = adj[i].map(([j]) => at.get(j)).filter(v => v !== undefined); return r.length ? r.reduce((a, b) => a + b) / r.length : 1e9; };
-    rows.get(c).sort((a, b) => bc(a) - bc(b) || byYear(a, b));
-  });
-  // Ebû Hanîfe'ye uzanan yol: ağaçta görünen kuşakların üstüne tek kartlık satırlar olarak eklenir
-  const path = lineage ? pathToImam(g, me) : null;
-  const onPath = new Set(path || []), pathEdge = new Set();
-  if (path) for (let k = 0; k + 1 < path.length; k++) pathEdge.add(`${path[k]}>${path[k + 1]}`);
-  const lin = [];
-  if (path) {
-    // yoldaki kişi zaten -1/-2 satırındaysa oraya öne alınır; üstündekiler ayrı satır olur
-    const up = path.slice(0, -1).reverse();   // me'nin hocası, onun hocası … Ebû Hanîfe
-    up.forEach((i, k) => {
-      const lvl = -(k + 1);
-      if (k < depth && rows.has(lvl)) { const r = rows.get(lvl); if (!r.includes(i)) r.unshift(i); else { r.splice(r.indexOf(i), 1); r.unshift(i); } seen.add(i); }
-      else lin.unshift(i);
-    });
-  }
-  const more = {};
-  for (const [c, l] of rows) if (l.length > MAXR) { const keep = l.filter(i => onPath.has(i)); more[c] = l.length - MAXR; rows.set(c, [...keep, ...l.filter(i => !onPath.has(i))].slice(0, MAXR)); }
-  const head = LANG === "tr" ? { "-2": "Hocalarının hocaları", "-1": "Hocaları", "0": "", "1": "Talebeleri", "2": "Talebelerinin talebeleri" }
-    : { "-2": "شيوخ شيوخه", "-1": "شيوخه", "0": "", "1": "تلاميذه", "2": "تلاميذ تلاميذه" };
-  const card = i => { const n = g.nodes[i], p = P.get(n.id) || {};
-    const yr = n.d ? (LANG === "tr" ? `(${yearTxt(n.d, n.guess || p.est)})` : yearTxt(n.d, n.guess || p.est)) : "";
-    const tr = n.salaf ? `<span class="tag weak" title="${T("قبل أبي حنيفة؛ ليس له ترجمة في هذا الفهرس", "Ebû Hanîfe öncesi; bu dizinde biyografisi yok")}">${T("من السلف", "selef")}</span>`
-      : `<a class="tr" href="#/p/${esc(n.id)}" title="${T("ترجمته", "Biyografisi")}">${T("ترجمة", "biyografi")}</a>`;
-    const cls = `card${i === me ? " me" : ""}${n.salaf ? " salaf" : ""}${onPath.has(i) && i !== me ? " onpath" : ""}`;
-    return i === me
-      ? `<div class="${cls}" data-i="${i}">${n.salaf ? `<span class="nm">${esc(n.name)}</span>` : `<a class="nm" href="#/p/${esc(n.id)}">${esc(n.name)}</a>`}
-          <span class="meta num"><span>${yr}</span>${n.salaf ? tr : `<a class="tr" href="#/p/${esc(n.id)}">${T("قراءة الترجمة ←", "Biyografiyi oku →")}</a>`}</span></div>`
-      : `<div class="${cls}" data-i="${i}"><a class="nm" href="#/net/${esc(n.id)}" title="${T("سلسلته", "Silsilesi")}">${esc(n.name)}</a>
-          <span class="meta num"><span>${yr}</span>${tr}</span></div>`; };
-  const keys = [...rows.keys()].sort((a, b) => a - b);
-  const linHtml = lin.length ? `<div class="gen lin"><div class="genh">${T("السلسلة إلى أبي حنيفة", "Ebû Hanîfe’ye uzanan silsile")}</div>
-      ${lin.map(i => `<div class="cards1">${card(i)}</div>`).join("")}</div>` : "";
-  host.innerHTML = `<div class="treewrap"><div class="tree">
-      <svg class="links" aria-hidden="true"></svg>
-      ${linHtml}
-      ${keys.map(c => `<div class="gen${c === 0 ? " mid" : ""}">${head[c] ? `<div class="genh">${head[c]}<span class="num"> ${AR(rows.get(c).length + (more[c] || 0))}</span></div>` : ""}
-        <div class="cardsrow">${rows.get(c).length ? rows.get(c).map(card).join("") : `<p class="none">—</p>`}</div>
-        ${more[c] ? `<p class="none">${T(`و${AR(more[c])} غيرهم`, `ve ${more[c]} kişi daha`)}</p>` : ""}</div>`).join("")}
+  const MAXR = 60, N = g.nodes;
+  const byYear = (a, b) => (N[a].d || 9999) - (N[b].d || 9999);
+  const path = lineage ? pathToImam(g, me) : null;          // Ebû Hanîfe → … → me
+  const onPath = new Set(path || []);
+  const pt = path ? path[path.length - 2] : -1;             // yoldaki hoca
+  const chain = path ? path.slice(0, -2) : [];              // ondan yukarısı: isnad sütunu
+  const pg = chain.length ? chain[chain.length - 1] : -1;
+  const weakOf = (adj, i) => new Map(adj[i].map(([j, n, w]) => [j, !!w]));
+  const upW = weakOf(g.up, me), downW = weakOf(g.down, me);
+  const pick = adj => { const l = adj[me].map(([j]) => j).sort(byYear);
+    const i = l.indexOf(pt); if (i > 0) { l.splice(i, 1); l.unshift(pt); }
+    return { all: l.length, list: l.slice(0, MAXR) }; };
+  const T_ = pick(g.up), S_ = pick(g.down);
+  const nameOf = i => { const n = N[i]; return LANG === "tr" ? (P.get(n.id) || {}).trs || n.tr : n.ar; };
+  const yr = i => { const n = N[i], p = P.get(n.id) || {}; return n.d ? (LANG === "tr" ? `(${yearTxt(n.d, n.guess || p.est)})` : yearTxt(n.d, n.guess || p.est)) : ""; };
+  const trLink = n => n.salaf ? `<span class="tag weak" title="${T("قبل أبي حنيفة؛ ليس له ترجمة في هذا الفهرس", "Ebû Hanîfe öncesi; bu dizinde biyografisi yok")}">${T("من السلف", "selef")}</span>`
+    : `<a class="tr" href="#/p/${esc(n.id)}" title="${T("ترجمته", "Biyografisi")}">${T("ترجمة", "biyografi")}</a>`;
+  // iki kuşak: her kartta onun hocaları (üstte) ya da talebeleri (altta) küçük bir çekmece olarak
+  const tray = (i, dir) => {
+    if (depth < 2) return "";
+    const l = (dir < 0 ? g.up[i] : g.down[i]).map(([j]) => j).filter(j => j !== me).sort(byYear);
+    if (!l.length) return "";
+    if (l.includes(pg) && i === pt) { l.splice(l.indexOf(pg), 1); l.unshift(pg); }
+    const K = 6;
+    return `<div class="tray"><span class="th">${dir < 0 ? T("شيوخه", "hocaları") : T("تلاميذه", "talebeleri")}</span>${l.slice(0, K).map(j =>
+      `<a class="chip2${i === pt && j === pg ? " onpath" : ""}" href="#/net/${esc(N[j].id)}" title="${esc(N[j].name)}">${esc(nameOf(j))}</a>`).join("")}${l.length > K ? `<span class="th">+${AR(l.length - K)}</span>` : ""}</div>`;
+  };
+  const card = (i, dir, weak) => { const n = N[i];
+    const cls = `card${n.salaf ? " salaf" : ""}${onPath.has(i) ? " onpath" : ""}${weak ? " weak" : ""}`;
+    return `<div class="${cls}" data-i="${i}">${dir < 0 ? tray(i, -1) : ""}<a class="nm" href="#/net/${esc(n.id)}" title="${T("سلسلته", "Silsilesi")}">${esc(n.name)}</a>
+      <span class="meta num"><span>${yr(i)}</span>${trLink(n)}</span>${dir > 0 ? tray(i, 1) : ""}</div>`; };
+  const m = N[me];
+  const meCard = `<div class="card me${m.salaf ? " salaf" : ""}" data-i="${me}">${m.salaf ? `<span class="nm">${esc(m.name)}</span>` : `<a class="nm" href="#/p/${esc(m.id)}">${esc(m.name)}</a>`}
+    <span class="meta num"><span>${yr(me)}</span>${m.salaf ? trLink(m) : `<a class="tr" href="#/p/${esc(m.id)}">${T("قراءة الترجمة ←", "Biyografiyi oku →")}</a>`}</span></div>`;
+  const more = (all, l) => all > l.length ? `<p class="none">${T(`و${AR(all - l.length)} غيرهم`, `ve ${all - l.length} kişi daha`)}</p>` : "";
+  const lbl = (ar, tr, n) => `<div class="tlbl">${T(ar, tr)} <span class="num">${AR(n)}</span></div>`;
+  host.innerHTML = `<div class="treewrap"><div class="tree isnad">
+      <svg class="links" aria-hidden="true"></svg><div class="elbls"></div>
+      ${chain.length ? `<div class="chainv"><div class="tlbl top">${T("الإسناد إلى أبي حنيفة", "Ebû Hanîfe’ye uzanan isnad")}</div>
+        ${chain.map(i => `<div class="card lnk${N[i].salaf ? " salaf" : ""}" data-i="${i}"><a class="nm" href="#/net/${esc(N[i].id)}">${esc(N[i].name)}</a><span class="meta num"><span>${yr(i)}</span>${trLink(N[i])}</span></div>`).join("")}</div>` : ""}
+      ${T_.list.length ? `<div class="blk up">${more(T_.all, T_.list)}<div class="grid">${T_.list.map(i => card(i, -1, upW.get(i))).join("")}</div>
+        ${lbl("شيوخه", "Hocaları", T_.all)}</div>` : ""}
+      <div class="mid">${meCard}</div>
+      ${S_.list.length ? `<div class="blk down">${lbl("تلاميذه", "Talebeleri", S_.all)}
+        <div class="grid">${S_.list.map(i => card(i, 1, downW.get(i))).join("")}</div>${more(S_.all, S_.list)}</div>` : ""}
+      ${!T_.list.length && !S_.list.length ? `<p class="none">—</p>` : ""}
     </div></div>
-    <p class="legend">${path ? T("الخط الذهبي: أقصر سلسلة تفقّه موثّقة إلى أبي حنيفة، متّسقة مع سني الوفاة. ", "Altın çizgi: vefat yıllarıyla tutarlı, belgeli en kısa silsile (Ebû Hanîfe’ye kadar). ")
-      : (lineage && me !== g.byId.get("jws1") ? T("لم توجد سلسلة موثّقة إلى أبي حنيفة. ", "Ebû Hanîfe’ye uzanan belgeli bir silsile bulunamadı. ") : "")}${T("اضغط على اسم لتنتقل إلى سلسلته، أو على «ترجمة» لتقرأ ترجمته. الخط المتقطع: ربط بترجيح النسبة أو الشهرة.",
-      "Bir ada tıklayınca onun silsilesine, “biyografi”ye tıklayınca biyografisine gidilir. Kesikli çizgi: nisbe ya da şöhretle tercih edilen bağ.")}</p>`;
-  const tree = $(".tree", host), svg = $(".links", host);
-  const drawLinks = () => {
+    <p class="legend">${path ? T("الخط الذهبي: أقصر سلسلة تفقّه موثّقة إلى أبي حنيفة، متّسقة مع سني الوفاة، وعلى كل حلقة نوع الأخذ. ", "Altın çizgi: vefat yıllarıyla tutarlı, belgeli en kısa silsile (Ebû Hanîfe’ye kadar); her halkanın üzerinde alış türü yazılıdır. ")
+      : (lineage && me !== g.byId.get("jws1") ? T("لم توجد سلسلة موثّقة إلى أبي حنيفة. ", "Ebû Hanîfe’ye uzanan belgeli bir silsile bulunamadı. ") : "")}${T("اضغط على اسم لتنتقل إلى سلسلته، أو على «ترجمة» لتقرأ ترجمته. الإطار المتقطع: ربط بترجيح النسبة أو الشهرة.",
+      "Bir ada tıklayınca onun silsilesine, “biyografi”ye tıklayınca biyografisine gidilir. Kesikli çerçeve: nisbe ya da şöhretle tercih edilen bağ.")}</p>`;
+  const wrap = $(".treewrap", host), tree = $(".tree", host), svg = $(".links", host), lay = $(".elbls", host);
+  const rem = parseFloat(getComputedStyle(document.documentElement).fontSize) || 16;
+  const labels = new Map();   // "t>s" → alış türü
+  // sütun sayısı kutu genişliğinden; yoldaki hoca ortaya yakın bir sütuna
+  const columns = () => {
+    const cw = 14.5 * rem, gap = 2.6 * rem, W = wrap.clientWidth - 2.4 * rem;
+    tree.querySelectorAll(".blk").forEach(b => {
+      const grid = $(".grid", b), n = grid.children.length;
+      const C = Math.max(1, Math.min(5, n, Math.floor((W + gap) / (cw + gap))));
+      grid.style.setProperty("--c", C); grid.classList.toggle("one", C === 1 && n > 1);
+      const ptEl = b.classList.contains("up") && grid.querySelector(`.card[data-i="${pt}"]`);
+      if (ptEl) { const at = Math.min(Math.floor((C - 1) / 2), n - 1); ptEl.remove(); grid.insertBefore(ptEl, grid.children[at] || null); }
+    });
+  };
+  const draw = () => {
     const box = tree.getBoundingClientRect();
     svg.setAttribute("width", tree.scrollWidth); svg.setAttribute("height", tree.scrollHeight);
-    const els = [...tree.querySelectorAll(".card")], at = new Map(els.map(el => [+el.dataset.i, el.getBoundingClientRect()]));
-    const paths = [];
-    for (const [i, r] of at) g.down[i].forEach(([j, n, weak]) => {
-      const r2 = at.get(j);
-      if (!r2 || r2.top <= r.bottom - 2) return;   // yalnız aşağıdaki kartlara
-      const hot = pathEdge.has(`${i}>${j}`);
-      if (!hot && !(i === me || j === me) && Math.abs(r2.top - r.bottom) > 140) return;   // uzak kuşaklar arası karmaşayı önle
-      const x1 = r.left + r.width / 2 - box.left, y1 = r.bottom - box.top, x2 = r2.left + r2.width / 2 - box.left, y2 = r2.top - box.top;
-      const my = (y1 + y2) / 2;
-      paths.push(`<path class="lk${weak ? " weak" : ""}${i === me || j === me ? " hot" : ""}${hot ? " path" : ""}" stroke-width="${hot ? 3 : Math.min(3, 1 + Math.log2(n) / 2)}" d="M${x1} ${y1}C${x1} ${my} ${x2} ${my} ${x2} ${y2}"/>`);
+    const R = el => { const r = el.getBoundingClientRect(); return { l: r.left - box.left, r: r.right - box.left, t: r.top - box.top, b: r.bottom - box.top, cx: (r.left + r.right) / 2 - box.left }; };
+    const meR = R($(".card.me", tree));
+    const base = [], gold = [], lab = [];
+    const P2 = (d, cls = "lk") => `<path class="${cls}" d="${d}"/>`;
+    tree.querySelectorAll(".blk").forEach(b => {
+      const up = b.classList.contains("up"), grid = $(".grid", b), cards = [...grid.children];
+      if (!cards.length) return;
+      const gap = parseFloat(getComputedStyle(grid).columnGap) || 2.6 * rem, gR = R(grid);
+      const busY = up ? gR.b + 1.1 * rem : gR.t - 1.1 * rem, tY = up ? meR.t : meR.b, tx = meR.cx;
+      if (cards.length === 1) {   // tek kişi: doğrudan dirsekli hat
+        const c = R(cards[0]), y = up ? c.b : c.t, d = `M${c.cx} ${y}V${busY}H${tx}V${tY}`;
+        (+cards[0].dataset.i === pt ? gold : base).push(P2(d, `lk${cards[0].classList.contains("weak") ? " weak" : ""}${+cards[0].dataset.i === pt ? " path" : ""}`));
+        return;
+      }
+      const lefts = [...new Set(cards.map(c => Math.round(R(c).l)))].sort((a, b) => a - b), C = lefts.length;
+      const gut = new Map();
+      let ptSeg = null;
+      cards.forEach(el => {
+        const c = R(el), v = lefts.indexOf(Math.round(c.l));
+        const right = C > 1 && v % 2 === 0 && v !== C - 1;
+        const x = Math.round(right ? c.r + gap / 2 : c.l - gap / 2);
+        const nm = R($(".nm", el)), y = nm.t + .8 * rem;
+        if (!gut.has(x)) gut.set(x, []); gut.get(x).push(y);
+        const d = `M${x} ${y}H${right ? c.r : c.l}`;
+        base.push(P2(d, `lk stub${el.classList.contains("weak") ? " weak" : ""}`));
+        if (+el.dataset.i === pt) ptSeg = { x, y, d };
+      });
+      for (const [x, ys] of gut) base.push(P2(`M${x} ${busY}V${up ? Math.min(...ys) : Math.max(...ys)}`));
+      const xs = [...gut.keys(), tx];
+      base.push(P2(`M${Math.min(...xs)} ${busY}H${Math.max(...xs)}`), P2(`M${tx} ${busY}V${tY}`, "lk trunk"));
+      if (up && ptSeg) gold.push(P2(`${ptSeg.d}M${ptSeg.x} ${ptSeg.y}V${busY}H${tx}V${tY}`, "lk path"));
     });
-    // altın yol en üstte görünsün
-    paths.sort((a, b) => a.includes(" path") - b.includes(" path"));
-    svg.innerHTML = paths.join("");
+    // isnad sütunu: halkalar arası dikey altın hat ve üzerinde alış türü; son halka yoldaki hocaya dirsekle
+    const lnks = [...tree.querySelectorAll(".chainv .card")];
+    lnks.forEach((el, k) => {
+      const a = R(el), i = +el.dataset.i;
+      if (k + 1 < lnks.length) {
+        const b = R(lnks[k + 1]); gold.push(P2(`M${a.cx} ${a.b}V${b.t}`, "lk path"));
+        lab.push([a.cx, (a.b + b.t) / 2, labels.get(`${i}>${+lnks[k + 1].dataset.i}`)]);
+      } else {
+        const tEl = tree.querySelector(`.blk.up .card[data-i="${pt}"]`);
+        if (!tEl) return;
+        const b = R(tEl), my = b.t - 1.1 * rem;
+        gold.push(P2(`M${a.cx} ${a.b}V${my}H${b.cx}V${b.t}`, "lk path"));
+        lab.push([a.cx, (a.b + my) / 2, labels.get(`${i}>${pt}`)]);
+      }
+    });
+    svg.innerHTML = base.join("") + gold.join("");
+    lay.innerHTML = lab.filter(x => x[2]).map(([x, y, t]) => `<span class="elbl" style="left:${x}px;top:${y}px">${esc(t)}</span>`).join("");
   };
-  const ro = new ResizeObserver(drawLinks); ro.observe(tree);
-  (document.fonts ? document.fonts.ready : Promise.resolve()).then(() => {
-    drawLinks();
-    const m = tree.querySelector(".card.me"), wrap = $(".treewrap", host);
-    if (m && wrap.scrollWidth > wrap.clientWidth)
-      wrap.scrollLeft += (m.getBoundingClientRect().left + m.offsetWidth / 2) - (wrap.getBoundingClientRect().left + wrap.clientWidth / 2);
-  });
+  const layout = () => { columns(); draw(); };
+  const ro = new ResizeObserver(layout); ro.observe(wrap);
+  (document.fonts ? document.fonts.ready : Promise.resolve()).then(layout);
+  // alış türleri talebenin biyografi dosyasından
+  if (path) Promise.all(path.slice(1).map((s, k) => N[s].salaf ? null : person(N[s].id).then(p => {
+    const t = path[k], r = p && (p.teachers || []).find(x => x.id === N[t].id);
+    if (r && r.rels && r.rels.length) labels.set(`${t}>${s}`, r.rels.map(x => REL[x] || x).join(T("، ", ", ")));
+  }).catch(() => {}))).then(() => host.contains(tree) && draw());
 }
 
 function fullNet(host, g) {

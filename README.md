@@ -148,9 +148,13 @@ python -m tabaqat.geo.basemap <natural-earth-dizini>   # → site/data/basemap.j
 - **Arama.**
 - **Şahıs sayfası:** atıflar, hocalar ve talebeler (kanıt cümleleriyle), dış hocalar, yerler ve
   mini harita.
-- **Silsile (السلسلة):** bir âlimin hoca ve talebeleri yukarıdan aşağı ağaç olarak (bir ya da iki
-  kuşak). "Ebû Hanîfe’ye bağla" açıkken en üstte Ebû Hanîfe'ye uzanan en kısa belgeli halka dizisi
-  altın çizgiyle gösterilir: önce zayıf olmayan bağlar, her adımda hoca talebeden önce ölmüş ve fark
+- **Silsile (السلسلة):** hadis isnad şemaları gibi yukarıdan aşağı: hocalar, silsile sahibi,
+  talebeler. Hoca ve talebeler eşit sütunlu ızgarada durur; çizgiler kartların üzerinden geçmez
+  (her kart sütunlar arasındaki oluktan inen hatta kısa bir kolla bağlanır, oluklar ortak bir yatay
+  hatla silsile sahibine birleşir). "İki kuşak"ta her kartın kendi hocaları/talebeleri kartın içinde
+  küçük bir çekmecede listelenir. "Ebû Hanîfe’ye bağla" açıkken en üstte Ebû Hanîfe'ye uzanan en
+  kısa belgeli isnad tek sütun hâlinde, her halkada alış türü (fıkıh, ilim aldı, sohbet…) yazılı
+  olarak altın çizgiyle gösterilir: önce zayıf olmayan bağlar, her adımda hoca talebeden önce ölmüş ve fark
   ≤ 100 yıl; vefatı bilinmeyen aracıya talebesinden ~35 yıl önce bir tahmin verilir. Ayrıca bütün
   ağın vefat yılına göre zaman eksenli genel görünümü. Silsile ve harita "Büyük ekran" ile tam
   ekrana alınabilir.

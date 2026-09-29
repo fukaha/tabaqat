@@ -368,21 +368,39 @@ footer.foot .brand { color: var(--on-navy); }
 /* سلسلة الشيوخ والتلاميذ */
 /* silsile ağacı: yukarıdan aşağı kuşaklar */
 .treewrap { overflow: auto; border: 1px solid var(--line); border-radius: 8px; background: var(--paper); }
-.tree { position: relative; display: flex; flex-direction: column; align-items: center; gap: 2.4rem; padding: 1.2rem 1.25rem 1.8rem; min-width: min-content; }
+.tree { position: relative; display: flex; flex-direction: column; align-items: center; padding: 1.4rem 1.2rem 1.8rem; min-width: min-content; }
 .tree .links { position: absolute; left: 0; top: 0; pointer-events: none; overflow: visible; }
-.tree .lk { fill: none; stroke: var(--muted); stroke-opacity: .4; }
-.tree .lk.hot { stroke: var(--teal); stroke-opacity: .45; }
-.tree .lk.weak { stroke-dasharray: 4 3; }
-.tree .lk.path { stroke: var(--gold); stroke-opacity: .95; }
-.tree .gen { position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; gap: .5rem; width: 100%; }
-.tree .gen.lin { gap: 1.6rem; }
-.tree .genh { position: relative; z-index: 2; background: var(--paper); font-family: var(--f-head); color: var(--gold); font-size: 1.05rem; padding: 0 1rem .15rem; border-bottom: 1px solid var(--line); }
-.tree .cardsrow { display: flex; flex-wrap: wrap; justify-content: center; gap: .6rem .7rem; max-width: 76rem; }
-.tree .cardsrow .card, .tree .cards1 .card { width: 14.5rem; }
-.tree .gen.mid .card { width: 19rem; }
+.tree .elbls { position: absolute; inset: 0; pointer-events: none; z-index: 3; }
+.tree .elbl { position: absolute; transform: translate(-50%, -50%); background: var(--paper); border: 1px solid color-mix(in srgb, var(--gold) 45%, transparent); border-radius: 999px; padding: 0 .55rem; font-size: .74rem; line-height: 1.5; color: var(--gold); white-space: nowrap; }
+.tree .lk { fill: none; stroke: var(--muted); stroke-opacity: .55; stroke-width: 1.2; stroke-linejoin: round; }
+.tree .lk.trunk { stroke-width: 2; }
+.tree .lk.stub.weak { stroke-dasharray: 3 3; }
+.tree .lk.path { stroke: var(--gold); stroke-opacity: 1; stroke-width: 2.6; }
+.tree .card { position: relative; z-index: 1; }
+.tree .chainv { display: flex; flex-direction: column; align-items: center; gap: 2.2rem; margin-bottom: 3rem; }
+.tree .chainv .card { width: 16rem; text-align: center; border-color: var(--gold); background: var(--mark); }
+.tree .chainv .card .meta { justify-content: center; gap: .8rem; }
+.tree .tlbl { position: relative; z-index: 2; background: var(--paper); font-family: var(--f-head); color: var(--gold); font-size: 1.02rem; padding: .05rem .9rem; border: 1px solid var(--line); border-radius: 999px; }
+.tree .tlbl.top { border: 0; border-bottom: 1px solid var(--line); border-radius: 0; margin-bottom: -.8rem; }
+.tree .blk { display: flex; flex-direction: column; align-items: center; width: 100%; }
+.tree .blk.up .tlbl { margin: 2.6rem 0 1.2rem; }
+.tree .blk.down .tlbl { margin: 1.2rem 0 2.6rem; }
+.tree .grid { display: grid; grid-template-columns: repeat(var(--c, 4), min(14.5rem, 100%)); column-gap: 2.6rem; row-gap: .9rem; justify-content: center; align-items: start; max-width: 100%; }
+.tree .grid.one { padding-left: 2.6rem; grid-template-columns: min(14.5rem, 100%); }
+.tree .grid .card { min-width: 0; }
+.tree .blk .none { margin: 0 0 .6rem; }
+.tree .blk.down .none { margin: .6rem 0 0; }
+.tree .mid .card.me { width: 20rem; max-width: 100%; text-align: center; box-shadow: 0 0 0 4px var(--paper), 0 0 0 5px color-mix(in srgb, var(--gold) 50%, transparent); }
+.tree .mid .card.me .meta { justify-content: center; gap: 1rem; }
+.tree .card.weak { border-style: dashed; }
+.tree .tray { display: flex; flex-wrap: wrap; gap: .25rem; align-items: center; font-size: .74rem; padding: .25rem 0 .3rem; margin: 0 0 .25rem; border-bottom: 1px dotted var(--line); }
+.tree .blk.down .tray { margin: .25rem 0 0; border-bottom: 0; border-top: 1px dotted var(--line); }
+.tree .tray .th { color: var(--muted); }
+.tree .chip2 { max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; padding: 0 .4rem; border-radius: 999px; background: var(--mark); color: var(--ink); }
+.tree .chip2.onpath { background: var(--gold); color: var(--paper); }
 .tree .none { color: var(--muted); text-align: center; margin: .2rem 0; font-size: .9rem; }
 .card.onpath { border-color: var(--gold); box-shadow: 0 0 0 2px color-mix(in srgb, var(--gold) 30%, transparent); }
-@media (max-width: 600px) { .tree { padding-inline: .6rem; } .tree .cardsrow { width: 100%; } .tree .cardsrow .card { width: calc(50% - .35rem); } .tree .cards1 .card { width: 13rem; } .tree .gen.mid .card { width: 15rem; } }
+@media (max-width: 600px) { .tree { padding-inline: .6rem; } .tree .chainv .card { width: 14rem; } }
 /* büyük ekran sahnesi */
 .stagebar { display: flex; flex-wrap: wrap; align-items: center; gap: .4rem; }
 .stagebar .grow { flex: 1; }
