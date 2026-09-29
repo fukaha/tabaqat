@@ -3,7 +3,7 @@ name: pages
 # site/data, pipeline'ın "python -m tabaqat.cli site" çıktısıdır ve depoda tutulur.
 on:
   push:
-    branches: [main]
+    branches: [main, claude/practical-clarke-8an6jy]
     paths: ["site/**", ".github/workflows/pages.yml"]
   workflow_dispatch:
 permissions:

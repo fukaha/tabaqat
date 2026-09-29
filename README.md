@@ -5,7 +5,7 @@ Hanefi biyografi kitaplarını (el-Cevâhiru'l-mudiyye, Ketâibü a'lâmi'l-ahy�
 - `pipeline/` — Python: ayrıştırma, normalizasyon, çıkarım, eşleştirme, dışa aktarım
 - `books/` — kitap başına ayrıştırma ayarları (YAML)
 - `review/` — insan onaylı eşleştirme kararları
-- `site/` — Arapça (RTL) statik arayüz; veri `site/data/*.json`
+- `site/` — Arapça (RTL) statik arayüz; veri `site/data/*.json` — yayında: https://fukaha.github.io/tabaqat/
 
 ```
 pip install -e "pipeline[dev]" && pytest pipeline
@@ -190,5 +190,12 @@ işaretiyle hoca–talebe bağlarıyla görünürler. Veride oldukları gibi kal
 Şahıs sayfasının altında her kaynağın madde metni tam olarak, açılır kapanır bölümler hâlinde
 yer alır. Muhakkik dipnotları, "ترجمته في" listeleri ve beyitler ayrı biçimlenir. Metinler
 `site/data/t/NN.json` parçalarından yalnız açılınca yüklenir.
-`.github/workflows/pages.yml`, `main` dalına her gönderimde siteyi GitHub Pages'e yayımlar. Bunun
-için depo ayarlarında Pages kaynağı "GitHub Actions" seçilmelidir.
+
+## Yayın
+
+Site: **https://fukaha.github.io/tabaqat/**
+
+`.github/workflows/pages.yml`, `main` ve `claude/practical-clarke-8an6jy` dallarına `site/`
+altında değişiklik gönderildiğinde (veya Actions sekmesinden elle) siteyi GitHub Pages'e yayımlar.
+Bunun için depo ayarlarında (Settings → Pages → Build and deployment → Source) "GitHub Actions"
+seçilmelidir. Onay sayfaları (`site/review`, `site/network-review`) yayına dahil edilmez.
