@@ -25,7 +25,7 @@
   --river: #9dbdb8;
   --mark: rgba(168, 122, 51, .12);
   --shadow: 0 1px 2px rgba(60, 45, 20, .05), 0 8px 22px rgba(60, 45, 20, .07);
-  --ebru-o: .5;
+  --zemin-o: .42;
   color-scheme: light;
 }
 @media (prefers-color-scheme: dark) {
@@ -35,7 +35,7 @@
     --peach: #4f3a33; --sage: #33474a; --butter: #4d4429; --mint: #243d37;
     --navy: #0a1f30; --navy2: #10304a; --on-navy: #efe5cf;
     --rubric: #e58c70; --teal: #9fb0f0; --land: #1b2335; --water: #0e1422; --river: #35516a;
-    --mark: rgba(215, 176, 100, .14); --shadow: 0 1px 2px rgba(0, 0, 0, .3), 0 8px 22px rgba(0, 0, 0, .25); --ebru-o: .22;
+    --mark: rgba(215, 176, 100, .14); --shadow: 0 1px 2px rgba(0, 0, 0, .3), 0 8px 22px rgba(0, 0, 0, .25); --zemin-o: .3;
     color-scheme: dark;
   }
 }
@@ -45,7 +45,7 @@
   --peach: #4f3a33; --sage: #33474a; --butter: #4d4429; --mint: #243d37;
   --navy: #0a1f30; --navy2: #10304a; --on-navy: #efe5cf;
   --rubric: #e58c70; --teal: #9fb0f0; --land: #1b2335; --water: #0e1422; --river: #35516a;
-  --mark: rgba(215, 176, 100, .14); --shadow: 0 1px 2px rgba(0, 0, 0, .3), 0 8px 22px rgba(0, 0, 0, .25); --ebru-o: .22;
+  --mark: rgba(215, 176, 100, .14); --shadow: 0 1px 2px rgba(0, 0, 0, .3), 0 8px 22px rgba(0, 0, 0, .25); --zemin-o: .3;
   color-scheme: dark;
 }
 
@@ -129,9 +129,9 @@ section > h2 { font-size: 1.35rem; border-bottom: 1px solid var(--line); padding
 section > h2 .c { color: var(--muted); font-size: .95rem; font-weight: 400; margin-inline-start: .4rem; }
 .empty { color: var(--muted); padding: 2rem 0; }
 
-/* hero: ebru zemin + arama + altın silsile + sayılı kutucuklar */
+/* hero: geometrik desen zemin + arama + altın silsile + sayılı kutucuklar */
 .hero { position: relative; overflow: hidden; background: var(--bg); padding: 2.6rem 16px 2.6rem; }
-.hero .ebru { position: absolute; inset: 0; width: 100%; height: 100%; opacity: var(--ebru-o); pointer-events: none;
+.hero .zemin { position: absolute; inset: 0; width: 100%; height: 100%; opacity: var(--zemin-o); pointer-events: none;
   -webkit-mask-image: linear-gradient(180deg, #000 0%, rgba(0,0,0,.55) 45%, transparent 92%); mask-image: linear-gradient(180deg, #000 0%, rgba(0,0,0,.55) 45%, transparent 92%); }
 .hero .inner { position: relative; max-width: 76rem; margin: 0 auto; }
 .hero .txt { position: relative; max-width: 50rem; margin-inline: auto; text-align: center; background: color-mix(in srgb, var(--bg) 82%, transparent); border-radius: 18px; padding: 1.2rem 1.6rem 1.5rem; box-shadow: 0 0 0 1px color-mix(in srgb, var(--gold) 25%, transparent); }

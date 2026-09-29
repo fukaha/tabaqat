@@ -212,19 +212,22 @@ const ORN = {
     <circle cx="50" cy="50" r="8" fill="currentColor" fill-opacity=".3"/></g></svg>`,
   arrow: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h16M8 8l-4 4 4 4M16 8l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
 };
-// ebru zemin: taraklı ebru şeritleri, türbülansla dalgalandırılmış
-function ebru() {
-  const cols = ["peach", "bg", "butter", "mint", "bg", "sage", "peach", "bg", "mint", "butter", "bg", "sage"];
-  const stripes = Array.from({ length: 34 }, (_, i) => `<rect x="${i * 40 - 60}" y="-80" width="${22 + (i * 7) % 18}" height="700" fill="var(--${cols[i % cols.length]})"/>`
-    + (i % 3 ? "" : `<rect x="${i * 40 - 64}" y="-80" width="2" height="700" fill="var(--gold)" opacity=".5"/>`)).join("");
-  const drops = [[180, 120, 70, "sage"], [520, 60, 50, "peach"], [860, 150, 80, "butter"], [1080, 90, 45, "mint"], [340, 330, 60, "butter"], [760, 380, 55, "sage"]]
-    .map(([x, y, r, c]) => `<circle cx="${x}" cy="${y}" r="${r}" fill="var(--${c})"/><circle cx="${x}" cy="${y}" r="${r * .55}" fill="var(--bg)"/><circle cx="${x}" cy="${y}" r="${r * .22}" fill="var(--${c})"/>`).join("");
-  return `<svg class="ebru" viewBox="0 0 1200 520" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-    <defs><filter id="ebf" x="-10%" y="-10%" width="120%" height="120%">
-      <feTurbulence type="fractalNoise" baseFrequency=".0035 .011" numOctaves="3" seed="11" result="n"/>
-      <feDisplacementMap in="SourceGraphic" in2="n" scale="190" xChannelSelector="R" yChannelSelector="G"/>
-      <feGaussianBlur stdDeviation="1.1"/></filter></defs>
-    <g filter="url(#ebf)">${stripes}${drops}</g></svg>`;
+// kapak zemini: sekiz köşeli yıldız ve haçtan örülü geometrik desen (sitenin amblemiyle aynı yıldız),
+// ince altın çizgi; ortada bir şemse. Aşağı doğru solar.
+function zemin() {
+  const sq = (x, y, r, rot) => { const p = [0, 1, 2, 3].map(k => { const a = Math.PI / 2 * k + rot; return `${(x + r * Math.cos(a)).toFixed(2)},${(y + r * Math.sin(a)).toFixed(2)}`; }); return `<polygon points="${p.join(" ")}"/>`; };
+  const star = (x, y, r) => sq(x, y, r, Math.PI / 4) + sq(x, y, r, 0);
+  // 60×60'lık karo: köşelerde ve ortada yıldız; aralarda haç biçimli boşluklar kalır
+  const tile = [[0, 0], [60, 0], [0, 60], [60, 60], [30, 30]].map(([x, y]) => star(x, y, 17) + `<circle cx="${x}" cy="${y}" r="4.2"/>`).join("")
+    + `<path d="M30 30 0 0M30 30 60 0M30 30 0 60M30 30 60 60" opacity=".45"/>`;
+  const rays = Array.from({ length: 32 }, (_, i) => { const a = Math.PI / 16 * i, r1 = 92, r2 = i % 2 ? 128 : 150;
+    return `<path d="M${(600 + r1 * Math.cos(a)).toFixed(1)} ${(250 + r1 * Math.sin(a)).toFixed(1)}L${(600 + r2 * Math.cos(a)).toFixed(1)} ${(250 + r2 * Math.sin(a)).toFixed(1)}"/>`; }).join("");
+  return `<svg class="zemin" viewBox="0 0 1200 520" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+    <defs><pattern id="girih" width="60" height="60" patternUnits="userSpaceOnUse"><g fill="none" stroke="var(--gold)" stroke-width=".9">${tile}</g></pattern>
+      <radialGradient id="zfade" cx="50%" cy="46%" r="60%"><stop offset="0" stop-color="var(--bg)" stop-opacity=".92"/><stop offset=".55" stop-color="var(--bg)" stop-opacity=".35"/><stop offset="1" stop-color="var(--bg)" stop-opacity="0"/></radialGradient></defs>
+    <rect width="1200" height="520" fill="url(#girih)"/>
+    <rect width="1200" height="520" fill="url(#zfade)"/>
+    <g fill="none" stroke="var(--gold)" stroke-width="1.1" opacity=".55"><circle cx="600" cy="250" r="160"/><circle cx="600" cy="250" r="86"/>${rays}${star(600, 250, 70)}</g></svg>`;
 }
 
 // altın silsile: Ebû Hanîfe'den geç dönem bir âlime, asırlar cetveli üzerinde
@@ -326,7 +329,7 @@ async function viewHome(view) {
   ].filter(c => c[1].length);
   const bk = Object.keys(BOOKS).length;
   view.innerHTML = `
-    <section class="hero" style="margin:0">${ebru()}<div class="inner">
+    <section class="hero" style="margin:0">${zemin()}<div class="inner">
       <div class="txt">
         <p class="kicker">${T("تراجم الحنفية من كتب الطبقات، في فهرسٍ واحد", "Tabakāt kitaplarındaki Hanefî biyografileri, tek bir dizinde")}</p>
         <h1>${T("طبقات الحنفية", "Hanefî Tabakātı")}</h1>
