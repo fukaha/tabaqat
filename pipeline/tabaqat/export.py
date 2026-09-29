@@ -16,6 +16,7 @@ from pathlib import Path
 
 import yaml
 
+from .textclean import clean_text
 from .tr.names import Namer, load_tsv
 
 SHARDS = 64
@@ -115,9 +116,9 @@ def _texts(root: Path, persons: list[dict]) -> dict[int, dict]:
             e = entries.get(s["key"])
             if not e:
                 continue
+            # yayın metni: tarama kusurları giderilmiş, dipnotsuz
             items.append({"book": s["book"], "cite": s["cite"], "heading": e.get("heading_raw") or "",
-                          "text": (e.get("text") or "").strip(), "notes": e.get("footnotes") or {},
-                          "refs": e.get("references") or []})
+                          "text": clean_text(e.get("text"))})
         if items:
             out[shard(p["id"])][p["id"]] = items
     return out
@@ -254,6 +255,11 @@ def export(root: Path) -> dict:
         if bid in books:
             t, _, a = v.partition("|")
             books[bid].update(title_tr=t.strip(), author_tr=a.strip())
+    # İSNAD 2. edisyon dipnot künyeleri (ilk atıf, kısa atıf; Türkçe ve Arapça)
+    for bid, v in load_tsv(root / "review" / "tr" / "isnad.tsv").items():
+        if bid in books:
+            f = [x.strip() for x in v.split("|")]
+            books[bid].update(cite_tr=f[0], cite_tr_s=f[1], cite_ar=f[2], cite_ar_s=f[3])
     cite = {s["key"]: s["cite"] for p in persons for s in p["sources"]}
     info = {p["id"]: p for p in persons}
     # Türkçe adlar (DİA yazımı): tam ad, kısa ad

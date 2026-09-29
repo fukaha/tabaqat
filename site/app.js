@@ -69,6 +69,21 @@ const bookAuthor = b => LANG === "tr" ? `${b.author_tr || b.author}${b.death ? `
 // künye/sayfa atfı: "الجواهر المضية 3/122-126 (رقم 1270)" → "3/122-126 (nr. 1270)"
 const citeTr = c => { const t = String(c).replace(/[٠-٩]/g, d => "٠١٢٣٤٥٦٧٨٩".indexOf(d)); const i = t.search(/\d/);
   return (i < 0 ? t : t.slice(i)).replace(/رقم/g, "nr.").replace(/ج\s*/g, "c. ").replace(/ص\s*/g, "s. ").trim(); };
+// İSNAD 2. edisyon dipnot atfı: "Temîmî, et-Tabakâtü’s-seniyye (Riyad: …, 1403), 2/374-382 (nr. 749)."
+// kısa atıf: "Temîmî, et-Tabakâtü’s-seniyye, 2/374." — Arapçada aynı düzen
+const citeTail = cite => LANG === "tr" ? citeTr(cite) : AR(String(cite).replace(/^[^\d٠-٩]*/, "").replace(/\//g, "/ "));
+const isnad = (bid, cite, short = false) => {
+  const b = BOOKS[bid];
+  if (!b || !b.cite_tr) return LANG === "tr" ? citeTr(cite) : cite;
+  const head = LANG === "tr" ? (short ? b.cite_tr_s : b.cite_tr) : (short ? b.cite_ar_s : b.cite_ar);
+  return `${head}${T("، ", ", ")}${citeTail(cite)}.`;
+};
+// İSNAD'da eser adı italik: "Yazar, <i>Eser</i> (Şehir: Yayınevi, Yıl), …"
+const isnadHtml = (bid, cite, short = false) => {
+  const t = esc(isnad(bid, cite, short));
+  if (LANG !== "tr" || !BOOKS[bid]?.cite_tr) return t;
+  return t.replace(/^([^,]+(?:, [^,(]*?b\. [^,]+)?), ([^(,]+?)( \(|, )/, (m, a, ti, rest) => `${a}, <i>${ti}</i>${rest}`);
+};
 const who = id => P.get(id) || SALAF.get(id);
 const plink = (id, cls = "") => {
   const p = P.get(id);
@@ -454,19 +469,25 @@ async function viewSearch(view) {
 }
 
 // ---------- person ----------
-function relItem(r, subjName) {
+// hoca/talebe kartı: ad, vefat, bağ türleri, atıf sayısı; kanıtlar kartın içinde açılır
+function relItem(r) {
   const p = who(r.id) || { name: r.id };
-  const ev = r.ev.map(([cite, snip, t]) => {
+  const ev = r.ev.map(([cite, snip, t], k) => {
     let s = esc(snip); const tt = esc(t);
     if (tt && s.includes(tt)) s = s.replace(tt, `<mark>${tt}</mark>`);
-    return `<p><b>${esc(LANG === "tr" ? citeTr(cite) : cite)}</b>: <span lang="ar" dir="rtl">…${s}…</span></p>`;
+    return `<p><span lang="ar" dir="rtl">…${s}…</span><cite>${evCite(cite)}</cite></p>`;
   }).join("");
-  return `<li><div class="row">${plink(r.id)}<span class="d num">${deathTxt(p)}</span>
-      ${p.salaf ? `<span class="tag weak">${T("من السلف", "selef")}</span>` : ""}${r.rels.map(x => `<span class="tag">${REL[x] || esc(x)}</span>`).join("")}
-      ${r.weak ? `<span class="tag weak" title="${T("ربط بالنسبة أو الشهرة وحدها", "Yalnız nisbe ya da şöhretle eşleştirildi")}">${T("ترجيح", "tercih")}</span>` : ""}
-      ${r.n > 1 ? `<span class="d num">${AR(r.n)} ${T("مواضع", "atıf")}</span>` : ""}</div>
-    <details class="ev"><summary>${T("الشاهد", "Kanıt")}</summary>${ev}</details></li>`;
+  return `<li class="rcard${r.weak ? " weak" : ""}${p.salaf ? " salaf" : ""}">
+      <div class="rtop">${plink(r.id, "nm")}<span class="d num">${deathTxt(p)}</span></div>
+      <div class="rtags">${p.salaf ? `<span class="tag weak">${T("من السلف", "selef")}</span>` : ""}${r.rels.map(x => `<span class="tag">${REL[x] || esc(x)}</span>`).join("")}
+        ${r.weak ? `<span class="tag weak" title="${T("ربط بالنسبة أو الشهرة وحدها", "Yalnız nisbe ya da şöhretle eşleştirildi")}">${T("ترجيح", "tercih")}</span>` : ""}
+        ${r.n > 1 ? `<span class="d num">${AR(r.n)} ${T("مواضع", "atıf")}</span>` : ""}</div>
+      <details class="ev"><summary>${T("الشاهد", "Kanıt")}</summary>${ev}</details>
+      ${!p.salaf && P.has(r.id) && (P.get(r.id).nt || P.get(r.id).ns) ? `<a class="silsile-lnk" href="#/net/${esc(r.id)}">${T("سلسلته", "silsilesi")}</a>` : ""}</li>`;
 }
+// kanıtlardaki kaynak metni ("الجواهر المضية 3/122 (رقم 1270)") → İSNAD kısa atıf
+const evCite = cite => { const pre = String(cite).replace(/\s*[\d٠-٩].*$/, ""); const b = pre && Object.entries(BOOKS).find(([, v]) => v.title.startsWith(pre));
+  return b ? isnadHtml(b[0], cite, true) : esc(LANG === "tr" ? citeTr(cite) : cite); };
 
 async function viewPerson(view, id) {
   if (SALAF.has(id)) { location.replace(`#/net/${id}`); return; }
@@ -494,15 +515,13 @@ async function viewPerson(view, id) {
       <div class="filters">${p.nt || p.ns ? `<a class="btn" href="#/net/${id}">${T("سلسلة شيوخه وتلاميذه", "Hoca–talebe silsilesi")}</a>` : ""}
         <button type="button" class="btn" data-go="texts">${T("نصوص الترجمة", "Biyografi metinleri")}</button></div>
     </div>
-    <section><h2>${T("مواضع الترجمة", "Kaynaklardaki yerleri")}<span class="c num">${AR(d.sources.length)}</span></h2>
-      <ul class="srcs num">${d.sources.map(([b, cite, h]) => `<li>${LANG === "tr" && BOOKS[b] ? `<b class="bt">${esc(bookTitle(BOOKS[b]))}</b>, ${esc(citeTr(cite))}` : esc(cite)}<span class="h" lang="ar" dir="rtl">${esc(h)}</span></li>`).join("")}</ul></section>
-    <div class="grid2">
+    <div class="rels">
       <section><h2>${T("شيوخه", "Hocaları")}<span class="c num">${AR(d.teachers.length)}</span></h2>
-        ${d.teachers.length ? `<ul class="rel">${d.teachers.map(r => relItem(r)).join("")}</ul>` : `<p class="empty">${T("لم يُذكر له شيخ من المترجمين.", "Biyografisi bulunanlardan bir hocası zikredilmemiş.")}</p>`}
+        ${d.teachers.length ? `<ul class="rgrid">${d.teachers.map(r => relItem(r)).join("")}</ul>` : `<p class="empty">${T("لم يُذكر له شيخ من المترجمين.", "Biyografisi bulunanlardan bir hocası zikredilmemiş.")}</p>`}
         ${extT.length ? `<h3 style="margin-top:1rem;font-size:1.05rem">${T("شيوخ من غير المترجمين في هذه الكتب", "Bu kitaplarda biyografisi olmayan hocaları")}</h3><ul class="rel">${extList(extT)}</ul>` : ""}
       </section>
       <section><h2>${T("تلاميذه", "Talebeleri")}<span class="c num">${AR(d.students.length)}</span></h2>
-        ${d.students.length ? `<ul class="rel">${d.students.map(r => relItem(r)).join("")}</ul>` : `<p class="empty">${T("لم يُذكر له تلميذ من المترجمين.", "Biyografisi bulunanlardan bir talebesi zikredilmemiş.")}</p>`}
+        ${d.students.length ? `<ul class="rgrid">${d.students.map(r => relItem(r)).join("")}</ul>` : `<p class="empty">${T("لم يُذكر له تلميذ من المترجمين.", "Biyografisi bulunanlardan bir talebesi zikredilmemiş.")}</p>`}
         ${extS.length ? `<h3 style="margin-top:1rem;font-size:1.05rem">${T("رواة عنه من غير المترجمين", "Ondan rivayet eden diğerleri")}</h3><ul class="rel">${extList(extS)}</ul>` : ""}
       </section>
     </div>
@@ -514,10 +533,10 @@ async function viewPerson(view, id) {
     </section>
     <section id="texts"><h2>${T("نصوص الترجمة", "Biyografi metinleri")}<span class="c num">${AR(d.sources.length)}</span>
         ${d.sources.length > 1 ? `<button type="button" class="btn small" id="openall">${T("فتح الكل", "Tümünü aç")}</button>` : ""}</h2>
-      <p class="legend">${T("نص الترجمة في كل كتاب كما هو في الطبعة المعتمدة، مع حواشي المحقق. اختر الكتب لتُفتح نصوصها متجاورة.", "Her kitaptaki biyografi metni, esas alınan neşirdeki hâliyle ve muhakkikin dipnotlarıyla (Arapça). Kitapları seçin; metinler yan yana açılır.")}</p>
-      <div class="tchips">${d.sources.map(([b, cite], k) => `<button type="button" class="chip" data-k="${k}" aria-pressed="false">${esc(LANG === "tr" && BOOKS[b] ? bookTitle(BOOKS[b]).split(" fî ")[0] : cite.replace(/\s*[\d٠-٩].*$/, ""))}<span class="num"> ${esc(LANG === "tr" ? citeTr(cite) : cite.replace(/^[^\d٠-٩]*/, ""))}</span></button>`).join("")}</div>
+      <p class="legend">${T("نص الترجمة في كل كتاب كما هو في الطبعة المعتمدة، دون الحواشي. اختر الكتب لتُفتح نصوصها متجاورة.", "Her kitaptaki biyografi metni, esas alınan neşirdeki hâliyle (Arapça; dipnotsuz, tarama kaynaklı boşluk ve satır kaymaları giderilmiş). Kitapları seçin; metinler yan yana açılır.")}</p>
+      <div class="tchips">${d.sources.map(([b, cite], k) => `<button type="button" class="chip" data-k="${k}" aria-pressed="false">${esc(BOOKS[b]?.cite_tr ? (LANG === "tr" ? BOOKS[b].cite_tr_s : BOOKS[b].cite_ar_s).split(/[,،] /).slice(1).join(", ") : cite.replace(/\s*[\d٠-٩].*$/, ""))}<span class="num"> ${esc(citeTail(cite))}</span></button>`).join("")}</div>
       <div class="tframes">${d.sources.map(([b, cite, h], k) => `<article class="tframe" data-k="${k}" hidden>
-        <header><div><b>${LANG === "tr" && BOOKS[b] ? `${esc(bookTitle(BOOKS[b]))}, ${esc(citeTr(cite))}` : esc(cite)}</b>
+        <header><div><b class="isnad">${isnadHtml(b, cite)}</b>
           <span class="ct" lang="ar" dir="rtl">${esc(h)}</span></div><button type="button" class="x" aria-label="${T("إغلاق", "Kapat")}">×</button></header>
         <div class="body" lang="ar" dir="rtl"><p class="empty">${T("جارٍ التحميل…", "Yükleniyor…")}</p></div></article>`).join("")}</div>
     </section>`;
@@ -550,7 +569,7 @@ function setupTexts(id, d) {
     el.dataset.done = 1;
     const all = await texts(id), k = +el.dataset.k, cite = d.sources[k][1];
     const t = all.find(x => x.cite === cite) || all[k];
-    $(".body", el).innerHTML = t ? renderEntry(t, `${k}`) : `<p class="empty">${T("لا يوجد نص.", "Metin yok.")}</p>`;
+    $(".body", el).innerHTML = t ? renderEntry(t) : `<p class="empty">${T("لا يوجد نص.", "Metin yok.")}</p>`;
   };
   const btn = $("#openall");
   const sync = () => {
@@ -565,34 +584,24 @@ function setupTexts(id, d) {
   if (frames.length) show(0, true);   // ilk kaynak açık gelir
 }
 const toArDigits = s => String(s).replace(/\d/g, c => "٠١٢٣٤٥٦٧٨٩"[c]);
-function inline(s, fid, used) {
-  return esc(s)
-    .replace(/\[\^(\w+)\]/g, (_, n) => { used.add(n); return `<sup class="fn"><a href="#" data-fn="fn-${fid}-${n}" id="fr-${fid}-${n}">${toArDigits(n)}</a></sup>`; })
-    .replace(/«([^«»]{1,120})»/g, "«<span class=\"q\">$1</span>»");
+function inline(s) {
+  return esc(s).replace(/«([^«»]{1,120})»/g, "«<span class=\"q\">$1</span>»");
 }
-function renderBlocks(text, fid, used) {
+// harekeli kısa satır: şiir (ortalanır, iki yana yaslanmaz)
+const isVerse = b => { const L = (b.match(/[\u0621-\u064a]/g) || []).length, H = (b.match(/[\u064b-\u0652]/g) || []).length;
+  return b.split("\n").every(x => x.length <= 110) && L > 0 && H / L > .3; };
+function renderBlocks(text) {
   return text.split(/\n{2,}/).map(b => b.trim()).filter(Boolean).map(b => {
     const h = b.match(/^#{1,6}\s+(.*)$/);
-    if (h) return `<h4>${inline(h[1], fid, used)}</h4>`;
-    // بيت شعر: شطران بينهما «…»
-    const v = b.split(/\s+…\s+/);
-    if (v.length === 2 && b.length < 160 && !/[.؟!]\s*$/.test(v[0])) return `<div class="bayt"><span>${inline(v[0], fid, used)}</span><span>${inline(v[1], fid, used)}</span></div>`;
-    return `<p>${inline(b, fid, used).replace(/\n/g, "<br>")}</p>`;
+    if (h) return `<h4>${inline(h[1])}</h4>`;
+    const v = b.split(/\s+…\s+/);   // beyit: iki mısra arasında «…»
+    if (v.length === 2 && b.length < 160 && !/[.؟!]\s*$/.test(v[0])) return `<div class="bayt"><span>${inline(v[0])}</span><span>${inline(v[1])}</span></div>`;
+    if (isVerse(b)) return `<p class="verse">${inline(b).replace(/\n/g, "<br>")}</p>`;
+    return `<p>${inline(b).replace(/\n/g, " ")}</p>`;
   }).join("");
 }
-function renderEntry(t, fid) {
-  const used = new Set();
-  const [main, ...rest] = t.text.split(/\n*<hr>\n*/);
-  let html = `<div class="etitle">${esc(t.heading)}</div><div class="etext">${renderBlocks(main, fid, used)}</div>`;
-  const notes = Object.entries(t.notes || {});
-  if (notes.length || rest.length || (t.refs || []).length) {
-    html += `<div class="notes"><div class="label">${T("حواشي المحقق", "Muhakkik dipnotları")}</div>`;
-    if ((t.refs || []).length) html += t.refs.map(r => `<p class="refs">${esc(r)}</p>`).join("");
-    if (notes.length) html += `<ol>${notes.map(([n, v]) => `<li id="fn-${fid}-${esc(n)}" value="${parseInt(n) || ""}"><a href="#" class="back" data-fn="fr-${fid}-${esc(n)}" aria-label="ارجع إلى الموضع">${toArDigits(n)}</a> ${esc(v)}</li>`).join("")}</ol>`;
-    if (rest.length) html += `<div class="extra">${renderBlocks(rest.join("\n\n"), fid, used)}</div>`;
-    html += `</div>`;
-  }
-  return html;
+function renderEntry(t) {
+  return `<div class="etitle">${esc(t.heading)}</div><div class="etext">${renderBlocks(t.text)}</div>`;
 }
 document.addEventListener("click", e => {   // sayfa içi kaydırma (adres değişmeden)
   const b = e.target.closest("[data-go]");

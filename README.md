@@ -157,7 +157,13 @@ python -m tabaqat.geo.basemap <natural-earth-dizini>   # → site/data/basemap.j
 - **Harita:** asır ve atıf türü süzgeçleri; bölge adları (Horasan, Mâverâünnehir…) ve büyük
   merkezlerin adları (çakışanlar gizlenir); bir şehre tıklayınca yanında yüzen pencerede oradaki
   fakihlerin listesi.
-- **Biyografi metinleri:** kaynak düğmeleriyle seçilen kitapların metinleri yan yana çerçevelerde.
+- **Biyografi metinleri:** kaynak düğmeleriyle seçilen kitapların metinleri yan yana çerçevelerde,
+  iki yana yaslı; şiir ortalı. Yayın metni `tabaqat/textclean.py` ile temizlenir: dipnot işaretleri
+  ve muhakkik notları atılır, OCR satır sonları ve çift boşluklar giderilir, sayfa sonunda cümle
+  ortasında bölünen paragraflar birleştirilir. Her çerçevenin başında kaynağın İSNAD 2. edisyon
+  dipnot künyesi (`review/tr/isnad.tsv`): *Temîmî, et-Tabakâtü’s-seniyye (Riyad: Dâru’r-Rifâî,
+  1403), 2/374-382 (nr. 749).* Kanıt cümlelerinde kısa atıf kullanılır.
+- **Hoca ve talebeler:** yan yana iki bölümde kartlar (bağ türü, atıf sayısı, kanıtlar).
 
 **Ebû Hanîfe öncesi kişiler** (`review/pre_hanafi.yml`): Ketâib'in "أركان، الأنبياء، أصحاب النبي،
 التابعين" bölümleri (1–94) ve diğer kitaplardaki Ebû Hanîfe'nin Hanefî olmayan hocaları ile erken
