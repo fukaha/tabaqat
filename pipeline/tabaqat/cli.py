@@ -52,7 +52,7 @@ def parse_book(cfg: dict):
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("cmd", choices=["parse", "report", "clean", "index", "match",
-                                       "apply-review"])
+                                       "apply-review", "network"])
     ap.add_argument("book", nargs="?")
     ap.add_argument("--out", default=str(ROOT / "data" / "entries"))
     a = ap.parse_args()
@@ -63,6 +63,10 @@ def main() -> None:
     if a.cmd == "match":  # kitaplar arası şahıs birleştirme → data/persons.json + review/
         from .match.persons import run
         print(run(ROOT))
+        return
+    if a.cmd == "network":  # hoca–talebe ağı → data/relations.json
+        from .network.build import build
+        print(build(ROOT))
         return
     cfg = load_book(a.book)
     if a.cmd == "index":  # Word fihristinden data/index/*.json

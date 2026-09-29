@@ -177,6 +177,9 @@ def _units(words: list[str]) -> list[str]:
         elif i + 1 < len(words) and words[i + 1] in _LAQAB_TAIL:
             out.append(f"{w} {words[i + 1]}")
             i += 2
+        elif w == "عبيد" and i + 1 < len(words) and words[i + 1] in ("الله", "الرحمن"):
+            out.append(f"عبيد {words[i + 1]}")  # "عبيد الله"
+            i += 2
         elif w.startswith("عبد") and len(w) > 4 and w[3:5] == "ال":  # "عبدالله" yazımı
             out.append(f"عبد {w[3:]}")
             i += 1

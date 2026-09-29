@@ -1,0 +1,34 @@
+# Metinde anılan ad (normalize edilmeden yazılabilir) → o şahsın bir madde anahtarı.
+# Yalnız atfın tamamı bu ada eşitse uygulanır. Hanefî metinlerinde tek başına geçen
+# "محمد" (Fevâid zincirlerinde "... عن محمد عن أبي يوسف") İmam Muhammed'dir.
+أبي حنيفة: jawahir:1
+أبو حنيفة: jawahir:1
+الإمام أبي حنيفة: jawahir:1
+الإمام الأعظم: jawahir:1
+النعمان: jawahir:1
+أبي يوسف: jawahir:1826
+أبو يوسف: jawahir:1826
+القاضي أبي يوسف: jawahir:1826
+يعقوب: jawahir:1826
+محمد: jawahir:1271@zincir
+محمد بن الحسن: jawahir:1271
+زفر: jawahir:597
+الحسن بن زياد: jawahir:449
+الكرخي: jawahir:895
+أبي الحسن الكرخي: jawahir:895
+أبي يوسف القاضي: jawahir:1826
+القاضي أبي يوسف: jawahir:1826
+ابن المبارك: jawahir:721
+عبد الله بن المبارك: jawahir:721
+وكيع: jawahir:1786
+الثوري: jawahir:620
+سفيان الثوري: jawahir:620
+ابن عيينة: jawahir:621
+سفيان بن عيينة: jawahir:621
+مالك: kataib:98
+مالك بن أنس: kataib:98
+الشافعي: kataib:100
+الأعمش: kataib:105
+أبي سليمان الجوزجاني: jawahir:1715
+أبو سليمان الجوزجاني: jawahir:1715
+أبي سليمان: jawahir:1715@zincir
