@@ -266,6 +266,46 @@ def _chains(info: dict, rel: list[dict], salaf: set[str], want: int = 30) -> lis
 
 
 # şahıs sayfasındaki güzergâhla aynı sıra: önce nisbe/asıl/doğum, en sonda vefat/defin
+TR_SOURCE = "Hanefî Fıkıh Âlimleri"
+
+
+def _tr_source(root: Path, info: dict, rel: list, ext: list, pp: dict, cite: dict) -> dict[str, int]:
+    """review/fikih_alimleri.yml: Türkçe çalışma metninden vefat/doğum düzeltmeleri, hoca–talebe bağları,
+    biyografisi olmayan hocalar ve yerler. Var olan bağ ve yerler tekrar eklenmez; doğum düzeltmelerini döndürür."""
+    path = root / "review" / "fikih_alimleri.yml"
+    cfg = (yaml.safe_load(path.read_text(encoding="utf-8")) or {}) if path.exists() else {}
+    have = {(e["teacher"], e["student"]) for e in rel}
+    born = {}
+    for pid, c in cfg.items():
+        if pid not in info:
+            raise KeyError(f"fikih_alimleri.yml: bilinmeyen kimlik {pid}")
+        key, ev = f"hfa:{pid}", c.get("kanit") or {}
+        cite[key] = f"{TR_SOURCE}, “{c.get('madde') or pid}”"
+        if c.get("vefat"):
+            info[pid]["death_h"] = int(c["vefat"])
+        if c.get("dogum"):
+            born[pid] = int(c["dogum"])
+        for role in ("hocalar", "talebeler"):
+            for other, kind in c.get(role) or []:
+                if other not in info:
+                    raise KeyError(f"fikih_alimleri.yml: bilinmeyen kimlik {other}")
+                t, s = (other, pid) if role == "hocalar" else (pid, other)
+                if (t, s) in have:
+                    continue
+                have.add((t, s))
+                rel.append({"teacher": t, "student": s, "rels": [kind], "books": [], "n": 1,
+                            "evidence": [{"key": key, "rel": kind, "via": "human", "text": "", "how": "elle",
+                                          "snippet": ev.get(other, "")}]})
+        for name, _tr, death, kind in c.get("dis_hocalar") or []:
+            ext.append({"key": key, "subject": pid, "role": "teacher", "rel": kind, "text": name,
+                        "name": name, "death": death, "tr": _tr, "snippet": ev.get("dis", "")})
+        items = pp.setdefault(pid, [])
+        for place, kind in c.get("yerler") or []:
+            if not any(it["place"] == place and it["kind"] == kind for it in items):
+                items.append({"place": place, "kind": kind, "key": key, "text": "", "snippet": ev.get(place, "")})
+    return born
+
+
 KIND_ORDER = ["nisba", "origin", "birth", "residence", "travel", "activity", "office", "death", "burial"]
 
 
@@ -343,6 +383,7 @@ def export(root: Path) -> dict:
             b["entries"] = b.get("entries", 0) + 1
             b["vols"] = max(b.get("vols", 1), s.get("vol") or 1)
     info = {p["id"]: p for p in persons}
+    born_fix = _tr_source(root, info, rel, ext, pp, cite)
     # Türkçe adlar (DİA yazımı): tam ad, kısa ad
     namer = Namer(root)
     TR = {p["id"]: namer.render(p["name"], p["id"]) for p in persons}
@@ -365,7 +406,7 @@ def export(root: Path) -> dict:
     exts = defaultdict(list)
     for x in ext:
         exts[x["subject"]].append([x["name"], x["death"], x["role"], x["rel"],
-                                   cite.get(x["key"], ""), namer.render(x["name"])[1]])
+                                   cite.get(x["key"], ""), x.get("tr") or namer.render(x["name"])[1]])
 
     main_place = {}
     for pid, items in pp.items():
@@ -381,8 +422,8 @@ def export(root: Path) -> dict:
         if not d and p.get("death_est"):
             d, est = p["death_est"], True
         # doğum yılı: ilk kaynaktaki "ولد/مولده سنة …" ya da ölüm yaşından (zaman haritasında ömür çizgisi)
-        born = next((b for s in p["sources"] if s["key"] in entries
-                     for b in [birth_year(entries[s["key"]].get("text") or "", d)] if b), 0)
+        born = born_fix.get(pid) or next((b for s in p["sources"] if s["key"] in entries
+                                          for b in [birth_year(entries[s["key"]].get("text") or "", d)] if b), 0)
         index.append([pid, p["name"], d, int(est), len(p["sources"]), len(teachers[pid]),
                       len(students[pid]), main_place.get(pid, ""),
                       sorted({s["book"] for s in p["sources"]}), TR[pid][0], TR[pid][1], born])

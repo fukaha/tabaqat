@@ -1,0 +1,31 @@
+# "Hanefî Fıkıh Âlimleri" (Türkçe çalışma metni) esas alınarak yapılan düzeltme ve eklemeler.
+# Yalnız metnin kendisinden alınır; dipnotlar karışık olduğu için dipnot atıfları kullanılmaz.
+# Ad düzeltmeleri review/tr/override.tsv'de; burada kişi kimliği → eklenecek bilgi:
+#   vefat, dogum            hicrî yıl (tabakat kitaplarındaki okumayı düzeltir)
+#   hocalar, talebeler      [kimlik, bağ türü]  (fiqh, took, hadith, read, companion)
+#   dis_hocalar             [Arapça ad, Türkçe ad, vefat, bağ türü]  biyografisi bu kitaplarda olmayanlar
+#   yerler                  [yer kimliği, tür]  (nisba, origin, birth, residence, travel, activity, office, death, burial)
+#   kanit                   bağlar ve yerler için metinden kısa alıntı (bilgi kartında "Kanıt" altında görünür)
+jw596:   # Züfer b. Hüzeyl
+  madde: Züfer b. Hüzeyl
+  hocalar:
+    - [jws1, fiqh]
+  dis_hocalar:
+    - [سليمان بن مهران الأعمش, A‘meş, 148, hadith]
+    - [إسماعيل بن أبي خالد, İsmâil b. Ebû Hâlid, 146, hadith]
+    - [محمد بن إسحاق, Muhammed b. İshak, 151, hadith]
+    - [الحجاج بن أرطاة, Haccâc b. Ertât, 145, hadith]
+  talebeler:
+    - [jw448, took]
+    - [qd194, took]
+  yerler:
+    - [ISBAHAN_516E326N_S, origin]
+    - [BASRA_477E304N_S, residence]
+    - [BASRA_477E304N_S, office]
+  kanit:
+    jws1: Önceleri hadis ehli olan Züfer, reye meylederek Ebû Hanîfe'den fıkıh tahsil etmiştir.
+    jw448: Hasan b. Ziyâd gibi hocasının pek çok talebesi vefatından sonra kendisine öğrencilik yapmıştır.
+    qd194: Şeddâd b. Hakîm önde gelen öğrencilerindendir.
+    dis: Ameş, İsmail b. Ebî Halid, Muhammed b. İshak, Haccâc b. Ertât gibi isimlerden rivayetlerde bulunmuştur.
+    ISBAHAN_516E326N_S: Ebû Hanîfe'nin önde gelen büyük talebelerinden olup Isfahan asıllıdır.
+    BASRA_477E304N_S: Basra'da hayatını sürdürmüş ve kadılık yapmıştır.

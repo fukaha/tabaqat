@@ -734,3 +734,22 @@ kbd { font: 600 .8rem/1 "Noto Serif", serif; border: 1px solid var(--line); bord
 .tli.on i { width: 14px; height: 14px; flex-basis: 14px; margin-inline-start: -2px; background: var(--rubric); box-shadow: 0 0 0 3px color-mix(in srgb, var(--rubric) 25%, transparent); }
 .tli.on span { color: var(--rubric); font-weight: 600; background: var(--bg); }
 @media (max-width: 600px) { .tlgrid { font-size: 12px; } .tlbox { height: 72vh; } .tlreg > div { padding: .6rem .5rem; } .tlcorner { padding-inline: .5rem; } }
+
+/* üst çubuk orta genişlikte tek satırda kalır: arama kutusu simgeye küçülür (tıklayınca açılır), sekmeler sığmazsa yana kayar */
+@media (min-width: 701px) {
+  .bar { flex-wrap: nowrap; }
+  nav.tabs { flex-wrap: nowrap; min-width: 0; overflow-x: auto; scrollbar-width: none; }
+  nav.tabs::-webkit-scrollbar { display: none; }
+  nav.tabs a { white-space: nowrap; }
+  .lang, .theme { flex: none; }
+}
+@media (min-width: 701px) and (max-width: 1240px) {
+  .brand { font-size: 1.3rem; }
+  .top-search { flex: 0 0 2.3rem; }
+  .top-search input { width: 2.3rem; padding: .3rem 0 .3rem 2.2rem !important; cursor: pointer; background-position: center center !important; }
+  .top-search input::placeholder { color: transparent; }
+  .top-search:focus-within input { position: absolute; top: 50%; transform: translateY(-50%); inset-inline-end: 0; width: 17rem; z-index: 30; cursor: text; background-position: left .75rem center !important; background-color: var(--paper); }
+  html[dir="rtl"] .top-search:focus-within input { background-position: right .75rem center !important; padding: .3rem 2.2rem .3rem .9rem !important; }
+  .top-search:focus-within input::placeholder { color: var(--muted); }
+  .top-search .results { inset-inline-end: 0; inset-inline-start: auto; width: 20rem; top: calc(50% + 1.2rem); }
+}

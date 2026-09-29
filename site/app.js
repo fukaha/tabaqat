@@ -562,7 +562,8 @@ function relItem(r) {
   const ev = r.ev.map(([cite, snip, t], k) => {
     let s = esc(snip); const tt = esc(t);
     if (tt && s.includes(tt)) s = s.replace(tt, `<mark>${tt}</mark>`);
-    return `<p><span lang="ar" dir="rtl">…${s}…</span><cite>${evCite(cite)}</cite></p>`;
+    return /[\u0600-\u06ff]/.test(snip) ? `<p><span lang="ar" dir="rtl">…${s}…</span><cite>${evCite(cite)}</cite></p>`
+      : `<p><span lang="tr" dir="ltr">${s}</span><cite>${esc(cite)}</cite></p>`;   // Türkçe kaynaktan elle eklenen bağ
   }).join("");
   return `<li class="rrow${r.weak ? " weak" : ""}${p.salaf ? " salaf" : ""}">
       <div class="rtop">${plink(r.id, "nm")} <span class="d num">${deathTxt(p)}</span></div>
