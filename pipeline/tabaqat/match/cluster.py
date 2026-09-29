@@ -63,7 +63,7 @@ def xref_links(recs: list[Rec]) -> list[Link]:
                 # metinden çıkan vefat yılı hatalı olabilir: ad tam örtüşüyorsa atıf yeter
                 clash = late or (any(n.startswith("vefat farklı") for n in sc.notes)
                                  and not (sc.matched >= 3 and ts >= 0.9))
-                if ts >= 0.6 and not sc.ism_conflict and not clash and not (sc.conflict == 1 and sc.total < 2):
+                if ts >= 0.6 and not sc.ism_conflict and not clash and (sc.conflict < 0 or sc.total >= 4):
                     status = "auto"
                 elif ts >= 0.4:
                     status = "pending"
@@ -122,7 +122,9 @@ def name_links(recs: list[Rec], max_block: int = 400) -> list[Link]:
                 status = None
                 if sc.conflict < 0 and sc.total >= 4 and ts >= 0.6 and (sc.matched >= 2 or sc.total >= 5):
                     status = "auto"
-                elif sc.conflict >= 3 and sc.total >= 6 and ts >= 0.6:
+                elif (sc.conflict >= 3 and sc.total >= 6 and ts >= 0.6
+                      and any(n.startswith("nisbe") for n in sc.notes)
+                      and not any(n.startswith("vefat farklı") for n in sc.notes)):
                     status = "auto"  # uzun nesebin derin halkasında yazım farkı
                 elif sc.total >= 3 and ts >= 0.5 and sc.notes:
                     status = "pending"
