@@ -802,10 +802,10 @@
  {
   "id": "kt75",
   "name": "أبو الحجاج مجاهد بن جبر المخزومي",
-  "death": "",
-  "death_h": null,
-  "death_est": 300,
-  "heading": "أبو الحجاج مجاهد بن جبر المخزومي",
+  "death": "١٠٤هـ/٧٢٢م",
+  "death_h": 104,
+  "death_est": 104,
+  "heading": "أبو الحجاج مجاهد بن جبر المخزومي [ت. ١٠٤هـ/٧٢٢م]",
   "sources": [
    {
     "key": "kataib:75",
@@ -3582,10 +3582,10 @@
  {
   "id": "kt37",
   "name": "أبو الدرداء",
-  "death": "",
-  "death_h": null,
+  "death": "٣٢هـ/٦٥٢م",
+  "death_h": 32,
   "death_est": 32,
-  "heading": "أبو الدرداء",
+  "heading": "أبو الدرداء [ت. ٣٢هـ/٦٥٢م]",
   "sources": [
    {
     "key": "kataib:37",
@@ -6382,10 +6382,10 @@
  {
   "id": "kt25",
   "name": "أبو بكر الصديق",
-  "death": "",
-  "death_h": null,
-  "death_est": 14,
-  "heading": "أبو بكر الصديق",
+  "death": "١٣هـ/٦٣٤م",
+  "death_h": 13,
+  "death_est": 13,
+  "heading": "أبو بكر الصديق [ت. ١٣هـ/٦٣٤م]",
   "sources": [
    {
     "key": "kataib:25",
@@ -7002,10 +7002,10 @@
  {
   "id": "kt68",
   "name": "أبو بكر بن عبد الرحمن",
-  "death": "",
-  "death_h": null,
-  "death_est": 18,
-  "heading": "أبو بكر بن عبد الرحمن",
+  "death": "٩٤هـ/٧١٢م",
+  "death_h": 94,
+  "death_est": 94,
+  "heading": "أبو بكر بن عبد الرحمن [ت. ٩٤هـ/٧١٢م]",
   "sources": [
    {
     "key": "kataib:68",
@@ -9682,10 +9682,10 @@
  {
   "id": "kt43",
   "name": "أبو سعيد الخدري",
-  "death": "",
-  "death_h": null,
+  "death": "٧٤هـ/٦٩٣م",
+  "death_h": 74,
   "death_est": 74,
-  "heading": "أبو سعيد الخدري",
+  "heading": "أبو سعيد الخدري [ت. ٧٤هـ/٦٩٣م]",
   "sources": [
    {
     "key": "kataib:43",
@@ -10332,10 +10332,10 @@
  {
   "id": "kt74",
   "name": "أبو سليمان يحيى بن يعمر العدواني البصري",
-  "death": "",
-  "death_h": null,
+  "death": "٩٠هـ/٧٠٨م",
+  "death_h": 90,
   "death_est": 90,
-  "heading": "أبو سليمان يحيى بن يعمر العدواني البصري",
+  "heading": "أبو سليمان يحيى بن يعمر العدواني البصري [ت. ٩٠هـ/٧٠٨م]",
   "sources": [
    {
     "key": "kataib:74",
@@ -11272,10 +11272,10 @@
  {
   "id": "kt60",
   "name": "أبو عبد الرحمن السلمي",
-  "death": "",
-  "death_h": null,
+  "death": "٧٤هـ/٦٩٣م",
+  "death_h": 74,
   "death_est": 74,
-  "heading": "أبو عبد الرحمن السلمي",
+  "heading": "أبو عبد الرحمن السلمي [ت. ٧٤هـ/٦٩٣م]",
   "sources": [
    {
     "key": "kataib:60",
@@ -12222,10 +12222,10 @@
  {
   "id": "kt54",
   "name": "أبو عثمان عبد الرحمن بن مل النهدي",
-  "death": "",
-  "death_h": null,
-  "death_est": null,
-  "heading": "أبو عثمان عبد الرحمن بن مل النهدي",
+  "death": "٩٥هـ/٧١٣م",
+  "death_h": 95,
+  "death_est": 95,
+  "heading": "أبو عثمان عبد الرحمن بن مل النهدي [ت. ٩٥هـ/٧١٣م]",
   "sources": [
    {
     "key": "kataib:54",
@@ -12842,10 +12842,10 @@
  {
   "id": "kt83",
   "name": "أبو عمرو الشعبي",
-  "death": "",
-  "death_h": null,
-  "death_est": 500,
-  "heading": "أبو عمرو الشعبي",
+  "death": "١٠٤هـ/٧٢٢م",
+  "death_h": 104,
+  "death_est": 104,
+  "heading": "أبو عمرو الشعبي [ت. ١٠٤هـ/٧٢٢م]",
   "sources": [
    {
     "key": "kataib:83",
@@ -12882,10 +12882,10 @@
  {
   "id": "kt52",
   "name": "أبو عمرو سعد بن إياس الشيباني",
-  "death": "",
-  "death_h": null,
-  "death_est": null,
-  "heading": "أبو عمرو سعد بن إياس الشيباني",
+  "death": "٩٥هـ/٧١٣م",
+  "death_h": 95,
+  "death_est": 95,
+  "heading": "أبو عمرو سعد بن إياس الشيباني [ت. ٩٥هـ/٧١٣م]",
   "sources": [
    {
     "key": "kataib:52",
@@ -13342,10 +13342,10 @@
  {
   "id": "kt89",
   "name": "أبو قلابة",
-  "death": "",
-  "death_h": null,
-  "death_est": 400,
-  "heading": "أبو قلابة",
+  "death": "١٠٤هـ/٧٢٢م",
+  "death_h": 104,
+  "death_est": 104,
+  "heading": "أبو قلابة [ت. ١٠٤هـ/٧٢٢م]",
   "sources": [
    {
     "key": "kataib:89",
@@ -16672,10 +16672,10 @@
  {
   "id": "kt36",
   "name": "أبو موسى الأشعري",
-  "death": "",
-  "death_h": null,
+  "death": "٤٤هـ/٦٦٤م",
+  "death_h": 44,
   "death_est": 44,
-  "heading": "أبو موسى الأشعري",
+  "heading": "أبو موسى الأشعري [ت. ٤٤هـ/٦٦٤م]",
   "sources": [
    {
     "key": "kataib:36",
@@ -17402,10 +17402,10 @@
  {
   "id": "kt42",
   "name": "أبو هريرة",
-  "death": "",
-  "death_h": null,
-  "death_est": null,
-  "heading": "أبو هريرة",
+  "death": "٥٨هـ/٦٧٧م",
+  "death_h": 58,
+  "death_est": 58,
+  "heading": "أبو هريرة [ت. ٥٨هـ/٦٧٧م]",
   "sources": [
    {
     "key": "kataib:42",
@@ -17962,10 +17962,10 @@
  {
   "id": "kt35",
   "name": "أبي بن كعب",
-  "death": "",
-  "death_h": null,
+  "death": "٣٠هـ/٦٥٠م",
+  "death_h": 30,
   "death_est": 30,
-  "heading": "أبي بن كعب",
+  "heading": "أبي بن كعب [ت. ٣٠هـ/٦٥٠م]",
   "sources": [
    {
     "key": "kataib:35",
@@ -32682,10 +32682,10 @@
  {
   "id": "kt48",
   "name": "أنس بن مالك",
-  "death": "",
-  "death_h": null,
-  "death_est": 1,
-  "heading": "أنس بن مالك",
+  "death": "٩٣هـ/٧١١م",
+  "death_h": 93,
+  "death_est": 93,
+  "heading": "أنس بن مالك [ت. ٩٣هـ/٧١١م]",
   "sources": [
    {
     "key": "kataib:48",
@@ -33172,10 +33172,10 @@
  {
   "id": "kt79",
   "name": "إبراهيم النخعي",
-  "death": "",
-  "death_h": null,
+  "death": "٩٦هـ/٧١٤م",
+  "death_h": 96,
   "death_est": 96,
-  "heading": "إبراهيم النخعي",
+  "heading": "إبراهيم النخعي [ت. ٩٦هـ/٧١٤م]",
   "sources": [
    {
     "key": "kataib:79",
@@ -40912,10 +40912,10 @@
  {
   "id": "kt88",
   "name": "إياس بن معاوية القاضي",
-  "death": "",
-  "death_h": null,
-  "death_est": null,
-  "heading": "إياس بن معاوية القاضي",
+  "death": "١٢٢هـ/٧٣٩م",
+  "death_h": 122,
+  "death_est": 122,
+  "heading": "إياس بن معاوية القاضي [ت. ١٢٢هـ/٧٣٩م]",
   "sources": [
    {
     "key": "kataib:88",
@@ -41272,10 +41272,10 @@
  {
   "id": "kt55",
   "name": "الأحنف بن قيس",
-  "death": "",
-  "death_h": null,
-  "death_est": null,
-  "heading": "الأحنف بن قيس",
+  "death": "٦٧هـ/٦٨٦م",
+  "death_h": 67,
+  "death_est": 67,
+  "heading": "الأحنف بن قيس [ت. ٦٧هـ/٦٨٦م]",
   "sources": [
    {
     "key": "kataib:55",
@@ -41392,10 +41392,10 @@
  {
   "id": "kt58",
   "name": "الأسود بن يزيد",
-  "death": "",
-  "death_h": null,
-  "death_est": 74,
-  "heading": "الأسود بن يزيد",
+  "death": "٧٥هـ/٦٩٤م",
+  "death_h": 75,
+  "death_est": 75,
+  "heading": "الأسود بن يزيد [ت. ٧٥هـ/٦٩٤م]",
   "sources": [
    {
     "key": "kataib:58",
@@ -42832,10 +42832,10 @@
  {
   "id": "kt62",
   "name": "الحسن البصري",
-  "death": "",
-  "death_h": null,
+  "death": "١١٠هـ/٧٢٨م",
+  "death_h": 110,
   "death_est": 110,
-  "heading": "الحسن البصري",
+  "heading": "الحسن البصري [ت. ١١٠هـ/٧٢٨م]",
   "sources": [
    {
     "key": "kataib:62",
@@ -44662,10 +44662,10 @@
  {
   "id": "kt29",
   "name": "الحسن بن علي بن أبي طالب",
-  "death": "",
-  "death_h": null,
+  "death": "٥٠هـ/٦٧٠م",
+  "death_h": 50,
   "death_est": 50,
-  "heading": "الحسن بن علي بن أبي طالب",
+  "heading": "الحسن بن علي بن أبي طالب [ت. ٥٠هـ/٦٧٠م]",
   "sources": [
    {
     "key": "kataib:29",
@@ -48712,10 +48712,10 @@
  {
   "id": "kt41",
   "name": "الزبير بن العوام",
-  "death": "",
-  "death_h": null,
+  "death": "٣٦هـ/٦٥٦م",
+  "death_h": 36,
   "death_est": 36,
-  "heading": "الزبير بن العوام",
+  "heading": "الزبير بن العوام [ت. ٣٦هـ/٦٥٦م]",
   "sources": [
    {
     "key": "kataib:41",
@@ -50222,10 +50222,10 @@
  {
   "id": "kt82",
   "name": "الضحاك بن مزاحم",
-  "death": "",
-  "death_h": null,
-  "death_est": 132,
-  "heading": "الضحاك بن مزاحم",
+  "death": "١٠٥هـ/٧٢٣م",
+  "death_h": 105,
+  "death_est": 105,
+  "heading": "الضحاك بن مزاحم [ت. ١٠٥هـ/٧٢٣م]",
   "sources": [
    {
     "key": "kataib:82",
@@ -52092,10 +52092,10 @@
  {
   "id": "kt67",
   "name": "القاسم بن محمد بن أبي بكر الصديق",
-  "death": "",
-  "death_h": null,
-  "death_est": 800,
-  "heading": "القاسم بن محمد بن أبي بكر الصديق",
+  "death": "١٠٦هـ/٧٢٤م",
+  "death_h": 106,
+  "death_est": 106,
+  "heading": "القاسم بن محمد بن أبي بكر الصديق [ت. ١٠٦هـ/٧٢٤م]",
   "sources": [
    {
     "key": "kataib:67",
@@ -52412,10 +52412,10 @@
  {
   "id": "kt56",
   "name": "القاضي شريح",
-  "death": "",
-  "death_h": null,
-  "death_est": 79,
-  "heading": "القاضي شريح",
+  "death": "٧٨هـ/٦٩٧م",
+  "death_h": 78,
+  "death_est": 78,
+  "heading": "القاضي شريح [ت. ٧٨هـ/٦٩٧م]",
   "sources": [
    {
     "key": "kataib:56",
@@ -56682,10 +56682,10 @@
  {
   "id": "kt44",
   "name": "جابر بن عبد الله",
-  "death": "",
-  "death_h": null,
+  "death": "٧٨هـ/٦٩٧م",
+  "death_h": 78,
   "death_est": 78,
-  "heading": "جابر بن عبد الله",
+  "heading": "جابر بن عبد الله [ت. ٧٨هـ/٦٩٧م]",
   "sources": [
    {
     "key": "kataib:44",
@@ -58502,10 +58502,10 @@
  {
   "id": "kt50",
   "name": "حذيفة اليمان",
-  "death": "",
-  "death_h": null,
-  "death_est": null,
-  "heading": "حذيفة اليمان",
+  "death": "٣٦هـ/٦٥٦م",
+  "death_h": 36,
+  "death_est": 36,
+  "heading": "حذيفة اليمان [ت. ٣٦هـ/٦٥٦م]",
   "sources": [
    {
     "key": "kataib:50",
@@ -59480,26 +59480,6 @@
   ]
  },
  {
-  "id": "kt90",
-  "name": "حماد بن أبي سليمان",
-  "death": "",
-  "death_h": null,
-  "death_est": 120,
-  "heading": "حماد بن أبي سليمان",
-  "sources": [
-   {
-    "key": "kataib:90",
-    "book": "kataib",
-    "number": 90,
-    "vol": 1,
-    "page_start": 321,
-    "page_end": 322,
-    "cite": "كتائب أعلام الأخيار 1/321-322 (رقم 90)",
-    "heading": "حماد بن أبي سليمان"
-   }
-  ]
- },
- {
   "id": "jw535",
   "name": "حماد بن إبراهيم بن إسماعيل بن أحمد بن إسحاق بن شيث، قوام الدين ابن الإمام ركن الدين إبراهيم، الصفار، أبو المحامد",
   "death": "٥٧٦هـ/١١٨٠م",
@@ -59806,6 +59786,16 @@
     "page_end": 419,
     "cite": "الأثمار الجنية 1/419 (رقم 216)",
     "heading": "حماد بن مسلم بن أبي سليمان الكوفي"
+   },
+   {
+    "key": "kataib:90",
+    "book": "kataib",
+    "number": 90,
+    "vol": 1,
+    "page_start": 321,
+    "page_end": 322,
+    "cite": "كتائب أعلام الأخيار 1/321-322 (رقم 90)",
+    "heading": "حماد بن أبي سليمان"
    }
   ]
  },
@@ -60522,10 +60512,10 @@
  {
   "id": "kt70",
   "name": "خارجة بن زيد بن ثابت",
-  "death": "",
-  "death_h": null,
-  "death_est": 45,
-  "heading": "خارجة بن زيد بن ثابت",
+  "death": "١٠٠هـ/٧١٨م",
+  "death_h": 100,
+  "death_est": 100,
+  "heading": "خارجة بن زيد بن ثابت [ت. ١٠٠هـ/٧١٨م]",
   "sources": [
    {
     "key": "kataib:70",
@@ -63882,10 +63872,10 @@
  {
   "id": "qd55",
   "name": "رُفِعَ بن مَهْرَانَ هُوَ أَبُو العَالِيَةِ الرِّيَاحِيُّ البَصْرِيُّ",
-  "death": "",
-  "death_h": null,
+  "death": "٩٣هـ/٧١١م",
+  "death_h": 93,
   "death_est": 93,
-  "heading": "رُفِعَ بن مَهْرَانَ هُوَ أَبُو العَالِيَةِ الرِّيَاحِيُّ البَصْرِيُّ",
+  "heading": "رُفِعَ بن مَهْرَانَ هُوَ أَبُو العَالِيَةِ الرِّيَاحِيُّ البَصْرِيُّ [ت. ٩٣هـ/٧١١م]",
   "sources": [
    {
     "key": "qand:55",
@@ -64732,10 +64722,10 @@
  {
   "id": "kt34",
   "name": "زيد بن ثابت",
-  "death": "",
-  "death_h": null,
-  "death_est": null,
-  "heading": "زيد بن ثابت",
+  "death": "٤٥هـ/٦٦٥م",
+  "death_h": 45,
+  "death_est": 45,
+  "heading": "زيد بن ثابت [ت. ٤٥هـ/٦٦٥م]",
   "sources": [
    {
     "key": "kataib:34",
@@ -64872,10 +64862,10 @@
  {
   "id": "kt76",
   "name": "زين العابدين علي بن الحسين",
-  "death": "",
-  "death_h": null,
+  "death": "٩٤هـ/٧١٢م",
+  "death_h": 94,
   "death_est": 94,
-  "heading": "زين العابدين علي بن الحسين",
+  "heading": "زين العابدين علي بن الحسين [ت. ٩٤هـ/٧١٢م]",
   "sources": [
    {
     "key": "kataib:76",
@@ -65282,10 +65272,10 @@
  {
   "id": "kt38",
   "name": "سعد بن أبي وقاص",
-  "death": "",
-  "death_h": null,
+  "death": "٥٥هـ/٦٧٤م",
+  "death_h": 55,
   "death_est": 55,
-  "heading": "سعد بن أبي وقاص",
+  "heading": "سعد بن أبي وقاص [ت. ٥٥هـ/٦٧٤م]",
   "sources": [
    {
     "key": "kataib:38",
@@ -65732,10 +65722,10 @@
  {
   "id": "kt61",
   "name": "سعيد بن المسيب",
-  "death": "",
-  "death_h": null,
-  "death_est": 92,
-  "heading": "سعيد بن المسيب",
+  "death": "٩٤هـ/٧١٢م",
+  "death_h": 94,
+  "death_est": 94,
+  "heading": "سعيد بن المسيب [ت. ٩٤هـ/٧١٢م]",
   "sources": [
    {
     "key": "kataib:61",
@@ -65802,10 +65792,10 @@
  {
   "id": "kt63",
   "name": "سعيد بن جبير",
-  "death": "",
-  "death_h": null,
-  "death_est": 94,
-  "heading": "سعيد بن جبير",
+  "death": "٩٥هـ/٧١٣م",
+  "death_h": 95,
+  "death_est": 95,
+  "heading": "سعيد بن جبير [ت. ٩٥هـ/٧١٣م]",
   "sources": [
    {
     "key": "kataib:63",
@@ -66492,10 +66482,10 @@
  {
   "id": "kt51",
   "name": "سلمان الفارسي",
-  "death": "",
-  "death_h": null,
-  "death_est": null,
-  "heading": "سلمان الفارسي",
+  "death": "٣٦هـ/٦٥٦م",
+  "death_h": 36,
+  "death_est": 36,
+  "heading": "سلمان الفارسي [ت. ٣٦هـ/٦٥٦م]",
   "sources": [
    {
     "key": "kataib:51",
@@ -67112,10 +67102,10 @@
  {
   "id": "kt69",
   "name": "سليمان بن يسار",
-  "death": "",
-  "death_h": null,
-  "death_est": 700,
-  "heading": "سليمان بن يسار",
+  "death": "١٠٧هـ/٧٢٥م",
+  "death_h": 107,
+  "death_est": 107,
+  "heading": "سليمان بن يسار [ت. ١٠٧هـ/٧٢٥م]",
   "sources": [
    {
     "key": "kataib:69",
@@ -67572,10 +67562,10 @@
  {
   "id": "kt53",
   "name": "سويد بن غفلة الكندي",
-  "death": "",
-  "death_h": null,
-  "death_est": 82,
-  "heading": "سويد بن غفلة الكندي",
+  "death": "٨١هـ/٧٠٠م",
+  "death_h": 81,
+  "death_est": 81,
+  "heading": "سويد بن غفلة الكندي [ت. ٨١هـ/٧٠٠م]",
   "sources": [
    {
     "key": "kataib:53",
@@ -71652,10 +71642,10 @@
  {
   "id": "kt78",
   "name": "طاوس بن كيسان",
-  "death": "",
-  "death_h": null,
-  "death_est": 600,
-  "heading": "طاوس بن كيسان",
+  "death": "١٠٦هـ/٧٢٤م",
+  "death_h": 106,
+  "death_est": 106,
+  "heading": "طاوس بن كيسان [ت. ١٠٦هـ/٧٢٤م]",
   "sources": [
    {
     "key": "kataib:78",
@@ -71762,10 +71752,10 @@
  {
   "id": "kt40",
   "name": "طلحة بن عبيد الله",
-  "death": "",
-  "death_h": null,
-  "death_est": null,
-  "heading": "طلحة بن عبيد الله",
+  "death": "٣٦هـ/٦٥٦م",
+  "death_h": 36,
+  "death_est": 36,
+  "heading": "طلحة بن عبيد الله [ت. ٣٦هـ/٦٥٦م]",
   "sources": [
    {
     "key": "kataib:40",
@@ -71972,10 +71962,10 @@
  {
   "id": "kt77",
   "name": "ظالم بن عمرو الدؤلي",
-  "death": "",
-  "death_h": null,
+  "death": "٦٩هـ/٦٨٨م",
+  "death_h": 69,
   "death_est": 69,
-  "heading": "ظالم بن عمرو الدؤلي",
+  "heading": "ظالم بن عمرو الدؤلي [ت. ٦٩هـ/٦٨٨م]",
   "sources": [
    {
     "key": "kataib:77",
@@ -72432,10 +72422,10 @@
  {
   "id": "kt49",
   "name": "عبادة بن الصامت",
-  "death": "",
-  "death_h": null,
+  "death": "٣٤هـ/٦٥٤م",
+  "death_h": 34,
   "death_est": 34,
-  "heading": "عبادة بن الصامت",
+  "heading": "عبادة بن الصامت [ت. ٣٤هـ/٦٥٤م]",
   "sources": [
    {
     "key": "kataib:49",
@@ -75012,10 +75002,10 @@
  {
   "id": "kt39",
   "name": "عبد الرحمن بن عوف",
-  "death": "",
-  "death_h": null,
+  "death": "٣٢هـ/٦٥٢م",
+  "death_h": 32,
   "death_est": 32,
-  "heading": "عبد الرحمن بن عوف",
+  "heading": "عبد الرحمن بن عوف [ت. ٣٢هـ/٦٥٢م]",
   "sources": [
    {
     "key": "kataib:39",
@@ -80752,10 +80742,10 @@
  {
   "id": "kt45",
   "name": "عبد الله بن الزبير",
-  "death": "",
-  "death_h": null,
-  "death_est": 65,
-  "heading": "عبد الله بن الزبير",
+  "death": "٧٣هـ/٦٩٢م",
+  "death_h": 73,
+  "death_est": 73,
+  "heading": "عبد الله بن الزبير [ت. ٧٣هـ/٦٩٢م]",
   "sources": [
    {
     "key": "kataib:45",
@@ -81312,10 +81302,10 @@
  {
   "id": "kt31",
   "name": "عبد الله بن عباس",
-  "death": "",
-  "death_h": null,
+  "death": "٦٨هـ/٦٨٧م",
+  "death_h": 68,
   "death_est": 68,
-  "heading": "عبد الله بن عباس",
+  "heading": "عبد الله بن عباس [ت. ٦٨هـ/٦٨٧م]",
   "sources": [
    {
     "key": "kataib:31",
@@ -81782,10 +81772,10 @@
  {
   "id": "kt33",
   "name": "عبد الله بن عمر",
-  "death": "",
-  "death_h": null,
-  "death_est": null,
-  "heading": "عبد الله بن عمر",
+  "death": "٧٣هـ/٦٩٢م",
+  "death_h": 73,
+  "death_est": 73,
+  "heading": "عبد الله بن عمر [ت. ٧٣هـ/٦٩٢م]",
   "sources": [
    {
     "key": "kataib:33",
@@ -81862,10 +81852,10 @@
  {
   "id": "kt46",
   "name": "عبد الله بن عمرو",
-  "death": "",
-  "death_h": null,
+  "death": "٦٥هـ/٦٨٤م",
+  "death_h": 65,
   "death_est": 65,
-  "heading": "عبد الله بن عمرو",
+  "heading": "عبد الله بن عمرو [ت. ٦٥هـ/٦٨٤م]",
   "sources": [
    {
     "key": "kataib:46",
@@ -82922,10 +82912,10 @@
  {
   "id": "kt32",
   "name": "عبد الله بن مسعود",
-  "death": "",
-  "death_h": null,
+  "death": "٣٢هـ/٦٥٢م",
+  "death_h": 32,
   "death_est": 32,
-  "heading": "عبد الله بن مسعود",
+  "heading": "عبد الله بن مسعود [ت. ٣٢هـ/٦٥٢م]",
   "sources": [
    {
     "key": "kataib:32",
@@ -87752,10 +87742,10 @@
  {
   "id": "kt66",
   "name": "عبيد الله بن عبد الله بن عتبة",
-  "death": "",
-  "death_h": null,
+  "death": "٩٨هـ/٧١٦م",
+  "death_h": 98,
   "death_est": 98,
-  "heading": "عبيد الله بن عبد الله بن عتبة",
+  "heading": "عبيد الله بن عبد الله بن عتبة [ت. ٩٨هـ/٧١٦م]",
   "sources": [
    {
     "key": "kataib:66",
@@ -88772,10 +88762,10 @@
  {
   "id": "kt27",
   "name": "عثمان بن عفان",
-  "death": "",
-  "death_h": null,
+  "death": "٣٥هـ/٦٥٥م",
+  "death_h": 35,
   "death_est": 35,
-  "heading": "عثمان بن عفان",
+  "heading": "عثمان بن عفان [ت. ٣٥هـ/٦٥٥م]",
   "sources": [
    {
     "key": "kataib:27",
@@ -89112,10 +89102,10 @@
  {
   "id": "kt64",
   "name": "عروة بن الزبير",
-  "death": "",
-  "death_h": null,
-  "death_est": null,
-  "heading": "عروة بن الزبير",
+  "death": "٩٤هـ/٧١٢م",
+  "death_h": 94,
+  "death_est": 94,
+  "heading": "عروة بن الزبير [ت. ٩٤هـ/٧١٢م]",
   "sources": [
    {
     "key": "kataib:64",
@@ -89422,10 +89412,10 @@
  {
   "id": "kt80",
   "name": "عطاء بن أبي رباح",
-  "death": "",
-  "death_h": null,
-  "death_est": null,
-  "heading": "عطاء بن أبي رباح",
+  "death": "١١٤هـ/٧٣٢م",
+  "death_h": 114,
+  "death_est": 114,
+  "heading": "عطاء بن أبي رباح [ت. ١١٤هـ/٧٣٢م]",
   "sources": [
    {
     "key": "kataib:80",
@@ -89602,10 +89592,10 @@
  {
   "id": "kt81",
   "name": "عكرمة",
-  "death": "",
-  "death_h": null,
-  "death_est": 131,
-  "heading": "عكرمة",
+  "death": "١٠٥هـ/٧٢٣م",
+  "death_h": 105,
+  "death_est": 105,
+  "heading": "عكرمة [ت. ١٠٥هـ/٧٢٣م]",
   "sources": [
    {
     "key": "kataib:81",
@@ -89842,10 +89832,10 @@
  {
   "id": "kt57",
   "name": "علقمة بن قيس",
-  "death": "",
-  "death_h": null,
+  "death": "٦٢هـ/٦٨١م",
+  "death_h": 62,
   "death_est": 62,
-  "heading": "علقمة بن قيس",
+  "heading": "علقمة بن قيس [ت. ٦٢هـ/٦٨١م]",
   "sources": [
    {
     "key": "kataib:57",
@@ -90122,10 +90112,10 @@
  {
   "id": "kt28",
   "name": "علي بن أبي طالب",
-  "death": "",
-  "death_h": null,
-  "death_est": 71,
-  "heading": "علي بن أبي طالب",
+  "death": "٤٠هـ/٦٦٠م",
+  "death_h": 40,
+  "death_est": 40,
+  "heading": "علي بن أبي طالب [ت. ٤٠هـ/٦٦٠م]",
   "sources": [
    {
     "key": "kataib:28",
@@ -95232,10 +95222,10 @@
  {
   "id": "kt26",
   "name": "عمر بن الخطاب",
-  "death": "",
-  "death_h": null,
+  "death": "٢٣هـ/٦٤٣م",
+  "death_h": 23,
   "death_est": 23,
-  "heading": "عمر بن الخطاب",
+  "heading": "عمر بن الخطاب [ت. ٢٣هـ/٦٤٣م]",
   "sources": [
    {
     "key": "kataib:26",
@@ -95742,10 +95732,10 @@
  {
   "id": "kt87",
   "name": "عمر بن عبد العزيز",
-  "death": "",
-  "death_h": null,
-  "death_est": 100,
-  "heading": "عمر بن عبد العزيز",
+  "death": "١٠١هـ/٧١٩م",
+  "death_h": 101,
+  "death_est": 101,
+  "heading": "عمر بن عبد العزيز [ت. ١٠١هـ/٧١٩م]",
   "sources": [
    {
     "key": "kataib:87",
@@ -99102,10 +99092,10 @@
  {
   "id": "kt73",
   "name": "قبيصة بن ذؤيب الفقيه",
-  "death": "",
-  "death_h": null,
+  "death": "٨٦هـ/٧٠٥م",
+  "death_h": 86,
   "death_est": 86,
-  "heading": "قبيصة بن ذؤيب الفقيه",
+  "heading": "قبيصة بن ذؤيب الفقيه [ت. ٨٦هـ/٧٠٥م]",
   "sources": [
    {
     "key": "kataib:73",
@@ -99122,10 +99112,10 @@
  {
   "id": "kt84",
   "name": "قتادة بن دعامة",
-  "death": "",
-  "death_h": null,
+  "death": "١١٧هـ/٧٣٥م",
+  "death_h": 117,
   "death_est": 117,
-  "heading": "قتادة بن دعامة",
+  "heading": "قتادة بن دعامة [ت. ١١٧هـ/٧٣٥م]",
   "sources": [
    {
     "key": "kataib:84",
@@ -106362,10 +106352,10 @@
  {
   "id": "kt94",
   "name": "محمد بن السائب الكلبي",
-  "death": "",
-  "death_h": null,
+  "death": "١٤٦هـ/٧٦٣م",
+  "death_h": 146,
   "death_est": 146,
-  "heading": "محمد بن السائب الكلبي",
+  "heading": "محمد بن السائب الكلبي [ت. ١٤٦هـ/٧٦٣م]",
   "sources": [
    {
     "key": "kataib:94",
@@ -108452,10 +108442,10 @@
  {
   "id": "kt71",
   "name": "محمد بن سيرين",
-  "death": "",
-  "death_h": null,
+  "death": "١١٠هـ/٧٢٨م",
+  "death_h": 110,
   "death_est": 110,
-  "heading": "محمد بن سيرين",
+  "heading": "محمد بن سيرين [ت. ١١٠هـ/٧٢٨م]",
   "sources": [
    {
     "key": "kataib:71",
@@ -118452,10 +118442,10 @@
  {
   "id": "kt91",
   "name": "محمد بن مسلم الزهري",
-  "death": "",
-  "death_h": null,
+  "death": "١٢٤هـ/٧٤١م",
+  "death_h": 124,
   "death_est": 124,
-  "heading": "محمد بن مسلم الزهري",
+  "heading": "محمد بن مسلم الزهري [ت. ١٢٤هـ/٧٤١م]",
   "sources": [
    {
     "key": "kataib:91",
@@ -122592,10 +122582,10 @@
  {
   "id": "kt59",
   "name": "مسروق بن الأجدع الهمداني",
-  "death": "",
-  "death_h": null,
+  "death": "٦٣هـ/٦٨٢م",
+  "death_h": 63,
   "death_est": 63,
-  "heading": "مسروق بن الأجدع الهمداني",
+  "heading": "مسروق بن الأجدع الهمداني [ت. ٦٣هـ/٦٨٢م]",
   "sources": [
    {
     "key": "kataib:59",
@@ -123502,10 +123492,10 @@
  {
   "id": "kt47",
   "name": "معاذ بن جبل",
-  "death": "",
-  "death_h": null,
-  "death_est": null,
-  "heading": "معاذ بن جبل",
+  "death": "١٨هـ/٦٣٩م",
+  "death_h": 18,
+  "death_est": 18,
+  "heading": "معاذ بن جبل [ت. ١٨هـ/٦٣٩م]",
   "sources": [
    {
     "key": "kataib:47",
@@ -123522,10 +123512,10 @@
  {
   "id": "kt30",
   "name": "معاوية بن أبي سفيان",
-  "death": "",
-  "death_h": null,
+  "death": "٦٠هـ/٦٧٩م",
+  "death_h": 60,
   "death_est": 60,
-  "heading": "معاوية بن أبي سفيان",
+  "heading": "معاوية بن أبي سفيان [ت. ٦٠هـ/٦٧٩م]",
   "sources": [
    {
     "key": "kataib:30",
@@ -123742,10 +123732,10 @@
  {
   "id": "kt86",
   "name": "مكحول الشامي",
-  "death": "",
-  "death_h": null,
+  "death": "١١٣هـ/٧٣١م",
+  "death_h": 113,
   "death_est": 113,
-  "heading": "مكحول الشامي",
+  "heading": "مكحول الشامي [ت. ١١٣هـ/٧٣١م]",
   "sources": [
    {
     "key": "kataib:86",
@@ -124832,10 +124822,10 @@
  {
   "id": "kt93",
   "name": "ميمون بن مهران",
-  "death": "",
-  "death_h": null,
-  "death_est": 17,
-  "heading": "ميمون بن مهران",
+  "death": "١١٧هـ/٧٣٥م",
+  "death_h": 117,
+  "death_est": 117,
+  "heading": "ميمون بن مهران [ت. ١١٧هـ/٧٣٥م]",
   "sources": [
    {
     "key": "kataib:93",
@@ -125222,10 +125212,10 @@
  {
   "id": "kt85",
   "name": "نافع",
-  "death": "",
-  "death_h": null,
+  "death": "١١٧هـ/٧٣٥م",
+  "death_h": 117,
   "death_est": 117,
-  "heading": "نافع",
+  "heading": "نافع [ت. ١١٧هـ/٧٣٥م]",
   "sources": [
    {
     "key": "kataib:85",
@@ -126892,10 +126882,10 @@
  {
   "id": "kt65",
   "name": "هشام بن عروة",
-  "death": "",
-  "death_h": null,
+  "death": "١٤٦هـ/٧٦٣م",
+  "death_h": 146,
   "death_est": 146,
-  "heading": "هشام بن عروة",
+  "heading": "هشام بن عروة [ت. ١٤٦هـ/٧٦٣م]",
   "sources": [
    {
     "key": "kataib:65",
@@ -127352,10 +127342,10 @@
  {
   "id": "kt92",
   "name": "وهب بن منبه",
-  "death": "",
-  "death_h": null,
-  "death_est": 110,
-  "heading": "وهب بن منبه",
+  "death": "١١٤هـ/٧٣٢م",
+  "death_h": 114,
+  "death_est": 114,
+  "heading": "وهب بن منبه [ت. ١١٤هـ/٧٣٢م]",
   "sources": [
    {
     "key": "kataib:92",

@@ -199,3 +199,8 @@ sup.fn a { color: var(--rubric); padding: 0 .1em; }
 .notes .back { color: var(--rubric); font-weight: 600; margin-inline-end: .3rem; }
 .notes .refs, .notes .extra p { margin: .3rem 0; }
 .flash { background: var(--mark); transition: background .3s; border-radius: 4px; }
+.salaf { color: var(--muted); }
+.card.salaf { background: transparent; border-style: dashed; }
+.card.salaf .nm { color: var(--muted); }
+.card.me.salaf { background: transparent; border-color: var(--muted); }
+.card.me.salaf .nm { color: var(--ink); }

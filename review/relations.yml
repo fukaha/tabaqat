@@ -23,6 +23,10 @@ choose:
   text: محمد
   pid: jw1270
 reject:
+# Ebû Hanîfe maddelerinde başka kişilere ait anekdotlar (hepsi ondan sonra ölmüş; hocası değil)
+- [jw596, jws1]
+- [jw619, jws1]
+- [jw1131, jws1]
 - - jw1270
   - jw448
 ok: []

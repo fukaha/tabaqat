@@ -76,12 +76,17 @@ def build(root: Path) -> dict:
     edges, unresolved, ext, stats = _pass(**ctx, prev=None)
     # Vefatı bilinmeyenlere ağdan tahmin: hocalarının vefatı + 30 / talebelerinin − 30
     est = _estimate_deaths(edges, by_pid)
+    fixed = _fix_unsure(edges, by_pid)   # tek kaynaklı, ağla çelişen okumalar ("٩٨" ← 197)
+    est.update(fixed)
     for pid, d in est.items():
         by_pid[pid].death, by_pid[pid].sure = d, False
+    (root / "data" / "death_estimates.json").write_text(
+        json.dumps(dict(sorted(est.items())), ensure_ascii=False, indent=0), encoding="utf-8")
     # 2. ve 3. tur: belirsizler önceki turun bağlarıyla (çapraz kayıt) ve yakın vefatla çözülür
     for _ in range(2):
         edges, unresolved, ext, stats = _pass(**ctx, prev=edges)
-    stats["death_estimated"] = len(est)
+    stats["death_estimated"] = len(est) - len(fixed)
+    stats["death_fixed"] = len(fixed)
     stats["reverse_dropped"] = _drop_reverse(edges, by_pid)
     out = []
     names = {p["id"]: p["name"] for p in persons}
@@ -125,6 +130,31 @@ def _drop_reverse(edges, by_pid) -> int:
         del edges[bad]
         dropped += 1
     return dropped
+
+
+def _fix_unsure(edges, by_pid) -> dict[str, int]:
+    """Tek kaynaklı vefat okuması, vefatı kesin en az iki hoca/talebesinin gösterdiğinden
+    fazla sapıyorsa (90 yıldan çok) ağdan tahmin edilen yıl kullanılır (yüzler hanesi düşmüş okumalar)."""
+    guesses: dict[str, list[int]] = defaultdict(list)
+    for (t, s), ev in edges.items():
+        if all("zayıf" in x["how"] for x in ev):
+            continue
+        T, S = by_pid[t], by_pid[s]
+        if T.sure and T.death and S.death and not S.sure:
+            guesses[s].append(T.death + 30)
+        if S.sure and S.death and T.death and not T.sure:
+            guesses[t].append(S.death - 30)
+    out = {}
+    for pid, g in guesses.items():
+        if len(g) < 2:
+            continue
+        g.sort()
+        m = g[len(g) // 2]
+        d = by_pid[pid].death
+        # Ebû Hanîfe öncesine düşen okuma (ör. Vekî' "٩٨") için daha dar pay
+        if abs(m - d) > 90 or (d < 150 and abs(m - d) > 60):
+            out[pid] = m
+    return out
 
 
 def _estimate_deaths(edges, by_pid) -> dict[str, int]:

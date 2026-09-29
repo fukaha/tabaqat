@@ -19,6 +19,7 @@ from ..normalize.arabic import normalize
 TRIGGERS: list[tuple[str, str, str]] = [
     (r"تفقه (?:عليه|به)\b", "student", "fiqh"),
     (r"تفقه (?:علي|عند)\b", "teacher", "fiqh"),
+    (r"تفقه ب(?=[^\s.،]{3,})", "teacher", "fiqh"),          # "تفقه بإبراهيم"
     (r"(?:اخذ|يروي|روي) (?:الفقه |العلم |العلوم |الادب |الحديث |القراءات |التفسير )?عنه\b",
      "student", "took"),
     (r"اخذ (?:الفقه |العلم |العلوم |العلوم الشرعيه |الادب |الحديث |القراءات |التفسير |الطريقه )?عن\b",
@@ -26,6 +27,7 @@ TRIGGERS: list[tuple[str, str, str]] = [
     (r"(?:يروي|روي|حدث) عن\b", "teacher", "hadith"),
     (r"سمع منه\b", "student", "hadith"),
     (r"سمع من\b", "teacher", "hadith"),
+    (r"سمع(?= (?:ابا|ابي|ابن|\S+ بن )\S)", "teacher", "hadith"),   # "سمع أنس بن مالك"
     (r"قرا عليه\b", "student", "read"),
     (r"قرا (?:[^ .،]+ )?علي\b", "teacher", "read"),
     (r"تخرج (?:به|عليه)\b", "student", "fiqh"),
@@ -151,9 +153,15 @@ def _kin(item: str) -> tuple[str, str]:
 def _names(seg: str, vocab) -> list[str]:
     """Listedeki adlar; ad olmayan ilk parçada liste biter (cümle devamı)."""
     out = []
-    for item in _split_items(seg):
-        item = _clean_item(item)
+    items = [_clean_item(x) for x in _split_items(seg)]
+    for k, item in enumerate(items):
         if not name_like(item, vocab):
+            # sözlükte olmayan tek kelimelik ad ("سفيان، وشعبة، وأبو حنيفة"): ardından ad geliyorsa sür
+            nxt = items[k + 1] if k + 1 < len(items) else ""
+            if (out and len(item.split()) == 1 and re.fullmatch(r"[\u0621-\u064a]{3,8}", item)
+                    and not item.startswith("ال") and nxt and name_like(nxt, vocab)):
+                out.append(item)
+                continue
             if out or len(item.split()) > 3:
                 break
             continue

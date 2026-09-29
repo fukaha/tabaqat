@@ -89,3 +89,21 @@ def test_clean_mention():
     assert clean_mention("بن المديني") == "ابن المديني"
     assert clean_mention("ابن حجر الكثير") == "ابن حجر"
     assert clean_mention("جعفر بن") == "جعفر"
+
+
+def test_abu_hanifa_teachers(rel):
+    edges, cid = rel
+    ah = cid["jawahir:1"]
+    assert (cid["jawahir:541"], ah) in edges        # Hammâd b. Ebî Süleymân → Ebû Hanîfe
+    assert cid["jawahir:541"] == cid["kataib:90"]   # Cevâhir ve Ketâib'deki Hammâd tek şahıs
+    assert (cid["jawahir:597"], ah) not in edges     # Züfer talebesidir, hocası değil
+
+
+def test_pre_hanafi_hidden():
+    from tabaqat.export import pre_hanafi
+    persons = json.loads((ROOT / "data" / "persons.json").read_text(encoding="utf-8"))
+    cid = {s["key"]: p["id"] for p in persons for s in p["sources"]}
+    salaf = pre_hanafi(ROOT, persons)
+    assert cid["kataib:79"] in salaf and cid["kataib:24"] in salaf   # en-Nehaî, Hz. Peygamber
+    assert cid["jawahir:541"] in salaf                                # Hammâd
+    assert cid["jawahir:1"] not in salaf and cid["kataib:98"] not in salaf   # Ebû Hanîfe, Mâlik

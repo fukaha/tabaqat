@@ -70,6 +70,18 @@ def _layout(years, edges, col=10, sweeps=24):
     return [v for v in y], [round(pos_y[i], 1) for i in range(n)], guessed
 
 
+def pre_hanafi(root: Path, persons: list[dict]) -> set[str]:
+    """review/pre_hanafi.yml: Ebû Hanîfe öncesi kişiler (sitede sayfası yok, silsilede "السلف")."""
+    cfg = yaml.safe_load((root / "review" / "pre_hanafi.yml").read_text(encoding="utf-8")) or {}
+    until = cfg.get("kataib_until") or 0
+    out = set(cfg.get("persons") or {})
+    for p in persons:
+        keys = [s["key"] for s in p["sources"]]
+        if all(k.startswith("kataib:") and int(k.split(":")[1]) <= until for k in keys):
+            out.add(p["id"])
+    return out
+
+
 def _texts(root: Path, persons: list[dict]) -> dict[int, dict]:
     entries = {}
     for f in sorted((root / "data" / "entries").glob("*.json")):
@@ -104,6 +116,14 @@ def export(root: Path) -> dict:
                                "death": b.get("author_death_h")}
     cite = {s["key"]: s["cite"] for p in persons for s in p["sources"]}
     info = {p["id"]: p for p in persons}
+    salaf = pre_hanafi(root, persons)
+    # ağdan tahmin edilen / düzeltilen vefatlar (kesin vefatı olmayanlar için)
+    dest_path = data / "death_estimates.json"
+    dest = json.loads(dest_path.read_text(encoding="utf-8")) if dest_path.exists() else {}
+    for p in persons:
+        if not p.get("death_h") and p["id"] in dest:
+            p["death_est"] = dest[p["id"]]
+    listed = [p for p in persons if p["id"] not in salaf]
 
     teachers, students = defaultdict(list), defaultdict(list)
     for e in rel:
@@ -124,7 +144,7 @@ def export(root: Path) -> dict:
         main_place[pid] = best[0]["place"]
 
     index, shards = [], defaultdict(dict)
-    for p in persons:
+    for p in listed:
         pid = p["id"]
         d, est = p.get("death_h"), False
         if not d and p.get("death_est"):
@@ -141,10 +161,12 @@ def export(root: Path) -> dict:
             "places": [[it["place"], it["kind"], cite.get(it["key"], ""), it["text"]]
                        for it in pp.get(pid, [])],
         }
-    _dump(out / "index.json", {"books": books, "persons": index})
+    salaf_info = {pid: [info[pid]["name"], info[pid].get("death_h") or info[pid].get("death_est")]
+                  for pid in sorted(salaf)}
+    _dump(out / "index.json", {"books": books, "persons": index, "salaf": salaf_info})
     for k, v in shards.items():
         _dump(out / "p" / f"{k:02d}.json", v)
-    texts = _texts(root, persons)
+    texts = _texts(root, listed)
     for k, v in texts.items():
         _dump(out / "t" / f"{k:02d}.json", v)
 
@@ -161,13 +183,18 @@ def export(root: Path) -> dict:
     xs, ys, guessed = _layout(years, edges)
     nodes = []
     for i, pid in enumerate(in_net):
-        nodes.append([pid, info[pid]["name"], years[i], deg[pid], xs[i], ys[i], int(guessed[i])])
+        nodes.append([pid, info[pid]["name"], years[i], deg[pid], xs[i], ys[i], int(guessed[i]),
+                      int(pid in salaf)])
     _dump(out / "graph.json", {"nodes": nodes, "edges": edges})
 
     people_at = defaultdict(list)
     for pid, items in pp.items():
+        if pid in salaf:
+            continue
         for it in items:
             people_at[it["place"]].append([pid, it["kind"]])
-    _dump(out / "places.json", [{**pl, "people": people_at[pl["id"]]} for pl in places])
-    return {"persons": len(index), "shards": len(shards), "nodes": len(nodes),
+    places = [{**pl, "n": len({x[0] for x in people_at[pl["id"]]}), "people": people_at[pl["id"]]}
+              for pl in places if people_at[pl["id"]]]
+    _dump(out / "places.json", places)
+    return {"persons": len(index), "salaf": len(salaf), "shards": len(shards), "nodes": len(nodes),
             "edges": len(edges), "places": len(places)}

@@ -11,3 +11,146 @@ athmar:1:
 kataib:95:
   ad: أبو حنيفة النعمان بن ثابت الكوفي
   vefat: 150
+
+# Ketâib'in sahâbe ve tâbiûn tabakaları: metinden okunan vefat yılları bozuk ya da eksik
+# (ör. Enes b. Mâlik 1, Kâsım b. Muhammed 800); meşhur vefat yılları elle.
+kataib:25:
+  vefat: 13
+kataib:26:
+  vefat: 23
+kataib:27:
+  vefat: 35
+kataib:28:
+  vefat: 40
+kataib:29:
+  vefat: 50
+kataib:30:
+  vefat: 60
+kataib:31:
+  vefat: 68
+kataib:32:
+  vefat: 32
+kataib:33:
+  vefat: 73
+kataib:34:
+  vefat: 45
+kataib:35:
+  vefat: 30
+kataib:36:
+  vefat: 44
+kataib:37:
+  vefat: 32
+kataib:38:
+  vefat: 55
+kataib:39:
+  vefat: 32
+kataib:40:
+  vefat: 36
+kataib:41:
+  vefat: 36
+kataib:42:
+  vefat: 58
+kataib:43:
+  vefat: 74
+kataib:44:
+  vefat: 78
+kataib:45:
+  vefat: 73
+kataib:46:
+  vefat: 65
+kataib:47:
+  vefat: 18
+kataib:48:
+  vefat: 93
+kataib:49:
+  vefat: 34
+kataib:50:
+  vefat: 36
+kataib:51:
+  vefat: 36
+kataib:52:
+  vefat: 95
+kataib:53:
+  vefat: 81
+kataib:54:
+  vefat: 95
+kataib:55:
+  vefat: 67
+kataib:56:
+  vefat: 78
+kataib:57:
+  vefat: 62
+kataib:58:
+  vefat: 75
+kataib:59:
+  vefat: 63
+kataib:60:
+  vefat: 74
+kataib:61:
+  vefat: 94
+kataib:62:
+  vefat: 110
+kataib:63:
+  vefat: 95
+kataib:64:
+  vefat: 94
+kataib:65:
+  vefat: 146
+kataib:66:
+  vefat: 98
+kataib:67:
+  vefat: 106
+kataib:68:
+  vefat: 94
+kataib:69:
+  vefat: 107
+kataib:70:
+  vefat: 100
+kataib:71:
+  vefat: 110
+kataib:72:
+  vefat: 93
+kataib:73:
+  vefat: 86
+kataib:74:
+  vefat: 90
+kataib:75:
+  vefat: 104
+kataib:76:
+  vefat: 94
+kataib:77:
+  vefat: 69
+kataib:78:
+  vefat: 106
+kataib:79:
+  vefat: 96
+kataib:80:
+  vefat: 114
+kataib:81:
+  vefat: 105
+kataib:82:
+  vefat: 105
+kataib:83:
+  vefat: 104
+kataib:84:
+  vefat: 117
+kataib:85:
+  vefat: 117
+kataib:86:
+  vefat: 113
+kataib:87:
+  vefat: 101
+kataib:88:
+  vefat: 122
+kataib:89:
+  vefat: 104
+kataib:90:
+  vefat: 120
+kataib:91:
+  vefat: 124
+kataib:92:
+  vefat: 114
+kataib:93:
+  vefat: 117
+kataib:94:
+  vefat: 146

@@ -1,0 +1,17 @@
+# Ebû Hanîfe öncesi kişiler: peygamberler, sahâbe, tâbiûn ve Ebû Hanîfe'nin Hanefî olmayan hocaları.
+# Sitede kendi tercüme sayfaları, aramada ve haritada yerleri yoktur; silsilede "السلف" olarak
+# (hoca–talebe bağlarıyla) görünürler. Veride (persons.json, relations.json) oldukları gibi kalırlar.
+#
+# kataib_until: Ketâib'in "أركان"، "الأنبياء"، "أصحاب النبي"، "التابعين" bölümleri (1–94. madde);
+#   yalnız bu bölümlerden gelen şahıslar.
+kataib_until: 94
+# Diğer kitaplardaki Ebû Hanîfe öncesi kişiler (şahıs kimliği: sebep)
+persons:
+  jw540: Hammâd b. Ebî Süleymân (ö. 120), Ebû Hanîfe'nin hocası
+  kt126: Ca'fer es-Sâdık (ö. 148), Ebû Hanîfe'nin hocası
+  qd55: Ebü'l-Âliye Rufey' b. Mihrân (ö. 93), tâbiî
+  qd246: Talhatü't-Talahât (ö. 64), Emevî valisi
+  qd382: Ebû Müslim el-Horasânî (ö. 137)
+  qd430: Abdülmelik b. Umeyr (ö. 136), tâbiî
+  qd811: Atâ el-Horasânî (ö. 135), tâbiî
+  qd913: Gâlib b. Mûsâ, Kuteybe b. Müslim ile Semerkand'a gelen

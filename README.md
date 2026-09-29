@@ -127,6 +127,12 @@ python -m tabaqat.geo.basemap <natural-earth-dizini>   # → site/data/basemap.j
   genel görünümü.
 - **Harita:** asır ve atıf türü süzgeçleri, yere tıklayınca oradaki âlimlerin listesi.
 
+**Ebû Hanîfe öncesi kişiler** (`review/pre_hanafi.yml`): Ketâib'in "أركان، الأنبياء، أصحاب النبي،
+التابعين" bölümleri (1–94) ve diğer kitaplardaki Ebû Hanîfe'nin Hanefî olmayan hocaları ile erken
+dönem kişiler. Sitede tercüme sayfaları, arama ve haritada yerleri yoktur; silsilede "من السلف"
+işaretiyle hoca–talebe bağlarıyla görünürler. Veride oldukları gibi kalırlar; vefat yılları
+`review/overrides.yml`'de düzeltilmiştir.
+
 Şahıs sayfasının altında her kaynağın madde metni tam olarak, açılır kapanır bölümler hâlinde
 yer alır. Muhakkik dipnotları, "ترجمته في" listeleri ve beyitler ayrı biçimlenir. Metinler
 `site/data/t/NN.json` parçalarından yalnız açılınca yüklenir.

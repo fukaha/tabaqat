@@ -95,7 +95,8 @@ class Resolver:
                 continue  # Esmâr'ın nisbe açıklamaları ("الدمياطي: نسبة إلى…"): şahıs değil
             for h in p.headings:
                 h = _exact_key(h)
-                if len(h.split()) >= 2:
+                # yalnız künyeden ibaret başlık ("أبو بكر") tam ad sayılmaz
+                if len(h.split()) >= 2 and not re.fullmatch(r"(?:ابو|ام) (?:عبد )?\S+", h):
                     self.by_exact[h].add(p.pid)
             for n in p.names:
                 if n.chain:
@@ -337,9 +338,13 @@ class Resolver:
             key = " ".join(words[i:])
             if len(words) - i < 2:
                 continue
-            hits = [self.persons[pid] for pid in self.by_exact.get(key, set())
-                    if not subject or (pid != subject.pid
-                                       and self._chrono_ok(self.persons[pid], subject, role))]
+            named = [self.persons[pid] for pid in self.by_exact.get(key, set())
+                     if not subject or pid != subject.pid]
+            hits = [p for p in named if not subject or self._chrono_ok(p, subject, role)]
+            if named and not hits:
+                # ad tam olarak bir kişiye ait ama vefat uymuyor ("روي عن أبي بكر الصديق" gibi
+                # nakil): başka bir adaya kaydırılmaz
+                return Resolution(None, "unresolved", reason="vefat uymuyor")
             if not hits:
                 continue
             if len(hits) > 1:  # künye bölümündeki eşlenmemiş tekrar madde: çok kaynaklı olan

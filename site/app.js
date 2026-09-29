@@ -19,13 +19,15 @@ const century = d => d ? Math.floor((d - 1) / 100) + 1 : 0;
 // ---------- data ----------
 const cache = {};
 const load = p => cache[p] || (cache[p] = fetch("data/" + p).then(r => { if (!r.ok) throw new Error(p); return r.json(); }));
-let IDX, BOOKS, P = new Map();
+let IDX, BOOKS, SALAF = new Map(), P = new Map();
 
 async function init() {
   const d = await load("index.json");
   BOOKS = d.books;
   IDX = d.persons.map(r => ({ id: r[0], name: r[1], d: r[2], est: !!r[3], n: r[4], nt: r[5], ns: r[6], place: r[7], key: norm(r[1]) }));
   IDX.forEach(p => P.set(p.id, p));
+  // Ebû Hanîfe öncesi (peygamberler, sahâbe, tâbiûn): sayfası yok, yalnız silsilede
+  SALAF = new Map(Object.entries(d.salaf || {}).map(([id, [name, dd]]) => [id, { id, name, d: dd, salaf: true }]));
   window.addEventListener("hashchange", route);
   setupSearch();
   route();
@@ -36,7 +38,13 @@ async function person(id) {
   return s[id];
 }
 const deathTxt = p => p.d ? (p.est ? `نحو ${AR(p.d)}هـ` : `ت ${AR(p.d)}هـ`) : "";
-const plink = (id, cls = "") => { const p = P.get(id); return p ? `<a class="${cls}" href="#/p/${id}">${esc(p.name)}</a>` : esc(id); };
+const who = id => P.get(id) || SALAF.get(id);
+const plink = (id, cls = "") => {
+  const p = P.get(id);
+  if (p) return `<a class="${cls}" href="#/p/${id}">${esc(p.name)}</a>`;
+  const s = SALAF.get(id);
+  return s ? `<span class="salaf" title="من السلف قبل أبي حنيفة">${esc(s.name)}</span>` : esc(id);
+};
 
 // ---------- router ----------
 async function route() {
@@ -113,20 +121,21 @@ function viewHome(view, c) {
 
 // ---------- person ----------
 function relItem(r, subjName) {
-  const p = P.get(r.id) || { name: r.id };
+  const p = who(r.id) || { name: r.id };
   const ev = r.ev.map(([cite, snip, t]) => {
     let s = esc(snip); const tt = esc(t);
     if (tt && s.includes(tt)) s = s.replace(tt, `<mark>${tt}</mark>`);
     return `<p><b>${esc(cite)}</b>: …${s}…</p>`;
   }).join("");
   return `<li><div class="row">${plink(r.id)}<span class="d num">${deathTxt(p)}</span>
-      ${r.rels.map(x => `<span class="tag">${REL[x] || esc(x)}</span>`).join("")}
+      ${p.salaf ? `<span class="tag weak">من السلف</span>` : ""}${r.rels.map(x => `<span class="tag">${REL[x] || esc(x)}</span>`).join("")}
       ${r.weak ? `<span class="tag weak" title="ربط بالنسبة أو الشهرة وحدها">ترجيح</span>` : ""}
       ${r.n > 1 ? `<span class="d num">${AR(r.n)} مواضع</span>` : ""}</div>
     <details class="ev"><summary>الشاهد</summary>${ev}</details></li>`;
 }
 
 async function viewPerson(view, id) {
+  if (SALAF.has(id)) { location.replace(`#/net/${id}`); return; }
   const p = P.get(id), d = await person(id);
   if (!p || !d) { view.innerHTML = `<p class="empty">لا يوجد هذا العلم.</p>`; return; }
   const extT = d.ext.filter(x => x[2] !== "student"), extS = d.ext.filter(x => x[2] === "student");
@@ -369,7 +378,7 @@ let G;
 async function graph() {
   if (G) return G;
   const g = await load("graph.json");
-  const nodes = g.nodes.map(n => ({ id: n[0], name: n[1], d: n[2], deg: n[3], x: n[4], y: n[5], guess: !!n[6] }));
+  const nodes = g.nodes.map(n => ({ id: n[0], name: n[1], d: n[2], deg: n[3], x: n[4], y: n[5], guess: !!n[6], salaf: !!n[7] }));
   const up = nodes.map(() => []), down = nodes.map(() => []);
   g.edges.forEach(([t, s, n, weak]) => { up[s].push([t, n, weak]); down[t].push([s, n, weak]); });
   G = { nodes, up, down, edges: g.edges, byId: new Map(nodes.map((n, i) => [n.id, i])) };
@@ -423,12 +432,14 @@ function egoNet(host, g, me, depth) {
   const head = { "-2": "شيوخ شيوخه", "-1": "شيوخه", "0": "صاحب السلسلة", "1": "تلاميذه", "2": "تلاميذ تلاميذه" };
   const card = i => { const n = g.nodes[i], p = P.get(n.id) || {};
     const yr = n.d ? `${n.guess || p.est ? "نحو " : "ت "}${AR(n.d)}هـ` : "";
+    const tr = n.salaf ? `<span class="tag weak" title="قبل أبي حنيفة؛ ليس له ترجمة في هذا الفهرس">من السلف</span>`
+      : `<a class="tr" href="#/p/${esc(n.id)}" title="ترجمته">ترجمة</a>`;
     return i === me
-      ? `<div class="card me" data-i="${i}"><a class="nm" href="#/p/${esc(n.id)}">${esc(n.name)}</a>
-          <span class="meta num"><span>${yr}</span></span>
-          <a class="tr" href="#/p/${esc(n.id)}">قراءة الترجمة ←</a></div>`
-      : `<div class="card" data-i="${i}"><a class="nm" href="#/net/${esc(n.id)}" title="سلسلته">${esc(n.name)}</a>
-          <span class="meta num"><span>${yr}</span><a class="tr" href="#/p/${esc(n.id)}" title="ترجمته">ترجمة</a></span></div>`; };
+      ? `<div class="card me${n.salaf ? " salaf" : ""}" data-i="${i}">${n.salaf ? `<span class="nm">${esc(n.name)}</span>` : `<a class="nm" href="#/p/${esc(n.id)}">${esc(n.name)}</a>`}
+          <span class="meta num"><span>${yr}</span>${n.salaf ? tr : ""}</span>
+          ${n.salaf ? "" : `<a class="tr" href="#/p/${esc(n.id)}">قراءة الترجمة ←</a>`}</div>`
+      : `<div class="card${n.salaf ? " salaf" : ""}" data-i="${i}"><a class="nm" href="#/net/${esc(n.id)}" title="سلسلته">${esc(n.name)}</a>
+          <span class="meta num"><span>${yr}</span>${tr}</span></div>`; };
   host.innerHTML = `<div class="chainwrap"><div class="chain">
       <svg class="links" aria-hidden="true"></svg>
       ${keys.map(c => `<div class="col${c === 0 ? " mid" : ""}"><div class="colh">${head[c]}<span class="num"> ${c ? AR(cols.get(c).length + (more[c] || 0)) : ""}</span></div>
@@ -500,7 +511,7 @@ function fullNet(host, g) {
       if (!ok(n)) return;
       const r = Math.max(1.5, Math.min(9, 1.2 + Math.sqrt(n.deg))) * Math.max(.6, Math.min(2, Math.sqrt(sc)));
       ctx.globalAlpha = sel >= 0 && !hl.has(i) ? .25 : .9;
-      ctx.fillStyle = i === sel ? teal : rub;
+      ctx.fillStyle = i === sel ? teal : n.salaf ? col("--muted") : rub;
       ctx.beginPath(); ctx.arc(tx + sc * X(n), ty + sc * Y(n), r, 0, 7); ctx.fill();
     });
     ctx.globalAlpha = 1; ctx.fillStyle = ink; ctx.textAlign = "center";
