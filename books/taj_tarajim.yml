@@ -1,0 +1,10 @@
+book_id: taj_tarajim
+title: تاج التراجم
+author: زين الدين قاسم بن قطلوبغا
+author_death_h: 879
+parser: turath_epub
+volumes: 1
+edition: تحقيق محمد خير رمضان يوسف، دار القلم، دمشق ١٤١٣ هـ
+# Madde başlıklarındaki "[رقم - شهرة]" muhakkikindir (bkz. mukaddime s. ٤٣-٤٤).
+source: sources/taj_tarajim/raw/taj_tarajim.epub
+start_after_heading: "^مقدمة المؤلف"

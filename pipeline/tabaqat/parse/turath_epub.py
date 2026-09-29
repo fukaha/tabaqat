@@ -12,6 +12,7 @@ dipnotlar `p.hamesh` içinde, madde başlıkları h2/h3 olarak "[N - isim]" biç
 """
 from __future__ import annotations
 
+import html
 import re
 import warnings
 import zipfile
@@ -24,7 +25,7 @@ from ..schema import Entry
 warnings.filterwarnings("ignore", category=XMLParsedAsHTMLWarning)
 
 _DIGITS = str.maketrans("٠١٢٣٤٥٦٧٨٩", "0123456789")
-_FOOTER = re.compile(r"الجزء:\s*(\d+)\s*-\s*الصفحة:\s*(\d+)")
+_FOOTER = re.compile(r"(?:الجزء:\s*(\d+)\s*-\s*)?الصفحة:\s*(\d+)")
 _HEADING = re.compile(r"^و?\[?\s*([\d٠-٩]+)\s*-\s*(.+?)\s*\]?$")
 _FN_LINE = re.compile(r"\(\^([\d٠-٩]+|\*+)\)")
 
@@ -106,7 +107,7 @@ def parse(path: str, book_id: str, start_after_heading: str | None = None,
             events: list[tuple[str, str]] = []
             catchword = False
             for el in body.find_all(["h2", "h3", "h4", "p"], recursive=False):
-                txt = el.get_text(" ", strip=True)
+                txt = html.unescape(el.get_text(" ", strip=True))  # kaynakta çift kaçışlı &quot; var
                 classes = el.get("class") or []
                 if el.name in ("h2", "h3", "h4"):
                     if not catchword:
@@ -115,7 +116,7 @@ def parse(path: str, book_id: str, start_after_heading: str | None = None,
                     page_notes.update(_footnotes(el))
                 elif "text-center" in classes and _FOOTER.search(txt):
                     m = _FOOTER.search(txt)
-                    vol, page = int(m.group(1)), int(m.group(2))
+                    vol, page = int(m.group(1) or 1), int(m.group(2))
                 elif txt.startswith("*"):
                     if "آخر الجزء" in txt:  # cilt sonu notu + sonraki maddenin künyesi (tekrar)
                         catchword = True
