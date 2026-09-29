@@ -639,7 +639,10 @@ function localSearch(ph, find, pick) {
 const INFO_SRC = { yaqut: ["ياقوت، معجم البلدان", "Yâkūt, Mu‘cemü’l-büldân"], himyari: ["الحميري، الروض المعطار", "Himyerî, er-Ravzü’l-mi‘târ"],
   samani: ["السمعاني، الأنساب", "Sem‘ânî, el-Ensâb"] };
 function placeInfo(pl) {
-  const f = pl.info; if (!f) return "";
+  // el-Esmârü’l-ceniyye'nin nisbe sözlüğünden bu yere bağlanan nisbeler
+  const ns = (pl.nisba || []).map(x => `<div class="pnisba"><blockquote lang="ar" dir="rtl" title="${T("اضغط للمزيد", "Tamamı için tıklayın")}"><b>${esc(x.n)}</b> ${esc(x.text)}</blockquote>
+    <p class="pcite">${T(`القاري، الأثمار الجنية ${AR(x.page)}`, `Aliyyülkārî, <i>el-Esmârü’l-ceniyye</i>, ${x.page}.`)}</p></div>`).join("");
+  const f = pl.info; if (!f) return ns ? `<div class="pinfo">${ns}</div>` : "";
   const meta = [T(f.type_ar, f.type_tr), T(f.region_ar, f.region_tr)].filter(Boolean).map(esc);
   if (f.translit) meta.push(`<i>${esc(f.translit)}</i>`);
   const src = f.src ? INFO_SRC[f.src] : null, pg = f.page ? (LANG === "tr" ? f.page : AR(f.page)) : "";
@@ -647,7 +650,7 @@ function placeInfo(pl) {
   const thur = /^[A-Z]/.test(pl.id) ? `<a href="https://github.com/althurayya/althurayya.github.io/blob/master/places/${encodeURIComponent(pl.id)}.geojson" target="_blank" rel="noopener">${T("الثريا", "el-Süreyyâ")}</a>` : "";
   return `<div class="pinfo">${meta.length ? `<p class="pmeta">${meta.join(" · ")}</p>` : ""}
     ${f.text ? `<blockquote lang="ar" dir="rtl" title="${T("اضغط للمزيد", "Tamamı için tıklayın")}">${esc(f.text)}</blockquote>` : ""}
-    ${cite || thur ? `<p class="pcite">${cite}${cite && thur ? " · " : ""}${thur}</p>` : ""}</div>`;
+    ${cite || thur ? `<p class="pcite">${cite}${cite && thur ? " · " : ""}${thur}</p>` : ""}${ns}</div>`;
 }
 
 // ---------- map ----------
@@ -815,7 +818,7 @@ async function viewMap(view, sel) {
       <ul class="num">${list.map(([pid, ks]) => `<li>${plink(pid)}<span class="k">${deathTxt(P.get(pid) || {})} · ${[...new Set(ks)].map(k => KIND[k]).join(T("، ", ", "))}</span></li>`).join("")
         || `<li class="none">${T("لا أحد بحسب الاختيار", "Seçime uyan kimse yok")}</li>`}</ul>`;
     pop.hidden = false; place();
-    const q = $(".pinfo blockquote", pop); if (q) q.addEventListener("click", () => { q.classList.toggle("open"); place(); });
+    pop.querySelectorAll(".pinfo blockquote").forEach(q => q.addEventListener("click", () => { q.classList.toggle("open"); place(); }));
     $(".x", pop).addEventListener("click", () => { current = ""; at = null; history.replaceState(null, "", "#/map"); redraw(); });
   };
   const redraw = () => {

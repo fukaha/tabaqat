@@ -415,6 +415,8 @@ footer.foot .brand { color: var(--on-navy); }
 .mpop .pinfo blockquote { margin: 0; padding: .1rem .7rem .2rem; border-inline-start: 3px solid color-mix(in srgb, var(--gold) 60%, transparent); background: var(--mark); border-radius: 4px;
   font-family: "Amiri", "Noto Naskh Arabic", serif; font-size: 1.02rem; line-height: 1.75; text-align: justify; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; cursor: pointer; }
 .mpop .pinfo blockquote.open { -webkit-line-clamp: unset; display: block; }
+.mpop .pnisba { margin-top: .45rem; }
+.mpop .pnisba b { color: var(--gold); font-weight: 700; }
 .mpop .pcite { margin: .25rem 0 0; color: var(--muted); font-size: .78rem; }
 /* dışa aktarma */
 .expgrp { display: inline-flex; align-items: center; gap: .3rem; margin-inline-end: .4rem; color: var(--muted); }

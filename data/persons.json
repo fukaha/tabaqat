@@ -41290,106 +41290,6 @@
   ]
  },
  {
-  "id": "ats804",
-  "name": "الأخسيكثي",
-  "death": "",
-  "death_h": null,
-  "death_est": null,
-  "heading": "الأخسيكثي",
-  "sources": [
-   {
-    "key": "athmar:804",
-    "book": "athmar",
-    "number": null,
-    "vol": 2,
-    "page_start": 728,
-    "page_end": 728,
-    "cite": "الأثمار الجنية 2/728",
-    "heading": "الأخسيكثيّ"
-   }
-  ]
- },
- {
-  "id": "ats805",
-  "name": "الأسبيجابي",
-  "death": "",
-  "death_h": null,
-  "death_est": null,
-  "heading": "الأسبيجابي",
-  "sources": [
-   {
-    "key": "athmar:805",
-    "book": "athmar",
-    "number": null,
-    "vol": 2,
-    "page_start": 728,
-    "page_end": 728,
-    "cite": "الأثمار الجنية 2/728",
-    "heading": "الأسبيجابيّ"
-   }
-  ]
- },
- {
-  "id": "ats807",
-  "name": "الأستوائي",
-  "death": "",
-  "death_h": null,
-  "death_est": null,
-  "heading": "الأستوائي",
-  "sources": [
-   {
-    "key": "athmar:807",
-    "book": "athmar",
-    "number": null,
-    "vol": 2,
-    "page_start": 729,
-    "page_end": 729,
-    "cite": "الأثمار الجنية 2/729",
-    "heading": "الأستوائيّ"
-   }
-  ]
- },
- {
-  "id": "ats808",
-  "name": "الأسدي",
-  "death": "",
-  "death_h": null,
-  "death_est": null,
-  "heading": "الأسدي",
-  "sources": [
-   {
-    "key": "athmar:808",
-    "book": "athmar",
-    "number": null,
-    "vol": 2,
-    "page_start": 729,
-    "page_end": 729,
-    "cite": "الأثمار الجنية 2/729",
-    "heading": "الأسديّ"
-   }
-  ]
- },
- {
-  "id": "ats809",
-  "name": "الأسروشني",
-  "death": "",
-  "death_h": null,
-  "death_est": null,
-  "heading": "الأسروشني",
-  "sources": [
-   {
-    "key": "athmar:809",
-    "book": "athmar",
-    "number": null,
-    "vol": 2,
-    "page_start": 730,
-    "page_end": 730,
-    "cite": "الأثمار الجنية 2/730",
-    "heading": "الأسروشنيّ"
-   }
-  ]
- },
- {
   "id": "kt58",
   "name": "الأسود بن يزيد",
   "death": "٧٥هـ/٦٩٤م",
@@ -41430,26 +41330,6 @@
   ]
  },
  {
-  "id": "ats812",
-  "name": "الأشعري",
-  "death": "",
-  "death_h": null,
-  "death_est": null,
-  "heading": "الأشعري",
-  "sources": [
-   {
-    "key": "athmar:812",
-    "book": "athmar",
-    "number": null,
-    "vol": 2,
-    "page_start": 731,
-    "page_end": 731,
-    "cite": "الأثمار الجنية 2/731",
-    "heading": "الأشعريّ"
-   }
-  ]
- },
- {
   "id": "jw2057",
   "name": "الأشقر ويلقب أيضا بصرح",
   "death": "",
@@ -41466,26 +41346,6 @@
     "page_end": 353,
     "cite": "الجواهر المضية 4/353 (رقم 2057)",
     "heading": "الأشقر ويلقب أيضا بصرح"
-   }
-  ]
- },
- {
-  "id": "ats814",
-  "name": "الأطرابلسي",
-  "death": "",
-  "death_h": null,
-  "death_est": null,
-  "heading": "الأطرابلسي",
-  "sources": [
-   {
-    "key": "athmar:814",
-    "book": "athmar",
-    "number": null,
-    "vol": 2,
-    "page_start": 731,
-    "page_end": 731,
-    "cite": "الأثمار الجنية 2/731",
-    "heading": "الأطرابلسيّ"
    }
   ]
  },
@@ -41530,26 +41390,6 @@
   ]
  },
  {
-  "id": "ats815",
-  "name": "الأموي",
-  "death": "",
-  "death_h": null,
-  "death_est": null,
-  "heading": "الأموي",
-  "sources": [
-   {
-    "key": "athmar:815",
-    "book": "athmar",
-    "number": null,
-    "vol": 2,
-    "page_start": 731,
-    "page_end": 731,
-    "cite": "الأثمار الجنية 2/731",
-    "heading": "الأمويّ"
-   }
-  ]
- },
- {
   "id": "kt725",
   "name": "الأمير السكيني",
   "death": "",
@@ -41570,126 +41410,6 @@
   ]
  },
  {
-  "id": "ats816",
-  "name": "الأنباري",
-  "death": "",
-  "death_h": null,
-  "death_est": null,
-  "heading": "الأنباري",
-  "sources": [
-   {
-    "key": "athmar:816",
-    "book": "athmar",
-    "number": null,
-    "vol": 2,
-    "page_start": 731,
-    "page_end": 731,
-    "cite": "الأثمار الجنية 2/731",
-    "heading": "الأنباريّ"
-   }
-  ]
- },
- {
-  "id": "ats817",
-  "name": "الأندقي",
-  "death": "",
-  "death_h": null,
-  "death_est": null,
-  "heading": "الأندقي",
-  "sources": [
-   {
-    "key": "athmar:817",
-    "book": "athmar",
-    "number": null,
-    "vol": 2,
-    "page_start": 732,
-    "page_end": 732,
-    "cite": "الأثمار الجنية 2/732",
-    "heading": "الأندقيّ"
-   }
-  ]
- },
- {
-  "id": "ats818",
-  "name": "الأندكاني",
-  "death": "",
-  "death_h": null,
-  "death_est": null,
-  "heading": "الأندكاني",
-  "sources": [
-   {
-    "key": "athmar:818",
-    "book": "athmar",
-    "number": null,
-    "vol": 2,
-    "page_start": 732,
-    "page_end": 732,
-    "cite": "الأثمار الجنية 2/732",
-    "heading": "الأندكانيّ"
-   }
-  ]
- },
- {
-  "id": "ats819",
-  "name": "الأندلسي",
-  "death": "",
-  "death_h": null,
-  "death_est": null,
-  "heading": "الأندلسي",
-  "sources": [
-   {
-    "key": "athmar:819",
-    "book": "athmar",
-    "number": null,
-    "vol": 2,
-    "page_start": 732,
-    "page_end": 732,
-    "cite": "الأثمار الجنية 2/732",
-    "heading": "الأندلسيّ"
-   }
-  ]
- },
- {
-  "id": "ats820",
-  "name": "الأنطاكي",
-  "death": "",
-  "death_h": null,
-  "death_est": null,
-  "heading": "الأنطاكي",
-  "sources": [
-   {
-    "key": "athmar:820",
-    "book": "athmar",
-    "number": null,
-    "vol": 2,
-    "page_start": 732,
-    "page_end": 732,
-    "cite": "الأثمار الجنية 2/732",
-    "heading": "الأنطاكيّ"
-   }
-  ]
- },
- {
-  "id": "ats821",
-  "name": "الأنكوري",
-  "death": "",
-  "death_h": null,
-  "death_est": null,
-  "heading": "الأنكوري",
-  "sources": [
-   {
-    "key": "athmar:821",
-    "book": "athmar",
-    "number": null,
-    "vol": 2,
-    "page_start": 732,
-    "page_end": 732,
-    "cite": "الأثمار الجنية 2/732",
-    "heading": "الأنكوريّ"
-   }
-  ]
- },
- {
   "id": "jw2017",
   "name": "الأنماطي المعروف بالخطيب",
   "death": "",
@@ -41706,26 +41426,6 @@
     "page_end": 142,
     "cite": "الجواهر المضية 4/142 (رقم 2017)",
     "heading": "الأنماطى المعروف بالخطيب"
-   }
-  ]
- },
- {
-  "id": "ats822",
-  "name": "الأوزجندي",
-  "death": "",
-  "death_h": null,
-  "death_est": null,
-  "heading": "الأوزجندي",
-  "sources": [
-   {
-    "key": "athmar:822",
-    "book": "athmar",
-    "number": null,
-    "vol": 2,
-    "page_start": 733,
-    "page_end": 733,
-    "cite": "الأثمار الجنية 2/733",
-    "heading": "الأوزجنديّ"
    }
   ]
  },
@@ -41778,16 +41478,6 @@
     "heading": "أمير كاتب العميد بن أمير غازي قوام الدين المكني بأبي حنيفة الاتقاني الفارابي"
    },
    {
-    "key": "athmar:803",
-    "book": "athmar",
-    "number": null,
-    "vol": 2,
-    "page_start": 728,
-    "page_end": 728,
-    "cite": "الأثمار الجنية 2/728",
-    "heading": "الإتقانيّ"
-   },
-   {
     "key": "kataib:596",
     "book": "kataib",
     "number": 596,
@@ -41796,26 +41486,6 @@
     "page_end": 479,
     "cite": "كتائب أعلام الأخيار 3/473-479 (رقم 596)",
     "heading": "قوام الدين الأتقاني"
-   }
-  ]
- },
- {
-  "id": "ats806",
-  "name": "الإستراباذي",
-  "death": "",
-  "death_h": null,
-  "death_est": null,
-  "heading": "الإستراباذي",
-  "sources": [
-   {
-    "key": "athmar:806",
-    "book": "athmar",
-    "number": null,
-    "vol": 2,
-    "page_start": 729,
-    "page_end": 729,
-    "cite": "الأثمار الجنية 2/729",
-    "heading": "الإستراباذيّ"
    }
   ]
  },
@@ -41840,26 +41510,6 @@
   ]
  },
  {
-  "id": "ats810",
-  "name": "الإسفندري",
-  "death": "",
-  "death_h": null,
-  "death_est": null,
-  "heading": "الإسفندري",
-  "sources": [
-   {
-    "key": "athmar:810",
-    "book": "athmar",
-    "number": null,
-    "vol": 2,
-    "page_start": 730,
-    "page_end": 730,
-    "cite": "الأثمار الجنية 2/730",
-    "heading": "الإسفندريّ"
-   }
-  ]
- },
- {
   "id": "jw2015",
   "name": "الإسفندري هو شرف الأئمة",
   "death": "",
@@ -41880,46 +41530,6 @@
   ]
  },
  {
-  "id": "ats811",
-  "name": "الإسكندراني",
-  "death": "",
-  "death_h": null,
-  "death_est": null,
-  "heading": "الإسكندراني",
-  "sources": [
-   {
-    "key": "athmar:811",
-    "book": "athmar",
-    "number": null,
-    "vol": 2,
-    "page_start": 730,
-    "page_end": 730,
-    "cite": "الأثمار الجنية 2/730",
-    "heading": "الإسكندرانيّ"
-   }
-  ]
- },
- {
-  "id": "ats813",
-  "name": "الإصطخري",
-  "death": "",
-  "death_h": null,
-  "death_est": null,
-  "heading": "الإصطخري",
-  "sources": [
-   {
-    "key": "athmar:813",
-    "book": "athmar",
-    "number": null,
-    "vol": 2,
-    "page_start": 731,
-    "page_end": 731,
-    "cite": "الأثمار الجنية 2/731",
-    "heading": "الإصطخريّ"
-   }
-  ]
- },
- {
   "id": "qd594",
   "name": "الإمام الخطيب أبي الورع عبيد الله بن أبي نصر أحمد بن المهذب بن يعلى بن مسلم بن سعيد بن خطاب بن نصر الكشاني",
   "death": "",
@@ -41936,26 +41546,6 @@
     "page_end": 332,
     "cite": "القند 331-332 (رقم 594)",
     "heading": "الإمام الخطيب أبي الورع عبيد الله بن أبي نصر أحمد بن المهذب بن يعلى بن مسلم بن سعيد بن خطاب بن نصر الكشاني"
-   }
-  ]
- },
- {
-  "id": "ats825",
-  "name": "الباخرزي",
-  "death": "",
-  "death_h": null,
-  "death_est": null,
-  "heading": "الباخرزي",
-  "sources": [
-   {
-    "key": "athmar:825",
-    "book": "athmar",
-    "number": null,
-    "vol": 2,
-    "page_start": 733,
-    "page_end": 733,
-    "cite": "الأثمار الجنية 2/733",
-    "heading": "الباخرزيّ"
    }
   ]
  },
@@ -42006,46 +41596,6 @@
     "page_end": 410,
     "cite": "كتائب أعلام الأخيار 3/410 (رقم 564)",
     "heading": "وجيه الدين البائلي الدلوي"
-   }
-  ]
- },
- {
-  "id": "ats823",
-  "name": "البتي",
-  "death": "",
-  "death_h": null,
-  "death_est": null,
-  "heading": "البتي",
-  "sources": [
-   {
-    "key": "athmar:823",
-    "book": "athmar",
-    "number": null,
-    "vol": 2,
-    "page_start": 733,
-    "page_end": 733,
-    "cite": "الأثمار الجنية 2/733",
-    "heading": "البتّيّ"
-   }
-  ]
- },
- {
-  "id": "ats824",
-  "name": "البجلي",
-  "death": "",
-  "death_h": null,
-  "death_est": null,
-  "heading": "البجلي",
-  "sources": [
-   {
-    "key": "athmar:824",
-    "book": "athmar",
-    "number": null,
-    "vol": 2,
-    "page_start": 733,
-    "page_end": 733,
-    "cite": "الأثمار الجنية 2/733",
-    "heading": "البجليّ"
    }
   ]
  },
@@ -42120,126 +41670,6 @@
   ]
  },
  {
-  "id": "ats826",
-  "name": "البردعي",
-  "death": "",
-  "death_h": null,
-  "death_est": null,
-  "heading": "البردعي",
-  "sources": [
-   {
-    "key": "athmar:826",
-    "book": "athmar",
-    "number": null,
-    "vol": 2,
-    "page_start": 733,
-    "page_end": 733,
-    "cite": "الأثمار الجنية 2/733",
-    "heading": "البردعيّ"
-   }
-  ]
- },
- {
-  "id": "ats827",
-  "name": "البزدوي",
-  "death": "",
-  "death_h": null,
-  "death_est": null,
-  "heading": "البزدوي",
-  "sources": [
-   {
-    "key": "athmar:827",
-    "book": "athmar",
-    "number": null,
-    "vol": 2,
-    "page_start": 734,
-    "page_end": 734,
-    "cite": "الأثمار الجنية 2/734",
-    "heading": "البزدويّ"
-   }
-  ]
- },
- {
-  "id": "ats828",
-  "name": "البسطامي",
-  "death": "",
-  "death_h": null,
-  "death_est": null,
-  "heading": "البسطامي",
-  "sources": [
-   {
-    "key": "athmar:828",
-    "book": "athmar",
-    "number": null,
-    "vol": 2,
-    "page_start": 734,
-    "page_end": 734,
-    "cite": "الأثمار الجنية 2/734",
-    "heading": "البسطاميّ"
-   }
-  ]
- },
- {
-  "id": "ats829",
-  "name": "البصراوي",
-  "death": "",
-  "death_h": null,
-  "death_est": null,
-  "heading": "البصراوي",
-  "sources": [
-   {
-    "key": "athmar:829",
-    "book": "athmar",
-    "number": null,
-    "vol": 2,
-    "page_start": 734,
-    "page_end": 734,
-    "cite": "الأثمار الجنية 2/734",
-    "heading": "البصراويّ"
-   }
-  ]
- },
- {
-  "id": "ats830",
-  "name": "البصري",
-  "death": "",
-  "death_h": null,
-  "death_est": null,
-  "heading": "البصري",
-  "sources": [
-   {
-    "key": "athmar:830",
-    "book": "athmar",
-    "number": null,
-    "vol": 2,
-    "page_start": 734,
-    "page_end": 734,
-    "cite": "الأثمار الجنية 2/734",
-    "heading": "البصريّ"
-   }
-  ]
- },
- {
-  "id": "ats831",
-  "name": "البوزجاني",
-  "death": "",
-  "death_h": null,
-  "death_est": null,
-  "heading": "البوزجاني",
-  "sources": [
-   {
-    "key": "athmar:831",
-    "book": "athmar",
-    "number": null,
-    "vol": 2,
-    "page_start": 735,
-    "page_end": 735,
-    "cite": "الأثمار الجنية 2/735",
-    "heading": "البوزجانيّ"
-   }
-  ]
- },
- {
   "id": "jw2021",
   "name": "البياعي إمام كبير من مشايخ المعتزلة، الملقب بكمال",
   "death": "",
@@ -42256,26 +41686,6 @@
     "page_end": 159,
     "cite": "الجواهر المضية 4/159 (رقم 2021)",
     "heading": "البياعى إمام كبير من مشايخ المعتزلة، الملقب بكمال"
-   }
-  ]
- },
- {
-  "id": "ats832",
-  "name": "البيهقي",
-  "death": "",
-  "death_h": null,
-  "death_est": null,
-  "heading": "البيهقي",
-  "sources": [
-   {
-    "key": "athmar:832",
-    "book": "athmar",
-    "number": null,
-    "vol": 2,
-    "page_start": 735,
-    "page_end": 735,
-    "cite": "الأثمار الجنية 2/735",
-    "heading": "البيهقيّ"
    }
   ]
  },
@@ -42316,86 +41726,6 @@
     "page_end": 162,
     "cite": "الجواهر المضية 4/162 (رقم 2024)",
     "heading": "التاجى"
-   }
-  ]
- },
- {
-  "id": "ats833",
-  "name": "التنوخي",
-  "death": "",
-  "death_h": null,
-  "death_est": null,
-  "heading": "التنوخي",
-  "sources": [
-   {
-    "key": "athmar:833",
-    "book": "athmar",
-    "number": null,
-    "vol": 2,
-    "page_start": 735,
-    "page_end": 735,
-    "cite": "الأثمار الجنية 2/735",
-    "heading": "التّنوخيّ"
-   }
-  ]
- },
- {
-  "id": "ats834",
-  "name": "الثقفي",
-  "death": "",
-  "death_h": null,
-  "death_est": null,
-  "heading": "الثقفي",
-  "sources": [
-   {
-    "key": "athmar:834",
-    "book": "athmar",
-    "number": null,
-    "vol": 2,
-    "page_start": 735,
-    "page_end": 735,
-    "cite": "الأثمار الجنية 2/735",
-    "heading": "الثّقفيّ"
-   }
-  ]
- },
- {
-  "id": "ats835",
-  "name": "الثلجي",
-  "death": "",
-  "death_h": null,
-  "death_est": null,
-  "heading": "الثلجي",
-  "sources": [
-   {
-    "key": "athmar:835",
-    "book": "athmar",
-    "number": null,
-    "vol": 2,
-    "page_start": 735,
-    "page_end": 735,
-    "cite": "الأثمار الجنية 2/735",
-    "heading": "الثّلجيّ"
-   }
-  ]
- },
- {
-  "id": "ats836",
-  "name": "الثوري",
-  "death": "",
-  "death_h": null,
-  "death_est": null,
-  "heading": "الثوري",
-  "sources": [
-   {
-    "key": "athmar:836",
-    "book": "athmar",
-    "number": null,
-    "vol": 2,
-    "page_start": 736,
-    "page_end": 736,
-    "cite": "الأثمار الجنية 2/736",
-    "heading": "الثّوريّ"
    }
   ]
  },
@@ -42540,106 +41870,6 @@
   ]
  },
  {
-  "id": "ats837",
-  "name": "الجرجاني",
-  "death": "",
-  "death_h": null,
-  "death_est": null,
-  "heading": "الجرجاني",
-  "sources": [
-   {
-    "key": "athmar:837",
-    "book": "athmar",
-    "number": null,
-    "vol": 2,
-    "page_start": 736,
-    "page_end": 736,
-    "cite": "الأثمار الجنية 2/736",
-    "heading": "الجرجانيّ"
-   }
-  ]
- },
- {
-  "id": "ats838",
-  "name": "الجرمي",
-  "death": "",
-  "death_h": null,
-  "death_est": null,
-  "heading": "الجرمي",
-  "sources": [
-   {
-    "key": "athmar:838",
-    "book": "athmar",
-    "number": null,
-    "vol": 2,
-    "page_start": 736,
-    "page_end": 736,
-    "cite": "الأثمار الجنية 2/736",
-    "heading": "الجرميّ"
-   }
-  ]
- },
- {
-  "id": "ats839",
-  "name": "الجريري",
-  "death": "",
-  "death_h": null,
-  "death_est": null,
-  "heading": "الجريري",
-  "sources": [
-   {
-    "key": "athmar:839",
-    "book": "athmar",
-    "number": null,
-    "vol": 2,
-    "page_start": 736,
-    "page_end": 736,
-    "cite": "الأثمار الجنية 2/736",
-    "heading": "الجريريّ"
-   }
-  ]
- },
- {
-  "id": "ats840",
-  "name": "الجعبري",
-  "death": "",
-  "death_h": null,
-  "death_est": null,
-  "heading": "الجعبري",
-  "sources": [
-   {
-    "key": "athmar:840",
-    "book": "athmar",
-    "number": null,
-    "vol": 2,
-    "page_start": 736,
-    "page_end": 736,
-    "cite": "الأثمار الجنية 2/736",
-    "heading": "الجعبريّ"
-   }
-  ]
- },
- {
-  "id": "ats841",
-  "name": "الجعفي",
-  "death": "",
-  "death_h": null,
-  "death_est": null,
-  "heading": "الجعفي",
-  "sources": [
-   {
-    "key": "athmar:841",
-    "book": "athmar",
-    "number": null,
-    "vol": 2,
-    "page_start": 736,
-    "page_end": 736,
-    "cite": "الأثمار الجنية 2/736",
-    "heading": "الجعفيّ"
-   }
-  ]
- },
- {
   "id": "jw2025_2028",
   "name": "الجلابي",
   "death": "",
@@ -42656,26 +41886,6 @@
     "page_end": 175,
     "cite": "الجواهر المضية 4/175 (رقم 2025)",
     "heading": "الجلابى"
-   }
-  ]
- },
- {
-  "id": "ats844",
-  "name": "الجلابي",
-  "death": "",
-  "death_h": null,
-  "death_est": null,
-  "heading": "الجلابي",
-  "sources": [
-   {
-    "key": "athmar:844",
-    "book": "athmar",
-    "number": null,
-    "vol": 2,
-    "page_start": 737,
-    "page_end": 737,
-    "cite": "الأثمار الجنية 2/737",
-    "heading": "الجلاّبيّ"
    }
   ]
  },
@@ -42726,66 +41936,6 @@
     "page_end": 298,
     "cite": "الطبقات السنية 2/298 (رقم 618)",
     "heading": "الجنيد بن محمد بن المظفر، الفقيه، الطايكانى، الغزنوى أبو القاسم بن أبى بكر الخبازى"
-   }
-  ]
- },
- {
-  "id": "ats843",
-  "name": "الجوزجاني",
-  "death": "",
-  "death_h": null,
-  "death_est": null,
-  "heading": "الجوزجاني",
-  "sources": [
-   {
-    "key": "athmar:843",
-    "book": "athmar",
-    "number": null,
-    "vol": 2,
-    "page_start": 737,
-    "page_end": 737,
-    "cite": "الأثمار الجنية 2/737",
-    "heading": "الجوزجانيّ"
-   }
-  ]
- },
- {
-  "id": "ats842",
-  "name": "الجويني",
-  "death": "",
-  "death_h": null,
-  "death_est": null,
-  "heading": "الجويني",
-  "sources": [
-   {
-    "key": "athmar:842",
-    "book": "athmar",
-    "number": null,
-    "vol": 2,
-    "page_start": 737,
-    "page_end": 737,
-    "cite": "الأثمار الجنية 2/737",
-    "heading": "الجوينيّ"
-   }
-  ]
- },
- {
-  "id": "ats845",
-  "name": "الحاتمي",
-  "death": "",
-  "death_h": null,
-  "death_est": null,
-  "heading": "الحاتمي",
-  "sources": [
-   {
-    "key": "athmar:845",
-    "book": "athmar",
-    "number": null,
-    "vol": 2,
-    "page_start": 737,
-    "page_end": 737,
-    "cite": "الأثمار الجنية 2/737",
-    "heading": "الحاتميّ"
    }
   ]
  },
@@ -47580,26 +46730,6 @@
   ]
  },
  {
-  "id": "ats846",
-  "name": "الحلواني",
-  "death": "",
-  "death_h": null,
-  "death_est": null,
-  "heading": "الحلواني",
-  "sources": [
-   {
-    "key": "athmar:846",
-    "book": "athmar",
-    "number": null,
-    "vol": 2,
-    "page_start": 737,
-    "page_end": 737,
-    "cite": "الأثمار الجنية 2/737",
-    "heading": "الحلوانيّ"
-   }
-  ]
- },
- {
   "id": "jw2026",
   "name": "الحليمي نجم الأئمة",
   "death": "",
@@ -47616,46 +46746,6 @@
     "page_end": 182,
     "cite": "الجواهر المضية 4/182 (رقم 2026)",
     "heading": "الحليمى نجم الأئمة"
-   }
-  ]
- },
- {
-  "id": "ats847",
-  "name": "الحماني",
-  "death": "",
-  "death_h": null,
-  "death_est": null,
-  "heading": "الحماني",
-  "sources": [
-   {
-    "key": "athmar:847",
-    "book": "athmar",
-    "number": null,
-    "vol": 2,
-    "page_start": 738,
-    "page_end": 738,
-    "cite": "الأثمار الجنية 2/738",
-    "heading": "الحمّانيّ"
-   }
-  ]
- },
- {
-  "id": "ats848",
-  "name": "الحموي",
-  "death": "",
-  "death_h": null,
-  "death_est": null,
-  "heading": "الحموي",
-  "sources": [
-   {
-    "key": "athmar:848",
-    "book": "athmar",
-    "number": null,
-    "vol": 2,
-    "page_start": 738,
-    "page_end": 738,
-    "cite": "الأثمار الجنية 2/738",
-    "heading": "الحمويّ"
    }
   ]
  },
@@ -47680,86 +46770,6 @@
   ]
  },
  {
-  "id": "ats849",
-  "name": "الحيري",
-  "death": "",
-  "death_h": null,
-  "death_est": null,
-  "heading": "الحيري",
-  "sources": [
-   {
-    "key": "athmar:849",
-    "book": "athmar",
-    "number": null,
-    "vol": 2,
-    "page_start": 738,
-    "page_end": 738,
-    "cite": "الأثمار الجنية 2/738",
-    "heading": "الحيريّ"
-   }
-  ]
- },
- {
-  "id": "ats850",
-  "name": "الخاصي",
-  "death": "",
-  "death_h": null,
-  "death_est": null,
-  "heading": "الخاصي",
-  "sources": [
-   {
-    "key": "athmar:850",
-    "book": "athmar",
-    "number": null,
-    "vol": 2,
-    "page_start": 738,
-    "page_end": 738,
-    "cite": "الأثمار الجنية 2/738",
-    "heading": "الخاصيّ"
-   }
-  ]
- },
- {
-  "id": "ats851",
-  "name": "الختني",
-  "death": "",
-  "death_h": null,
-  "death_est": null,
-  "heading": "الختني",
-  "sources": [
-   {
-    "key": "athmar:851",
-    "book": "athmar",
-    "number": null,
-    "vol": 2,
-    "page_start": 738,
-    "page_end": 738,
-    "cite": "الأثمار الجنية 2/738",
-    "heading": "الختنيّ"
-   }
-  ]
- },
- {
-  "id": "ats852",
-  "name": "الخجندي",
-  "death": "",
-  "death_h": null,
-  "death_est": null,
-  "heading": "الخجندي",
-  "sources": [
-   {
-    "key": "athmar:852",
-    "book": "athmar",
-    "number": null,
-    "vol": 2,
-    "page_start": 739,
-    "page_end": 739,
-    "cite": "الأثمار الجنية 2/739",
-    "heading": "الخجنديّ"
-   }
-  ]
- },
- {
   "id": "jw2028",
   "name": "الخرابي نسبة الملقب بركن",
   "death": "",
@@ -47776,26 +46786,6 @@
     "page_end": 190,
     "cite": "الجواهر المضية 4/190 (رقم 2028)",
     "heading": "الخرابى نسبة الملقب بركن"
-   }
-  ]
- },
- {
-  "id": "ats853",
-  "name": "الخرقاني",
-  "death": "",
-  "death_h": null,
-  "death_est": null,
-  "heading": "الخرقاني",
-  "sources": [
-   {
-    "key": "athmar:853",
-    "book": "athmar",
-    "number": null,
-    "vol": 2,
-    "page_start": 739,
-    "page_end": 739,
-    "cite": "الأثمار الجنية 2/739",
-    "heading": "الخرقانيّ"
    }
   ]
  },
@@ -47890,26 +46880,6 @@
   ]
  },
  {
-  "id": "ats857",
-  "name": "الخلاطي",
-  "death": "",
-  "death_h": null,
-  "death_est": null,
-  "heading": "الخلاطي",
-  "sources": [
-   {
-    "key": "athmar:857",
-    "book": "athmar",
-    "number": null,
-    "vol": 2,
-    "page_start": 739,
-    "page_end": 739,
-    "cite": "الأثمار الجنية 2/739",
-    "heading": "الخلاطيّ"
-   }
-  ]
- },
- {
   "id": "jw2029",
   "name": "الخلخالي",
   "death": "",
@@ -47946,26 +46916,6 @@
     "page_end": 359,
     "cite": "تاج التراجم 356-359 (رقم 350)",
     "heading": "الخلخالي"
-   }
-  ]
- },
- {
-  "id": "ats854",
-  "name": "الخلخالي",
-  "death": "",
-  "death_h": null,
-  "death_est": null,
-  "heading": "الخلخالي",
-  "sources": [
-   {
-    "key": "athmar:854",
-    "book": "athmar",
-    "number": null,
-    "vol": 2,
-    "page_start": 739,
-    "page_end": 739,
-    "cite": "الأثمار الجنية 2/739",
-    "heading": "الخلخاليّ"
    }
   ]
  },
@@ -48120,146 +47070,6 @@
   ]
  },
  {
-  "id": "ats855",
-  "name": "الخوارزمي",
-  "death": "",
-  "death_h": null,
-  "death_est": null,
-  "heading": "الخوارزمي",
-  "sources": [
-   {
-    "key": "athmar:855",
-    "book": "athmar",
-    "number": null,
-    "vol": 2,
-    "page_start": 739,
-    "page_end": 739,
-    "cite": "الأثمار الجنية 2/739",
-    "heading": "الخوارزميّ"
-   }
-  ]
- },
- {
-  "id": "ats856",
-  "name": "الخوافي",
-  "death": "",
-  "death_h": null,
-  "death_est": null,
-  "heading": "الخوافي",
-  "sources": [
-   {
-    "key": "athmar:856",
-    "book": "athmar",
-    "number": null,
-    "vol": 2,
-    "page_start": 739,
-    "page_end": 739,
-    "cite": "الأثمار الجنية 2/739",
-    "heading": "الخوافيّ"
-   }
-  ]
- },
- {
-  "id": "ats863",
-  "name": "الداراني",
-  "death": "",
-  "death_h": null,
-  "death_est": null,
-  "heading": "الداراني",
-  "sources": [
-   {
-    "key": "athmar:863",
-    "book": "athmar",
-    "number": null,
-    "vol": 2,
-    "page_start": 741,
-    "page_end": 741,
-    "cite": "الأثمار الجنية 2/741",
-    "heading": "الدّارانيّ"
-   }
-  ]
- },
- {
-  "id": "ats864",
-  "name": "الدارقطني",
-  "death": "",
-  "death_h": null,
-  "death_est": null,
-  "heading": "الدارقطني",
-  "sources": [
-   {
-    "key": "athmar:864",
-    "book": "athmar",
-    "number": null,
-    "vol": 2,
-    "page_start": 741,
-    "page_end": 741,
-    "cite": "الأثمار الجنية 2/741",
-    "heading": "الدّارقطنيّ"
-   }
-  ]
- },
- {
-  "id": "ats866",
-  "name": "الداري",
-  "death": "",
-  "death_h": null,
-  "death_est": null,
-  "heading": "الداري",
-  "sources": [
-   {
-    "key": "athmar:866",
-    "book": "athmar",
-    "number": null,
-    "vol": 2,
-    "page_start": 741,
-    "page_end": 741,
-    "cite": "الأثمار الجنية 2/741",
-    "heading": "الدّاريّ"
-   }
-  ]
- },
- {
-  "id": "ats858",
-  "name": "الدامغاني",
-  "death": "",
-  "death_h": null,
-  "death_est": null,
-  "heading": "الدامغاني",
-  "sources": [
-   {
-    "key": "athmar:858",
-    "book": "athmar",
-    "number": null,
-    "vol": 2,
-    "page_start": 740,
-    "page_end": 740,
-    "cite": "الأثمار الجنية 2/740",
-    "heading": "الدّامغانيّ"
-   }
-  ]
- },
- {
-  "id": "ats859",
-  "name": "الدبوسي",
-  "death": "",
-  "death_h": null,
-  "death_est": null,
-  "heading": "الدبوسي",
-  "sources": [
-   {
-    "key": "athmar:859",
-    "book": "athmar",
-    "number": null,
-    "vol": 2,
-    "page_start": 740,
-    "page_end": 740,
-    "cite": "الأثمار الجنية 2/740",
-    "heading": "الدّبوسيّ"
-   }
-  ]
- },
- {
   "id": "jw2031",
   "name": "الدلوي هو العلامة، الزاهد الكبير، شمس الدين الخطيب",
   "death": "",
@@ -48286,26 +47096,6 @@
     "page_end": 409,
     "cite": "كتائب أعلام الأخيار 3/409 (رقم 562)",
     "heading": "شمس الدين الخطيب الدلري"
-   }
-  ]
- },
- {
-  "id": "ats860",
-  "name": "الدلي",
-  "death": "",
-  "death_h": null,
-  "death_est": null,
-  "heading": "الدلي",
-  "sources": [
-   {
-    "key": "athmar:860",
-    "book": "athmar",
-    "number": null,
-    "vol": 2,
-    "page_start": 740,
-    "page_end": 740,
-    "cite": "الأثمار الجنية 2/740",
-    "heading": "الدّليّ"
    }
   ]
  },
@@ -48340,66 +47130,6 @@
   ]
  },
  {
-  "id": "ats865",
-  "name": "الدماوندي",
-  "death": "",
-  "death_h": null,
-  "death_est": null,
-  "heading": "الدماوندي",
-  "sources": [
-   {
-    "key": "athmar:865",
-    "book": "athmar",
-    "number": null,
-    "vol": 2,
-    "page_start": 741,
-    "page_end": 741,
-    "cite": "الأثمار الجنية 2/741",
-    "heading": "الدّماونديّ"
-   }
-  ]
- },
- {
-  "id": "ats861",
-  "name": "الدمياطي",
-  "death": "",
-  "death_h": null,
-  "death_est": null,
-  "heading": "الدمياطي",
-  "sources": [
-   {
-    "key": "athmar:861",
-    "book": "athmar",
-    "number": null,
-    "vol": 2,
-    "page_start": 740,
-    "page_end": 740,
-    "cite": "الأثمار الجنية 2/740",
-    "heading": "الدمياطيّ"
-   }
-  ]
- },
- {
-  "id": "ats867",
-  "name": "الدهستاني",
-  "death": "",
-  "death_h": null,
-  "death_est": null,
-  "heading": "الدهستاني",
-  "sources": [
-   {
-    "key": "athmar:867",
-    "book": "athmar",
-    "number": null,
-    "vol": 2,
-    "page_start": 742,
-    "page_end": 742,
-    "cite": "الأثمار الجنية 2/742",
-    "heading": "الدّهستانيّ"
-   }
-  ]
- },
- {
   "id": "qd425",
   "name": "الدهقان الرئيس أبي محمد عبد الرحيم بن عبد الكريم بن أحمد الكرميني",
   "death": "",
@@ -48416,66 +47146,6 @@
     "page_end": 246,
     "cite": "القند 245-246 (رقم 425)",
     "heading": "الدهقان الرئيس أبي محمد عبد الرحيم بن عبد الكريم بن أحمد الكرميني"
-   }
-  ]
- },
- {
-  "id": "ats868",
-  "name": "الدهلوي",
-  "death": "",
-  "death_h": null,
-  "death_est": null,
-  "heading": "الدهلوي",
-  "sources": [
-   {
-    "key": "athmar:868",
-    "book": "athmar",
-    "number": null,
-    "vol": 2,
-    "page_start": 742,
-    "page_end": 742,
-    "cite": "الأثمار الجنية 2/742",
-    "heading": "الدّهلويّ"
-   }
-  ]
- },
- {
-  "id": "ats869",
-  "name": "الدورقي",
-  "death": "",
-  "death_h": null,
-  "death_est": null,
-  "heading": "الدورقي",
-  "sources": [
-   {
-    "key": "athmar:869",
-    "book": "athmar",
-    "number": null,
-    "vol": 2,
-    "page_start": 742,
-    "page_end": 742,
-    "cite": "الأثمار الجنية 2/742",
-    "heading": "الدّورقيّ"
-   }
-  ]
- },
- {
-  "id": "ats862",
-  "name": "الدينوري",
-  "death": "",
-  "death_h": null,
-  "death_est": null,
-  "heading": "الدينوري",
-  "sources": [
-   {
-    "key": "athmar:862",
-    "book": "athmar",
-    "number": null,
-    "vol": 2,
-    "page_start": 740,
-    "page_end": 740,
-    "cite": "الأثمار الجنية 2/740",
-    "heading": "الدينوري"
    }
   ]
  },
@@ -48520,66 +47190,6 @@
   ]
  },
  {
-  "id": "ats870",
-  "name": "الرحبي",
-  "death": "",
-  "death_h": null,
-  "death_est": null,
-  "heading": "الرحبي",
-  "sources": [
-   {
-    "key": "athmar:870",
-    "book": "athmar",
-    "number": null,
-    "vol": 2,
-    "page_start": 742,
-    "page_end": 742,
-    "cite": "الأثمار الجنية 2/742",
-    "heading": "الرّحبيّ"
-   }
-  ]
- },
- {
-  "id": "ats871",
-  "name": "الرستغفني",
-  "death": "",
-  "death_h": null,
-  "death_est": null,
-  "heading": "الرستغفني",
-  "sources": [
-   {
-    "key": "athmar:871",
-    "book": "athmar",
-    "number": null,
-    "vol": 2,
-    "page_start": 742,
-    "page_end": 742,
-    "cite": "الأثمار الجنية 2/742",
-    "heading": "الرّستغفني"
-   }
-  ]
- },
- {
-  "id": "ats872",
-  "name": "الرسعني",
-  "death": "",
-  "death_h": null,
-  "death_est": null,
-  "heading": "الرسعني",
-  "sources": [
-   {
-    "key": "athmar:872",
-    "book": "athmar",
-    "number": null,
-    "vol": 2,
-    "page_start": 743,
-    "page_end": 743,
-    "cite": "الأثمار الجنية 2/743",
-    "heading": "الرّسعنيّ"
-   }
-  ]
- },
- {
   "id": "jw592",
   "name": "الرضى بن إسحاق بن عبد الله بن إسحاق النصري",
   "death": "",
@@ -48610,26 +47220,6 @@
   ]
  },
  {
-  "id": "ats873",
-  "name": "الرعيني",
-  "death": "",
-  "death_h": null,
-  "death_est": null,
-  "heading": "الرعيني",
-  "sources": [
-   {
-    "key": "athmar:873",
-    "book": "athmar",
-    "number": null,
-    "vol": 2,
-    "page_start": 743,
-    "page_end": 743,
-    "cite": "الأثمار الجنية 2/743",
-    "heading": "الرّعينيّ"
-   }
-  ]
- },
- {
   "id": "jw2034",
   "name": "الرنقدموري",
   "death": "",
@@ -48646,46 +47236,6 @@
     "page_end": 216,
     "cite": "الجواهر المضية 4/216 (رقم 2034)",
     "heading": "الرنقدمورى"
-   }
-  ]
- },
- {
-  "id": "ats875",
-  "name": "الرهاوي",
-  "death": "",
-  "death_h": null,
-  "death_est": null,
-  "heading": "الرهاوي",
-  "sources": [
-   {
-    "key": "athmar:875",
-    "book": "athmar",
-    "number": null,
-    "vol": 2,
-    "page_start": 743,
-    "page_end": 743,
-    "cite": "الأثمار الجنية 2/743",
-    "heading": "الرّهاويّ"
-   }
-  ]
- },
- {
-  "id": "ats874",
-  "name": "الرواس",
-  "death": "",
-  "death_h": null,
-  "death_est": null,
-  "heading": "الرواس",
-  "sources": [
-   {
-    "key": "athmar:874",
-    "book": "athmar",
-    "number": null,
-    "vol": 2,
-    "page_start": 743,
-    "page_end": 743,
-    "cite": "الأثمار الجنية 2/743",
-    "heading": "الرّوّاس"
    }
   ]
  },
@@ -48750,46 +47300,6 @@
   ]
  },
  {
-  "id": "ats876",
-  "name": "الزملكاني",
-  "death": "",
-  "death_h": null,
-  "death_est": null,
-  "heading": "الزملكاني",
-  "sources": [
-   {
-    "key": "athmar:876",
-    "book": "athmar",
-    "number": null,
-    "vol": 2,
-    "page_start": 744,
-    "page_end": 744,
-    "cite": "الأثمار الجنية 2/744",
-    "heading": "الزّملكانيّ"
-   }
-  ]
- },
- {
-  "id": "ats877",
-  "name": "الزندخاني",
-  "death": "",
-  "death_h": null,
-  "death_est": null,
-  "heading": "الزندخاني",
-  "sources": [
-   {
-    "key": "athmar:877",
-    "book": "athmar",
-    "number": null,
-    "vol": 2,
-    "page_start": 744,
-    "page_end": 744,
-    "cite": "الأثمار الجنية 2/744",
-    "heading": "الزّندخانيّ"
-   }
-  ]
- },
- {
   "id": "jw2035",
   "name": "الزندويستي",
   "death": "",
@@ -48806,46 +47316,6 @@
     "page_end": 222,
     "cite": "الجواهر المضية 4/222 (رقم 2035)",
     "heading": "الزندويستى"
-   }
-  ]
- },
- {
-  "id": "ats878",
-  "name": "الزندويستي",
-  "death": "",
-  "death_h": null,
-  "death_est": null,
-  "heading": "الزندويستي",
-  "sources": [
-   {
-    "key": "athmar:878",
-    "book": "athmar",
-    "number": null,
-    "vol": 2,
-    "page_start": 744,
-    "page_end": 744,
-    "cite": "الأثمار الجنية 2/744",
-    "heading": "الزّندويستيّ"
-   }
-  ]
- },
- {
-  "id": "ats879",
-  "name": "الزوزني",
-  "death": "",
-  "death_h": null,
-  "death_est": null,
-  "heading": "الزوزني",
-  "sources": [
-   {
-    "key": "athmar:879",
-    "book": "athmar",
-    "number": null,
-    "vol": 2,
-    "page_start": 744,
-    "page_end": 744,
-    "cite": "الأثمار الجنية 2/744",
-    "heading": "الزّوزنيّ"
    }
   ]
  },
@@ -48870,206 +47340,6 @@
   ]
  },
  {
-  "id": "ats885",
-  "name": "السامري",
-  "death": "",
-  "death_h": null,
-  "death_est": null,
-  "heading": "السامري",
-  "sources": [
-   {
-    "key": "athmar:885",
-    "book": "athmar",
-    "number": null,
-    "vol": 2,
-    "page_start": 746,
-    "page_end": 746,
-    "cite": "الأثمار الجنية 2/746",
-    "heading": "السّامرّي"
-   }
-  ]
- },
- {
-  "id": "ats886",
-  "name": "السباعي",
-  "death": "",
-  "death_h": null,
-  "death_est": null,
-  "heading": "السباعي",
-  "sources": [
-   {
-    "key": "athmar:886",
-    "book": "athmar",
-    "number": null,
-    "vol": 2,
-    "page_start": 746,
-    "page_end": 746,
-    "cite": "الأثمار الجنية 2/746",
-    "heading": "السّباعيّ"
-   }
-  ]
- },
- {
-  "id": "ats880",
-  "name": "السجاوندي",
-  "death": "",
-  "death_h": null,
-  "death_est": null,
-  "heading": "السجاوندي",
-  "sources": [
-   {
-    "key": "athmar:880",
-    "book": "athmar",
-    "number": null,
-    "vol": 2,
-    "page_start": 745,
-    "page_end": 745,
-    "cite": "الأثمار الجنية 2/745",
-    "heading": "السّجاونديّ"
-   }
-  ]
- },
- {
-  "id": "ats881",
-  "name": "السجزي",
-  "death": "",
-  "death_h": null,
-  "death_est": null,
-  "heading": "السجزي",
-  "sources": [
-   {
-    "key": "athmar:881",
-    "book": "athmar",
-    "number": null,
-    "vol": 2,
-    "page_start": 745,
-    "page_end": 745,
-    "cite": "الأثمار الجنية 2/745",
-    "heading": "السّجزيّ"
-   }
-  ]
- },
- {
-  "id": "ats887",
-  "name": "السجستاني",
-  "death": "",
-  "death_h": null,
-  "death_est": null,
-  "heading": "السجستاني",
-  "sources": [
-   {
-    "key": "athmar:887",
-    "book": "athmar",
-    "number": null,
-    "vol": 2,
-    "page_start": 746,
-    "page_end": 746,
-    "cite": "الأثمار الجنية 2/746",
-    "heading": "السّجستانيّ"
-   }
-  ]
- },
- {
-  "id": "ats888",
-  "name": "السختياني",
-  "death": "",
-  "death_h": null,
-  "death_est": null,
-  "heading": "السختياني",
-  "sources": [
-   {
-    "key": "athmar:888",
-    "book": "athmar",
-    "number": null,
-    "vol": 2,
-    "page_start": 746,
-    "page_end": 746,
-    "cite": "الأثمار الجنية 2/746",
-    "heading": "السّختيانيّ"
-   }
-  ]
- },
- {
-  "id": "ats882",
-  "name": "السرخسي",
-  "death": "",
-  "death_h": null,
-  "death_est": null,
-  "heading": "السرخسي",
-  "sources": [
-   {
-    "key": "athmar:882",
-    "book": "athmar",
-    "number": null,
-    "vol": 2,
-    "page_start": 745,
-    "page_end": 745,
-    "cite": "الأثمار الجنية 2/745",
-    "heading": "السّرخسيّ"
-   }
-  ]
- },
- {
-  "id": "ats883",
-  "name": "السرخكتي",
-  "death": "",
-  "death_h": null,
-  "death_est": null,
-  "heading": "السرخكتي",
-  "sources": [
-   {
-    "key": "athmar:883",
-    "book": "athmar",
-    "number": null,
-    "vol": 2,
-    "page_start": 745,
-    "page_end": 745,
-    "cite": "الأثمار الجنية 2/745",
-    "heading": "السّرخكتيّ"
-   }
-  ]
- },
- {
-  "id": "ats884",
-  "name": "السرخكي",
-  "death": "",
-  "death_h": null,
-  "death_est": null,
-  "heading": "السرخكي",
-  "sources": [
-   {
-    "key": "athmar:884",
-    "book": "athmar",
-    "number": null,
-    "vol": 2,
-    "page_start": 745,
-    "page_end": 745,
-    "cite": "الأثمار الجنية 2/745",
-    "heading": "السّرخكيّ"
-   }
-  ]
- },
- {
-  "id": "ats889",
-  "name": "السروجي",
-  "death": "",
-  "death_h": null,
-  "death_est": null,
-  "heading": "السروجي",
-  "sources": [
-   {
-    "key": "athmar:889",
-    "book": "athmar",
-    "number": null,
-    "vol": 2,
-    "page_start": 746,
-    "page_end": 746,
-    "cite": "الأثمار الجنية 2/746",
-    "heading": "السّروجيّ"
-   }
-  ]
- },
- {
   "id": "kt156",
   "name": "السري السقطي",
   "death": "",
@@ -49086,166 +47356,6 @@
     "page_end": 529,
     "cite": "كتائب أعلام الأخيار 1/527-529 (رقم 156)",
     "heading": "السري السقطي"
-   }
-  ]
- },
- {
-  "id": "ats890",
-  "name": "السغدي",
-  "death": "",
-  "death_h": null,
-  "death_est": null,
-  "heading": "السغدي",
-  "sources": [
-   {
-    "key": "athmar:890",
-    "book": "athmar",
-    "number": null,
-    "vol": 2,
-    "page_start": 747,
-    "page_end": 747,
-    "cite": "الأثمار الجنية 2/747",
-    "heading": "السّغديّ"
-   }
-  ]
- },
- {
-  "id": "ats891",
-  "name": "السكوني",
-  "death": "",
-  "death_h": null,
-  "death_est": null,
-  "heading": "السكوني",
-  "sources": [
-   {
-    "key": "athmar:891",
-    "book": "athmar",
-    "number": null,
-    "vol": 2,
-    "page_start": 747,
-    "page_end": 747,
-    "cite": "الأثمار الجنية 2/747",
-    "heading": "السّكونيّ"
-   }
-  ]
- },
- {
-  "id": "ats892",
-  "name": "السلمي",
-  "death": "",
-  "death_h": null,
-  "death_est": null,
-  "heading": "السلمي",
-  "sources": [
-   {
-    "key": "athmar:892",
-    "book": "athmar",
-    "number": null,
-    "vol": 2,
-    "page_start": 747,
-    "page_end": 747,
-    "cite": "الأثمار الجنية 2/747",
-    "heading": "السّلميّ"
-   }
-  ]
- },
- {
-  "id": "ats894",
-  "name": "السمعاني",
-  "death": "",
-  "death_h": null,
-  "death_est": null,
-  "heading": "السمعاني",
-  "sources": [
-   {
-    "key": "athmar:894",
-    "book": "athmar",
-    "number": null,
-    "vol": 2,
-    "page_start": 747,
-    "page_end": 747,
-    "cite": "الأثمار الجنية 2/747",
-    "heading": "السّمعانيّ"
-   }
-  ]
- },
- {
-  "id": "ats895",
-  "name": "السمناني",
-  "death": "",
-  "death_h": null,
-  "death_est": null,
-  "heading": "السمناني",
-  "sources": [
-   {
-    "key": "athmar:895",
-    "book": "athmar",
-    "number": null,
-    "vol": 2,
-    "page_start": 747,
-    "page_end": 747,
-    "cite": "الأثمار الجنية 2/747",
-    "heading": "السّمنانيّ"
-   }
-  ]
- },
- {
-  "id": "ats897",
-  "name": "السنجاري",
-  "death": "",
-  "death_h": null,
-  "death_est": null,
-  "heading": "السنجاري",
-  "sources": [
-   {
-    "key": "athmar:897",
-    "book": "athmar",
-    "number": null,
-    "vol": 2,
-    "page_start": 748,
-    "page_end": 748,
-    "cite": "الأثمار الجنية 2/748",
-    "heading": "السّنجاريّ"
-   }
-  ]
- },
- {
-  "id": "ats896",
-  "name": "السنجي",
-  "death": "",
-  "death_h": null,
-  "death_est": null,
-  "heading": "السنجي",
-  "sources": [
-   {
-    "key": "athmar:896",
-    "book": "athmar",
-    "number": null,
-    "vol": 2,
-    "page_start": 748,
-    "page_end": 748,
-    "cite": "الأثمار الجنية 2/748",
-    "heading": "السّنجيّ"
-   }
-  ]
- },
- {
-  "id": "ats893",
-  "name": "السهروردي",
-  "death": "",
-  "death_h": null,
-  "death_est": null,
-  "heading": "السهروردي",
-  "sources": [
-   {
-    "key": "athmar:893",
-    "book": "athmar",
-    "number": null,
-    "vol": 2,
-    "page_start": 747,
-    "page_end": 747,
-    "cite": "الأثمار الجنية 2/747",
-    "heading": "السهرورديّ"
    }
   ]
  },
@@ -49390,66 +47500,6 @@
   ]
  },
  {
-  "id": "ats898",
-  "name": "السيرافي",
-  "death": "",
-  "death_h": null,
-  "death_est": null,
-  "heading": "السيرافي",
-  "sources": [
-   {
-    "key": "athmar:898",
-    "book": "athmar",
-    "number": null,
-    "vol": 2,
-    "page_start": 748,
-    "page_end": 748,
-    "cite": "الأثمار الجنية 2/748",
-    "heading": "السّيرافيّ"
-   }
-  ]
- },
- {
-  "id": "ats899",
-  "name": "السيناني",
-  "death": "",
-  "death_h": null,
-  "death_est": null,
-  "heading": "السيناني",
-  "sources": [
-   {
-    "key": "athmar:899",
-    "book": "athmar",
-    "number": null,
-    "vol": 2,
-    "page_start": 748,
-    "page_end": 748,
-    "cite": "الأثمار الجنية 2/748",
-    "heading": "السّينانيّ"
-   }
-  ]
- },
- {
-  "id": "ats900",
-  "name": "الشاشي",
-  "death": "",
-  "death_h": null,
-  "death_est": null,
-  "heading": "الشاشي",
-  "sources": [
-   {
-    "key": "athmar:900",
-    "book": "athmar",
-    "number": null,
-    "vol": 2,
-    "page_start": 748,
-    "page_end": 748,
-    "cite": "الأثمار الجنية 2/748",
-    "heading": "الشاشي"
-   }
-  ]
- },
- {
   "id": "kt100",
   "name": "الشافعي",
   "death": "",
@@ -49466,26 +47516,6 @@
     "page_end": 367,
     "cite": "كتائب أعلام الأخيار 1/358-367 (رقم 100)",
     "heading": "الشافعي"
-   }
-  ]
- },
- {
-  "id": "ats901",
-  "name": "الشامي",
-  "death": "",
-  "death_h": null,
-  "death_est": null,
-  "heading": "الشامي",
-  "sources": [
-   {
-    "key": "athmar:901",
-    "book": "athmar",
-    "number": null,
-    "vol": 2,
-    "page_start": 748,
-    "page_end": 748,
-    "cite": "الأثمار الجنية 2/748",
-    "heading": "الشّاميّ"
    }
   ]
  },
@@ -50000,26 +48030,6 @@
   ]
  },
  {
-  "id": "ats902",
-  "name": "الصدائي",
-  "death": "",
-  "death_h": null,
-  "death_est": null,
-  "heading": "الصدائي",
-  "sources": [
-   {
-    "key": "athmar:902",
-    "book": "athmar",
-    "number": null,
-    "vol": 2,
-    "page_start": 749,
-    "page_end": 749,
-    "cite": "الأثمار الجنية 2/749",
-    "heading": "الصّدائيّ"
-   }
-  ]
- },
- {
   "id": "kt487",
   "name": "الصدر الشهيد الترجماني المكي",
   "death": "",
@@ -50080,26 +48090,6 @@
   ]
  },
  {
-  "id": "ats903",
-  "name": "الصعلوكي",
-  "death": "",
-  "death_h": null,
-  "death_est": null,
-  "heading": "الصعلوكي",
-  "sources": [
-   {
-    "key": "athmar:903",
-    "book": "athmar",
-    "number": null,
-    "vol": 2,
-    "page_start": 749,
-    "page_end": 749,
-    "cite": "الأثمار الجنية 2/749",
-    "heading": "الصّعلوكيّ"
-   }
-  ]
- },
- {
   "id": "kt262",
   "name": "الصفار إسحاق بن شيث",
   "death": "",
@@ -50116,26 +48106,6 @@
     "page_end": 168,
     "cite": "كتائب أعلام الأخيار 2/168 (رقم 262)",
     "heading": "الصفار إسحاق بن شيث"
-   }
-  ]
- },
- {
-  "id": "ats904",
-  "name": "الصفاري",
-  "death": "",
-  "death_h": null,
-  "death_est": null,
-  "heading": "الصفاري",
-  "sources": [
-   {
-    "key": "athmar:904",
-    "book": "athmar",
-    "number": null,
-    "vol": 2,
-    "page_start": 749,
-    "page_end": 749,
-    "cite": "الأثمار الجنية 2/749",
-    "heading": "الصّفّاريّ"
    }
   ]
  },
@@ -50276,46 +48246,6 @@
     "page_end": 99,
     "cite": "الطبقات السنية 4/99 (رقم 995)",
     "heading": "الضحاك بن مسافر مولى سليمان بن عبد الملك"
-   }
-  ]
- },
- {
-  "id": "ats905",
-  "name": "الطالقاني",
-  "death": "",
-  "death_h": null,
-  "death_est": null,
-  "heading": "الطالقاني",
-  "sources": [
-   {
-    "key": "athmar:905",
-    "book": "athmar",
-    "number": null,
-    "vol": 2,
-    "page_start": 749,
-    "page_end": 749,
-    "cite": "الأثمار الجنية 2/749",
-    "heading": "الطّالقانيّ"
-   }
-  ]
- },
- {
-  "id": "ats906",
-  "name": "الطرسوسي",
-  "death": "",
-  "death_h": null,
-  "death_est": null,
-  "heading": "الطرسوسي",
-  "sources": [
-   {
-    "key": "athmar:906",
-    "book": "athmar",
-    "number": null,
-    "vol": 2,
-    "page_start": 749,
-    "page_end": 749,
-    "cite": "الأثمار الجنية 2/749",
-    "heading": "الطّرسوسيّ"
    }
   ]
  },
@@ -50670,46 +48600,6 @@
   ]
  },
  {
-  "id": "ats907",
-  "name": "العتابي",
-  "death": "",
-  "death_h": null,
-  "death_est": null,
-  "heading": "العتابي",
-  "sources": [
-   {
-    "key": "athmar:907",
-    "book": "athmar",
-    "number": null,
-    "vol": 2,
-    "page_start": 750,
-    "page_end": 750,
-    "cite": "الأثمار الجنية 2/750",
-    "heading": "العتّابيّ"
-   }
-  ]
- },
- {
-  "id": "ats908",
-  "name": "العتكي",
-  "death": "",
-  "death_h": null,
-  "death_est": null,
-  "heading": "العتكي",
-  "sources": [
-   {
-    "key": "athmar:908",
-    "book": "athmar",
-    "number": null,
-    "vol": 2,
-    "page_start": 750,
-    "page_end": 750,
-    "cite": "الأثمار الجنية 2/750",
-    "heading": "العتكيّ"
-   }
-  ]
- },
- {
   "id": "jw2080",
   "name": "العقيلي",
   "death": "",
@@ -50726,26 +48616,6 @@
     "page_end": 400,
     "cite": "الجواهر المضية 4/400 (رقم 2080)",
     "heading": "العقيلى"
-   }
-  ]
- },
- {
-  "id": "ats909",
-  "name": "العقيلي",
-  "death": "",
-  "death_h": null,
-  "death_est": null,
-  "heading": "العقيلي",
-  "sources": [
-   {
-    "key": "athmar:909",
-    "book": "athmar",
-    "number": null,
-    "vol": 2,
-    "page_start": 750,
-    "page_end": 750,
-    "cite": "الأثمار الجنية 2/750",
-    "heading": "العقيليّ"
    }
   ]
  },
@@ -50810,106 +48680,6 @@
   ]
  },
  {
-  "id": "ats910",
-  "name": "العماني",
-  "death": "",
-  "death_h": null,
-  "death_est": null,
-  "heading": "العماني",
-  "sources": [
-   {
-    "key": "athmar:910",
-    "book": "athmar",
-    "number": null,
-    "vol": 2,
-    "page_start": 750,
-    "page_end": 750,
-    "cite": "الأثمار الجنية 2/750",
-    "heading": "العمانيّ"
-   }
-  ]
- },
- {
-  "id": "ats911",
-  "name": "العمي",
-  "death": "",
-  "death_h": null,
-  "death_est": null,
-  "heading": "العمي",
-  "sources": [
-   {
-    "key": "athmar:911",
-    "book": "athmar",
-    "number": null,
-    "vol": 2,
-    "page_start": 751,
-    "page_end": 751,
-    "cite": "الأثمار الجنية 2/751",
-    "heading": "العمّي"
-   }
-  ]
- },
- {
-  "id": "ats912",
-  "name": "العنزي",
-  "death": "",
-  "death_h": null,
-  "death_est": null,
-  "heading": "العنزي",
-  "sources": [
-   {
-    "key": "athmar:912",
-    "book": "athmar",
-    "number": null,
-    "vol": 2,
-    "page_start": 751,
-    "page_end": 751,
-    "cite": "الأثمار الجنية 2/751",
-    "heading": "العنزيّ"
-   }
-  ]
- },
- {
-  "id": "ats913",
-  "name": "العياضي",
-  "death": "",
-  "death_h": null,
-  "death_est": null,
-  "heading": "العياضي",
-  "sources": [
-   {
-    "key": "athmar:913",
-    "book": "athmar",
-    "number": null,
-    "vol": 2,
-    "page_start": 751,
-    "page_end": 751,
-    "cite": "الأثمار الجنية 2/751",
-    "heading": "العياضيّ"
-   }
-  ]
- },
- {
-  "id": "ats914",
-  "name": "الغجدواني",
-  "death": "",
-  "death_h": null,
-  "death_est": null,
-  "heading": "الغجدواني",
-  "sources": [
-   {
-    "key": "athmar:914",
-    "book": "athmar",
-    "number": null,
-    "vol": 2,
-    "page_start": 751,
-    "page_end": 751,
-    "cite": "الأثمار الجنية 2/751",
-    "heading": "الغجدوانيّ"
-   }
-  ]
- },
- {
   "id": "jw2041_2045",
   "name": "الغزي",
   "death": "",
@@ -50926,66 +48696,6 @@
     "page_end": 273,
     "cite": "الجواهر المضية 4/273 (رقم 2041)",
     "heading": "الغزى"
-   }
-  ]
- },
- {
-  "id": "ats915",
-  "name": "الغوري",
-  "death": "",
-  "death_h": null,
-  "death_est": null,
-  "heading": "الغوري",
-  "sources": [
-   {
-    "key": "athmar:915",
-    "book": "athmar",
-    "number": null,
-    "vol": 2,
-    "page_start": 751,
-    "page_end": 751,
-    "cite": "الأثمار الجنية 2/751",
-    "heading": "الغوريّ"
-   }
-  ]
- },
- {
-  "id": "ats916",
-  "name": "الفارسي",
-  "death": "",
-  "death_h": null,
-  "death_est": null,
-  "heading": "الفارسي",
-  "sources": [
-   {
-    "key": "athmar:916",
-    "book": "athmar",
-    "number": null,
-    "vol": 2,
-    "page_start": 751,
-    "page_end": 751,
-    "cite": "الأثمار الجنية 2/751",
-    "heading": "الفارسيّ"
-   }
-  ]
- },
- {
-  "id": "ats917",
-  "name": "الفاريابي",
-  "death": "",
-  "death_h": null,
-  "death_est": null,
-  "heading": "الفاريابي",
-  "sources": [
-   {
-    "key": "athmar:917",
-    "book": "athmar",
-    "number": null,
-    "vol": 2,
-    "page_start": 751,
-    "page_end": 751,
-    "cite": "الأثمار الجنية 2/751",
-    "heading": "الفاريابيّ"
    }
   ]
  },
@@ -51126,46 +48836,6 @@
     "page_end": 421,
     "cite": "الجواهر المضية 4/421 (رقم 2095)",
     "heading": "الفخر السنباطى، محمد بن عثمان بن يوسف"
-   }
-  ]
- },
- {
-  "id": "ats919",
-  "name": "الفراهي",
-  "death": "",
-  "death_h": null,
-  "death_est": null,
-  "heading": "الفراهي",
-  "sources": [
-   {
-    "key": "athmar:919",
-    "book": "athmar",
-    "number": null,
-    "vol": 2,
-    "page_start": 752,
-    "page_end": 752,
-    "cite": "الأثمار الجنية 2/752",
-    "heading": "الفراهي"
-   }
-  ]
- },
- {
-  "id": "ats918",
-  "name": "الفربري",
-  "death": "",
-  "death_h": null,
-  "death_est": null,
-  "heading": "الفربري",
-  "sources": [
-   {
-    "key": "athmar:918",
-    "book": "athmar",
-    "number": null,
-    "vol": 2,
-    "page_start": 752,
-    "page_end": 752,
-    "cite": "الأثمار الجنية 2/752",
-    "heading": "الفربريّ"
    }
   ]
  },
@@ -52490,66 +50160,6 @@
   ]
  },
  {
-  "id": "ats920",
-  "name": "القدوري",
-  "death": "",
-  "death_h": null,
-  "death_est": null,
-  "heading": "القدوري",
-  "sources": [
-   {
-    "key": "athmar:920",
-    "book": "athmar",
-    "number": null,
-    "vol": 2,
-    "page_start": 752,
-    "page_end": 752,
-    "cite": "الأثمار الجنية 2/752",
-    "heading": "القدوريّ"
-   }
-  ]
- },
- {
-  "id": "ats921",
-  "name": "القراحصاري",
-  "death": "",
-  "death_h": null,
-  "death_est": null,
-  "heading": "القراحصاري",
-  "sources": [
-   {
-    "key": "athmar:921",
-    "book": "athmar",
-    "number": null,
-    "vol": 2,
-    "page_start": 752,
-    "page_end": 752,
-    "cite": "الأثمار الجنية 2/752",
-    "heading": "القراحصاريّ"
-   }
-  ]
- },
- {
-  "id": "ats922",
-  "name": "القمي",
-  "death": "",
-  "death_h": null,
-  "death_est": null,
-  "heading": "القمي",
-  "sources": [
-   {
-    "key": "athmar:922",
-    "book": "athmar",
-    "number": null,
-    "vol": 2,
-    "page_start": 753,
-    "page_end": 753,
-    "cite": "الأثمار الجنية 2/753",
-    "heading": "القمّيّ"
-   }
-  ]
- },
- {
   "id": "jw2043",
   "name": "الكاثي لقب برهان إمام",
   "death": "",
@@ -52606,46 +50216,6 @@
     "page_end": 428,
     "cite": "الجواهر المضية 4/428 (رقم 2099)",
     "heading": "الكشك لقب للإمام العلامة"
-   }
-  ]
- },
- {
-  "id": "ats923",
-  "name": "الكشميهني",
-  "death": "",
-  "death_h": null,
-  "death_est": null,
-  "heading": "الكشميهني",
-  "sources": [
-   {
-    "key": "athmar:923",
-    "book": "athmar",
-    "number": null,
-    "vol": 2,
-    "page_start": 753,
-    "page_end": 753,
-    "cite": "الأثمار الجنية 2/753",
-    "heading": "الكشميهنيّ"
-   }
-  ]
- },
- {
-  "id": "ats924",
-  "name": "الكلاباذي",
-  "death": "",
-  "death_h": null,
-  "death_est": null,
-  "heading": "الكلاباذي",
-  "sources": [
-   {
-    "key": "athmar:924",
-    "book": "athmar",
-    "number": null,
-    "vol": 2,
-    "page_start": 753,
-    "page_end": 753,
-    "cite": "الأثمار الجنية 2/753",
-    "heading": "الكلاباذيّ"
    }
   ]
  },
@@ -52806,26 +50376,6 @@
     "page_end": 233,
     "cite": "كتائب أعلام الأخيار 2/232-233 (رقم 285)",
     "heading": "الحسن الماتريدي"
-   }
-  ]
- },
- {
-  "id": "ats925",
-  "name": "المارديني",
-  "death": "",
-  "death_h": null,
-  "death_est": null,
-  "heading": "المارديني",
-  "sources": [
-   {
-    "key": "athmar:925",
-    "book": "athmar",
-    "number": null,
-    "vol": 2,
-    "page_start": 753,
-    "page_end": 753,
-    "cite": "الأثمار الجنية 2/753",
-    "heading": "الماردينيّ"
    }
   ]
  },
@@ -53050,26 +50600,6 @@
   ]
  },
  {
-  "id": "ats926",
-  "name": "المطرزي",
-  "death": "",
-  "death_h": null,
-  "death_est": null,
-  "heading": "المطرزي",
-  "sources": [
-   {
-    "key": "athmar:926",
-    "book": "athmar",
-    "number": null,
-    "vol": 2,
-    "page_start": 753,
-    "page_end": 753,
-    "cite": "الأثمار الجنية 2/753",
-    "heading": "المطرّزيّ"
-   }
-  ]
- },
- {
   "id": "jw1671",
   "name": "المطهر بن الحسن بن سعيد بن علي بن بندار اليزدي",
   "death": "",
@@ -53146,26 +50676,6 @@
     "page_end": 486,
     "cite": "الجواهر المضية 3/486 (رقم 1672)",
     "heading": "المطهر بن سليمان بن محمد أبو بكر"
-   }
-  ]
- },
- {
-  "id": "ats927",
-  "name": "المطوعي",
-  "death": "",
-  "death_h": null,
-  "death_est": null,
-  "heading": "المطوعي",
-  "sources": [
-   {
-    "key": "athmar:927",
-    "book": "athmar",
-    "number": null,
-    "vol": 2,
-    "page_start": 754,
-    "page_end": 754,
-    "cite": "الأثمار الجنية 2/754",
-    "heading": "المطوّعيّ"
    }
   ]
  },
@@ -53406,26 +50916,6 @@
     "page_end": 515,
     "cite": "الجواهر المضية 3/515 (رقم 1711)",
     "heading": "المهاد عرف بإمام زاذ السمرقندى، الملقب مجد الدين"
-   }
-  ]
- },
- {
-  "id": "ats928",
-  "name": "الموصلي",
-  "death": "",
-  "death_h": null,
-  "death_est": null,
-  "heading": "الموصلي",
-  "sources": [
-   {
-    "key": "athmar:928",
-    "book": "athmar",
-    "number": null,
-    "vol": 2,
-    "page_start": 754,
-    "page_end": 754,
-    "cite": "الأثمار الجنية 2/754",
-    "heading": "الموصلي"
    }
   ]
  },
@@ -54150,66 +51640,6 @@
   ]
  },
  {
-  "id": "ats929",
-  "name": "النخعي",
-  "death": "",
-  "death_h": null,
-  "death_est": null,
-  "heading": "النخعي",
-  "sources": [
-   {
-    "key": "athmar:929",
-    "book": "athmar",
-    "number": null,
-    "vol": 2,
-    "page_start": 754,
-    "page_end": 754,
-    "cite": "الأثمار الجنية 2/754",
-    "heading": "النّخعيّ"
-   }
-  ]
- },
- {
-  "id": "ats930",
-  "name": "النسفي",
-  "death": "",
-  "death_h": null,
-  "death_est": null,
-  "heading": "النسفي",
-  "sources": [
-   {
-    "key": "athmar:930",
-    "book": "athmar",
-    "number": null,
-    "vol": 2,
-    "page_start": 754,
-    "page_end": 754,
-    "cite": "الأثمار الجنية 2/754",
-    "heading": "النّسفيّ"
-   }
-  ]
- },
- {
-  "id": "ats931",
-  "name": "النسوي",
-  "death": "",
-  "death_h": null,
-  "death_est": null,
-  "heading": "النسوي",
-  "sources": [
-   {
-    "key": "athmar:931",
-    "book": "athmar",
-    "number": null,
-    "vol": 2,
-    "page_start": 754,
-    "page_end": 754,
-    "cite": "الأثمار الجنية 2/754",
-    "heading": "النّسويّ"
-   }
-  ]
- },
- {
   "id": "jw2051",
   "name": "النصروي إمام كبير",
   "death": "",
@@ -54550,106 +51980,6 @@
   ]
  },
  {
-  "id": "ats932",
-  "name": "الهذلي",
-  "death": "",
-  "death_h": null,
-  "death_est": null,
-  "heading": "الهذلي",
-  "sources": [
-   {
-    "key": "athmar:932",
-    "book": "athmar",
-    "number": null,
-    "vol": 2,
-    "page_start": 754,
-    "page_end": 754,
-    "cite": "الأثمار الجنية 2/754",
-    "heading": "الهذليّ"
-   }
-  ]
- },
- {
-  "id": "ats933",
-  "name": "الهروي",
-  "death": "",
-  "death_h": null,
-  "death_est": null,
-  "heading": "الهروي",
-  "sources": [
-   {
-    "key": "athmar:933",
-    "book": "athmar",
-    "number": null,
-    "vol": 2,
-    "page_start": 754,
-    "page_end": 754,
-    "cite": "الأثمار الجنية 2/754",
-    "heading": "الهرويّ"
-   }
-  ]
- },
- {
-  "id": "ats934",
-  "name": "الهمداني",
-  "death": "",
-  "death_h": null,
-  "death_est": null,
-  "heading": "الهمداني",
-  "sources": [
-   {
-    "key": "athmar:934",
-    "book": "athmar",
-    "number": null,
-    "vol": 2,
-    "page_start": 755,
-    "page_end": 755,
-    "cite": "الأثمار الجنية 2/755",
-    "heading": "الهمدانيّ"
-   }
-  ]
- },
- {
-  "id": "ats935",
-  "name": "الهندواني",
-  "death": "",
-  "death_h": null,
-  "death_est": null,
-  "heading": "الهندواني",
-  "sources": [
-   {
-    "key": "athmar:935",
-    "book": "athmar",
-    "number": null,
-    "vol": 2,
-    "page_start": 755,
-    "page_end": 755,
-    "cite": "الأثمار الجنية 2/755",
-    "heading": "الهندوانيّ"
-   }
-  ]
- },
- {
-  "id": "ats936",
-  "name": "الهيتي",
-  "death": "",
-  "death_h": null,
-  "death_est": null,
-  "heading": "الهيتي",
-  "sources": [
-   {
-    "key": "athmar:936",
-    "book": "athmar",
-    "number": null,
-    "vol": 2,
-    "page_start": 755,
-    "page_end": 755,
-    "cite": "الأثمار الجنية 2/755",
-    "heading": "الهيتيّ"
-   }
-  ]
- },
- {
   "id": "jw1783",
   "name": "الهيثم ابن أبي الهيثم عتبة بن خيثمة التميمي، القاضي، النيسابوري، أبو سعيد التميمي",
   "death": "٤٣١هـ/١٠٣٩م",
@@ -54790,26 +52120,6 @@
   ]
  },
  {
-  "id": "ats937",
-  "name": "الوانجاني",
-  "death": "",
-  "death_h": null,
-  "death_est": null,
-  "heading": "الوانجاني",
-  "sources": [
-   {
-    "key": "athmar:937",
-    "book": "athmar",
-    "number": null,
-    "vol": 2,
-    "page_start": 755,
-    "page_end": 755,
-    "cite": "الأثمار الجنية 2/755",
-    "heading": "الوانجانيّ"
-   }
-  ]
- },
- {
   "id": "jw2055",
   "name": "الوانجاني هو الإمام ركن الدين",
   "death": "",
@@ -54846,26 +52156,6 @@
     "page_end": 293,
     "cite": "كتائب أعلام الأخيار 3/291-293 (رقم 511)",
     "heading": "ركن الدين الوالجاني"
-   }
-  ]
- },
- {
-  "id": "ats938",
-  "name": "الولوالجي",
-  "death": "",
-  "death_h": null,
-  "death_est": null,
-  "heading": "الولوالجي",
-  "sources": [
-   {
-    "key": "athmar:938",
-    "book": "athmar",
-    "number": null,
-    "vol": 2,
-    "page_start": 756,
-    "page_end": 756,
-    "cite": "الأثمار الجنية 2/756",
-    "heading": "الولوالجيّ"
    }
   ]
  },
@@ -54916,26 +52206,6 @@
     "page_end": 346,
     "cite": "الجواهر المضية 4/346 (رقم 2056)",
     "heading": "اليرغرى"
-   }
-  ]
- },
- {
-  "id": "ats939",
-  "name": "اليرغري",
-  "death": "",
-  "death_h": null,
-  "death_est": null,
-  "heading": "اليرغري",
-  "sources": [
-   {
-    "key": "athmar:939",
-    "book": "athmar",
-    "number": null,
-    "vol": 2,
-    "page_start": 756,
-    "page_end": 756,
-    "cite": "الأثمار الجنية 2/756",
-    "heading": "اليرغريّ"
    }
   ]
  },

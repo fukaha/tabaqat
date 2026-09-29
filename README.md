@@ -166,7 +166,9 @@ python -m tabaqat.geo.basemap <natural-earth-dizini>   # → site/data/basemap.j
   sığmayan o yakınlıkta gizlenir, yakınlaştırınca açılır). Bir şehre tıklayınca yanında yüzen
   pencere: el-Süreyyâ künyesi (tür · bölge · transliterasyon), Yâkūt'un *Mu‘cemü’l-büldân*'ından
   (yoksa Himyerî'nin *er-Ravzü’l-mi‘târ*'ından, yoksa Sem‘ânî'nin *el-Ensâb*'ından) kısa alıntı ve
-  oradaki fakihlerin listesi. Haritada şehir, genel ağ görünümünde âlim arama kutusu seçilen
+  oradaki fakihlerin listesi. el-Esmârü’l-ceniyye'nin nisbe sözlüğü (كتاب الأنساب: *الطّرسوسيّ: بفتح
+  الطاء… نسبة إلى مدينة من بلاد الروم*) şahıs sayılmaz (`match/records.py: NOT_PERSON`); nisbesi bir
+  yere bağlanan maddeler o yerin penceresinde nisbe açıklaması olarak gösterilir. Haritada şehir, genel ağ görünümünde âlim arama kutusu seçilen
   sonuca yakınlaşıp vurgular.
 - **el-Süreyyâ bilgisi:** `python -m tabaqat.geo.thurayya_info <althurayya.github.io kopyası>`
   → `data/gazetteer/thurayya_info.json` (künye ve ≤240 harflik alıntı, CC BY 4.0); `site`

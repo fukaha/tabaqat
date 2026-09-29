@@ -104,6 +104,26 @@ def _excerpt(items: list[dict], n: int = 230) -> str:
     return cut.rstrip("،,.:؛ ") + "…"
 
 
+def _nisba_notes(root: Path) -> dict[str, list[dict]]:
+    """el-Esmârü’l-ceniyye'nin nisbe sözlüğü (كتاب الأنساب): şahıs değil, nisbe açıklaması. Nisbenin
+    bağlı olduğu yere not olarak eklenir: {"n": "الطّرسوسيّ", "text": "بفتح الطاء…", "page": "2/749"}."""
+    from .geo.gazetteer import Gazetteer, key
+    from .match.records import NOT_PERSON
+    path = root / "data" / "entries" / "athmar.json"
+    if not path.exists():
+        return {}
+    gz, out = Gazetteer(root), defaultdict(list)
+    for e in json.loads(path.read_text(encoding="utf-8")):
+        if not NOT_PERSON.search(e.get("section") or ""):
+            continue
+        k = key(e["heading_raw"])
+        pid = gz.by_nisba.get(k) or gz.by_nisba.get(key("ال" + k)) or gz.by_nisba.get(key(k.removeprefix("ال")))
+        if pid:
+            out[pid].append({"n": e["heading_raw"].strip(), "text": clean_text(e.get("text")).replace("\n\n", " "),
+                             "page": f"{e['vol']}/{e['page_start']}"})
+    return out
+
+
 def _texts(root: Path, persons: list[dict]) -> dict[int, dict]:
     entries = {}
     for f in sorted((root / "data" / "entries").glob("*.json")):
@@ -360,8 +380,10 @@ def export(root: Path) -> dict:
     # el-Süreyyâ künyesi ve Yâkût/Himyerî/Sem‘ânî'den kısa alıntı (geo/thurayya_info.py)
     tinfo_p = data / "gazetteer" / "thurayya_info.json"
     tinfo = json.loads(tinfo_p.read_text(encoding="utf-8")) if tinfo_p.exists() else {}
+    nnotes = _nisba_notes(root)
     places = [{**pl, "name_tr": ptr.get(pl["id"], ""), "n": len({x[0] for x in people_at[pl["id"]]}),
                **({"info": tinfo[pl["id"]]} if pl["id"] in tinfo else {}),
+               **({"nisba": nnotes[pl["id"]]} if pl["id"] in nnotes else {}),
                "people": people_at[pl["id"]]}
               for pl in places if people_at[pl["id"]]]
     _dump(out / "places.json", places)

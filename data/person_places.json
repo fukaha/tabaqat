@@ -18786,15 +18786,6 @@
    "snippet": " … ان يخضب الصعده او تندقا ثم حمل عليهم فقتل ضاحك الطبل وانهزم القوم، ومضوا في اثارهم حتي فتحوا مرو الروذ. وهولاء الاربعه من اعلام المخضرمين من التابعين] . ومنهم الذين لم يدركوا ال"
   }
  ],
- "ats805": [
-  {
-   "place": "ISBIJAB_697E422N_S",
-   "kind": "nisba",
-   "key": "athmar:805",
-   "text": "الاسبيجابي",
-   "snippet": ""
-  }
- ],
  "fws86": [
   {
    "place": "x:rum",
@@ -18804,15 +18795,6 @@
    "snippet": "مذهب والخلاف حسن الطريقه وممن تفقه عليه قاضي بلاد الروم عبد المجيد بن اسماعيل بن محمد وعلاء الدين محمد بن عبد الحميد السمرقندي."
   }
  ],
- "ats814": [
-  {
-   "place": "ATRABULUS_358E344N_S",
-   "kind": "nisba",
-   "key": "athmar:814",
-   "text": "الاطرابلسي",
-   "snippet": ""
-  }
- ],
  "jw2016": [
   {
    "place": "NAYSABUR_587E361N_S",
@@ -18820,33 +18802,6 @@
    "key": "jawahir:2018",
    "text": "نيسابور",
    "snippet": "مات بنيسابور، سنه احدي وستمايه. ولم يذكر السمعاني هذه النسبه، وذكر الاكاف، بفتح الالف والكاف المشدده، وقال : لعل هذه النسبه لمن يعمل اكاف ال"
-  }
- ],
- "ats816": [
-  {
-   "place": "ANBAR_437E333N_S",
-   "kind": "nisba",
-   "key": "athmar:816",
-   "text": "الانباري",
-   "snippet": ""
-  }
- ],
- "ats818": [
-  {
-   "place": "ANDIKAN_724E408N_S",
-   "kind": "nisba",
-   "key": "athmar:818",
-   "text": "الاندكاني",
-   "snippet": ""
-  }
- ],
- "ats822": [
-  {
-   "place": "UZJAND_733E408N_S",
-   "kind": "nisba",
-   "key": "athmar:822",
-   "text": "الاوزجندي",
-   "snippet": ""
   }
  ],
  "jw2013": [
@@ -18942,15 +18897,6 @@
    "snippet": ""
   }
  ],
- "ats813": [
-  {
-   "place": "ISTAKHR_529E299N_S",
-   "kind": "nisba",
-   "key": "athmar:813",
-   "text": "الاصطخري",
-   "snippet": ""
-  }
- ],
  "qd594": [
   {
    "place": "SAMARQAND_670E396N_S",
@@ -18967,15 +18913,6 @@
    "snippet": ""
   }
  ],
- "ats825": [
-  {
-   "place": "BAKHARZ_603E350N_R",
-   "kind": "nisba",
-   "key": "athmar:825",
-   "text": "الباخرزي",
-   "snippet": ""
-  }
- ],
  "jw2018": [
   {
    "place": "JURJANIYYA_592E424N_S",
@@ -18983,42 +18920,6 @@
    "key": "jawahir:2020",
    "text": "جرجانيه",
    "snippet": "ه، قال هذا لقب لمن برع في نوع من العلم. توفي بجرجانيه خوارزم، ليله الاحد، السادس عشر من شعبان، سنه خمس واربعين وستمايه. وكان اماما، فقيها، واعظا."
-  }
- ],
- "ats828": [
-  {
-   "place": "BISTAM_550E364N_S",
-   "kind": "nisba",
-   "key": "athmar:828",
-   "text": "البسطامي",
-   "snippet": ""
-  }
- ],
- "ats830": [
-  {
-   "place": "BASRA_477E304N_S",
-   "kind": "nisba",
-   "key": "athmar:830",
-   "text": "البصري",
-   "snippet": ""
-  }
- ],
- "ats831": [
-  {
-   "place": "BUZJAN_606E351N_S",
-   "kind": "nisba",
-   "key": "athmar:831",
-   "text": "البوزجاني",
-   "snippet": ""
-  }
- ],
- "ats832": [
-  {
-   "place": "BAYHAQ_576E360N_R",
-   "kind": "nisba",
-   "key": "athmar:832",
-   "text": "البيهقي",
-   "snippet": ""
   }
  ],
  "gh933": [
@@ -19080,15 +18981,6 @@
    "kind": "nisba",
    "key": "jawahir:394",
    "text": "المروزي",
-   "snippet": ""
-  }
- ],
- "ats837": [
-  {
-   "place": "JURJAN_549E373N_R",
-   "kind": "nisba",
-   "key": "athmar:837",
-   "text": "الجرجاني",
    "snippet": ""
   }
  ],
@@ -19156,24 +19048,6 @@
    "kind": "nisba",
    "key": "jawahir:410",
    "text": "الغزنوي",
-   "snippet": ""
-  }
- ],
- "ats843": [
-  {
-   "place": "JUZJAN_651E357N_R",
-   "kind": "nisba",
-   "key": "athmar:843",
-   "text": "الجوزجاني",
-   "snippet": ""
-  }
- ],
- "ats842": [
-  {
-   "place": "JUWAYN_616E317N_S",
-   "kind": "nisba",
-   "key": "athmar:842",
-   "text": "الجويني",
    "snippet": ""
   }
  ],
@@ -21462,33 +21336,6 @@
    "snippet": "ن مولعا بالتدريس. قال الحسن بن زياد: ما دخل العراق احد افقه من الحكم بن زهير. الحكم بن عبد الله، ابو مطيع البلخي صاحب الامام. ياتي في الكني ."
   }
  ],
- "ats846": [
-  {
-   "place": "HULWAN_459E344N_S",
-   "kind": "nisba",
-   "key": "athmar:846",
-   "text": "الحلواني",
-   "snippet": ""
-  }
- ],
- "ats847": [
-  {
-   "place": "KUFA_443E320N_S",
-   "kind": "residence",
-   "key": "athmar:847",
-   "text": "الكوفه",
-   "snippet": "م، وفي اخرها نون نسبه الي قبيله من تميم نزلوا الكوفه."
-  }
- ],
- "ats848": [
-  {
-   "place": "HAMA_367E351N_S",
-   "kind": "nisba",
-   "key": "athmar:848",
-   "text": "الحموي",
-   "snippet": ""
-  }
- ],
  "jw2071": [
   {
    "place": "BALKH_668E367N_S",
@@ -21496,33 +21343,6 @@
    "key": "jawahir:2075",
    "text": "بلخ",
    "snippet": "مر بن علي بن الحسين الطالقاني المحمودي. تولي القضاء ببلخ، ولم تحمد سيرته، بخلاف ابيه حمدت سيرته ببلخ، وقد تقدم ابوه ."
-  }
- ],
- "ats849": [
-  {
-   "place": "HIRA_443E320N_S",
-   "kind": "nisba",
-   "key": "athmar:849",
-   "text": "الحيري",
-   "snippet": ""
-  }
- ],
- "ats852": [
-  {
-   "place": "KHUJANDA_696E402N_S",
-   "kind": "nisba",
-   "key": "athmar:852",
-   "text": "الخجندي",
-   "snippet": ""
-  }
- ],
- "ats853": [
-  {
-   "place": "KHARAQANA_675E399N_S",
-   "kind": "nisba",
-   "key": "athmar:853",
-   "text": "الخرقاني",
-   "snippet": ""
   }
  ],
  "qd23": [
@@ -21684,24 +21504,6 @@
    "snippet": ""
   }
  ],
- "ats855": [
-  {
-   "place": "KHUWARIZM_599E416N_R",
-   "kind": "nisba",
-   "key": "athmar:855",
-   "text": "الخوارزمي",
-   "snippet": ""
-  }
- ],
- "ats856": [
-  {
-   "place": "KHAWAF_600E345N_R",
-   "kind": "nisba",
-   "key": "athmar:856",
-   "text": "الخوافي",
-   "snippet": ""
-  }
- ],
  "jw2032": [
   {
    "place": "TABARISTAN_526E363N_R",
@@ -21709,33 +21511,6 @@
    "key": "kataib:563",
    "text": "طبرستان",
    "snippet": "يد الدين عن الكردري، عن صاحب \"الهدايه\". وولي ناحيه بين الري وطبرستان، كذا في \"الجواهر المضيه\" في الانساب."
-  }
- ],
- "ats865": [
-  {
-   "place": "DUMMAWAND_520E357N_R",
-   "kind": "nisba",
-   "key": "athmar:865",
-   "text": "الدماوندي",
-   "snippet": ""
-  }
- ],
- "ats861": [
-  {
-   "place": "DIMYAT_317E314N_S",
-   "kind": "nisba",
-   "key": "athmar:861",
-   "text": "الدمياطي",
-   "snippet": ""
-  }
- ],
- "ats867": [
-  {
-   "place": "DIHISTAN_629E346N_S",
-   "kind": "nisba",
-   "key": "athmar:867",
-   "text": "الدهستاني",
-   "snippet": ""
   }
  ],
  "qd425": [
@@ -21747,33 +21522,6 @@
    "snippet": "حدث بسمرقند. قال: اخبرنا الشيخ ابو بكر محمد بن محمد بن الحسن الغزال السمرقندي قال: اخبرنا عبد الرحيم بن عبد الكريم بن احمد الكرميني بسمرقند "
   }
  ],
- "ats868": [
-  {
-   "place": "x:delhi",
-   "kind": "nisba",
-   "key": "athmar:868",
-   "text": "الدهلوي",
-   "snippet": ""
-  }
- ],
- "ats869": [
-  {
-   "place": "DAWRAQ_489E308N_S",
-   "kind": "nisba",
-   "key": "athmar:869",
-   "text": "الدورقي",
-   "snippet": ""
-  }
- ],
- "ats862": [
-  {
-   "place": "DINAWAR_474E346N_S",
-   "kind": "nisba",
-   "key": "athmar:862",
-   "text": "الدينوري",
-   "snippet": ""
-  }
- ],
  "qd62": [
   {
    "place": "HAMDAN_441E155N_R",
@@ -21781,24 +21529,6 @@
    "key": "qand:62",
    "text": "همدان",
    "snippet": "د فخرج رجل من عظمايهم فدعا الي المبارزه فخرج اليه رجل من همدان يقال له ابن مجالد فقتله السعدي، فوثب جهم بن زحر فبادر السعدي فقتله، ثم دعاه الي البراز وانشا يقول: ومن مبلغ مني العشي"
-  }
- ],
- "ats870": [
-  {
-   "place": "RUHBA_364E276N_R",
-   "kind": "nisba",
-   "key": "athmar:870",
-   "text": "الرحبي",
-   "snippet": ""
-  }
- ],
- "ats873": [
-  {
-   "place": "RUAYN_445E144N_R",
-   "kind": "nisba",
-   "key": "athmar:873",
-   "text": "الرعيني",
-   "snippet": ""
   }
  ],
  "gh255": [
@@ -21816,78 +21546,6 @@
    "kind": "nisba",
    "key": "qand:92",
    "text": "الكشاني",
-   "snippet": ""
-  }
- ],
- "ats876": [
-  {
-   "place": "BALKH_668E367N_S",
-   "kind": "origin",
-   "key": "athmar:876",
-   "text": "بلخ",
-   "snippet": "ح اللام، فكاف فالف، فنون. نسبه الي قريه من قري دمشق، واخري ببلخ."
-  }
- ],
- "ats879": [
-  {
-   "place": "ZUZAN_598E343N_S",
-   "kind": "nisba",
-   "key": "athmar:879",
-   "text": "الزوزني",
-   "snippet": ""
-  }
- ],
- "ats882": [
-  {
-   "place": "SARAKHS_611E365N_S",
-   "kind": "nisba",
-   "key": "athmar:882",
-   "text": "السرخسي",
-   "snippet": ""
-  }
- ],
- "ats892": [
-  {
-   "place": "SALMA_423E272N_R",
-   "kind": "nisba",
-   "key": "athmar:892",
-   "text": "السلمي",
-   "snippet": ""
-  }
- ],
- "ats895": [
-  {
-   "place": "SIMNAN_534E354N_S",
-   "kind": "nisba",
-   "key": "athmar:895",
-   "text": "السمناني",
-   "snippet": ""
-  }
- ],
- "ats897": [
-  {
-   "place": "SINJAR_418E363N_S",
-   "kind": "nisba",
-   "key": "athmar:897",
-   "text": "السنجاري",
-   "snippet": ""
-  }
- ],
- "ats896": [
-  {
-   "place": "SINJ_616E374N_S",
-   "kind": "nisba",
-   "key": "athmar:896",
-   "text": "السنجي",
-   "snippet": ""
-  }
- ],
- "ats893": [
-  {
-   "place": "SUHRAWARD_486E364N_S",
-   "kind": "nisba",
-   "key": "athmar:893",
-   "text": "السهروردي",
    "snippet": ""
   }
  ],
@@ -22090,24 +21748,6 @@
    "snippet": ""
   }
  ],
- "ats898": [
-  {
-   "place": "SIRAF_523E276N_S",
-   "kind": "nisba",
-   "key": "athmar:898",
-   "text": "السيرافي",
-   "snippet": ""
-  }
- ],
- "ats900": [
-  {
-   "place": "SHASH_691E412N_R",
-   "kind": "nisba",
-   "key": "athmar:900",
-   "text": "الشاشي",
-   "snippet": ""
-  }
- ],
  "kt100": [
   {
    "place": "ASQALAN_345E316N_S",
@@ -22178,15 +21818,6 @@
    "key": "kataib:100",
    "text": "مكه",
    "snippet": "ت؟ قلت: الي المنزل. فقالت: هيهات هيهات، تخرج من مكه بالامس فقيرا، وتعود اليها مترفا مفتخرا علي بني عمك بذلك. فقلت: ما اصنع؟ قالت ناد بالابطح بالعرب لشبع الجايع، وحمل المنقطع، وكسوه"
-  }
- ],
- "ats901": [
-  {
-   "place": "x:sham",
-   "kind": "nisba",
-   "key": "athmar:901",
-   "text": "الشامي",
-   "snippet": ""
   }
  ],
  "qd209": [
@@ -22513,24 +22144,6 @@
    "snippet": ": لا فسيره من خراسان الي الري. وحكي انه مات مقيدا في السجن بمرو، ودفن في مقبره توبك، وكان موته سنه اثنين ومايه، وقيل سنه خمس ومايه، وقيل مات يبلغ وقبره في جبه بروقان، وقال سفيان بن"
   }
  ],
- "ats905": [
-  {
-   "place": "TALAQAN_696E367N_S",
-   "kind": "nisba",
-   "key": "athmar:905",
-   "text": "الطالقاني",
-   "snippet": ""
-  }
- ],
- "ats906": [
-  {
-   "place": "TARSUS_349E369N_S",
-   "kind": "nisba",
-   "key": "athmar:906",
-   "text": "الطرسوسي",
-   "snippet": ""
-  }
- ],
  "jw2040": [
   {
    "place": "DIMASHQ_363E335N_S",
@@ -22642,24 +22255,6 @@
    "snippet": ""
   }
  ],
- "ats915": [
-  {
-   "place": "GHAWR_354E318N_R",
-   "kind": "nisba",
-   "key": "athmar:915",
-   "text": "الغوري",
-   "snippet": ""
-  }
- ],
- "ats917": [
-  {
-   "place": "FARIYAB_649E364N_S",
-   "kind": "nisba",
-   "key": "athmar:917",
-   "text": "الفاريابي",
-   "snippet": ""
-  }
- ],
  "qd975": [
   {
    "place": "SAMARQAND_670E396N_S",
@@ -22667,15 +22262,6 @@
    "key": "qand:975",
    "text": "سمرقند",
    "snippet": " ازد بن الفتح. قال: وبه عن ابي سعد قال: حدثنا محمد بن محمد بن صالح بن شعيب النسفي بسمرقند قال: حدثنا ازد بن الفتح بن الوضاح الكسي قال: حدثنا ابي قال: حدثنا جدي قال: حدثني الاعرابي "
-  }
- ],
- "ats918": [
-  {
-   "place": "FIRABR_636E391N_S",
-   "kind": "nisba",
-   "key": "athmar:918",
-   "text": "الفربري",
-   "snippet": ""
   }
  ],
  "qd933": [
@@ -23132,24 +22718,6 @@
    "snippet": ". افتي، ودرس، وناب عن ابن الحريري بدمشق، وتولي قضاء القضاه بدمشق، بعد موت ابن السراج ، في سنه احدي وسبعين وسبعمايه ."
   }
  ],
- "ats923": [
-  {
-   "place": "KUSHMAYHAN_625E377N_S",
-   "kind": "nisba",
-   "key": "athmar:923",
-   "text": "الكشميهني",
-   "snippet": ""
-  }
- ],
- "ats924": [
-  {
-   "place": "BUKHARA_644E398N_S",
-   "kind": "nisba",
-   "key": "athmar:924",
-   "text": "الكلاباذي",
-   "snippet": ""
-  }
- ],
  "jw1131": [
   {
    "place": "QAHIRA_312E300N_S",
@@ -23200,15 +22768,6 @@
    "kind": "nisba",
    "key": "jawahir:1721",
    "text": "الشاشي",
-   "snippet": ""
-  }
- ],
- "ats925": [
-  {
-   "place": "MARDIN_407E373N_S",
-   "kind": "nisba",
-   "key": "athmar:925",
-   "text": "المارديني",
    "snippet": ""
   }
  ],
@@ -23435,15 +22994,6 @@
    "kind": "nisba",
    "key": "jawahir:1712",
    "text": "السمرقندي",
-   "snippet": ""
-  }
- ],
- "ats928": [
-  {
-   "place": "MAWSIL_431E363N_S",
-   "kind": "nisba",
-   "key": "athmar:928",
-   "text": "الموصلي",
    "snippet": ""
   }
  ],
@@ -23867,15 +23417,6 @@
    "snippet": "صاحبنا، الامام . تفقه بدمشق والقاهره علي جماعه. ودرس، واعاد، وتولي المشيخه بالخانقاه المظفريه الركنيه . واشتغل بالاصول علي الشيخ شمس الدين الاصفهاني. ومات سن"
   }
  ],
- "ats930": [
-  {
-   "place": "NASAF_658E388N_S",
-   "kind": "nisba",
-   "key": "athmar:930",
-   "text": "النسفي",
-   "snippet": ""
-  }
- ],
  "jw1757": [
   {
    "place": "MARW_621E376N_S",
@@ -24121,42 +23662,6 @@
    "kind": "nisba",
    "key": "jawahir:1763",
    "text": "النيسابوري",
-   "snippet": ""
-  }
- ],
- "ats933": [
-  {
-   "place": "HARA_621E343N_S",
-   "kind": "nisba",
-   "key": "athmar:933",
-   "text": "الهروي",
-   "snippet": ""
-  }
- ],
- "ats934": [
-  {
-   "place": "HAMDAN_441E155N_R",
-   "kind": "nisba",
-   "key": "athmar:934",
-   "text": "الهمداني",
-   "snippet": ""
-  }
- ],
- "ats935": [
-  {
-   "place": "HINDUWAN_497E302N_S",
-   "kind": "nisba",
-   "key": "athmar:935",
-   "text": "الهندواني",
-   "snippet": ""
-  }
- ],
- "ats936": [
-  {
-   "place": "HIT_428E336N_S",
-   "kind": "nisba",
-   "key": "athmar:936",
-   "text": "الهيتي",
    "snippet": ""
   }
  ],

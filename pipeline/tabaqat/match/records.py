@@ -16,6 +16,10 @@ BOOKS = ["ghuraf_v1", "ghuraf_v2", "qand", "jawahir", "tabaqat_saniyya", "taj_ta
          "athmar", "fawaid"]
 # Kitabın asıl (isimler) bölümü dışında kalan, çoğu kez tekrar olan maddeler: künye/nisbe/lakap
 _SECONDARY = re.compile(r"^(«?كتاب (الكنى|الأنساب|النساء)|«?باب الكنى|أبو |أم |ابن |فصل: فيمن)")
+# Şahıs biyografisi olmayan bölümler: el-Esmârü’l-ceniyye'nin nisbe sözlüğü ("الطّرسوسيّ: بفتح الطاء…
+# نسبة إلى مدينة من بلاد الروم. منها …"). Bu maddeler şahıs sayılmaz; nisbe açıklaması olarak
+# yer penceresinde gösterilir (export._nisba_notes).
+NOT_PERSON = re.compile(r"^«?كتاب الأنساب")
 # Metnin ilk cümlesinde tam adı veren kitaplar
 _LEAD_BOOKS = {"kataib", "taj_tarajim"}
 
@@ -58,6 +62,8 @@ def load_records(root: Path) -> list[Rec]:
         data = json.loads(path.read_text(encoding="utf-8"))
         numbered = any(e["number"] is not None for e in data)
         for e in data:
+            if NOT_PERSON.search(e["section"] or ""):
+                continue
             name = e["name"] or heading_name(e["heading_raw"])
             variants = [name]
             hn = heading_name(e["heading_raw"])
