@@ -1,0 +1,298 @@
+<title>مراجعة شبكة الشيوخ والتلاميذ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=IBM+Plex+Sans+Arabic:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* Layout: üst şerit (bölüm sekmesi + ilerleme + süzgeç) · sağda liste · solda seçili öğe · altta karar çubuğu.
+   Renk ve yazı, eşleştirme onay sayfasıyla aynı sistemden. */
+:root {
+  --bg: #f2f4f3; --panel: #ffffff; --fg: #1c2321; --muted: #5e6b67; --line: #d6dcda;
+  --accent: #0e6655; --accent-soft: #dcefe9;
+  --ok: #2e7d4f; --ok-soft: #dff1e6; --bad: #b3362b; --bad-soft: #f8e1de;
+  --unsure: #9a6a00; --unsure-soft: #f6ecd2;
+  --f-text: "Amiri", "Noto Naskh Arabic", "Traditional Arabic", serif;
+  --f-ui: "IBM Plex Sans Arabic", "Segoe UI", Tahoma, sans-serif;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #111615; --panel: #182020; --fg: #e3e9e7; --muted: #95a4a0; --line: #2b3735;
+  --accent: #52b8a0; --accent-soft: #1d3530;
+  --ok: #62c28a; --ok-soft: #1b3326; --bad: #ef7f73; --bad-soft: #3a211f;
+  --unsure: #e0b24d; --unsure-soft: #3a3020; color-scheme: dark; } }
+:root[data-theme="dark"] {
+  --bg: #111615; --panel: #182020; --fg: #e3e9e7; --muted: #95a4a0; --line: #2b3735;
+  --accent: #52b8a0; --accent-soft: #1d3530;
+  --ok: #62c28a; --ok-soft: #1b3326; --bad: #ef7f73; --bad-soft: #3a211f;
+  --unsure: #e0b24d; --unsure-soft: #3a3020; color-scheme: dark; }
+
+html, body { height: 100%; }
+body { background: var(--bg); color: var(--fg); font-family: var(--f-ui); font-size: 15px; }
+.app { display: grid; grid-template-rows: auto 1fr auto; height: 100%; }
+button { font: inherit; color: inherit; cursor: pointer; }
+button:focus-visible, input:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+.top { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 18px; padding: 12px 16px;
+  border-bottom: 1px solid var(--line); background: var(--panel); }
+.top h1 { font-family: var(--f-text); font-size: 1.4rem; margin: 0; font-weight: 700; }
+.tabs { display: flex; gap: 4px; border: 1px solid var(--line); border-radius: 8px; padding: 3px; }
+.tab { border: 0; background: transparent; border-radius: 6px; padding: 4px 12px; font-size: .9rem; }
+.tab[aria-selected="true"] { background: var(--accent); color: var(--panel); }
+.tab b { font-weight: 600; font-variant-numeric: tabular-nums; }
+.progress { display: flex; align-items: center; gap: 10px; flex: 1 1 220px; min-width: 0; }
+.bar { flex: 1; height: 8px; border-radius: 4px; background: var(--line); overflow: hidden; }
+.bar span { display: block; height: 100%; background: var(--accent); }
+.counts { font-size: .85rem; color: var(--muted); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.filters { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip { border: 1px solid var(--line); background: transparent; border-radius: 999px; padding: 3px 12px; font-size: .85rem; }
+.chip[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--panel); }
+#q { font: inherit; padding: 5px 10px; border: 1px solid var(--line); border-radius: 6px; background: var(--bg); color: var(--fg); width: 13rem; max-width: 100%; }
+.store { font-size: .8rem; color: var(--muted); }
+.store.off { color: var(--bad); }
+
+.body { display: grid; grid-template-columns: 20rem 1fr; min-height: 0; }
+.list { overflow-y: auto; border-inline-end: 1px solid var(--line); background: var(--panel); min-height: 0; }
+.row { display: grid; grid-template-columns: 10px 1fr auto; gap: 8px; align-items: start; width: 100%; text-align: start;
+  padding: 8px 12px; border: 0; border-bottom: 1px solid var(--line); background: transparent; }
+.row[aria-current="true"] { background: var(--accent-soft); }
+.dot { width: 10px; height: 10px; border-radius: 50%; margin-top: 7px; border: 1.5px solid var(--muted); }
+.dot.ok { background: var(--ok); border-color: var(--ok); }
+.dot.bad { background: var(--bad); border-color: var(--bad); }
+.dot.unsure { background: var(--unsure); border-color: var(--unsure); }
+.row .names { font-family: var(--f-text); font-size: 1.02rem; line-height: 1.45; min-width: 0; overflow-wrap: anywhere; }
+.row .names small { display: block; color: var(--muted); font-family: var(--f-ui); font-size: .78rem; }
+.row .sc { font-size: .75rem; color: var(--muted); font-variant-numeric: tabular-nums; padding-top: 4px; }
+.more { padding: 10px 12px; color: var(--muted); font-size: .85rem; }
+
+.main { overflow-y: auto; min-height: 0; padding-block: 16px; padding-inline: 16px; display: flex; flex-direction: column; gap: 14px; }
+.meta { display: flex; flex-wrap: wrap; gap: 6px 10px; align-items: center; font-size: .85rem; color: var(--muted); }
+.tag { border-radius: 4px; padding: 1px 8px; background: var(--accent-soft); color: var(--fg); }
+.tag.warn { background: var(--unsure-soft); }
+.card { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 14px 16px; display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.card h2 { font-family: var(--f-text); font-size: 1.35rem; line-height: 1.5; margin: 0; font-weight: 700; text-wrap: balance; }
+.label { font-size: .78rem; color: var(--muted); letter-spacing: .02em; }
+.cite { font-size: .88rem; color: var(--accent); font-weight: 500; }
+.snip { font-family: var(--f-text); font-size: 1.15rem; line-height: 1.9; overflow-wrap: anywhere; }
+.snip mark { background: var(--unsure-soft); color: inherit; border-radius: 3px; padding-inline: 2px; }
+.cands { display: flex; flex-direction: column; gap: 8px; }
+.cand { display: grid; grid-template-columns: 2rem 1fr; gap: 10px; align-items: start; text-align: start; width: 100%;
+  background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; }
+.cand[aria-pressed="true"] { border-color: var(--ok); background: var(--ok-soft); }
+.cand .k { font-variant-numeric: tabular-nums; color: var(--muted); font-size: .85rem; border: 1px solid var(--line); border-radius: 4px; text-align: center; padding: 1px 0; }
+.cand .n { font-family: var(--f-text); font-size: 1.12rem; line-height: 1.5; min-width: 0; overflow-wrap: anywhere; }
+.cand .n small { display: block; font-family: var(--f-ui); font-size: .8rem; color: var(--muted); }
+.edge { display: grid; grid-template-columns: 1fr auto 1fr; gap: 12px; align-items: center; }
+.edge .arrow { font-size: 1.3rem; color: var(--accent); }
+.ev { border-top: 1px dashed var(--line); padding-top: 8px; display: flex; flex-direction: column; gap: 4px; }
+.empty { margin: auto; text-align: center; color: var(--muted); max-width: 30rem; line-height: 1.8; }
+
+.foot { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; padding: 10px 16px;
+  padding-bottom: calc(10px + env(safe-area-inset-bottom, 0px)); border-top: 1px solid var(--line); background: var(--panel); }
+.btn { border: 1px solid var(--line); background: var(--bg); border-radius: 6px; padding: 7px 14px; font-weight: 500; }
+.btn.ok[aria-pressed="true"] { background: var(--ok); border-color: var(--ok); color: var(--panel); }
+.btn.bad[aria-pressed="true"] { background: var(--bad); border-color: var(--bad); color: var(--panel); }
+.btn.unsure[aria-pressed="true"] { background: var(--unsure); border-color: var(--unsure); color: var(--panel); }
+.btn kbd { font-family: var(--f-ui); font-size: .75rem; color: var(--muted); margin-inline-start: 4px; }
+.btn[aria-pressed="true"] kbd { color: inherit; }
+.spacer { flex: 1; }
+#msg { font-size: .85rem; color: var(--muted); }
+
+@media (max-width: 760px) {
+  .body { grid-template-columns: 1fr; grid-template-rows: 11rem 1fr; }
+  .list { border-inline-end: 0; border-bottom: 1px solid var(--line); }
+  .edge { grid-template-columns: 1fr; }
+  .edge .arrow { transform: rotate(-90deg); justify-self: start; }
+}
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+
+<div class="app">
+  <header class="top">
+    <h1>شبكة الشيوخ والتلاميذ</h1>
+    <div class="tabs" role="tablist">
+      <button class="tab" role="tab" data-t="amb" aria-selected="true">أسماء ملتبسة <b id="nAmb"></b></button>
+      <button class="tab" role="tab" data-t="edges" aria-selected="false">الروابط <b id="nEdge"></b></button>
+    </div>
+    <div class="progress"><div class="bar"><span id="bar"></span></div><span class="counts" id="counts"></span></div>
+    <div class="filters">
+      <button class="chip" data-f="open" aria-pressed="true">غير محسوم</button>
+      <button class="chip" data-f="done" aria-pressed="false">محسوم</button>
+      <button class="chip" data-f="all" aria-pressed="false">الكل</button>
+    </div>
+    <input id="q" type="search" placeholder="بحث في الأسماء" aria-label="بحث">
+    <span class="store" id="store">جارٍ الاتصال بقاعدة القرارات…</span>
+  </header>
+  <div class="body">
+    <nav class="list" id="list" aria-label="القائمة"></nav>
+    <main class="main" id="main"><div class="empty">جارٍ تحميل البيانات…</div></main>
+  </div>
+  <footer class="foot" id="foot">
+    <span id="btns" style="display:contents"></span>
+    <span class="spacer"></span>
+    <span id="msg"></span>
+    <button class="btn" id="prev">السابق</button>
+    <button class="btn" id="next">التالي</button>
+  </footer>
+</div>
+
+<script>
+(() => {
+  const $ = (id) => document.getElementById(id);
+  const SHARDS = 16;
+  const shardOf = (id) => { let h = 0; for (const c of id) h = (h * 31 + c.codePointAt(0)) >>> 0; return "s" + (h % SHARDS); };
+  const esc = (s) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
+  const ROLE = { teacher: "شيخ صاحب الترجمة", student: "تلميذ صاحب الترجمة", chain: "حلقة في سند الأخذ" };
+  const REL = { fiqh: "تفقّه", took: "أخذ", hadith: "سماع ورواية", read: "قراءة", companion: "صحبة" };
+  const KIN = { father: "أبوه", son: "ابنه", uncle: "عمّه", grandfather: "جدّه", brother: "أخوه", grandson: "حفيده", nephew: "ابن أخيه" };
+  let data = null, db = null, canWrite = true, decisions = {};
+  let tab = "amb", filter = "open", query = "", view = [], cur = 0;
+  const norm = (s) => String(s || "").replace(/[ً-ْـ]/g, "").replace(/[أإآ]/g, "ا").replace(/ى/g, "ي").replace(/ة/g, "ه");
+  const P = (pid) => (data.people[pid] || ["?", "", 0, []]);
+
+  function items() { return tab === "amb" ? data.amb : data.edges; }
+  function state(it) { const d = decisions[it.id]; return d ? d.k : null; }
+  function searchText(it) {
+    return tab === "amb" ? norm(it.text + " " + P(it.subj)[0] + " " + it.cands.map((c) => P(c)[0]).join(" "))
+                         : norm(P(it.t)[0] + " " + P(it.s)[0]);
+  }
+  function computeView(keepId) {
+    const q = norm(query.trim());
+    view = items().filter((it) => {
+      const s = state(it);
+      if (filter === "open" && s && s !== "unsure") return false;
+      if (filter === "done" && !s) return false;
+      return !q || searchText(it).includes(q);
+    });
+    if (keepId) { const i = view.findIndex((x) => x.id === keepId); cur = i >= 0 ? i : Math.min(cur, view.length - 1); }
+    cur = Math.max(0, Math.min(cur, view.length - 1));
+  }
+  function dotClass(k) { return k === "pick" || k === "ok" ? "ok" : k === "reject" || k === "none" ? "bad" : k === "unsure" ? "unsure" : ""; }
+
+  function renderList() {
+    const max = 300, start = Math.max(0, Math.min(cur - 50, view.length - max));
+    const rows = view.slice(start, start + max).map((it, j) => {
+      const i = start + j;
+      const head = tab === "amb"
+        ? `${esc(it.text)}<small>${esc(ROLE[it.role])} · ${esc(P(it.subj)[0].slice(0, 40))}</small>`
+        : `${esc(P(it.t)[0].slice(0, 36))}<small>← ${esc(P(it.s)[0].slice(0, 40))}</small>`;
+      const sc = tab === "amb" ? `${it.cands.length} مرشح` : (it.weak ? "ضعيف" : `${it.n} دليل`);
+      return `<button class="row" data-i="${i}" aria-current="${i === cur}"><span class="dot ${dotClass(state(it))}"></span><span class="names">${head}</span><span class="sc">${sc}</span></button>`;
+    }).join("");
+    $("list").innerHTML = rows + (view.length > start + max ? `<div class="more">و${view.length - start - max} أخرى…</div>` : "") ||
+      `<div class="more">لا شيء في هذا العرض.</div>`;
+    $("list").querySelectorAll(".row").forEach((b) => b.addEventListener("click", () => { cur = +b.dataset.i; render(); }));
+    const cu = $("list").querySelector('[aria-current="true"]'); if (cu) cu.scrollIntoView({ block: "nearest" });
+  }
+
+  function personBlock(pid) {
+    const [name, death, n, cites] = P(pid);
+    return `<span class="n">${esc(name)}<small>${death ? esc(death) + " · " : ""}${n} ${n > 1 ? "مصادر" : "مصدر"} — ${esc(cites.join(" · "))}</small></span>`;
+  }
+  function highlight(snip, text) {
+    const s = esc(snip), t = esc(text);
+    return t && s.includes(t) ? s.replace(t, `<mark>${t}</mark>`) : s;
+  }
+
+  function renderMain() {
+    const it = view[cur];
+    if (!it) { $("main").innerHTML = `<div class="empty">${filter === "open" ? "حُسم كل ما في هذا القسم." : "لا شيء هنا."}</div>`; $("btns").innerHTML = ""; return; }
+    const d = decisions[it.id];
+    if (tab === "amb") {
+      $("main").innerHTML = `
+        <div class="meta"><span class="tag">${esc(ROLE[it.role])}</span><span class="tag">${esc(REL[it.rel] || it.rel)}</span>
+          ${it.kin ? `<span class="tag warn">${esc(KIN[it.kin] || it.kin)}</span>` : ""}
+          ${it.f > 1 ? `<span>ورد هذا الاسم ${it.f} مرات</span>` : ""}</div>
+        <section class="card"><span class="label">صاحب الترجمة</span><h2>${esc(P(it.subj)[0])}</h2>
+          <span class="cite">${esc(it.cite)}</span>
+          <div class="snip">… ${highlight(it.snippet, it.text)} …</div></section>
+        <span class="label">من المقصود بـ«${esc(it.text)}»؟</span>
+        <div class="cands">${it.cands.map((c, i) => `<button class="cand" data-pid="${esc(c)}" aria-pressed="${d && d.k === "pick" && d.pid === c}"><span class="k">${i + 1}</span>${personBlock(c)}</button>`).join("")}</div>`;
+      $("main").querySelectorAll(".cand").forEach((b) => b.addEventListener("click", () => decide("pick", b.dataset.pid)));
+      $("btns").innerHTML = `<button class="btn bad" data-k="none" aria-pressed="${d?.k === "none"}">ليس أحدهم<kbd>0</kbd></button>
+        <button class="btn unsure" data-k="unsure" aria-pressed="${d?.k === "unsure"}">غير متأكد<kbd>3</kbd></button>`;
+    } else {
+      $("main").innerHTML = `
+        <div class="meta">${it.rels.map((r) => `<span class="tag">${esc(REL[r] || r)}</span>`).join("")}
+          ${it.weak ? `<span class="tag warn">تعيين ضعيف: بالنسبة أو الشهرة وحدها</span>` : ""}<span>${it.n} ${it.n > 1 ? "أدلة" : "دليل"}</span></div>
+        <section class="card"><div class="edge">
+          <div><span class="label">الشيخ</span><br>${personBlock(it.t)}</div><span class="arrow" aria-hidden="true">←</span>
+          <div><span class="label">التلميذ</span><br>${personBlock(it.s)}</div></div></section>
+        ${it.ev.map((e) => `<section class="card ev"><span class="cite">${esc(e.cite)}</span>
+          <span class="label">${esc(ROLE[e.via] || e.via)} · ${esc(REL[e.rel] || e.rel)} · «${esc(e.text)}»</span>
+          <div class="snip">… ${highlight(e.snippet, e.text)} …</div></section>`).join("")}`;
+      $("btns").innerHTML = `<button class="btn ok" data-k="ok" aria-pressed="${d?.k === "ok"}">صحيحة<kbd>1</kbd></button>
+        <button class="btn bad" data-k="reject" aria-pressed="${d?.k === "reject"}">خطأ<kbd>2</kbd></button>
+        <button class="btn unsure" data-k="unsure" aria-pressed="${d?.k === "unsure"}">غير متأكد<kbd>3</kbd></button>`;
+    }
+    $("btns").querySelectorAll(".btn").forEach((b) => b.addEventListener("click", () => decide(b.dataset.k)));
+  }
+
+  function renderTop() {
+    const all = items(), done = all.filter((x) => state(x) && state(x) !== "unsure").length;
+    $("bar").style.width = (all.length ? (100 * done / all.length) : 0) + "%";
+    $("counts").textContent = `${done} / ${all.length} محسوم · ${view.length} في العرض`;
+    $("nAmb").textContent = data.amb.length; $("nEdge").textContent = data.edges.length;
+  }
+  function render() { renderTop(); renderList(); renderMain(); }
+
+  async function decide(k, pid) {
+    const it = view[cur]; if (!it || !canWrite) return;
+    const prev = decisions[it.id];
+    const same = prev && prev.k === k && (k !== "pick" || prev.pid === pid);
+    const val = same ? null : (k === "pick" ? { k, pid, t: Date.now() } : { k, t: Date.now() });
+    if (val) decisions[it.id] = val; else delete decisions[it.id];
+    const id = it.id;
+    if (val && filter === "open" && k !== "unsure") { computeView(); cur = Math.min(cur, view.length - 1); }
+    else computeView(id);
+    render();
+    if (!db) { $("msg").textContent = "القرار غير محفوظ: قاعدة القرارات غير متاحة."; return; }
+    const ref = db.doc("net/" + shardOf(id));
+    const body = { d: { [id]: val || { k: null, t: Date.now() } } };
+    try { await ref.update(body); $("msg").textContent = "حُفظ."; }
+    catch (e) {
+      try {
+        const snap = await ref.get();
+        if (!snap.exists) { await ref.set(body); $("msg").textContent = "حُفظ."; return; }
+        canWrite = false; $("msg").textContent = "لا تملك صلاحية تسجيل القرارات في هذه الصفحة.";
+      } catch { $("msg").textContent = "تعذّر الحفظ؛ حاول مرة أخرى."; }
+    }
+  }
+
+  document.querySelectorAll(".tab").forEach((t) => t.addEventListener("click", () => {
+    tab = t.dataset.t; document.querySelectorAll(".tab").forEach((x) => x.setAttribute("aria-selected", String(x === t)));
+    cur = 0; computeView(); render();
+  }));
+  document.querySelectorAll(".chip").forEach((c) => c.addEventListener("click", () => {
+    filter = c.dataset.f; document.querySelectorAll(".chip").forEach((x) => x.setAttribute("aria-pressed", String(x === c)));
+    cur = 0; computeView(); render();
+  }));
+  $("q").addEventListener("input", (e) => { query = e.target.value; cur = 0; computeView(); render(); });
+  $("prev").addEventListener("click", () => { if (cur > 0) { cur--; render(); } });
+  $("next").addEventListener("click", () => { if (cur < view.length - 1) { cur++; render(); } });
+  document.addEventListener("keydown", (e) => {
+    if (!data || e.target.tagName === "INPUT" || e.metaKey || e.ctrlKey || e.altKey) return;
+    const it = view[cur];
+    if (tab === "amb" && it && /^[1-9]$/.test(e.key) && it.cands[+e.key - 1]) decide("pick", it.cands[+e.key - 1]);
+    else if (tab === "amb" && e.key === "0") decide("none");
+    else if (tab === "edges" && e.key === "1") decide("ok");
+    else if (tab === "edges" && e.key === "2") decide("reject");
+    else if (e.key === "3") decide("unsure");
+    else if (e.key === "ArrowLeft" || e.key === "j") $("next").click();
+    else if (e.key === "ArrowRight" || e.key === "k") $("prev").click();
+  });
+
+  fetch("data.json").then((r) => r.json()).then((d) => { data = d; computeView(); render(); })
+    .catch(() => { $("main").innerHTML = `<div class="empty">تعذّر تحميل بيانات الشبكة.</div>`; });
+
+  (async () => {
+    try { db = window.claude ? await window.claude.use("db") : null; } catch { db = null; }
+    const st = $("store");
+    if (!db) { st.textContent = "قاعدة القرارات غير متاحة: القرارات لن تُحفظ."; st.classList.add("off"); return; }
+    st.textContent = "القرارات تُحفظ تلقائيًا.";
+    db.collection("net").onSnapshot((snap) => {
+      const next = {};
+      for (const doc of snap.docs) for (const [id, v] of Object.entries((doc.data() || {}).d || {})) if (v && v.k) next[id] = v;
+      decisions = next;
+      if (data) { const id = view[cur] && view[cur].id; computeView(id); render(); }
+    }, () => { st.textContent = "انقطع الاتصال بقاعدة القرارات؛ أعد تحميل الصفحة."; st.classList.add("off"); });
+  })();
+})();
+</script>

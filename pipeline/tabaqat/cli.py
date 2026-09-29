@@ -52,7 +52,7 @@ def parse_book(cfg: dict):
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("cmd", choices=["parse", "report", "clean", "index", "match",
-                                       "apply-review", "network"])
+                                       "apply-review", "network", "apply-network"])
     ap.add_argument("book", nargs="?")
     ap.add_argument("--out", default=str(ROOT / "data" / "entries"))
     a = ap.parse_args()
@@ -66,7 +66,13 @@ def main() -> None:
         return
     if a.cmd == "network":  # hoca–talebe ağı → data/relations.json
         from .network.build import build
+        from .network.review import write_review_data
         print(build(ROOT))
+        print(write_review_data(ROOT))
+        return
+    if a.cmd == "apply-network":  # ağ onay sayfasının kararları → review/relations.yml
+        from .network.review import apply_decisions as apply_net
+        print(apply_net(ROOT, Path(a.book)))
         return
     cfg = load_book(a.book)
     if a.cmd == "index":  # Word fihristinden data/index/*.json

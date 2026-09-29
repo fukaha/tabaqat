@@ -51,3 +51,26 @@ Sayfadaki kararlar `{"a|b": "same" | "different"}` biçiminde bir JSON dosyasın
 ```
 python -m tabaqat.cli apply-review karar.json
 ```
+
+## Hoca–talebe ağı
+
+```
+python -m tabaqat.cli network        # → data/relations.json, data/relations_unresolved.json,
+                                     #   site/network-review/data.json
+python -m tabaqat.cli apply-network kararlar.json   # onay sayfası kararları → review/relations.yml
+```
+
+- **Çıkarım** (`network/extract.py`): madde metninde "تفقه على / تفقه عليه", "أخذ عن / أخذ عنه",
+  "روى عن / روى عنه", "سمع من / سمع منه", "قرأ على / قرأ عليه", "تخرج", "صحب / لازم",
+  "من أصحاب", "أستاذ" kalıpları. Ad listeleri ("على A، وB")
+  ayrılır. Ad olmayan ilk parçada liste biter. Akrabalık atıfları ("على أبيه", "ابنه أحمد") ve
+  Fevâid/Ketâib'in "أخذ عن A عن B عن C" zincirleri ayrıca işlenir.
+- **Çözüm** (`network/resolve.py`): Adaylar ism, künye, nisbe, lakap ve şöhret başlığıyla
+  ("أبو علي النسفي", "فخر الدين قاضي خان") toplanır. Sonra nesep uyumuyla puanlanır ve vefat
+  yıllarıyla süzülür. Yalnız ism ya da yalnız künye hiçbir zaman yetmez. Yalnız nisbe ancak tek ve
+  çok kaynaklı bir adayda kabul edilir. Vefatı bilinmeyenlere ağdan tahmini vefat verilir
+  (ikinci tur).
+- **Elle eşleme**: `review/aliases.yml` (أبو حنيفة، أبو يوسف، محمد [yalnız zincirde]، زفر…).
+- **İnsan kararları**: `review/relations.yml` üç liste tutar. `choose`, belirsiz atıf için seçilen
+  şahıstır. `reject`, yanlış bağdır. `ok`, doğrulanmış bağdır.
+- Her kenar kanıtlarını taşır: madde, ilişki türü, atıf metni, cümle.
