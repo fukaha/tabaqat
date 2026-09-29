@@ -203,7 +203,11 @@ def parse(path: str, book_id: str, start_after_heading: str | None = None,
                 if kind == "h":
                     if not started:
                         started = bool(start_re and start_re.search(clean))
-                        if not (started and unnum_re and unnum_re.search(clean)):
+                        if not started:
+                            continue
+                        # Başlangıç başlığı madde ya da bölüm açıyorsa aşağıda işlenir
+                        if not ((unnum_re and unnum_re.search(clean)) or
+                                (section_re and section_re.search(clean))):
                             continue
                     if not m:
                         if stop_re and stop_re.search(clean):

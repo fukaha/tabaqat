@@ -1,0 +1,13 @@
+book_id: fawaid
+title: الفوائد البهية في تراجم الحنفية
+author: محمد عبد الحي اللكنوي
+author_death_h: 1304
+parser: turath_epub
+volumes: 1
+edition: مطبعة السعادة، مصر ١٣٢٤ هـ، بتصحيح محمد بدر الدين النعساني (وبهامشه «التعليقات السنية» للمؤلف)
+source: sources/fawaid/raw/fawaid.epub
+# Maddeler numarasız: harf bölümlerinde her başlık ("(إبراهيم بن إسماعيل) بن أحمد ...") bir maddedir.
+start_after_heading: "^[([]?حرف الألف"
+section_heading: "^[([]?حرف "
+entry_sections: "^[([]?حرف "
+stop_at_heading: "^الخاتمة"
