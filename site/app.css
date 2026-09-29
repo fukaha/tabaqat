@@ -650,3 +650,38 @@ kbd { font: 600 .8rem/1 "Noto Serif", serif; border: 1px solid var(--line); bord
 .mpop .proute span { color: var(--gold); }
 .mpop .arn { margin: 0; font-family: "Amiri", "Noto Naskh Arabic", serif; color: var(--muted); }
 .mpop .plinks { margin: .4rem 0 0; font-size: .9rem; }
+
+/* şahıs sayfası: solda hoca–talebe bilgi kartı, sağda harita; altında ilişki ağı, en altta metinler */
+.pgrid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr); gap: 1.5rem; align-items: start; margin-top: 1.5rem; }
+@media (max-width: 860px) { .pgrid { grid-template-columns: minmax(0, 1fr); } }
+.pgrid h2, #pnetsec h2 { display: flex; align-items: baseline; gap: .5rem; flex-wrap: wrap; }
+.pgrid h2 .btn.small, #pnetsec h2 .btn.small { margin-inline-start: auto; font-family: var(--f-body); font-size: .8rem; }
+.pcard { background: var(--paper); border: 1px solid var(--line); border-top: 3px solid var(--gold); border-radius: 12px; box-shadow: var(--shadow); padding: .4rem 1.1rem .8rem; min-width: 0; }
+.pcard section + section { margin-top: .6rem; }
+.pcard h2 { font-size: 1.15rem; margin: .6rem 0 .2rem; padding-bottom: .3rem; border-bottom: 1px solid var(--line); }
+.pcard h3 { font-size: .92rem; color: var(--muted); margin: .8rem 0 .2rem; font-weight: 600; }
+.pcard .rel > li { font-size: .9rem; }
+.rlist { list-style: none; padding: 0; margin: 0; }
+.rrow { display: flex; flex-wrap: wrap; align-items: center; gap: .15rem .4rem; padding: .45rem 0; border-bottom: 1px dotted var(--line); }
+.rrow:last-child { border-bottom: 0; }
+.rrow .rtop { flex-basis: 100%; line-height: 1.45; }
+.rrow .nm { font-weight: 600; overflow-wrap: anywhere; }
+.rrow .d { color: var(--muted); font-size: .8rem; }
+.rrow .rtags { display: flex; flex-wrap: wrap; gap: .25rem; align-items: center; }
+.rrow .tag { font-size: .72rem; }
+.rrow .silsile-lnk { margin-inline-start: auto; font-size: .8rem; }
+.rrow details.ev summary { font-size: .8rem; }
+.rrow details.ev summary::before { content: "▸ "; font-size: .7em; }
+.rrow details.ev[open] { flex-basis: 100%; }
+.rrow details.ev[open] summary::before { content: "▾ "; }
+.rrow details.ev p { font-size: .86rem; margin: .3rem 0; line-height: 1.7; }
+.rrow details.ev cite { display: block; font-style: normal; color: var(--muted); font-size: .76rem; }
+.rrow.weak .nm { font-weight: 500; }
+.rrow.salaf .nm { color: var(--muted); }
+.pmapcol { position: sticky; top: 1rem; min-width: 0; }
+.pmapcol h2 { margin-top: .6rem; }
+.pmapcol .mapwrap { height: clamp(300px, 55vh, 520px); }
+.pmapcol .places { margin-top: .7rem; font-size: .92rem; }
+@media (max-width: 860px) { .pmapcol { position: static; } .pmapcol .mapwrap { height: 320px; } }
+#pnetsec { margin-top: 2rem; }
+#pnet .treewrap { max-height: 80vh; }

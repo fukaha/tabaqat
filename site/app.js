@@ -564,13 +564,13 @@ function relItem(r) {
     if (tt && s.includes(tt)) s = s.replace(tt, `<mark>${tt}</mark>`);
     return `<p><span lang="ar" dir="rtl">…${s}…</span><cite>${evCite(cite)}</cite></p>`;
   }).join("");
-  return `<li class="rcard${r.weak ? " weak" : ""}${p.salaf ? " salaf" : ""}">
-      <div class="rtop">${plink(r.id, "nm")}<span class="d num">${deathTxt(p)}</span></div>
-      <div class="rtags">${p.salaf ? `<span class="tag weak">${T("من السلف", "selef")}</span>` : ""}${r.rels.map(x => `<span class="tag">${REL[x] || esc(x)}</span>`).join("")}
+  return `<li class="rrow${r.weak ? " weak" : ""}${p.salaf ? " salaf" : ""}">
+      <div class="rtop">${plink(r.id, "nm")} <span class="d num">${deathTxt(p)}</span></div>
+      <span class="rtags">${p.salaf ? `<span class="tag weak">${T("من السلف", "selef")}</span>` : ""}${r.rels.map(x => `<span class="tag">${REL[x] || esc(x)}</span>`).join("")}
         ${r.weak ? `<span class="tag weak" title="${T("ربط بالنسبة أو الشهرة وحدها", "Yalnız nisbe ya da şöhretle eşleştirildi")}">${T("ترجيح", "tercih")}</span>` : ""}
-        ${r.n > 1 ? `<span class="d num">${AR(r.n)} ${T("مواضع", "atıf")}</span>` : ""}</div>
-      <details class="ev"><summary>${T("الشاهد", "Kanıt")}</summary>${ev}</details>
-      ${!p.salaf && P.has(r.id) && (P.get(r.id).nt || P.get(r.id).ns) ? `<a class="silsile-lnk" href="#/net/${esc(r.id)}">${T("سلسلته", "silsilesi")}</a>` : ""}</li>`;
+        ${r.n > 1 ? `<span class="d num">${AR(r.n)} ${T("مواضع", "atıf")}</span>` : ""}</span>
+      ${!p.salaf && P.has(r.id) && (P.get(r.id).nt || P.get(r.id).ns) ? `<a class="silsile-lnk" href="#/net/${esc(r.id)}">${T("سلسلته", "silsilesi")}</a>` : `<span class="silsile-lnk"></span>`}
+      <details class="ev"><summary>${T("الشاهد", "Kanıt")}</summary>${ev}</details></li>`;
 }
 // kanıtlardaki kaynak metni ("الجواهر المضية 3/122 (رقم 1270)") → İSNAD kısa atıf
 const evCite = cite => { const pre = String(cite).replace(/\s*[\d٠-٩].*$/, ""); const b = pre && Object.entries(BOOKS).find(([, v]) => v.title.startsWith(pre));
@@ -605,24 +605,26 @@ async function viewPerson(view, id) {
         ${d.places.length ? `<a class="btn" href="#/map/@${id}">${T("بلدانه على الخريطة", "Haritada yerleri")}</a>` : ""}
         <button type="button" class="btn" data-go="texts">${T("نصوص الترجمة", "Biyografi metinleri")}</button>${shareBtn()}</div>
     </div>
-    <div class="rels">
-      <section><h2>${T("شيوخه", "Hocaları")}<span class="c num">${AR(d.teachers.length)}</span></h2>
-        ${d.teachers.length ? `<ul class="rgrid">${d.teachers.map(r => relItem(r)).join("")}</ul>` : `<p class="empty">${T("لم يُذكر له شيخ من المترجمين.", "Biyografisi bulunanlardan bir hocası zikredilmemiş.")}</p>`}
-        ${extT.length ? `<h3 style="margin-top:1rem;font-size:1.05rem">${T("شيوخ من غير المترجمين في هذه الكتب", "Bu kitaplarda biyografisi olmayan hocaları")}</h3><ul class="rel">${extList(extT)}</ul>` : ""}
-      </section>
-      <section><h2>${T("تلاميذه", "Talebeleri")}<span class="c num">${AR(d.students.length)}</span></h2>
-        ${d.students.length ? `<ul class="rgrid">${d.students.map(r => relItem(r)).join("")}</ul>` : `<p class="empty">${T("لم يُذكر له تلميذ من المترجمين.", "Biyografisi bulunanlardan bir talebesi zikredilmemiş.")}</p>`}
-        ${extS.length ? `<h3 style="margin-top:1rem;font-size:1.05rem">${T("رواة عنه من غير المترجمين", "Ondan rivayet eden diğerleri")}</h3><ul class="rel">${extList(extS)}</ul>` : ""}
+    <div class="pgrid">
+      <div class="pcard">
+        <section><h2>${T("شيوخه", "Hocaları")}<span class="c num">${AR(d.teachers.length)}</span></h2>
+          ${d.teachers.length ? `<ul class="rlist">${d.teachers.map(r => relItem(r)).join("")}</ul>` : `<p class="empty">${T("لم يُذكر له شيخ من المترجمين.", "Biyografisi bulunanlardan bir hocası zikredilmemiş.")}</p>`}
+          ${extT.length ? `<h3>${T("شيوخ من غير المترجمين في هذه الكتب", "Bu kitaplarda biyografisi olmayan hocaları")}</h3><ul class="rel">${extList(extT)}</ul>` : ""}
+        </section>
+        <section><h2>${T("تلاميذه", "Talebeleri")}<span class="c num">${AR(d.students.length)}</span></h2>
+          ${d.students.length ? `<ul class="rlist">${d.students.map(r => relItem(r)).join("")}</ul>` : `<p class="empty">${T("لم يُذكر له تلميذ من المترجمين.", "Biyografisi bulunanlardan bir talebesi zikredilmemiş.")}</p>`}
+          ${extS.length ? `<h3>${T("رواة عنه من غير المترجمين", "Ondan rivayet eden diğerleri")}</h3><ul class="rel">${extList(extS)}</ul>` : ""}
+        </section>
+      </div>
+      <section id="psec" class="pmapcol"><h2>${T("البلدان", "Şehirler")}<span class="c num">${AR(new Set(d.places.map(x => x[0])).size)}</span>
+          ${d.places.length ? `<a class="btn small" href="#/map/@${id}">${T("الخريطة الكبيرة", "Büyük harita")}</a>` : ""}</h2>
+        ${d.places.length ? `<div class="mapwrap" id="pmap"></div><ul class="places" id="plist"></ul>`
+          : `<p class="empty">${T("لم يُستخرج له بلد.", "Şehir tespit edilemedi.")}</p>`}
       </section>
     </div>
-    <section id="psec"><h2>${T("البلدان", "Şehirler")}<span class="c num">${AR(new Set(d.places.map(x => x[0])).size)}</span></h2>
-      ${d.places.length ? `<div class="grid2"><ul class="places" id="plist"></ul><div class="mapwrap mini" id="pmap"></div></div>
-        <p class="legend">${routeLegend()}</p>`
-        : `<p class="empty">${T("لم يُستخرج له بلد.", "Şehir tespit edilemedi.")}</p>`}
-    </section>
+    ${p.nt || p.ns ? `<section id="pnetsec"><h2>${T("شبكة صلاته", "İlişki ağı")}<a class="btn small" href="#/net/${id}">${T("في السلسلة", "Silsilede aç")}</a></h2><div id="pnet"></div></section>` : ""}
     <section id="texts"><h2>${T("نصوص الترجمة", "Biyografi metinleri")}<span class="c num">${AR(d.sources.length)}</span>
         ${d.sources.length > 1 ? `<button type="button" class="btn small" id="openall">${T("فتح الكل", "Tümünü aç")}</button>` : ""}</h2>
-      <p class="legend">${T("نص الترجمة في كل كتاب كما هو في الطبعة المعتمدة، دون الحواشي. اختر الكتب لتُفتح نصوصها متجاورة.", "Her kitaptaki biyografi metni, esas alınan neşirdeki hâliyle (Arapça; dipnotsuz, tarama kaynaklı boşluk ve satır kaymaları giderilmiş). Kitapları seçin; metinler yan yana açılır.")}</p>
       <div class="tchips">${d.sources.map(([b, cite], k) => `<button type="button" class="chip" data-k="${k}" aria-pressed="false">${esc(BOOKS[b]?.cite_tr ? (LANG === "tr" ? BOOKS[b].cite_tr_s : BOOKS[b].cite_ar_s).split(/[,،] /).slice(1).join(", ") : cite.replace(/\s*[\d٠-٩].*$/, ""))}<span class="num"> ${esc(citeTail(cite))}</span></button>`).join("")}</div>
       <div class="tframes">${d.sources.map(([b, cite, h], k) => `<article class="tframe" data-k="${k}" hidden>
         <header><div><b class="isnad">${isnadHtml(b, cite)}</b>
@@ -630,6 +632,8 @@ async function viewPerson(view, id) {
         <div class="body" lang="ar" dir="rtl"><p class="empty">${T("جارٍ التحميل…", "Yükleniyor…")}</p></div></article>`).join("")}</div>
     </section>`;
   setupTexts(id, d);
+  if (p.nt || p.ns) graph().then(g => { const i = g.byId.get(id), host = $("#pnet");
+    if (i !== undefined && host && location.hash.startsWith(`#/p/${id}`)) egoNet(host, g, i, 1, false); }).catch(() => {});
   if (!d.places.length) return;
   const PL = await placesById();
   $("#plist").innerHTML = KIND_ORDER.filter(k => byKind[k]).map(k => `<li><span class="k">${KIND[k]}</span>
@@ -760,8 +764,6 @@ function placeSeq(items, PL) {
   KIND_ORDER.forEach(k => items.forEach(([pl, kk]) => { const x = PL.get(pl); if (kk === k && x && x.type !== "regions" && seq[seq.length - 1] !== x) seq.push(x); }));
   return seq;
 }
-const routeLegend = () => T("يصل الخطّ البلدانَ على ترتيب ورودها في الترجمة (المولد والنسبة أولًا، والوفاة والمدفن آخرًا)، وهو تقريب لا تأريخ. الخط المتصل يسير على طرق المقدسي من مشروع الثريا، والمتقطع خط مستقيم حيث لا طريق معروف.",
-  "Çizgi şehirleri biyografideki sırasıyla birleştirir (önce doğum ve nisbe, sonra vefat ve defin); bir yaklaşımdır, kronoloji değildir. Düz çizgi el-Süreyyâ’daki Mukaddesî yol ağını izler; kesikli çizgi, bilinen bir yol bulunmayan yerde kuş uçuşudur.");
 // el-Süreyyâ yol ağı (pipeline: geo/roads.py): e = güzergâh noktaları (×100), r = "A|B" → işaretli kenarlar
 let ROADS;
 const roads = async () => ROADS || (ROADS = await load("roads.json").catch(() => ({ e: [], r: {} })));
@@ -968,7 +970,7 @@ async function viewMap(view, sel) {
       ${seq.length > 1 ? `<p class="proute">${seq.map(pl => `<a href="#/map/${esc(pl.id)}" data-pl="${esc(pl.id)}">${esc(plName(pl))}</a>`).join(" <span aria-hidden=\"true\">" + (LANG === "ar" ? "←" : "→") + "</span> ")}</p>` : ""}
       <ul>${KIND_ORDER.filter(k => byKind[k]).map(k => `<li><span class="k">${KIND[k]}</span><span>${[...byKind[k]].map(id => `<a href="#/map/${esc(id)}" data-pl="${esc(id)}">${esc(plName(PL.get(id)))}</a>`).join(T("، ", ", "))}</span></li>`).join("")}</ul>
       <p class="plinks"><a href="#/p/${esc(p.id)}">${T("الترجمة", "Biyografi")}</a>${p.nt || p.ns ? ` · <a href="#/net/${esc(p.id)}">${T("السلسلة", "Silsile")}</a>` : ""}${p.d ? ` · <a href="#/zaman/${esc(p.id)}">${T("الزمن", "Zaman")}</a>` : ""}</p>
-      <p class="legend">${routeLegend()}</p>`;
+`;
     pop.hidden = false; at = [12, 12]; place();
     closeBtn();
   };
@@ -1846,7 +1848,7 @@ function viewAbout(view) {
   const use = tr ? [
     ["Arama", "Ana sayfadaki kutuya bir âlimin adını, künyesini, nisbesini ya da lakabını Türkçe veya Arapça yazın: “Serahsî”, “Ebû Hafs el-Kebîr”, “السرخسي”. Arama harekeye, uzatmaya, hemzeye ve Türkçe şapkalı harflere duyarsızdır; “serahsi” de “Serahsî”yi bulur. Sonuçlar ↑/↓ ile gezilir, Enter ile açılır."],
     ["Detaylı arama", "Ad ile birlikte vefat yüzyılı aralığı (hicrî), kitap, şehir ve “silsilede hocası ya da talebesi olanlar” süzgeçleri birlikte kullanılabilir. Örneğin yalnız el-Kand’da geçen ve Buhara ile ilişkili V. yüzyıl âlimleri tek sorguyla listelenir."],
-    ["Âlim sayfası", "Başta DİA yazımıyla tam ad, Arapça asıl ad ve vefat tarihi (hicrî/milâdî) yer alır. “Kaynaklar” bölümünde âlimin geçtiği her kitap cilt, sayfa ve madde numarasıyla verilir; atıflar İSNAD 2. edisyon dipnot biçimindedir. Ardından hocalar ve talebeler bağ türüyle (fıkıh, hadis/rivayet, kıraat, sohbet…) sıralanır. Her bağın “Kanıt” düğmesi, bağın çıkarıldığı cümleyi kaynağıyla gösterir. Mini harita âlimin doğduğu, yaşadığı, gittiği ve vefat ettiği yerleri; sayfanın sonu ise her kitaptaki biyografi metnini muhakkik dipnotlarıyla tam olarak verir."],
+    ["Âlim sayfası", "Başta DİA yazımıyla tam ad, Arapça asıl ad ve vefat tarihi (hicrî/milâdî) yer alır. “Kaynaklar” bölümünde âlimin geçtiği her kitap cilt, sayfa ve madde numarasıyla verilir; atıflar İSNAD 2. edisyon dipnot biçimindedir. Ardından solda bir bilgi kartında hocalar ve talebeler bağ türüyle (fıkıh, hadis/rivayet, kıraat, sohbet…) sıralanır; her bağın “Kanıt” düğmesi bağın çıkarıldığı cümleyi kaynağıyla gösterir, “silsilesi” o kişinin silsilesini açar. Sağdaki harita âlimin doğduğu, yaşadığı, gittiği ve vefat ettiği yerleri gösterir. Haritadaki çizgi şehirleri biyografideki sırasıyla birleştirir (önce doğum ve nisbe, sonra vefat ve defin); bir yaklaşımdır, kronoloji değildir. Düz çizgi el-Süreyyâ’daki Mukaddesî yol ağını izler; kesikli çizgi, bilinen bir yol bulunmayan yerde kuş uçuşudur. Altında yalnız bu âlimin hoca–talebe ağı, en sonda da her kitaptaki biyografi metni yer alır: metinler esas alınan neşirdeki hâliyledir (Arapça; dipnotsuz, tarama kaynaklı boşluk ve satır kaymaları giderilmiş); kitaplar seçilince metinler yan yana açılır."],
     ["Silsile", "Üstteki üç simge görünümü seçer. “Âlimin silsilesi” seçilen âlimi ortaya alır; hocaları üstte, talebeleri altta kartlar hâlinde dizilir ve çizgiler kartların üzerinden geçmez. “1 / 2” düğmeleri kuşak sayısıdır: iki kuşakta her kartın içinde hocanın hocaları ya da talebenin talebeleri görünür. Zincir simgesi (Ebû Hanîfe’ye bağla), hadisçilerin isnadı gibi âlimden Ebû Hanîfe’ye uzanan en kısa ve vefat tarihleriyle tutarlı hoca zincirini altın çizgiyle çizer. İndirme simgesinin üzerine gelince PNG ya da SVG seçilir. “Asırlar” görünümü bütün âlimleri hicrî asır sütunlarına dizer; bir âlim seçilince hocaları altın, talebeleri çivit eğrilerle bağlanır, üzerine gelince adı, vefatı ve bağ sayısı görünür. “Genel görünüm” bütün ağı zaman ekseninde gösterir. Her görünümdeki arama kutusu âlimi bulur: silsile görünümünde onun silsilesine geçer, diğerlerinde ona yakınlaşır."],
     ["Zaman haritası", "Her satır bir bölgedir (Mâverâünnehir, Horasan, Irak, Şam, Mısır, Rûm…); âlim, başlıca şehrinin bölgesine yerleşir. Üstte hicrî ve altında milâdî yıl cetveli vardır. Her nokta bir vefattır; doğumu biliniyorsa önündeki altın çizgi ömrünü gösterir, içi boş nokta tahminî vefattır. Bir noktaya tıklayınca âlimin hocaları ve talebeleri eğrilerle bağlanır ve bilgi kartı açılır. “Âlim bul” kutusu âlimi bulup ortalar; ←/→ tuşları ya da oklu düğmeler vefat sırasına göre önceki ve sonraki âlime geçer. ‹ › kaydırır, − + yakınlaştırır; tekerlek, sürükleme ve iki parmak da çalışır."],
     ["Harita", "Her daire biyografilerde geçen bir şehirdir. Dairenin ve adın büyüklüğü o şehirle ilişkili âlim sayısını gösterir. Alttaki küçük düğmelerle bağ türü (doğum, vefat, ikamet, seyahat, görev…) ve vefat yüzyılı süzülür. Bir şehre tıklanınca açılan pencerede el-Süreyyâ’dan şehrin bölgesi ve türü, Yâkût’un Mu‘cemü’l-büldân’ından kısa bir alıntı, varsa el-Esmârü’l-ceniyye’nin nisbe notu ve o şehirle ilişkili âlimler yer alır. Arama kutusu şehir yanında âlim de bulur: bir âlim seçilince yalnız onun şehirleri ve biyografideki sırayla güzergâhı gösterilir. Güzergâh, el-Süreyyâ’daki Mukaddesî yol ağı üzerinden en kısa yolla çizilir; yol bulunmayan yerde kesikli düz çizgi kullanılır. Yol simgesi bütün yol ağını soluk olarak gösterir."],
@@ -1854,7 +1856,7 @@ function viewAbout(view) {
   ] : [
     ["البحث", "اكتب في مربع البحث في الصفحة الرئيسة اسم العَلَم أو كنيته أو نسبته أو لقبه بالعربية أو التركية: «السرخسي»، «أبو حفص الكبير»، «Serahsî». والبحث لا يتأثر بالحركات والتطويل وصور الهمزة. وتتنقل بين النتائج بالسهمين وتفتحها بمفتاح الإدخال."],
     ["البحث المفصّل", "يُجمع فيه بين الاسم وحدود قرن الوفاة والكتاب والبلد وقيد «من له شيوخ أو تلاميذ في السلسلة»؛ فيمكن مثلًا أن تُعرض أعلام القرن الخامس المرتبطون ببخارى ممن لم يُترجموا إلا في القند باستعلام واحد."],
-    ["صفحة العَلَم", "في أعلاها الاسم الكامل وسنة الوفاة، ثم «المصادر» بمواضع الترجمة في كل كتاب بالجزء والصفحة ورقم الترجمة، بصيغة الإحالة العلمية. ثم الشيوخ والتلاميذ مع نوع الصلة (تفقّه، رواية، صحبة…)، وزر «الشاهد» يعرض العبارة التي استُخرجت منها الصلة مع موضعها. وتُظهر الخريطة الصغيرة بلدان المولد والإقامة والرحلة والوفاة، وفي آخر الصفحة نصوص التراجم كاملة من كل كتاب مع حواشي المحققين."],
+    ["صفحة العَلَم", "في أعلاها الاسم الكامل وسنة الوفاة، ثم «المصادر» بمواضع الترجمة في كل كتاب بالجزء والصفحة ورقم الترجمة، بصيغة الإحالة العلمية. ثم بطاقة فيها الشيوخ والتلاميذ مع نوع الصلة (تفقّه، رواية، صحبة…)، وزر «الشاهد» يعرض العبارة التي استُخرجت منها الصلة مع موضعها، و«سلسلته» يفتح سلسلة ذلك العَلَم. وبجانبها خريطة بلدان المولد والإقامة والرحلة والوفاة؛ ويصل الخطّ البلدانَ على ترتيب ورودها في الترجمة (المولد والنسبة أولًا، والوفاة والمدفن آخرًا)، وهو تقريب لا تأريخ، والخط المتصل يسير على طرق المقدسي من مشروع الثريا، والمتقطع خط مستقيم حيث لا طريق معروف. وتحتهما شبكة صلات العَلَم وحده، وفي آخر الصفحة نص الترجمة في كل كتاب كما هو في الطبعة المعتمدة دون الحواشي، وتُفتح النصوص متجاورة باختيار الكتب."],
     ["السلسلة", "تختار الأيقونات الثلاث في الأعلى طريقة العرض. «سلسلة عَلَم» تضع العَلَم في الوسط، وشيوخه فوقه وتلاميذه تحته في بطاقات لا تتقاطع خطوطها معها. وزرّا «١ / ٢» عدد الطبقات. وأيقونة السلسلة (الوصل بأبي حنيفة) ترسم بخط ذهبي أقصر سلسلة شيوخ متسقة مع الوفيات من العَلَم إلى الإمام، على طريقة الإسناد. وعند المرور على أيقونة التنزيل يُختار PNG أو SVG. و«القرون» تضع الأعلام في أعمدة القرون الهجرية، فإذا اختير عَلَم وُصل بشيوخه بمنحنيات ذهبية وبتلاميذه بمنحنيات نيلية. و«المشهد العام» يعرض الشبكة كلها على محور الزمن. ومربع البحث في كل عرض يجد العَلَم."],
     ["خريطة الزمن", "كل صف إقليم (ما وراء النهر، خراسان، العراق، الشام، مصر، الروم…) بحسب البلد الأشهر للعَلَم، وفي الأعلى مسطرة بالسنين الهجرية والميلادية. وكل نقطة وفاة عَلَم، والخط الذهبي قبلها عمره إن عُرف مولده، والنقطة المفرغة وفاة مقدّرة. وبالضغط على نقطة تظهر صلاته ببطاقة تعريف. ومربع البحث يجد العَلَم ويضعه في الوسط، وسهما لوحة المفاتيح ينقلان إلى العَلَم السابق واللاحق في الوفاة."],
     ["الخريطة", "كل دائرة بلد ورد في التراجم، وحجمها وحجم اسمها على عدد الأعلام المرتبطين به. وتُصفّى بنوع الصلة (المولد، الوفاة، الإقامة، الرحلة، الولاية…) وبقرن الوفاة. وعند الضغط على بلد تظهر نافذة فيها إقليمه ونوعه من مشروع الثريا، ومقتطف من معجم البلدان لياقوت، وتعليق النسبة من الأثمار الجنية إن وُجد، وأسماء الأعلام المرتبطين به. ويُكبَّر بعجلة الفأرة أو بإصبعين، ويُحرَّك بالسحب. ومربع البحث يجد البلد أو العَلَم: فإذا اختير عَلَم ظهرت بلدانه وطريقه على ترتيب ورودها في الترجمة، مرسومًا على طرق المقدسي من مشروع الثريا بأقصر طريق، وحيث لا طريق معروف فبخط مستقيم متقطع. وأيقونة الطرق تُظهر شبكة الطرق كلها باهتة."],
