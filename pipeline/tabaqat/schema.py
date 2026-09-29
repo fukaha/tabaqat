@@ -16,6 +16,7 @@ class Entry:
     page_end: int | None = None
     number: int | None = None  # kitaptaki madde numarası
     section: str = ""  # bağlı olduğu bölüm/tabaka başlığı
+    series: str = ""  # numaralamanın yeniden başladığı zeyl/ek bölüm adı
     footnotes: dict[str, str] = field(default_factory=dict)
     references: list[str] = field(default_factory=list)  # başlığa bağlı çapraz atıflar
     group: int | None = None  # ortak metni paylaşan maddelerin grup no'su

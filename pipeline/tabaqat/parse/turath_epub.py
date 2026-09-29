@@ -26,7 +26,9 @@ warnings.filterwarnings("ignore", category=XMLParsedAsHTMLWarning)
 
 _DIGITS = str.maketrans("٠١٢٣٤٥٦٧٨٩", "0123456789")
 _FOOTER = re.compile(r"(?:الجزء:\s*(\d+)\s*-\s*)?الصفحة:\s*(\d+)")
-_HEADING = re.compile(r"^و?\[?\s*([\d٠-٩]+)\s*-\s*(.+?)\s*\]?$")
+_HEADING = re.compile(r"^و?\[?\s*([\d٠-٩]+)\s*[-.]\s*(.+?)\s*\]?$")
+# Paragraftan başlığa terfi için yalnız tireli biçim (numaralı listelerle karışmasın)
+_P_HEADING = re.compile(r"^و?\[?\s*([\d٠-٩]+)\s*-\s*(.+?)\s*\]?$")
 _INLINE_HEADING = re.compile(r"([\d٠-٩]+)\s*-\s*\[[^\]]+\]")
 _FN_LINE = re.compile(r"\(\^([\d٠-٩]+|\*+)\)")
 
@@ -57,17 +59,43 @@ def _footnotes(p) -> dict[str, str]:
     return result
 
 
+def _unescape(txt: str) -> str:
+    """Kaynakta iki-üç kat kaçışlanmış varlıklar var (&amp;quot;)."""
+    while True:
+        out = html.unescape(txt)
+        if out == txt:
+            return out
+        txt = out
+
+
 def parse(path: str, book_id: str, start_after_heading: str | None = None,
-          unnumbered_entry: str | None = None, section_heading: str | None = None) -> list[Entry]:
+          unnumbered_entry: str | None = None, section_heading: str | None = None,
+          stop_at_heading: str | None = None, entry_sections: str | None = None,
+          series: dict[str, str] | None = None, preamble_entry: dict | None = None,
+          co_entries: bool = False) -> list[Entry]:
     """
+    start_after_heading: bu başlığa kadar olan kısım (tahkik mukaddimesi vb.) atlanır.
+    stop_at_heading: bu başlıktan sonrası (hâtime, fihristler) atlanır.
     unnumbered_entry: numarasız ama madde sayılacak başlık (ör. Ebû Hanîfe tercümesi).
-    section_heading: numarasız madde açıkken yalnız buna uyan başlıklar onu kapatır; diğerleri
-        (ör. "فصل فى مولده") o maddenin içine alt başlık olarak eklenir.
+    section_heading: her zaman bölüm açan başlıklar. Numarasız madde açıkken buna uymayan
+        başlıklar (ör. "فصل فى مولده") o maddenin içine alt başlık olarak eklenir.
+    entry_sections: bu bölümlerde (ör. "كتاب الكنى") her numarasız başlık ayrı bir maddedir.
+    series: {başlık regex: seri adı}; numaralamanın yeniden başladığı ek bölümler (zeyl).
+    preamble_entry: {vol, page, title}; başlıksız başlayan madde (ör. mukaddimeden sonra
+        doğrudan başlayan Ebû Hanîfe tercümesi).
+    co_entries: aralarında metin olmayan ardışık başlıklar tek metni paylaşır (Ketâib'deki
+        ortak tercümeler). Kapalıyken her başlık ayrı maddedir (tercüme başlıkta bitebilir).
     """
     start_re = re.compile(start_after_heading) if start_after_heading else None
+    stop_re = re.compile(stop_at_heading) if stop_at_heading else None
     unnum_re = re.compile(unnumbered_entry) if unnumbered_entry else None
     section_re = re.compile(section_heading) if section_heading else None
-    started = start_re is None
+    entry_sec_re = re.compile(entry_sections) if entry_sections else None
+    series_res = [(re.compile(k), v) for k, v in (series or {}).items()]
+    started = start_re is None and preamble_entry is None
+    stopped = False
+    in_entry_section = False
+    cur_series = ""
     entries: list[Entry] = []
     group: list[Entry] = []
     paras: list[str] = []
@@ -98,8 +126,17 @@ def parse(path: str, book_id: str, start_after_heading: str | None = None,
                 entry.references.append(ref)
         return _FN_LINE.sub("", txt).strip()
 
+    def new_unnumbered(title: str, raw: str, page_notes, vol, page):
+        close()
+        e = Entry(book_id, len(entries) + 1, title, "", vol=vol, page_start=page,
+                  page_end=page, section=section, series=cur_series)
+        take_notes(raw, page_notes, e)
+        group.append(e)
+
     with zipfile.ZipFile(path) as z:
         for name in _spine_pages(z):
+            if stopped:
+                break
             soup = BeautifulSoup(z.read(name), "lxml")
             title = soup.title.get_text(strip=True) if soup.title else ""
             body = soup.body
@@ -107,12 +144,15 @@ def parse(path: str, book_id: str, start_after_heading: str | None = None,
             page_notes: dict[str, str] = {}
             events: list[tuple[str, str]] = []
             catchword = False
-            for el in body.find_all(["h2", "h3", "h4", "p"], recursive=False):
-                txt = html.unescape(el.get_text(" ", strip=True))  # kaynakta çift kaçışlı &quot; var
+            for el in body.find_all(["h2", "h3", "h4", "h5", "p"], recursive=False):
+                txt = _unescape(el.get_text(" ", strip=True))
                 classes = el.get("class") or []
                 if el.name in ("h2", "h3", "h4"):
                     if not catchword:
                         events.append(("h", txt))
+                elif el.name == "h5":  # madde içi ara başlık (ör. "فائدة")
+                    if txt and not catchword:
+                        events.append(("p", f"### {txt}"))
                 elif "hamesh" in classes:
                     page_notes.update(_footnotes(el))
                 elif "text-center" in classes and _FOOTER.search(txt):
@@ -128,14 +168,19 @@ def parse(path: str, book_id: str, start_after_heading: str | None = None,
                 elif txt:
                     events.append(("p", txt))
 
+            if (not started and preamble_entry and vol == preamble_entry.get("vol", 1)
+                    and page == preamble_entry["page"]):
+                started = True
+                new_unnumbered(preamble_entry["title"], "", page_notes, vol, page)
+
             queue = list(reversed(events))
-            while queue:
+            while queue and not stopped:
                 kind, raw = queue.pop()
                 if kind == "sep":  # madde ayracı: sonraki başlık yeni madde açar
                     sep_seen = True
                     continue
-                clean = _FN_LINE.sub("", raw).strip().rstrip("*").strip()
-                m = _HEADING.match(clean)
+                clean = re.sub(r"\s+", " ", _FN_LINE.sub("", raw)).strip().rstrip("*").strip()
+                m = _HEADING.match(clean) if kind == "h" else _P_HEADING.match(clean)
                 if kind == "p" and started and not m:
                     # Paragraf ortasına gömülmüş sıradaki madde başlığı: "... ٢١٠٦ - [النجم الملطى] صاحبنا ..."
                     for im in _INLINE_HEADING.finditer(raw):
@@ -157,33 +202,51 @@ def parse(path: str, book_id: str, start_after_heading: str | None = None,
                         clean = title
                 if kind == "h":
                     if not started:
-                        started = bool(start_re.search(clean))
+                        started = bool(start_re and start_re.search(clean))
                         if not (started and unnum_re and unnum_re.search(clean)):
                             continue
-                    if not m and unnum_re and unnum_re.search(clean):
-                        close()
-                        group.append(Entry(book_id, len(entries) + 1, clean, "", vol=vol,
-                                           page_start=page, page_end=page, section=section))
-                        continue
                     if not m:
-                        if group and group[-1].number is None and section_re and not section_re.search(clean):
+                        if stop_re and stop_re.search(clean):
+                            close()
+                            stopped = True
+                            break
+                        ser = next((v for r, v in series_res if r.search(clean)), None)
+                        if ser is not None:
+                            close()
+                            cur_series, last_no, section, in_entry_section = ser, 0, clean, False
+                            continue
+                        if unnum_re and unnum_re.search(clean):
+                            new_unnumbered(clean, raw, page_notes, vol, page)
+                            continue
+                        if section_re and section_re.search(clean):
+                            close()
+                            section = clean
+                            in_entry_section = bool(entry_sec_re and entry_sec_re.search(clean))
+                            continue
+                        if in_entry_section:
+                            new_unnumbered(clean, raw, page_notes, vol, page)
+                            continue
+                        if group and group[-1].number is None and section_re:
                             paras.append(f"### {clean}")
                             continue
                         close()
                         section = clean
+                        in_entry_section = bool(entry_sec_re and entry_sec_re.search(clean))
                         continue
-                    if paras or sep_seen:  # aksi halde önceki başlıkla metni paylaşır (ortak madde)
+                    if paras or sep_seen or not co_entries:
                         close()
                     sep_seen = False
                     last_no = int(m.group(1).translate(_DIGITS))
                     e = Entry(book_id, len(entries) + len(group) + 1, clean, "",
                               vol=vol, page_start=page, page_end=page,
-                              number=last_no, section=section)
+                              number=last_no, section=section, series=cur_series)
                     take_notes(raw, page_notes, e)
                     group.append(e)
                 elif group:
-                    if not paras and not clean.strip("]* "):  # "(^١)]" / "(^*)" kalıntısı: çapraz atıf
+                    if not paras and clean.strip("]*: ") in ("", "."):  # "(^١)]" / "(^*)" kalıntısı: çapraz atıf
                         take_notes(raw, page_notes, group[-1])
+                        if clean.strip("]*: ") == ".":  # "(^*)." cümle bitti: boş madde, ortak değil
+                            sep_seen = True
                         continue
 
                     def sub(m):

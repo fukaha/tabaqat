@@ -4,8 +4,7 @@ from pathlib import Path
 
 import pytest
 
-from tabaqat.cli import load_book
-from tabaqat.parse.turath_epub import parse
+from tabaqat.cli import load_book, parse_book
 
 ROOT = Path(__file__).resolve().parents[2]
 CFG = load_book("tabaqat_saniyya")
@@ -15,8 +14,7 @@ pytestmark = pytest.mark.skipif(not EPUB.exists(), reason="kaynak epub yok")
 
 @pytest.fixture(scope="module")
 def entries():
-    return parse(str(EPUB), CFG["book_id"], CFG["start_after_heading"],
-                 CFG["unnumbered_entry"], CFG["section_heading"])
+    return parse_book(CFG)
 
 
 def one(entries, n):

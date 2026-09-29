@@ -7,3 +7,5 @@ volumes: 4
 source: sources/kataib/raw/kataib.epub
 # Madde başlıkları bu başlıktan sonra aranır (mukaddime içindeki numaralı başlıklar hariç)
 start_after_heading: "^برهان كتائب أعلام الأخيار"
+# Aralarında metin olmayan ardışık başlıklar (ör. ٣٦١-٣٦٥) tek tercümeyi paylaşır.
+co_entries: true

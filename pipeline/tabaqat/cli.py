@@ -15,6 +15,15 @@ def load_book(book: str) -> dict:
     return yaml.safe_load((ROOT / "books" / f"{book}.yml").read_text(encoding="utf-8"))
 
 
+PARSE_OPTS = ("start_after_heading", "unnumbered_entry", "section_heading", "stop_at_heading",
+              "entry_sections", "series", "preamble_entry", "co_entries")
+
+
+def parse_book(cfg: dict):
+    opts = {k: cfg[k] for k in PARSE_OPTS if k in cfg}
+    return PARSERS[cfg["parser"]](str(ROOT / cfg["source"]), cfg["book_id"], **opts)
+
+
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("cmd", choices=["parse", "report"])
@@ -22,14 +31,13 @@ def main() -> None:
     ap.add_argument("--out", default=str(ROOT / "data" / "entries"))
     a = ap.parse_args()
     cfg = load_book(a.book)
-    entries = PARSERS[cfg["parser"]](str(ROOT / cfg["source"]), cfg["book_id"], cfg.get("start_after_heading"),
-                                     cfg.get("unnumbered_entry"), cfg.get("section_heading"))
+    entries = parse_book(cfg)
     if a.cmd == "parse":
         out = Path(a.out)
         out.mkdir(parents=True, exist_ok=True)
         (out / f"{cfg['book_id']}.json").write_text(
             json.dumps([e.to_dict() for e in entries], ensure_ascii=False, indent=1), encoding="utf-8")
-    nums = [e.number for e in entries if e.number is not None]
+    nums = [e.number for e in entries if e.number is not None and not e.series]
     gaps = sorted(set(range(1, max(nums) + 1)) - set(nums))
     empty = [e.number for e in entries if len(e.text) < 30]
     print(f"{len(entries)} madde; no {min(nums)}–{max(nums)}; boşluk: {gaps[:20]}; kısa/boş: {empty[:20]}")

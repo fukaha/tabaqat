@@ -1,0 +1,18 @@
+book_id: athmar
+title: الأثمار الجنية في أسماء الحنفية
+author: علي بن سلطان القاري
+author_death_h: 1014
+parser: turath_epub
+volumes: 2  # sayfa numaraları iki cilt boyunca kesintisiz
+edition: تحقيق عبد المحسن عبد الله أحمد، ديوان الوقف السني، بغداد ١٤٣٠ هـ
+source: sources/athmar/raw/athmar.epub
+# Tahkik mukaddimesi atlanır; müellif mukaddimesi + Ebû Hanîfe tercümesi başlıksız başlar (١/١٢٧).
+preamble_entry: {vol: 1, page: 127, title: "أبو حنيفة النعمان بن ثابت"}
+# Büyük ashabın fasılları ve "الجامع" (Nûh b. Ebî Meryem) numarasız maddelerdir.
+unnumbered_entry: "^(فصل:? في (مناقب|فضل|ذكر) |الجامع$)"
+section_heading: "^(«?(حرف|كتاب|باب)|تلامذته|ذكر بقية|ومن )"
+# Künye, kadınlar ve nisbe kitaplarında her başlık bir maddedir.
+entry_sections: "^«?(كتاب الكنى|كتاب النساء|كتاب الأنساب|باب الكنى)"
+# Yemenli Hanefîler zeyli: numaralama 1'den yeniden başlar.
+series: {"^هذه أسماء علماء الحنفية من الفضلاء اليمنية": "yaman"}
+stop_at_heading: "^الخاتمة$"

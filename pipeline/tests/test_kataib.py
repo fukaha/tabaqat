@@ -3,15 +3,16 @@ from pathlib import Path
 
 import pytest
 
-from tabaqat.parse.turath_epub import parse
+from tabaqat.cli import load_book, parse_book
 
-EPUB = Path(__file__).resolve().parents[2] / "sources/kataib/raw/kataib.epub"
+CFG = load_book("kataib")
+EPUB = Path(__file__).resolve().parents[2] / CFG["source"]
 pytestmark = pytest.mark.skipif(not EPUB.exists(), reason="kaynak epub yok")
 
 
 @pytest.fixture(scope="module")
 def entries():
-    return parse(str(EPUB), "kataib", r"^برهان كتائب أعلام الأخيار")
+    return parse_book(CFG)
 
 
 def by_number(entries, n):
