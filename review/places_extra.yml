@@ -1,0 +1,139 @@
+# Coğrafya için elle eklemeler (data/gazetteer/thurayya.tsv = el-Süreyyâ, CC BY 4.0).
+# alias: metindeki yazım (normalize edilmeden yazılabilir) → el-Süreyyâ URI ya da aşağıdaki yeni yerin kimliği
+# new:   el-Süreyyâ'da olmayan yerler (çoğu Osmanlı, Hind ve Moğol dönemi şehirleri, bölgeler)
+# nisba: düzensiz nisbeler → yer
+# ignore: yer adı sanılan yaygın kelimeler
+alias:
+  بخارى: BUKHARA_644E398N_S
+  بخارا: BUKHARA_644E398N_S
+  كلاباذ: BUKHARA_644E398N_S          # Buhara'nın mahallesi / kabristanı
+  ترمذ: TIRMIDH_673E372N_S
+  الترمذ: TIRMIDH_673E372N_S
+  مرغينان: MARGHINAN_717E405N_S
+  مصر: QAHIRA_312E300N_S
+  الفسطاط: FUSTAT_312E300N_S
+  القاهرة: QAHIRA_312E300N_S
+  القاهرة المحروسة: QAHIRA_312E300N_S
+  القرافة: QAHIRA_312E300N_S
+  القرافة الصغرى: QAHIRA_312E300N_S
+  مكة: MAKKA_398E213N_S
+  مكة المكرمة: MAKKA_398E213N_S
+  المعلاة: MAKKA_398E213N_S
+  المعلا: MAKKA_398E213N_S
+  الحرمين: MAKKA_398E213N_S
+  المدينة: MADINA_396E244N_S
+  المدينة المنورة: MADINA_396E244N_S
+  المدينة النبوية: MADINA_396E244N_S
+  مدينة النبي: MADINA_396E244N_S
+  طيبة: MADINA_396E244N_S
+  البقيع: MADINA_396E244N_S
+  القدس: BAYTMAQDIS_352E317N_S
+  القدس الشريف: BAYTMAQDIS_352E317N_S
+  بيت المقدس: BAYTMAQDIS_352E317N_S
+  طرابلس: ATRABULUS_358E344N_S
+  طرابلس الشام: ATRABULUS_358E344N_S
+  حماة: HAMA_367E351N_S
+  الري: RAYY_515E356N_S
+  هراة: HARA_621E343N_S
+  سفح قاسيون: DIMASHQ_363E335N_S
+  قاسيون: DIMASHQ_363E335N_S
+  الصالحية: DIMASHQ_363E335N_S
+  الشونيزية: BAGHDAD_443E333N_S
+  جاكرديزه: SAMARQAND_670E396N_S
+  جاكرديزة: SAMARQAND_670E396N_S
+  الجرجانية: JURJANIYYA_592E424N_S
+  جرجانية: JURJANIYYA_592E424N_S
+  كركانج: JURJANIYYA_592E424N_S
+  آمد: AMID_402E379N_S
+  ديار بكر: AMID_402E379N_S
+  ماردين: MARDIN_407E373N_S
+  غزنة: GHAZNA_684E335N_S
+  غزنين: GHAZNA_684E335N_S
+# yeni yerler: kimlik → [adlar, enlem, boylam, tür, bölge]
+new:
+  x:istanbul: [[القسطنطينية, قسطنطينية, استانبول, اسلامبول, إسلامبول, قسطنطينية المحروسة, دار السلطنة], 41.0082, 28.9784, metropoles, Rum]
+  x:bursa: [[بروسة, برسة, بروسا], 40.1826, 29.0665, capitals, Rum]
+  x:edirne: [[أدرنة, ادرنه, أدرنه], 41.6771, 26.5557, capitals, Rum]
+  x:konya: [[قونية], 37.8746, 32.4932, capitals, Rum]
+  x:amasya: [[أماسية, اماسيه, أماسيا], 40.6499, 35.8353, towns, Rum]
+  x:sivas: [[سيواس], 39.7477, 37.0179, towns, Rum]
+  x:kayseri: [[قيصرية], 38.7205, 35.4826, towns, Rum]
+  x:tokat: [[توقات], 40.3167, 36.5500, towns, Rum]
+  x:manisa: [[مغنيسا, مغنيسيا], 38.6191, 27.4289, towns, Rum]
+  x:kutahya: [[كوتاهية, كوتاهيه], 39.4242, 29.9833, towns, Rum]
+  x:iznik: [[إزنيق, ازنيق, أزنيق], 40.4292, 29.7211, towns, Rum]
+  x:izmit: [[إزنكمد, ازنكميد], 40.7654, 29.9408, towns, Rum]
+  x:gelibolu: [[كليبولي, كليبولى, غاليبولي], 40.4103, 26.6706, towns, Rum]
+  x:ankara: [[أنقرة, انقره, أنقره], 39.9334, 32.8597, towns, Rum]
+  x:kastamonu: [[قسطموني, قسطمونى], 41.3887, 33.7827, towns, Rum]
+  x:aksaray: [[أقسراي, اقسراي, آق سراي, اقصراي], 38.3687, 34.0370, towns, Rum]
+  x:karaman: [[لارندة, قرمان], 37.1811, 33.2150, towns, Rum]
+  x:trabzon: [[طرابزون, طرابزن], 41.0027, 39.7168, towns, Rum]
+  x:erzurum: [[أرزروم, ارضروم, أرضروم], 39.9043, 41.2679, towns, Rum]
+  x:bolu: [[بولي], 40.7395, 31.6116, towns, Rum]
+  x:tire: [[تيره], 38.0894, 27.7353, towns, Rum]
+  x:kefe: [[كفه, كفا], 45.0314, 35.3825, towns, Crimea]
+  x:saray: [[سراي, السراي], 47.4250, 46.0490, capitals, Qipchaq]
+  x:delhi: [[دهلي, دلهي, دهلى], 28.6139, 77.2090, metropoles, Hind]
+  x:lahore: [[لاهور], 31.5204, 74.3587, capitals, Hind]
+  x:agra: [[آكره, اكره], 27.1767, 78.0081, capitals, Hind]
+  x:ahmadabad: [[أحمد آباد, احمد اباد], 23.0225, 72.5714, capitals, Hind]
+  x:gujarat: [[كجرات, الكجرات], 22.3000, 72.6000, regions, Hind]
+  x:kirman: [[كرمان], 30.2839, 57.0834, capitals, Kirman]
+  x:sultaniyya: [[السلطانية], 36.4344, 48.7960, capitals, Jibal]
+  x:safad: [[صفد], 32.9646, 35.4960, towns, Sham]
+  x:khalil: [[الخليل, بلد الخليل], 31.5326, 35.0998, towns, Sham]
+  x:mansura: [[المنصورة], 31.0409, 31.3785, towns, Egypt]
+  x:mahalla: [[المحلة, المحلة الكبرى], 30.9697, 31.1663, towns, Egypt]
+  # bölgeler (harita için merkez noktası)
+  x:khurasan: [[خراسان, بلاد خراسان], 36.2, 59.6, regions, Khurasan]
+  x:mawarannahr: [[ما وراء النهر, ماوراء النهر, بلاد ما وراء النهر], 39.6, 66.9, regions, Transoxiana]
+  x:iraq: [[العراق, بلاد العراق], 33.3, 44.4, regions, Iraq]
+  x:sham: [[الشام, بلاد الشام, الديار الشامية], 33.5, 36.3, regions, Sham]
+  x:egypt: [[الديار المصرية, ديار مصر, الديار المصريه, بلاد مصر], 30.05, 31.24, regions, Egypt]
+  x:hijaz: [[الحجاز, بلاد الحجاز], 21.4, 39.8, regions, Jazirat al-Arab]
+  x:rum: [[الروم, بلاد الروم, ديار الروم, الديار الرومية], 39.9, 32.8, regions, Rum]
+  x:hind: [[الهند, بلاد الهند, الديار الهندية], 28.6, 77.2, regions, Hind]
+  x:yemen: [[اليمن, بلاد اليمن], 15.35, 44.2, regions, Yemen]
+  x:turk: [[بلاد الترك, تركستان], 43.3, 68.3, regions, Turkestan]
+  x:ajam: [[بلاد العجم, العجم], 32.6, 51.7, regions, Jibal]
+  x:azerbaijan: [[أذربيجان, اذربيجان], 38.07, 46.3, regions, Rihab]
+  x:maghrib: [[المغرب, بلاد المغرب], 34.0, -5.0, regions, Maghrib]
+nisba:
+  الرازي: RAYY_515E356N_S
+  المروزي: MARW_621E376N_S
+  الهروي: HARA_621E343N_S
+  المدني: MADINA_396E244N_S
+  المقدسي: BAYTMAQDIS_352E317N_S
+  الحموي: HAMA_367E351N_S
+  الغزنوي: GHAZNA_684E335N_S
+  الاصفهاني: ISBAHAN_516E326N_S
+  البروسوي: x:bursa
+  القونوي: x:konya
+  الاماسي: x:amasya
+  الاماسيوي: x:amasya
+  الاقسرايي: x:aksaray
+  الاقصرايي: x:aksaray
+  القيصري: x:kayseri
+  التوقاتي: x:tokat
+  الازنيقي: x:iznik
+  الادرنوي: x:edirne
+  القسطنطيني: x:istanbul
+  الاسلامبولي: x:istanbul
+  الدهلوي: x:delhi
+  اللاهوري: x:lahore
+  الكجراتي: x:gujarat
+  القرمي: x:kefe
+  السرايي: x:saray
+  الخوارزمي: KHUWARIZM_599E416N_R
+  الكرماني: x:kirman
+  الفرغاني: FARGHANA_720E403N_R
+  المرغيناني: MARGHINAN_717E405N_S
+  الترمذي: TIRMIDH_673E372N_S
+  البخاري: BUKHARA_644E398N_S
+  المصري: QAHIRA_312E300N_S
+  الحلبي: HALAB_371E361N_S
+  الدمشقي: DIMASHQ_363E335N_S
+  الكوفي: KUFA_443E320N_S
+  الصفدي: x:safad
+ignore: [كيت, رية, ريه, ضنك, خور, خره, مقره, صان, عنه, قدم, وان, ثمانين, جده, المبارك, كيف, حكم, قدس, قبله, منك, موته, فكان, ابه, سوره, الطيب, ابان, باس, رشيد, ازم, ايله, نوي, كرم, اورد, خبر, كره, خزانه, دارا, القصر, فامر, ركب, بيان, خيار, رباط, حضور, الحصين, السكر, بيش, كند, بلد, الابواب, النعمانيه, الحجر, الطاق, قير, فرج, فهل, جميلا, بصري, نساء, عطار, الجبال, وليله, الدور, الحدث, النيل, امل, الجند, صور, سوار, جرم, خرق, الهجر, جام, العرض, قرن, الجار, لحج, كاه, جنابه, العرف, حلي, ملح, زويله, كرت, جور, العباسيه, شكي, السرير, معان, صغر, عقده, هزار, سرت, خشب, اوفر, ايل, الغربه, الحضر, راسك, المنصف, ميله, القيس, فاز, قلنسوه, كدر, الداخله, كسبه, قنا, مسير, عمان, القطر, البيضاء, حربي, كفا, ماس, كشيد, بابل, قطر, القنطره, قصير, كري, انفه, الغدر, دمث, الاحقاف, امد, المروه, اتل, منه, فيه, حال, امر, بيت, نعم, بعد, قبل, الحج, باب, الجامع, المدرسة, مدرسة, الباب, سوق, القلعة, قلعة, دار, الدار, البلد, بلده, الجبل, جبل, النهر, المسجد, الكبير, الصغير, العسكر, الحضرة, الحصن, القرية, قرية, الرباط, الخانقاه, تربة, مقبرة, قرب, جوار, سنة, ذي, الحجة, رجب, شعبان, رمضان, صفر, شوال, المحرم, ربيع, جمادى, عدة, حدود, يوم, ليلة, شهر, آخر, أول, أواخر, أوائل, نحو, عين, بدر, مني, منى, الطور, السلام, النور, الصالح, العادل, الناصر, الأشرف, الظاهر, الكامل, المنصور, الأمين, الرشيد, حسن, عمر, علي, محمد, أحمد, الحسن, سعد, سعيد, هلال, الفرج, خير, الرحمة, الملك, السلطان, الخليفة]
