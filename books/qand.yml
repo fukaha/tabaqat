@@ -1,0 +1,17 @@
+book_id: qand
+title: القند في ذكر علماء سمرقند
+author: نجم الدين عمر بن محمد النسفي
+author_death_h: 537
+parser: mistral_ocr
+vol: 1
+edition: عناية نظر محمد الفاريابي، مكتبة الكوثر، الرياض ١٤١٢ هـ (القطعة الباقية، من حرف الخاء)
+# Mistral OCR. Maddeler "١ - ترجمة:" başlıklı; şahıs adı sonraki paragrafın ":" öncesidir.
+source: sources/qand/raw/pages
+first_pdf_page: 3
+last_pdf_page: 534     # 535-571 fihrist
+page_offset: 18        # basılı sayfa = PDF sayfası + 18
+entry_title: "^([٠-٩]+)\\s*[-–]\\s*تَ?رْ?جَ?مَ?[ةه]ٌ?\\s*:?"
+paren_marks: true      # "(١)" dipnot işaretleri
+# Kitabın kendi fihristi (no + künye + ad; sayfasız): şahıs adlarının esası
+index: data/index/qand.json
+index_pages: [535, 571]

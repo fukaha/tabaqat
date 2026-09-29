@@ -30,9 +30,10 @@ _SUP = re.compile(r"\$\^\{[^}]*\}\$|[¹²³⁴⁵⁶⁷⁸⁹⁰]+")
 _GLUED_MARK = re.compile(r"(?<=[\u0621-\u064A\u064B-\u0652»)،.:؛])[٠-٩]{1,2}(?=[\s،.:؛»)\]]|$)")
 # Harekeli metinde boşlukla ayrılmış dipnot işareti ("جِنَانِيٍّ ١ بْنِ"); metindeki gerçek sayılar
 # ya tarihtir (٨١٦هـ) ya da yazıyla yazılır, bir-iki haneli çıplak rakam işarettir
+_PAREN_MARK = re.compile(r"\s*\([٠-٩]{1,2}\)")
 _SPACED_MARK = re.compile(r"(?<=[\u0621-\u064A\u064B-\u0652»)،.:؛\]\"]) [٠-٩]{1,2}(?=[ \n،.:؛]|$)")
 # Yüzlü varak işareti: "[١٧١ظ]", "[٩و]", "[١٠ ظ]", "[١ط]"
-_FOLIO_SIDE = re.compile(r"\s*\[[٠-٩]+\s*[ظوط]\]")
+_FOLIO_SIDE = re.compile(r"\s*\[[٠-٩]+\s*[ظوط]\]|\s*\[[٠-٩]+\s*/\s*[٠-٩أبab]\]\s*/?")  # [١٧١ظ], [٦٨/ب]
 _LEAD_BRACKETS = re.compile(r"^((?:\s*\[[٠-٩]+\])+)\s*(/)?\s*")
 _NUM_BRACKET = re.compile(r"\s*\[[٠-٩]+\]\s*/?")
 _SLASH = re.compile(r"(^|\s)/(?=\s|$)")
@@ -69,9 +70,17 @@ def _page_dirs(root: Path) -> list[tuple[int, Path]]:
     return sorted(out)
 
 
-def _body_blocks(blocks: list[dict], height: int) -> list[dict]:
-    """Dipnot sınırının üstündeki gövde bloklarını döndürür."""
+def _body_blocks(blocks: list[dict], height: int, entry_title: re.Pattern | None = None) -> list[dict]:
+    """Dipnot sınırının üstündeki gövde bloklarını döndürür.
+
+    entry_title: madde başı kalıbı ("٢٧٧ - ترجمة:"); OCR bunu header/footer/text diye de
+    etiketleyebilir, her durumda başlık olarak tutulur ve dipnot sayılmaz.
+    """
     blocks = [dict(b) for b in blocks]
+    if entry_title is not None:
+        for b in blocks:
+            if entry_title.match(b["content"].strip().lstrip("#").strip()):
+                b["type"] = "title"
     # Dipnot sınırı: sayfanın üst %30'undan aşağıdaki, rakamla başlayan gerçek dipnot blokları.
     # (Sayfa başlığı şeridinden içeriğe çevrilen "١ / باب الكنى" gibi bloklar sayılmaz.)
     fn_y = [b["topLeftY"] for b in blocks
@@ -89,6 +98,9 @@ def _body_blocks(blocks: list[dict], height: int) -> list[dict]:
     for b in blocks:
         c = b["content"].strip()
         if not c:
+            continue
+        if entry_title is not None and b["type"] == "title" and entry_title.match(c.lstrip("#").strip()):
+            body.append(b)  # sayfa altına düşmüş madde başı ("٨٢٨ - ترجمة:" footer olarak)
             continue
         # "[٨٥٧] / يعقوب بن إدريس ...": madde başı dipnot bölgesine düşmüş ya da "references"
         # diye etiketlenmiş olabilir; dipnotlar "[" ile başlamaz
@@ -129,23 +141,31 @@ def _pick_entry(nums: list[int], last: int, head_like: bool = True) -> int | Non
 
 
 def clean_pages(root: str | Path, first_pdf_page: int, page_offset: int,
-                first_entry: int = 1) -> list[Page]:
-    """first_entry: ciltteki ilk madde numarası (numaralama ciltler boyunca sürer)."""
+                first_entry: int = 1, last_pdf_page: int | None = None,
+                entry_title: str | None = None, paren_marks: bool = False) -> list[Page]:
+    """first_entry: ciltteki ilk madde numarası (numaralama ciltler boyunca sürer).
+    last_pdf_page: bundan sonrası (fihrist vb.) atlanır.
+    entry_title: "N - ترجمة" gibi başlık-satırı madde başı kalıbı (Kand).
+    paren_marks: "(١)" biçimli dipnot işaretlerini sil.
+    """
+    title_re = re.compile(entry_title) if entry_title else None
     root = Path(root)
     pages: list[Page] = []
     last_entry = first_entry - 1
     for pdf, d in _page_dirs(root):
-        if pdf < first_pdf_page:
+        if pdf < first_pdf_page or (last_pdf_page and pdf > last_pdf_page):
             continue
         meta = json.loads((d / "page-metadata.json").read_text(encoding="utf-8"))
         page = Page(pdf, pdf + page_offset)
         seen: set[str] = set()
-        for b in _body_blocks(meta["blocks"], meta["dimensions"]["height"]):
+        for b in _body_blocks(meta["blocks"], meta["dimensions"]["height"], title_re):
             c = b["content"].strip()
             if c in seen:  # OCR aynı bloğu iki kez verebiliyor
                 continue
             seen.add(c)
             c = _GLUED_MARK.sub("", _STRAY_MARK.sub("", _SUP.sub("", c)))
+            if paren_marks:
+                c = _PAREN_MARK.sub("", c)
             heading = b["type"] == "title"
             c = c.lstrip("#").strip() if heading else c
             entry = None
@@ -166,6 +186,7 @@ def clean_pages(root: str | Path, first_pdf_page: int, page_offset: int,
             c = _NUM_BRACKET.sub(" ", c)  # metin içi varak numaraları
             c = _SPACED_MARK.sub("", _FOLIO_SIDE.sub("", c))
             c = _SLASH.sub(r"\1", c)
+            c = re.sub(r"(^|\s)/(?=[\u0621-\u064A])", r"\1", c)  # "/سراب": varak geçişi kelimeye yapışık
             c = re.sub(r"[ \t]+", " ", c)
             c = "\n".join(line.strip() for line in c.split("\n")).strip()
             if not c or c in ("ظ", "و"):  # tek başına kalmış varak yüzü
@@ -267,4 +288,80 @@ def to_entries(pages: list[Page], book_id: str, vol: int = 1, names: dict | None
             paras.append(b)
             cur.page_end = p.page
     close()
+    return entries
+
+
+def to_title_entries(pages: list[Page], book_id: str, entry_title: str,
+                     names: dict | None = None, vol: int = 1) -> list[Entry]:
+    """"## ١ - ترجمة:" başlıklı kitaplar (Kand): şahıs adı sonraki paragrafın ":" öncesidir.
+
+    "أبي معاذ بن سليمان البلخي: يروى عن ..." → ad "أبي معاذ بن سليمان البلخي", gerisi metin.
+    """
+    title_re = re.compile(entry_title)
+    entries: list[Entry] = []
+    cur: Entry | None = None
+    paras: list[str] = []
+    section = ""
+    need_name = False
+
+    def close():
+        nonlocal cur, paras
+        if cur is not None:
+            cur.text = "\n\n".join(paras).strip()
+            entries.append(cur)
+        cur, paras = None, []
+
+    for p in pages:
+        for b in p.blocks:
+            bare = b.removeprefix("## ").strip()
+            m = title_re.match(bare)
+            if m:
+                close()
+                n = int(m.group(1).translate(_DIGITS))
+                cur = Entry(book_id, len(entries) + 1, bare, "", vol=vol, page_start=p.page,
+                            page_end=p.page, number=n, section=section)
+                need_name = True
+                continue
+            if re.match(r"^(حرف|باب) \S+$", _strip_harakat(bare)):
+                close()
+                section = bare
+                continue
+            if cur is None:
+                continue
+            if need_name:
+                # Ad ":" ya da "." ile biter; bitmeden paragraf biterse ad sonraki kısa
+                # paragrafta sürer ("... البكري" / "السمرقندي:")
+                m2 = re.search(r"[:.]", b)
+                if m2 and m2.start() < 250:
+                    name, b = b[:m2.start()], b[m2.end():].strip()
+                    need_name = False
+                elif len(b) < 250:
+                    name, b = b, ""
+                    need_name = True
+                else:
+                    name, need_name = "", False
+                if name.strip():
+                    sep = " " if cur.heading_raw.endswith(":") else " "
+                    cur.heading_raw = f"{cur.heading_raw}{sep}{' '.join(name.split())}"
+                if not b:
+                    continue
+            paras.append(b)
+            cur.page_end = p.page
+    close()
+    # Şahıs adı: fihristle isim hizalaması (fihrist numaralaması metinden kayabilir);
+    # eşleşmeyenlerde başlıktaki ad
+    if names:
+        from .name_index import align_by_name
+        aligned = align_by_name([(e.number, e.heading_raw) for e in entries], list(names.values()))
+    else:
+        aligned = {}
+    for e in entries:
+        ie = aligned.get(e.number)
+        if ie is not None:
+            e.name, e.death = ie.name, ie.death
+        else:
+            name = title_re.sub("", e.heading_raw, count=1).strip()
+            if len(name) > 60 and "،" in name:  # adın ardından tercüme başlamış
+                name = name.split("،")[0].strip()
+            e.name = name
     return entries

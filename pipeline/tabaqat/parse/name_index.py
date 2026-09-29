@@ -124,3 +124,97 @@ def apply_index(pages, index: list[IndexEntry], vol: int, window: int = 1,
                 rep.unnumbered.append((b[:40], p.page))
                 p.blocks[i] = _LEAD_NUM.sub("", b)
     return rep
+
+
+def read_ocr_index(root: str | Path, first_pdf: int, last_pdf: int) -> list[IndexEntry]:
+    """OCR'lanmış fihrist sayfaları: tablo satırları "| ٧ | أبو معاذ | خالد بن سليمان |"
+    ya da düz satır "٧٢ أبو الفرج رستم بن العباس". Ad = künye + isim. Sayfa bilgisi yoktur."""
+    d2 = str.maketrans("٠١٢٣٤٥٦٧٨٩", "0123456789")
+    out: dict[int, IndexEntry] = {}
+    for pdf in range(first_pdf, last_pdf + 1):
+        meta = json.loads((Path(root) / f"page-{pdf}" / "page-metadata.json").read_text(encoding="utf-8"))
+        for b in meta["blocks"]:
+            for line in b["content"].split("\n"):
+                line = line.strip()
+                if line.startswith("|"):
+                    cells = [c.strip() for c in line.strip("|").split("|")]
+                    if len(cells) >= 2 and re.fullmatch(r"[٠-٩]+", cells[0]):
+                        n, name = int(cells[0].translate(d2)), " ".join(c for c in cells[1:] if c)
+                    else:
+                        continue
+                else:
+                    m = re.match(r"^([٠-٩]+)\s+(\S.*)$", line)
+                    if not m or b["type"] not in ("text", "list"):
+                        continue
+                    n, name = int(m.group(1).translate(d2)), m.group(2).strip()
+                out.setdefault(n, IndexEntry(n, name, "", 1, 0))
+        # Sütun sütun okunmuş tablo: önce tek başına numaralar, sonra künyeler, sonra isimler.
+        # Künye sütunu boş hücre içerdiğinden satırla eşlenemez; isimler numaralarla sıralıdır.
+        cells = [ln.strip() for b in meta["blocks"] if b["type"] == "text"
+                 for ln in b["content"].split("\n") if ln.strip()]
+        nums = [int(c.translate(d2)) for c in cells if re.fullmatch(r"[٠-٩]+", c)]
+        names = [c for c in cells if not re.fullmatch(r"[٠-٩]+", c) and not _KUNYA.fullmatch(c)
+                 and not re.match(r"^[٠-٩]+\s", c)]
+        if len(nums) > 1 and len(names) == len(nums):
+            for n, name in zip(nums, names):
+                out.setdefault(n, IndexEntry(n, name, "", 1, 0))
+    return [out[k] for k in sorted(out)]
+
+
+_KUNYA = re.compile(r"(أبو|أبي|أم) \S+( \S+)?")
+
+
+_TITLES = re.compile(r"^((الشيخ|الإمام|الامام|القاضي|الفقيه|الحافظ|السيد|العالم|الزاهد|الواعظ|"
+                     r"الأديب|الاديب|الأمير|الامير|الحاكم|الخطيب|المحدث|الأجل|الاجل|الحجاج|الثقة)\s+)+")
+
+
+def _name_key(s: str) -> str:
+    s = normalize(re.sub(r"^[٠-٩]+\s*[-–]\s*\S+\s*:?\s*", "", s))
+    s = s.replace("ابي ", "ابو ").replace("عبد ال", "عبدال")
+    return _TITLES.sub("", s)[:40]
+
+
+def align_by_name(heads: list[tuple[int, str]], index: list[IndexEntry],
+                  min_ratio: float = 0.55) -> dict[int, IndexEntry]:
+    """Metin maddelerini (no, başlık) sırayı koruyarak fihriste isimle hizalar.
+
+    Fihrist numaralaması metinden kayabildiği için (Kand'da sonda +٦) numaraya değil
+    isme bakılır; Needleman-Wunsch benzeri bir hizalama atlanan/fazla maddeleri yutar.
+    """
+    a = [_name_key(h) for _, h in heads]
+    b = [_name_key(e.name) for e in index]
+    n, m = len(a), len(b)
+    gap = -0.35
+    band = 40  # numara farkı sınırlı: yalnız köşegen çevresinde hesapla
+    NEG = float("-inf")
+    score = [[NEG] * (m + 1) for _ in range(n + 1)]
+    move = [[0] * (m + 1) for _ in range(n + 1)]
+    score[0][0] = 0.0
+    for j in range(1, m + 1):
+        score[0][j], move[0][j] = gap * j, 2
+    for i in range(1, n + 1):
+        score[i][0], move[i][0] = gap * i, 1
+        lo, hi = max(1, i - band), min(m, i + band)
+        for j in range(lo, hi + 1):
+            best, mv = NEG, 0
+            if score[i - 1][j - 1] > NEG:
+                r = SequenceMatcher(None, a[i - 1], b[j - 1], autojunk=False).ratio()
+                best, mv = score[i - 1][j - 1] + (r - min_ratio), 3
+            if score[i - 1][j] + gap > best:
+                best, mv = score[i - 1][j] + gap, 1
+            if score[i][j - 1] + gap > best:
+                best, mv = score[i][j - 1] + gap, 2
+            score[i][j], move[i][j] = best, mv
+    out: dict[int, IndexEntry] = {}
+    i, j = n, m
+    while i > 0 and j > 0:
+        mv = move[i][j]
+        if mv == 3:
+            if SequenceMatcher(None, a[i - 1], b[j - 1], autojunk=False).ratio() >= min_ratio:
+                out[heads[i - 1][0]] = index[j - 1]
+            i, j = i - 1, j - 1
+        elif mv == 1:
+            i -= 1
+        else:
+            j -= 1
+    return out
