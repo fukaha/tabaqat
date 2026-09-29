@@ -3,179 +3,128 @@
 # çalıştırın: kararlar review/decisions.yml'e taşınır, bu dosya yeniden üretilir.
 - 'no': 1
   karar: ''
-  a: ghuraf_v1:22
-  b: tabaqat_saniyya:58
-  a_ad: إبراهيم بن علي بن أحمد بن عبد الواحد بن عبد المنعم بن عبد الصمد، العَلَّامة، قاضي القضاة نَجم الدين أبو إسحاق ابن قاضي ا
-  a_yer: الغرف العلية 1/90-94 (رقم 22)
-  a_vefat: 758
-  b_ad: إبراهيم بن على بن أحمد ابن عبد الواحد بن عبد المنعم بن عبد الصمد، نجم الدين، أبو إسحاق، الطرسوسى، ابن القاضى عماد الدين
-  b_yer: الطبقات السنية 1/213-214 (رقم 57)
-  b_vefat: 758
-  a_sahis: gh22
-  b_sahis: jw148
-  tur: isim
-  puan: 11.0
+  a: kataib:417
+  b: jawahir:1650
+  a_ad: برهان الدين مسعود الأموي
+  a_yer: كتائب أعلام الأخيار 3/50 (رقم 417)
+  a_vefat: 599
+  b_ad: مسعود بن شجاع بن محمد بن حسن ابن محمد بن حسن الأموى الملقب برهان الدين، الفقيه
+  b_yer: الجواهر المضية 3/467-468 (رقم 1649)
+  b_vefat: 599
+  a_sahis: tj295
+  b_sahis: jw1649
+  tur: atıf
+  puan: 9.0
   benzerlik: 1.0
   gerekce:
-  - künye
-  - 'nisbe: الطرسوسي'
+  - 'atıf: الجواهر المضية" للقرشي (٣/ ٤٦٧ - ٤٦٨)، و"الطبقات السني'
+  - 'nisbe: الاموي'
   - lakap
-  - vefat 758
-  - 'çakışma: ad uyuşmuyor: إبراهيم بن علي بن أحمد بن عبد  / أحمد بن على بن عبد الواحد بن ع'
+  - vefat 599
+  - 'çakışma: ad uyuşmuyor: برهان الدين مسعود الأموي / محمود بن شجاع بن محمد بن الحسن'
 - 'no': 2
   karar: ''
-  a: ghuraf_v1:22
-  b: kataib:602
-  a_ad: إبراهيم بن علي بن أحمد بن عبد الواحد بن عبد المنعم بن عبد الصمد، العَلَّامة، قاضي القضاة نَجم الدين أبو إسحاق ابن قاضي ا
-  a_yer: الغرف العلية 1/90-94 (رقم 22)
-  a_vefat: 758
-  b_ad: نجم الدين الطرسوسي
-  b_yer: كتائب أعلام الأخيار 3/488-500 (رقم 602)
-  b_vefat: 758
-  a_sahis: gh22
-  b_sahis: jw148
-  tur: isim
-  puan: 10.0
+  a: jawahir:841
+  b: fawaid:181
+  a_ad: عبد الغفور بن لقمان بن محمد، أبو المفاخر، الكردرى، الملقب، تاج الدين
+  a_yer: الجواهر المضية 2/443 (رقم 840)
+  a_vefat: 562
+  b_ad: عبد الغفور بن لقمان بن محمد شرف القضاة تاج الدين أبو المفاخر الكردري
+  b_yer: الفوائد البهية 98
+  b_vefat: 562
+  a_sahis: jw840
+  b_sahis: tj148
+  tur: atıf
+  puan: 8.0
   benzerlik: 1.0
   gerekce:
-  - 'nisbe: الطرسوسي'
+  - 'atıf: الفوائد البهية ٩٨، ٩٩ هدية العارفين ١/ ٥٨٧، إيضاح المك'
+  - künye
+  - 'nisbe: الكردري'
   - lakap
-  - vefat 758
-  - 'çakışma: ad uyuşmuyor: إبراهيم بن علي بن أحمد بن عبد  / أحمد بن على بن عبد الواحد بن ع'
+  - vefat 562
+  - 'çakışma: ad uyuşmuyor: عبد الغفار بن لقمان بن محمد، أ / عبد الغفور بن لقمان بن محمد شر'
 - 'no': 3
   karar: ''
-  a: tabaqat_saniyya:58
-  b: fawaid:5
-  a_ad: إبراهيم بن على بن أحمد ابن عبد الواحد بن عبد المنعم بن عبد الصمد، نجم الدين، أبو إسحاق، الطرسوسى، ابن القاضى عماد الدين
-  a_yer: الطبقات السنية 1/213-214 (رقم 57)
-  a_vefat: 758
-  b_ad: إبراهيم بن علي بن أحمد بن عبد الواحد بن عبد المنعم بن عبد الصمد
-  b_yer: الفوائد البهية 10
-  b_vefat: 758
-  a_sahis: jw148
-  b_sahis: gh22
-  tur: isim
+  a: tabaqat_saniyya:111
+  b: jawahir:63
+  a_ad: إبراهيم بن يوسف بن ميمون ابن قدامة، وقيل ابن رزين، أبو إسحاق، الباهلى
+  a_yer: الطبقات السنية 1/254 (رقم 110)
+  a_vefat: 41
+  b_ad: 'إبراهيم بن يوسف بن ميمون بن قدامة، وقيل: بن رزين، أبو إسحاق، الباهلى، الفقيه'
+  b_yer: الجواهر المضية 1/119-120 (رقم 62)
+  b_vefat: 41
+  a_sahis: ts110
+  b_sahis: jw62
+  tur: atıf
   puan: 8.0
   benzerlik: 1.0
   gerekce:
-  - vefat 758
-  - 'çakışma: ad uyuşmuyor: أحمد بن على بن عبد الواحد بن ع / إبراهيم بن علي بن أحمد بن عبد '
+  - 'atıf: الجواهر المضية، برقم ٦٢، خلاصة تذهيب تهذيب الكمال ٢٤،'
+  - künye
+  - 'nisbe: الباهلي'
+  - vefat 41
+  - 'çakışma: tabaqat_saniyya kitabında zaten başka bir madde var'
 - 'no': 4
   karar: ''
-  a: kataib:602
-  b: fawaid:5
-  a_ad: نجم الدين الطرسوسي
-  a_yer: كتائب أعلام الأخيار 3/488-500 (رقم 602)
-  a_vefat: 758
-  b_ad: إبراهيم بن علي بن أحمد بن عبد الواحد بن عبد المنعم بن عبد الصمد
-  b_yer: الفوائد البهية 10
-  b_vefat: 758
-  a_sahis: jw148
-  b_sahis: gh22
+  a: jawahir:508
+  b: taj_tarajim:96
+  a_ad: الحسين بن على بن حجاج بن على الإمام، الملقب حسام الدين الصغناقى
+  a_yer: الجواهر المضية 2/114-115 (رقم 507)
+  a_vefat: null
+  b_ad: الحسين بن علي، الصغناقي
+  b_yer: تاج التراجم 160 (رقم 96)
+  b_vefat: null
+  a_sahis: jw507
+  b_sahis: tj96
   tur: isim
-  puan: 8.0
+  puan: 7.0
   benzerlik: 1.0
   gerekce:
-  - vefat 758
-  - 'çakışma: ad uyuşmuyor: أحمد بن على بن عبد الواحد بن ع / إبراهيم بن علي بن أحمد بن عبد '
+  - 'nisbe: الصغناقي'
+  - lakap
+  - 'çakışma: ad uyuşmuyor: الحسن بن علي بن حجاج بن علي حس / الحسين بن علي، الصغناقي'
 - 'no': 5
   karar: ''
-  a: ghuraf_v2:403
-  b: jawahir:1996
-  a_ad: أبو بكر بن أحمد بن علي بن عبد العزيز، عُرف بالظَّهير، البَلْخي الأَصل، السَّمَرْقَنْدي
-  a_yer: الغرف العلية 2/591 (رقم 899)
-  a_vefat: 553
-  b_ad: أبو بكر بن أحمد بن على بن عبد العزيز البلخى الأصل السمرقندى، عرف بالظهير
-  b_yer: الجواهر المضية 4/104 (رقم 1994)
-  b_vefat: 553
-  a_sahis: gh899
-  b_sahis: jw1994
+  a: tabaqat_saniyya:759
+  b: taj_tarajim:96
+  a_ad: الحسين بن على بن حجاج بن على، الإمام الملقب حسام الدين الصغناقى
+  a_yer: الطبقات السنية 3/150-151 (رقم 758)
+  a_vefat: null
+  b_ad: الحسين بن علي، الصغناقي
+  b_yer: تاج التراجم 160 (رقم 96)
+  b_vefat: null
+  a_sahis: jw507
+  b_sahis: tj96
   tur: isim
-  puan: 8.0
+  puan: 7.0
   benzerlik: 1.0
   gerekce:
-  - 'nisbe: البلخي، السمرقندي'
-  - vefat 553
-  - 'çakışma: ad uyuşmuyor: أبو بكر بن أحمد بن علي بن عبد  / أحمد بن علي بن عبد العزيز أبو '
+  - 'nisbe: الصغناقي'
+  - lakap
+  - 'çakışma: ad uyuşmuyor: الحسن بن علي بن حجاج بن علي حس / الحسين بن علي، الصغناقي'
 - 'no': 6
   karar: ''
-  a: jawahir:1996
-  b: taj_tarajim:334
-  a_ad: أبو بكر بن أحمد بن على بن عبد العزيز البلخى الأصل السمرقندى، عرف بالظهير
-  a_yer: الجواهر المضية 4/104 (رقم 1994)
-  a_vefat: 553
-  b_ad: أبو بكربن أحمد الظهير
-  b_yer: تاج التراجم 333 (رقم 334)
-  b_vefat: 553
-  a_sahis: jw1994
-  b_sahis: gh899
-  tur: isim
-  puan: 8.0
+  a: kataib:413
+  b: jawahir:841
+  a_ad: أبو المفاخر عبد الغفور الكردري
+  a_yer: كتائب أعلام الأخيار 3/36-43 (رقم 413)
+  a_vefat: 562
+  b_ad: عبد الغفور بن لقمان بن محمد، أبو المفاخر، الكردرى، الملقب، تاج الدين
+  b_yer: الجواهر المضية 2/443 (رقم 840)
+  b_vefat: 562
+  a_sahis: tj148
+  b_sahis: jw840
+  tur: atıf
+  puan: 6.5
   benzerlik: 1.0
   gerekce:
-  - 'nisbe: البلخي، السمرقندي'
-  - vefat 553
-  - 'çakışma: ad uyuşmuyor: أحمد بن علي بن عبد العزيز أبو  / أبو بكر بن أحمد بن علي بن عبد '
+  - 'atıf: الجواهر المضية" للقرشي (٢/ ٤٤٣ - ٤٤٤)، و"تاج التراجم"'
+  - künye
+  - 'nisbe: الكردري'
+  - vefat 562
+  - 'çakışma: ad uyuşmuyor: عبد الغفور بن لقمان الكردري / عبد الغفار بن لقمان بن محمد، أ'
 - 'no': 7
-  karar: ''
-  a: tabaqat_saniyya:726
-  b: taj_tarajim:87
-  a_ad: الحسن بن منصور بن أبى القاسم محمود بن عبد العزيز الأوزجندى الفرغانى
-  a_yer: الطبقات السنية 3/116 (رقم 725)
-  a_vefat: 592
-  b_ad: الحسن بن منصور، قاضي خان
-  b_yer: تاج التراجم 151 (رقم 87)
-  b_vefat: 592
-  a_sahis: ts725
-  b_sahis: jw485
-  tur: isim
-  puan: 8.0
-  benzerlik: 1.0
-  gerekce:
-  - 'nisbe: الاوزجندي، الفرغاني'
-  - vefat 592
-  - 'çakışma: ad uyuşmuyor: الحسن بن منصور بن أبى القاسم م / فخر الدين قاضي خان'
-- 'no': 8
-  karar: ''
-  a: jawahir:1492
-  b: kataib:179
-  a_ad: محمد بن محمد بن سلام البلخى أبو نصر
-  a_yer: الجواهر المضية 3/326 (رقم 1491)
-  a_vefat: 305
-  b_ad: أبو نصر محمد بن سلام
-  b_yer: كتائب أعلام الأخيار 2/12-13 (رقم 179)
-  b_vefat: 305
-  a_sahis: jw1491
-  b_sahis: jw1324
-  tur: isim
-  puan: 7.0
-  benzerlik: 1.0
-  gerekce:
-  - künye
-  - 'nisbe: البلخي'
-  - vefat 305
-  - aynı kitapta birden çok aday
-- 'no': 9
-  karar: ''
-  a: tabaqat_saniyya:554
-  b: taj_tarajim:75
-  a_ad: أمير كاتب بن أمير عمر العميد، ابن العميد أمير غازى الشيخ، الإمام، العلامة، قوام الدين، أبو حنيفة الفارابى، الإتقانى
-  a_yer: الطبقات السنية 2/221-223 (رقم 553)
-  a_vefat: 758
-  b_ad: أمير كاتب بن أمير عمر الأتقاني
-  b_yer: تاج التراجم 138-140 (رقم 75)
-  b_vefat: 758
-  a_sahis: jw2013
-  b_sahis: tj75
-  tur: isim
-  puan: 7.0
-  benzerlik: 1.0
-  gerekce:
-  - künye
-  - 'nisbe: ابن العميد'
-  - vefat 758
-  - 'çakışma: ad uyuşmuyor: الإتقانى هو الإمام العلامة قوا / أمير كاتب بن أمير عمر الأتقاني'
-- 'no': 10
   karar: ''
   a: ghuraf_v1:366
   b: tabaqat_saniyya:1081
@@ -194,337 +143,164 @@
   - 'nisbe: الواني'
   - lakap
   - aynı kitapta birden çok aday
+- 'no': 8
+  karar: ''
+  a: jawahir:1734
+  b: fawaid:434
+  a_ad: نصر بن أحمد بن العباس بن الحسين ابن جبلة بن غالب العياضى، أبو أحمد ابن أبى نصر
+  a_yer: الجواهر المضية 3/535 (رقم 1733)
+  a_vefat: null
+  b_ad: نصر بن أحمد بن العباس أبو أحمد العياضي
+  b_yer: الفوائد البهية 220
+  b_vefat: null
+  a_sahis: jw1733
+  b_sahis: fws434
+  tur: atıf
+  puan: 5.0
+  benzerlik: 1.0
+  gerekce:
+  - 'atıf: الفوائد البهية ٢٢٠.'
+  - künye
+  - 'nisbe: العياضي'
+  - 'çakışma: ad uyuşmuyor: أبو أحمد ابن أبى نصر العياضى / نصر بن أحمد بن العباس أبو أحمد'
+- 'no': 9
+  karar: ''
+  a: athmar:210
+  b: jawahir:508
+  a_ad: الحسين بن علي الملقب حسام الدين الصّغناقيّ
+  a_yer: الأثمار الجنية 1/412 (رقم 199)
+  a_vefat: 710
+  b_ad: الحسين بن على بن حجاج بن على الإمام، الملقب حسام الدين الصغناقى
+  b_yer: الجواهر المضية 2/114-115 (رقم 507)
+  b_vefat: null
+  a_sahis: tj96
+  b_sahis: jw507
+  tur: atıf
+  puan: 5.0
+  benzerlik: 1.0
+  gerekce:
+  - 'atıf: الجواهر المضية:٢/ ١١٤ - ١١٦؛ ابن حجر، الدرر الكامنة:١٤'
+  - 'nisbe: الصغناقي'
+  - lakap
+  - 'çakışma: ad uyuşmuyor: الحسين بن علي الملقب حسام الدي / الحسن بن علي بن حجاج بن علي حس'
+- 'no': 10
+  karar: ''
+  a: athmar:210
+  b: tabaqat_saniyya:759
+  a_ad: الحسين بن علي الملقب حسام الدين الصّغناقيّ
+  a_yer: الأثمار الجنية 1/412 (رقم 199)
+  a_vefat: 710
+  b_ad: الحسين بن على بن حجاج بن على، الإمام الملقب حسام الدين الصغناقى
+  b_yer: الطبقات السنية 3/150-151 (رقم 758)
+  b_vefat: null
+  a_sahis: tj96
+  b_sahis: jw507
+  tur: atıf
+  puan: 5.0
+  benzerlik: 1.0
+  gerekce:
+  - 'atıf: الطبقات السنية:٣/ ١٥٠ - ١٥١؛ حاجي خليفة، كشف الظنون:٢٠'
+  - 'nisbe: الصغناقي'
+  - lakap
+  - 'çakışma: ad uyuşmuyor: الحسين بن علي الملقب حسام الدي / الحسن بن علي بن حجاج بن علي حس'
 - 'no': 11
   karar: ''
-  a: taj_tarajim:145
-  b: athmar:371
-  a_ad: عبيد الله بن عمر، أبوزيد الدبوسي
-  a_yer: تاج التراجم 192 (رقم 145)
-  a_vefat: 430
-  b_ad: عبيد الله بن عمر بن عيسى الدّبوسيّ
-  b_yer: الأثمار الجنية 2/491 (رقم 360)
-  b_vefat: 430
-  a_sahis: tj145
-  b_sahis: at360
-  tur: isim
-  puan: 6.0
-  benzerlik: 1.0
-  gerekce:
-  - 'nisbe: الدبوسي'
-  - vefat 430
-  - aynı kitapta birden çok aday
-- 'no': 12
-  karar: ''
-  a: taj_tarajim:330
-  b: athmar:371
-  a_ad: عبيد الله بن عمر، أبو زيد الدبوسي
-  a_yer: تاج التراجم 330 (رقم 330)
-  a_vefat: 430
-  b_ad: عبيد الله بن عمر بن عيسى الدّبوسيّ
-  b_yer: الأثمار الجنية 2/491 (رقم 360)
-  b_vefat: 430
-  a_sahis: qd597
-  b_sahis: at360
-  tur: isim
-  puan: 6.0
-  benzerlik: 1.0
-  gerekce:
-  - 'nisbe: الدبوسي'
-  - vefat 430
-  - aynı kitapta birden çok aday
-- 'no': 13
-  karar: ''
-  a: tabaqat_saniyya:271
-  b: jawahir:159
-  a_ad: أحمد بن عمر بن محمد ابن أحمد بن إسماعيل بن على بن لقمان أبو الليث، بن شيخ الإسلام أبى حفص، النسفى، يعرف بالمجد
-  a_yer: الطبقات السنية 1/416 (رقم 270)
-  a_vefat: 57
-  b_ad: أحمد بن عمر بن محمد بن أحمد بن إسماعيل بن على ابن لقمان، أبو الليث بن شيخ الإسلام أبى حفص، النسفى
-  b_yer: الجواهر المضية 1/226-228 (رقم 158)
-  b_vefat: 547
-  a_sahis: ts270
-  b_sahis: jw158
-  tur: atıf
-  puan: 6.0
-  benzerlik: 1.0
-  gerekce:
-  - 'atıf: الجواهر المضية، برقم ١٥٨، الفوائد البهية ٢٩، كتائب أعل'
-  - künye
-  - 'nisbe: النسفي'
-  - lakap
-  - vefat farklı 57/547
-  - 'çakışma: ad uyuşmuyor: أحمد بن أبي حفص النسفي عمر بن  / أبو الليث ابن أبي حفص النسفى'
-- 'no': 14
-  karar: ''
-  a: tabaqat_saniyya:370
-  b: jawahir:245
-  a_ad: أحمد بن محمد بن نصر، أبو نصر، الفقيه النيسابورى، عرف باللباد
-  a_yer: الطبقات السنية 2/93 (رقم 369)
-  a_vefat: 280
-  b_ad: أحمد بن محمد بن نصر، أبو نصر، الفقيه
-  b_yer: الجواهر المضية 1/320-321 (رقم 244)
-  b_vefat: 280
-  a_sahis: jw269
-  b_sahis: jw244
-  tur: atıf
-  puan: 6.0
-  benzerlik: 1.0
-  gerekce:
-  - 'atıf: الجواهر المضية، برقم ٢٤٤. واللباد: نسبة إلى بيع اللبود'
-  - künye
-  - vefat 280
-  - 'çakışma: jawahir kitabında zaten başka bir madde var'
-- 'no': 15
-  karar: ''
-  a: kataib:596
-  b: taj_tarajim:75
-  a_ad: قوام الدين الأتقاني
-  a_yer: كتائب أعلام الأخيار 3/473-479 (رقم 596)
-  a_vefat: 758
-  b_ad: أمير كاتب بن أمير عمر الأتقاني
-  b_yer: تاج التراجم 138-140 (رقم 75)
-  b_vefat: 758
-  a_sahis: jw2013
-  b_sahis: tj75
-  tur: atıf
-  puan: 6.0
-  benzerlik: 1.0
-  gerekce:
-  - 'atıf: تاج التراجم" لابن قطلوبغا (ص: ١٣٨ - ١٤٠)، و"بغية ال'
-  - 'nisbe: الاتقاني'
-  - vefat 758
-  - 'çakışma: ad uyuşmuyor: الإتقانى هو الإمام العلامة قوا / أمير كاتب بن أمير عمر الأتقاني'
-- 'no': 16
-  karar: ''
-  a: athmar:194
-  b: jawahir:454
-  a_ad: الحسن بن عبد الله بن سينا، أبو علي الرئيس
-  a_yer: الأثمار الجنية 1/397-398 (رقم 183)
-  a_vefat: 428
-  b_ad: الحسن بن عبد الله بن سينا، أبو على، الرئيس
-  b_yer: الجواهر المضية 2/63 (رقم 453)
-  b_vefat: 428
-  a_sahis: at183
-  b_sahis: jw453
-  tur: atıf
-  puan: 6.0
-  benzerlik: 1.0
-  gerekce:
-  - 'atıf: الجواهر المضية:٦٤،٢/ ٦٣، وهو فيه (الحسن) وهو تصحيف، لأ'
-  - künye
-  - vefat 428
-  - 'çakışma: ad uyuşmuyor: الحسن بن عبد الله بن سينا، أبو / الحسين بن عبد الله بن الحسن بن'
-- 'no': 17
-  karar: ''
-  a: athmar:371
-  b: jawahir:902
-  a_ad: عبيد الله بن عمر بن عيسى الدّبوسيّ
-  a_yer: الأثمار الجنية 2/491 (رقم 360)
-  a_vefat: 430
-  b_ad: عبيد الله بن عمر بن عيسى الدبوسى، أبو زيد
-  b_yer: الجواهر المضية 2/499-500 (رقم 901)
-  b_vefat: 430
-  a_sahis: at360
-  b_sahis: qd597
-  tur: atıf
-  puan: 6.0
-  benzerlik: 1.0
-  gerekce:
-  - 'atıf: الجواهر المضية:٥٠٠/ ٢،٤٩٩؛ ابن قطلوبغا، تاج التراجم:١٠'
-  - 'nisbe: الدبوسي'
-  - vefat 430
-  - 'çakışma: ad uyuşmuyor: عبيد الله بن عمر بن عيسى الدّب / عبد الله بن عمر بن عيسى، أبو ز'
-- 'no': 18
-  karar: ''
-  a: athmar:371
-  b: fawaid:197
-  a_ad: عبيد الله بن عمر بن عيسى الدّبوسيّ
-  a_yer: الأثمار الجنية 2/491 (رقم 360)
-  a_vefat: 430
-  b_ad: عبيد الله بن عمر بن عيسى القاضي أبو زيد الدبوسى
-  b_yer: الفوائد البهية 109
-  b_vefat: 430
-  a_sahis: at360
-  b_sahis: qd597
-  tur: atıf
-  puan: 6.0
-  benzerlik: 1.0
-  gerekce:
-  - 'atıf: الفوائد البهية:١٠٩.'
-  - 'nisbe: الدبوسي'
-  - vefat 430
-  - 'çakışma: ad uyuşmuyor: عبيد الله بن عمر بن عيسى الدّب / عبد الله بن عمر بن عيسى، أبو ز'
-- 'no': 19
-  karar: ''
-  a: jawahir:671
-  b: taj_tarajim:119
-  a_ad: طاهر بن محمد بن عمر ابن أبى العباس الحفصى
-  a_yer: الجواهر المضية 2/279 (رقم 670)
-  a_vefat: null
-  b_ad: طاهر بن محمدالحفصي
-  b_yer: تاج التراجم 173 (رقم 119)
-  b_vefat: null
-  a_sahis: jw670
-  b_sahis: tj119
-  tur: isim
-  puan: 6.0
-  benzerlik: 1.0
-  gerekce:
-  - 'nisbe: الحفصي'
-  - 'çakışma: ad uyuşmuyor: أبو طاهر بن محمد بن عمر بن أبي / طاهر بن محمدالحفصي'
-- 'no': 20
-  karar: ''
-  a: tabaqat_saniyya:1004
-  b: taj_tarajim:119
-  a_ad: طاهر بن محمد بن عمر بن أبى العباس، الحفصى
-  a_yer: الطبقات السنية 4/109 (رقم 1003)
-  a_vefat: null
-  b_ad: طاهر بن محمدالحفصي
-  b_yer: تاج التراجم 173 (رقم 119)
-  b_vefat: null
-  a_sahis: jw670
-  b_sahis: tj119
-  tur: isim
-  puan: 6.0
-  benzerlik: 1.0
-  gerekce:
-  - 'nisbe: الحفصي'
-  - 'çakışma: ad uyuşmuyor: أبو طاهر بن محمد بن عمر بن أبي / طاهر بن محمدالحفصي'
-- 'no': 21
-  karar: ''
-  a: jawahir:486
-  b: athmar:202
-  a_ad: الحسن بن منصور بن أبى القاسم بن محمود بن عبد العزيز الأوزجندى، الفرغانى الإمام الكبير، المعروف بقاضى خان، الإمام فخر الد
-  a_yer: الجواهر المضية 2/93 (رقم 485)
-  a_vefat: 592
-  b_ad: الحسن بن منصور الأوزجندي الفرغانيّ
-  b_yer: الأثمار الجنية 1/408 (رقم 191)
-  b_vefat: 592
-  a_sahis: jw485
-  b_sahis: ts725
-  tur: isim
-  puan: 6.0
-  benzerlik: 1.0
-  gerekce:
-  - 'nisbe: الاوزجندي، الفرغاني'
-  - vefat 592
-  - 'çakışma: ad uyuşmuyor: فخر الدين قاضي خان / الحسن بن منصور الأوزجندي الفرغ'
-- 'no': 22
-  karar: ''
-  a: taj_tarajim:87
-  b: athmar:202
-  a_ad: الحسن بن منصور، قاضي خان
-  a_yer: تاج التراجم 151 (رقم 87)
-  a_vefat: 592
-  b_ad: الحسن بن منصور الأوزجندي الفرغانيّ
-  b_yer: الأثمار الجنية 1/408 (رقم 191)
-  b_vefat: 592
-  a_sahis: jw485
-  b_sahis: ts725
-  tur: isim
-  puan: 6.0
-  benzerlik: 1.0
-  gerekce:
-  - 'nisbe: الاوزجندي، الفرغاني'
-  - vefat 592
-  - 'çakışma: ad uyuşmuyor: فخر الدين قاضي خان / الحسن بن منصور الأوزجندي الفرغ'
-- 'no': 23
-  karar: ''
-  a: kataib:390
-  b: jawahir:1996
-  a_ad: الظهير أبو بكر البلخي
-  a_yer: كتائب أعلام الأخيار 2/505-506 (رقم 390)
-  a_vefat: null
-  b_ad: أبو بكر بن أحمد بن على بن عبد العزيز البلخى الأصل السمرقندى، عرف بالظهير
-  b_yer: الجواهر المضية 4/104 (رقم 1994)
-  b_vefat: 553
-  a_sahis: gh899
-  b_sahis: jw1994
-  tur: atıf
-  puan: 5.0
-  benzerlik: 1.0
-  gerekce:
-  - 'atıf: الجواهر المضية" للقرشي (٤/ ١٠٤ - ١٠٥)، و"تاج التراجم"'
-  - 'nisbe: البلخي'
-  - 'çakışma: ad uyuşmuyor: الظهير أبو بكر البلخي / أحمد بن علي بن عبد العزيز أبو '
-- 'no': 24
-  karar: ''
-  a: kataib:602
-  b: taj_tarajim:7
-  a_ad: نجم الدين الطرسوسي
-  a_yer: كتائب أعلام الأخيار 3/488-500 (رقم 602)
-  a_vefat: 758
-  b_ad: إبراهيم بن علي الطرسوسي
-  b_yer: تاج التراجم 89 (رقم 7)
-  b_vefat: 758
-  a_sahis: jw148
-  b_sahis: gh22
-  tur: atıf
-  puan: 5.0
-  benzerlik: 1.0
-  gerekce:
-  - 'atıf: تاج التراجم" لابن قطلوبغا (ص: ٨٩ - ٩٠)، و"الطبقات ا'
-  - 'nisbe: الطرسوسي'
-  - vefat 758
-  - 'çakışma: ad uyuşmuyor: أحمد بن على بن عبد الواحد بن ع / إبراهيم بن علي الطرسوسي'
-- 'no': 25
-  karar: ''
-  a: tabaqat_saniyya:58
-  b: taj_tarajim:7
-  a_ad: إبراهيم بن على بن أحمد ابن عبد الواحد بن عبد المنعم بن عبد الصمد، نجم الدين، أبو إسحاق، الطرسوسى، ابن القاضى عماد الدين
-  a_yer: الطبقات السنية 1/213-214 (رقم 57)
-  a_vefat: 758
-  b_ad: إبراهيم بن علي الطرسوسي
-  b_yer: تاج التراجم 89 (رقم 7)
-  b_vefat: 758
-  a_sahis: jw148
-  b_sahis: gh22
-  tur: isim
-  puan: 5.0
-  benzerlik: 1.0
-  gerekce:
-  - 'nisbe: الطرسوسي'
-  - vefat 758
-  - 'çakışma: ad uyuşmuyor: أحمد بن على بن عبد الواحد بن ع / إبراهيم بن علي بن أحمد بن عبد '
-- 'no': 26
-  karar: ''
-  a: taj_tarajim:185
-  b: athmar:428
-  a_ad: عمر بن أحمد، ابن العديم
-  a_yer: تاج التراجم 222 (رقم 185)
+  a: athmar:428
+  b: jawahir:1038
+  a_ad: عمر بن أحمد بن هبة الله
+  a_yer: الأثمار الجنية 2/525 (رقم 417)
   a_vefat: 660
-  b_ad: عمر بن أحمد بن هبة الله
-  b_yer: الأثمار الجنية 2/525 (رقم 417)
+  b_ad: عمر بن أحمد بن هبة الله بن محمد بن هبة الله بن أحمد بن يحيى بن زهير بن هارون بن موسى بن عيسى بن عبد الله بن محمد ابن أبى
+  b_yer: الجواهر المضية 2/634-636 (رقم 1037)
   b_vefat: 660
   a_sahis: tj185
   b_sahis: jw1037
-  tur: isim
+  tur: atıf
   puan: 5.0
   benzerlik: 1.0
   gerekce:
+  - 'atıf: الجواهر المضية:٢/ ٦٣٤ - ٦٣١؛ ابن تغري بردي، النجوم الز'
   - vefat 660
-  - 'çakışma: ad uyuşmuyor: جمال الدين بن العديم / عمر بن أحمد بن هبة الله'
-- 'no': 27
+  - 'çakışma: ad uyuşmuyor: جمال الدين بن العديم / عمر بن أحمد بن هبة الله بن محم'
+- 'no': 12
   karar: ''
-  a: kataib:352
-  b: fawaid:246
-  a_ad: عماد الدين الزرنجري
-  a_yer: كتائب أعلام الأخيار 2/411 (رقم 352)
-  a_vefat: 584
-  b_ad: عماد الدين شمس الأئمة بن شمس الأئمة بكر بن محمد بن علي الزرنجرى
-  b_yer: الفوائد البهية 146
-  b_vefat: 584
-  a_sahis: jw1042
-  b_sahis: fws246
+  a: athmar:454
+  b: jawahir:1093
+  a_ad: غالي بن إبراهيم الغزنويّ
+  a_yer: الأثمار الجنية 2/543 (رقم 443)
+  a_vefat: 599
+  b_ad: غالى بن إبراهيم بن إسماعيل، أبو علىّ الغزنوىّ، البلقىّ، الإمام، ناصر الدين الملقّب بتاج الشّريعة، ويلقّب نظام الإسلام
+  b_yer: الجواهر المضية 2/686 (رقم 1092)
+  b_vefat: 599
+  a_sahis: at443
+  b_sahis: jw1092
+  tur: atıf
+  puan: 5.0
+  benzerlik: 1.0
+  gerekce:
+  - 'atıf: الجواهر المضية:٦٨٩،٢/ ٦٨٦؛ ابن قطلوبغا، تاج التراجم:٥٠'
+  - 'nisbe: الغزنوي'
+  - vefat 599
+  - 'çakışma: ad uyuşmuyor: غالي بن إبراهيم الغزنويّ / عالي بن إبراهيم بن إسماعيل ناص'
+- 'no': 13
+  karar: ''
+  a: athmar:659
+  b: jawahir:1650
+  a_ad: مسعود بن شجاع الأمويّ
+  a_yer: الأثمار الجنية 2/658 (رقم 648)
+  a_vefat: 599
+  b_ad: مسعود بن شجاع بن محمد بن حسن ابن محمد بن حسن الأموى الملقب برهان الدين، الفقيه
+  b_yer: الجواهر المضية 3/467-468 (رقم 1649)
+  b_vefat: 599
+  a_sahis: tj295
+  b_sahis: jw1649
+  tur: atıf
+  puan: 5.0
+  benzerlik: 1.0
+  gerekce:
+  - 'atıf: الجواهر المضية:٤٦٨،٣/ ٤٦٧؛ حاجي خليفة، كشف الظنون:٢/ ١'
+  - 'nisbe: الاموي'
+  - vefat 599
+  - 'çakışma: ad uyuşmuyor: مسعود بن شجاع الأمويّ / محمود بن شجاع بن محمد بن الحسن'
+- 'no': 14
+  karar: ''
+  a: jawahir:1650
+  b: taj_tarajim:295
+  a_ad: مسعود بن شجاع بن محمد بن حسن ابن محمد بن حسن الأموى الملقب برهان الدين، الفقيه
+  a_yer: الجواهر المضية 3/467-468 (رقم 1649)
+  a_vefat: 599
+  b_ad: مسعود بن شجاع الأموي
+  b_yer: تاج التراجم 302 (رقم 295)
+  b_vefat: 599
+  a_sahis: jw1649
+  b_sahis: tj295
   tur: isim
   puan: 5.0
   benzerlik: 1.0
   gerekce:
-  - 'nisbe: الزرنجري'
-  - lakap
-  - vefat 584
-  - 'çakışma: ad uyuşmuyor: عمر بن بكر بن محمد بن على بن ا / عماد الدين شمس الأئمة بن شمس ا'
-- 'no': 28
+  - 'nisbe: الاموي'
+  - vefat 599
+  - 'çakışma: ad uyuşmuyor: محمود بن شجاع بن محمد بن الحسن / مسعود بن شجاع الأموي'
+- 'no': 15
+  karar: ''
+  a: tabaqat_saniyya:1270
+  b: athmar:351
+  a_ad: عبد الغفار بن لقمان بن محمد، أبو المفاخر، الكردرى، الملقب تاج الدين
+  a_yer: الطبقات السنية 4/358 (رقم 1269)
+  a_vefat: 562
+  b_ad: عبد الغفار بن لقمان الكردريّ
+  b_yer: الأثمار الجنية 2/483 (رقم 340)
+  b_vefat: 562
+  a_sahis: jw840
+  b_sahis: at340
+  tur: isim
+  puan: 5.0
+  benzerlik: 1.0
+  gerekce:
+  - 'nisbe: الكردري'
+  - vefat 562
+  - 'çakışma: ad uyuşmuyor: عبد الغفور بن لقمان بن محمد، أ / عبد الغفار بن لقمان الكردريّ'
+- 'no': 16
   karar: ''
   a: ghuraf_v1:350
   b: tabaqat_saniyya:1284
@@ -542,7 +318,7 @@
   gerekce:
   - lakap
   - aynı kitapta birden çok aday
-- 'no': 29
+- 'no': 17
   karar: ''
   a: qand:738
   b: jawahir:1000
@@ -561,7 +337,7 @@
   - künye
   - aynı kitapta birden çok aday
   - aynı kitapta birden çok aday
-- 'no': 30
+- 'no': 18
   karar: ''
   a: jawahir:1540
   b: kataib:486
@@ -580,7 +356,7 @@
   - 'nisbe: المكي'
   - lakap
   - aynı kitapta birden çok aday
-- 'no': 31
+- 'no': 19
   karar: ''
   a: jawahir:2089
   b: kataib:389
@@ -598,7 +374,7 @@
   gerekce:
   - vefat 542/544
   - aynı kitapta birden çok aday
-- 'no': 32
+- 'no': 20
   karar: ''
   a: jawahir:2089
   b: fawaid:359
@@ -616,102 +392,7 @@
   gerekce:
   - vefat 542/544
   - aynı kitapta birden çok aday
-- 'no': 33
-  karar: ''
-  a: jawahir:486
-  b: tabaqat_saniyya:726
-  a_ad: الحسن بن منصور بن أبى القاسم بن محمود بن عبد العزيز الأوزجندى، الفرغانى الإمام الكبير، المعروف بقاضى خان، الإمام فخر الد
-  a_yer: الجواهر المضية 2/93 (رقم 485)
-  a_vefat: 592
-  b_ad: الحسن بن منصور بن أبى القاسم محمود بن عبد العزيز الأوزجندى الفرغانى
-  b_yer: الطبقات السنية 3/116 (رقم 725)
-  b_vefat: 592
-  a_sahis: jw485
-  b_sahis: ts725
-  tur: atıf
-  puan: 4.0
-  benzerlik: 1.0
-  gerekce:
-  - 'atıf: الطبقات السنية، برقم ٧٢٥، كشف الظنون ١/ ٤٧، ١٦٥، ٥٦٢.'
-  - zincir 4. halkada ayrılıyor
-  - 'nisbe: الاوزجندي، الفرغاني'
-  - vefat 592
-  - 'çakışma: ad uyuşmuyor: فخر الدين قاضي خان / الحسن بن منصور بن أبى القاسم م'
-- 'no': 34
-  karar: ''
-  a: kataib:158
-  b: jawahir:1746
-  a_ad: نصير بن يحيى
-  a_yer: كتائب أعلام الأخيار 1/532-533 (رقم 158)
-  a_vefat: 268
-  b_ad: 'نصير بن يحيى وقيل: نصر'
-  b_yer: الجواهر المضية 3/546 (رقم 1745)
-  b_vefat: 268
-  a_sahis: jw1746
-  b_sahis: jw1745
-  tur: atıf
-  puan: 4.0
-  benzerlik: 1.0
-  gerekce:
-  - 'atıf: الجواهر المضية" للقرشي (٣/ ٥٤٦)، و"الطبقات السنية" للت'
-  - vefat 268
-  - 'çakışma: jawahir kitabında zaten başka bir madde var'
-- 'no': 35
-  karar: ''
-  a: kataib:406
-  b: jawahir:1186
-  a_ad: أبو بكر القزاز
-  a_yer: كتائب أعلام الأخيار 2/538 (رقم 406)
-  a_vefat: null
-  b_ad: محمد بن أحمد بن على أبو بكر، القزاز
-  b_yer: الجواهر المضية 3/52 (رقم 1185)
-  b_vefat: null
-  a_sahis: kt406
-  b_sahis: jw1185
-  tur: atıf
-  puan: 4.0
-  benzerlik: 1.0
-  gerekce:
-  - 'atıf: الجواهر المضية" للقرشي (٣/ ٥٢)، و"الطبقات السنية" للتم'
-  - künye
-  - 'çakışma: kataib kitabında zaten başka bir madde var'
-- 'no': 36
-  karar: ''
-  a: taj_tarajim:119
-  b: athmar:297
-  a_ad: طاهر بن محمدالحفصي
-  a_yer: تاج التراجم 173 (رقم 119)
-  a_vefat: null
-  b_ad: طاهر بن محمد الحفصي
-  b_yer: الأثمار الجنية 2/452 (رقم 286)
-  b_vefat: null
-  a_sahis: tj119
-  b_sahis: jw670
-  tur: isim
-  puan: 4.0
-  benzerlik: 1.0
-  gerekce:
-  - 'nisbe: الحفصي'
-  - 'çakışma: ad uyuşmuyor: طاهر بن محمدالحفصي / أبو طاهر بن محمد بن عمر بن أبي'
-- 'no': 37
-  karar: ''
-  a: kataib:270
-  b: athmar:371
-  a_ad: أبو زيد الدبوسي
-  a_yer: كتائب أعلام الأخيار 2/188-189 (رقم 270)
-  a_vefat: null
-  b_ad: عبيد الله بن عمر بن عيسى الدّبوسيّ
-  b_yer: الأثمار الجنية 2/491 (رقم 360)
-  b_vefat: 430
-  a_sahis: qd597
-  b_sahis: at360
-  tur: isim
-  puan: 4.0
-  benzerlik: 1.0
-  gerekce:
-  - 'nisbe: الدبوسي'
-  - 'çakışma: ad uyuşmuyor: عبد الله بن عمر بن عيسى، أبو ز / عبيد الله بن عمر بن عيسى الدّب'
-- 'no': 38
+- 'no': 21
   karar: ''
   a: ghuraf_v1:172
   b: taj_tarajim:64
@@ -728,7 +409,7 @@
   benzerlik: 1.0
   gerekce:
   - 'nisbe: الولوالجي'
-- 'no': 39
+- 'no': 22
   karar: ''
   a: jawahir:1203
   b: taj_tarajim:222
@@ -745,7 +426,7 @@
   benzerlik: 1.0
   gerekce:
   - 'nisbe: السمرقندي'
-- 'no': 40
+- 'no': 23
   karar: ''
   a: jawahir:1203
   b: taj_tarajim:229
@@ -762,7 +443,7 @@
   benzerlik: 1.0
   gerekce:
   - 'nisbe: السمرقندي'
-- 'no': 41
+- 'no': 24
   karar: ''
   a: jawahir:1203
   b: athmar:479
@@ -779,7 +460,7 @@
   benzerlik: 1.0
   gerekce:
   - 'nisbe: السمرقندي'
-- 'no': 42
+- 'no': 25
   karar: ''
   a: jawahir:1219
   b: taj_tarajim:222
@@ -796,7 +477,7 @@
   benzerlik: 1.0
   gerekce:
   - 'nisbe: السمرقندي'
-- 'no': 43
+- 'no': 26
   karar: ''
   a: jawahir:1219
   b: taj_tarajim:229
@@ -813,7 +494,7 @@
   benzerlik: 1.0
   gerekce:
   - 'nisbe: السمرقندي'
-- 'no': 44
+- 'no': 27
   karar: ''
   a: taj_tarajim:222
   b: athmar:497
@@ -830,7 +511,7 @@
   benzerlik: 1.0
   gerekce:
   - 'nisbe: السمرقندي'
-- 'no': 45
+- 'no': 28
   karar: ''
   a: taj_tarajim:229
   b: athmar:497
@@ -847,46 +528,60 @@
   benzerlik: 1.0
   gerekce:
   - 'nisbe: السمرقندي'
-- 'no': 46
+- 'no': 29
   karar: ''
-  a: kataib:422
-  b: tabaqat_saniyya:897
-  a_ad: علاء الدين الخياطي
-  a_yer: كتائب أعلام الأخيار 3/56-57 (رقم 422)
+  a: jawahir:502
+  b: fawaid:116
+  a_ad: الحسين بن الخضر بن النسفى القاضى، أبو على
+  a_yer: الجواهر المضية 2/109 (رقم 501)
   a_vefat: null
-  b_ad: سديد بن محمد الخياطى، علاء الدين، الملقب بشيخ الإسلام
-  b_yer: الطبقات السنية 4/7 (رقم 896)
-  b_vefat: null
-  a_sahis: jw2030
-  b_sahis: ts896
-  tur: atıf
+  b_ad: الحسين بن خضر القاضي أبو على النسفي
+  b_yer: الفوائد البهية 66
+  b_vefat: 424
+  a_sahis: jw501
+  b_sahis: jw500
+  tur: isim
   puan: 3.0
   benzerlik: 1.0
   gerekce:
-  - 'atıf: الطبقات السنية" للتميمي (الرقم: ٨٩٦)، و"شذرات الذهب" ل'
-  - 'nisbe: الخياطي'
-  - lakap
-  - 'çakışma: ad uyuşmuyor: الخياطى علاء الأئمة / سديد بن محمد الخياطى، علاء الد'
-- 'no': 47
-  karar: ''
-  a: athmar:787
-  b: jawahir:159
-  a_ad: أبو الليث أحمد بن عمر
-  a_yer: الأثمار الجنية 2/718
-  a_vefat: null
-  b_ad: أحمد بن عمر بن محمد بن أحمد بن إسماعيل بن على ابن لقمان، أبو الليث بن شيخ الإسلام أبى حفص، النسفى
-  b_yer: الجواهر المضية 1/226-228 (رقم 158)
-  b_vefat: 547
-  a_sahis: ts270
-  b_sahis: jw158
-  tur: atıf
-  puan: 3.0
-  benzerlik: 1.0
-  gerekce:
-  - 'atıf: الجواهر المضية:١/ ٢٢٦ - ٢٢٨؛ اللكنوي، الفوائد البهية:٢'
   - künye
-  - 'çakışma: ad uyuşmuyor: أحمد بن أبي حفص النسفي عمر بن  / أبو الليث ابن أبي حفص النسفى'
-- 'no': 48
+- 'no': 30
+  karar: ''
+  a: tabaqat_saniyya:746
+  b: fawaid:116
+  a_ad: الحسين بن الخضر بن النسفى القاضى أبو على
+  a_yer: الطبقات السنية 3/131 (رقم 745)
+  a_vefat: null
+  b_ad: الحسين بن خضر القاضي أبو على النسفي
+  b_yer: الفوائد البهية 66
+  b_vefat: 424
+  a_sahis: jw501
+  b_sahis: jw500
+  tur: isim
+  puan: 3.0
+  benzerlik: 1.0
+  gerekce:
+  - künye
+- 'no': 31
+  karar: ''
+  a: athmar:682
+  b: jawahir:1734
+  a_ad: نصر بن أحمد العياضيّ
+  a_yer: الأثمار الجنية 2/668 (رقم 671)
+  a_vefat: null
+  b_ad: نصر بن أحمد بن العباس بن الحسين ابن جبلة بن غالب العياضى، أبو أحمد ابن أبى نصر
+  b_yer: الجواهر المضية 3/535 (رقم 1733)
+  b_vefat: null
+  a_sahis: fws434
+  b_sahis: jw1733
+  tur: atıf
+  puan: 3.0
+  benzerlik: 1.0
+  gerekce:
+  - 'atıf: الجواهر المضية:٣/ ٥٣٥؛ اللكنوي، الفوائد البهية:٢٢٠.'
+  - 'nisbe: العياضي'
+  - 'çakışma: ad uyuşmuyor: نصر بن أحمد العياضيّ / أبو أحمد ابن أبى نصر العياضى'
+- 'no': 32
   karar: ''
   a: jawahir:1955
   b: fawaid:244
@@ -906,7 +601,7 @@
   - künye
   - 'nisbe: الرازي'
   - aynı kitapta birden çok aday
-- 'no': 49
+- 'no': 33
   karar: ''
   a: jawahir:123
   b: jawahir:1907
@@ -925,7 +620,7 @@
   - künye
   - 'nisbe: البلخي'
   - künye birden çok kişiye uyuyor
-- 'no': 50
+- 'no': 34
   karar: ''
   a: jawahir:123
   b: taj_tarajim:328
@@ -944,7 +639,7 @@
   - künye
   - 'nisbe: البلخي'
   - künye birden çok kişiye uyuyor
-- 'no': 51
+- 'no': 35
   karar: ''
   a: jawahir:123
   b: athmar:754
@@ -963,7 +658,7 @@
   - künye
   - 'nisbe: البلخي'
   - künye birden çok kişiye uyuyor
-- 'no': 52
+- 'no': 36
   karar: ''
   a: jawahir:1907
   b: taj_tarajim:240
@@ -982,7 +677,7 @@
   - künye
   - 'nisbe: البلخي'
   - künye birden çok kişiye uyuyor
-- 'no': 53
+- 'no': 37
   karar: ''
   a: jawahir:1907
   b: kataib:224
@@ -1001,7 +696,7 @@
   - künye
   - 'nisbe: البلخي'
   - künye birden çok kişiye uyuyor
-- 'no': 54
+- 'no': 38
   karar: ''
   a: jawahir:1907
   b: fawaid:331
@@ -1020,7 +715,7 @@
   - künye
   - 'nisbe: البلخي'
   - künye birden çok kişiye uyuyor
-- 'no': 55
+- 'no': 39
   karar: ''
   a: taj_tarajim:240
   b: taj_tarajim:328
@@ -1039,7 +734,7 @@
   - künye
   - 'nisbe: البلخي'
   - künye birden çok kişiye uyuyor
-- 'no': 56
+- 'no': 40
   karar: ''
   a: taj_tarajim:240
   b: athmar:754
@@ -1058,7 +753,7 @@
   - künye
   - 'nisbe: البلخي'
   - künye birden çok kişiye uyuyor
-- 'no': 57
+- 'no': 41
   karar: ''
   a: taj_tarajim:328
   b: kataib:224
@@ -1077,7 +772,7 @@
   - künye
   - 'nisbe: البلخي'
   - künye birden çok kişiye uyuyor
-- 'no': 58
+- 'no': 42
   karar: ''
   a: taj_tarajim:328
   b: fawaid:331
@@ -1096,7 +791,7 @@
   - künye
   - 'nisbe: البلخي'
   - künye birden çok kişiye uyuyor
-- 'no': 59
+- 'no': 43
   karar: ''
   a: kataib:224
   b: athmar:754
@@ -1115,7 +810,7 @@
   - künye
   - 'nisbe: البلخي'
   - künye birden çok kişiye uyuyor
-- 'no': 60
+- 'no': 44
   karar: ''
   a: athmar:754
   b: fawaid:331
@@ -1134,7 +829,7 @@
   - künye
   - 'nisbe: البلخي'
   - künye birden çok kişiye uyuyor
-- 'no': 61
+- 'no': 45
   karar: ''
   a: jawahir:694
   b: jawahir:1970
@@ -1153,7 +848,7 @@
   - künye
   - 'nisbe: البلخي'
   - künye birden çok kişiye uyuyor
-- 'no': 62
+- 'no': 46
   karar: ''
   a: jawahir:1970
   b: tabaqat_saniyya:1039
@@ -1172,7 +867,7 @@
   - künye
   - 'nisbe: البلخي'
   - künye birden çok kişiye uyuyor
-- 'no': 63
+- 'no': 47
   karar: ''
   a: jawahir:1970
   b: taj_tarajim:125
@@ -1191,26 +886,7 @@
   - künye
   - 'nisbe: البلخي'
   - künye birden çok kişiye uyuyor
-- 'no': 64
-  karar: ''
-  a: jawahir:1969
-  b: fawaid:431
-  a_ad: أبو القاسم السمرقندى، الإمام
-  a_yer: الجواهر المضية 4/78 (رقم 1968)
-  a_vefat: null
-  b_ad: ناصر الدين بن يوسف أبو القاسم الشهيد الحسيني السمرقندي
-  b_yer: الفوائد البهية 219
-  b_vefat: 156
-  a_sahis: jw1968
-  b_sahis: fws431
-  tur: isim
-  puan: 2.5
-  benzerlik: 1.0
-  gerekce:
-  - künye
-  - 'nisbe: السمرقندي'
-  - künye birden çok kişiye uyuyor
-- 'no': 65
+- 'no': 48
   karar: ''
   a: jawahir:698
   b: jawahir:1955
@@ -1229,7 +905,7 @@
   - künye
   - 'nisbe: الرازي'
   - aynı kitapta birden çok aday
-- 'no': 66
+- 'no': 49
   karar: ''
   a: jawahir:698
   b: jawahir:1956
@@ -1248,7 +924,7 @@
   - künye
   - 'nisbe: الرازي'
   - aynı kitapta birden çok aday
-- 'no': 67
+- 'no': 50
   karar: ''
   a: jawahir:698
   b: kataib:141
@@ -1268,7 +944,7 @@
   - 'nisbe: الرازي'
   - aynı kitapta birden çok aday
   - aynı kitapta birden çok aday
-- 'no': 68
+- 'no': 51
   karar: ''
   a: jawahir:698
   b: fawaid:244
@@ -1288,7 +964,7 @@
   - 'nisbe: الرازي'
   - aynı kitapta birden çok aday
   - aynı kitapta birden çok aday
-- 'no': 69
+- 'no': 52
   karar: ''
   a: jawahir:1954
   b: kataib:169
@@ -1308,7 +984,7 @@
   - 'nisbe: الرازي'
   - aynı kitapta birden çok aday
   - aynı kitapta birden çok aday
-- 'no': 70
+- 'no': 53
   karar: ''
   a: jawahir:1955
   b: tabaqat_saniyya:1044
@@ -1327,7 +1003,7 @@
   - künye
   - 'nisbe: الرازي'
   - aynı kitapta birden çok aday
-- 'no': 71
+- 'no': 54
   karar: ''
   a: jawahir:1955
   b: kataib:141
@@ -1347,7 +1023,7 @@
   - 'nisbe: الرازي'
   - aynı kitapta birden çok aday
   - aynı kitapta birden çok aday
-- 'no': 72
+- 'no': 55
   karar: ''
   a: jawahir:1955
   b: kataib:169
@@ -1367,7 +1043,7 @@
   - 'nisbe: الرازي'
   - aynı kitapta birden çok aday
   - aynı kitapta birden çok aday
-- 'no': 73
+- 'no': 56
   karar: ''
   a: jawahir:1955
   b: athmar:780
@@ -1386,7 +1062,7 @@
   - künye
   - 'nisbe: الرازي'
   - aynı kitapta birden çok aday
-- 'no': 74
+- 'no': 57
   karar: ''
   a: jawahir:1955
   b: fawaid:186
@@ -1406,7 +1082,7 @@
   - 'nisbe: الرازي'
   - aynı kitapta birden çok aday
   - aynı kitapta birden çok aday
-- 'no': 75
+- 'no': 58
   karar: ''
   a: jawahir:1956
   b: tabaqat_saniyya:1044
@@ -1425,7 +1101,7 @@
   - künye
   - 'nisbe: الرازي'
   - aynı kitapta birden çok aday
-- 'no': 76
+- 'no': 59
   karar: ''
   a: jawahir:1956
   b: kataib:169
@@ -1445,7 +1121,7 @@
   - 'nisbe: الرازي'
   - aynı kitapta birden çok aday
   - aynı kitapta birden çok aday
-- 'no': 77
+- 'no': 60
   karar: ''
   a: jawahir:1956
   b: fawaid:186
@@ -1465,7 +1141,7 @@
   - 'nisbe: الرازي'
   - aynı kitapta birden çok aday
   - aynı kitapta birden çok aday
-- 'no': 78
+- 'no': 61
   karar: ''
   a: tabaqat_saniyya:1044
   b: kataib:141
@@ -1484,7 +1160,7 @@
   - künye
   - 'nisbe: الرازي'
   - aynı kitapta birden çok aday
-- 'no': 79
+- 'no': 62
   karar: ''
   a: tabaqat_saniyya:1044
   b: fawaid:244
@@ -1503,7 +1179,7 @@
   - künye
   - 'nisbe: الرازي'
   - aynı kitapta birden çok aday
-- 'no': 80
+- 'no': 63
   karar: ''
   a: kataib:141
   b: fawaid:186
@@ -1523,7 +1199,7 @@
   - 'nisbe: الرازي'
   - aynı kitapta birden çok aday
   - aynı kitapta birden çok aday
-- 'no': 81
+- 'no': 64
   karar: ''
   a: kataib:169
   b: athmar:780
@@ -1542,7 +1218,7 @@
   - künye
   - 'nisbe: الرازي'
   - aynı kitapta birden çok aday
-- 'no': 82
+- 'no': 65
   karar: ''
   a: kataib:169
   b: fawaid:244
@@ -1562,7 +1238,7 @@
   - 'nisbe: الرازي'
   - aynı kitapta birden çok aday
   - aynı kitapta birden çok aday
-- 'no': 83
+- 'no': 66
   karar: ''
   a: jawahir:710
   b: jawahir:1881
@@ -1581,7 +1257,7 @@
   - künye
   - 'nisbe: البلخي'
   - künye birden çok kişiye uyuyor
-- 'no': 84
+- 'no': 67
   karar: ''
   a: jawahir:1881
   b: tabaqat_saniyya:1063
@@ -1600,7 +1276,7 @@
   - künye
   - 'nisbe: البلخي'
   - künye birden çok kişiye uyuyor
-- 'no': 85
+- 'no': 68
   karar: ''
   a: jawahir:1881
   b: kataib:187
@@ -1619,7 +1295,7 @@
   - künye
   - 'nisbe: البلخي'
   - künye birden çok kişiye uyuyor
-- 'no': 86
+- 'no': 69
   karar: ''
   a: jawahir:1881
   b: kataib:214
@@ -1638,7 +1314,7 @@
   - künye
   - 'nisbe: البلخي'
   - künye birden çok kişiye uyuyor
-- 'no': 87
+- 'no': 70
   karar: ''
   a: jawahir:1881
   b: kataib:359
@@ -1657,7 +1333,7 @@
   - künye
   - 'nisbe: البلخي'
   - künye birden çok kişiye uyuyor
-- 'no': 88
+- 'no': 71
   karar: ''
   a: jawahir:1881
   b: kataib:390
@@ -1676,7 +1352,7 @@
   - künye
   - 'nisbe: البلخي'
   - künye birden çok kişiye uyuyor
-- 'no': 89
+- 'no': 72
   karar: ''
   a: jawahir:1881
   b: fawaid:33
@@ -1687,7 +1363,7 @@
   b_yer: الفوائد البهية 27
   b_vefat: 553
   a_sahis: jw1880
-  b_sahis: jw1994
+  b_sahis: gh899
   tur: isim
   puan: 2.5
   benzerlik: 1.0
@@ -1695,7 +1371,7 @@
   - künye
   - 'nisbe: البلخي'
   - künye birden çok kişiye uyuyor
-- 'no': 90
+- 'no': 73
   karar: ''
   a: jawahir:1881
   b: fawaid:277
@@ -1714,7 +1390,7 @@
   - künye
   - 'nisbe: البلخي'
   - künye birden çok kişiye uyuyor
-- 'no': 91
+- 'no': 74
   karar: ''
   a: jawahir:1881
   b: fawaid:290
@@ -1733,103 +1409,7 @@
   - künye
   - 'nisbe: البلخي'
   - künye birden çok kişiye uyuyor
-- 'no': 92
-  karar: ''
-  a: jawahir:1492
-  b: athmar:794
-  a_ad: محمد بن محمد بن سلام البلخى أبو نصر
-  a_yer: الجواهر المضية 3/326 (رقم 1491)
-  a_vefat: 305
-  b_ad: أبو نصر البلخي
-  b_yer: الأثمار الجنية 2/722
-  b_vefat: null
-  a_sahis: jw1491
-  b_sahis: jw1324
-  tur: isim
-  puan: 2.5
-  benzerlik: 1.0
-  gerekce:
-  - künye
-  - 'nisbe: البلخي'
-  - aynı kitapta birden çok aday
-- 'no': 93
-  karar: ''
-  a: kataib:222
-  b: jawahir:1734
-  a_ad: أبو أحمد العياضي
-  a_yer: كتائب أعلام الأخيار 2/87-88 (رقم 222)
-  a_vefat: null
-  b_ad: نصر بن أحمد بن العباس بن الحسين ابن جبلة بن غالب العياضى، أبو أحمد ابن أبى نصر
-  b_yer: الجواهر المضية 3/535 (رقم 1733)
-  b_vefat: null
-  a_sahis: jw1872
-  b_sahis: jw1733
-  tur: atıf
-  puan: 2.5
-  benzerlik: 1.0
-  gerekce:
-  - 'atıf: الجواهر المضية" للقرشي (٣/ ٥٣٥)، و"الطبقات السنية" للت'
-  - künye
-  - 'nisbe: العياضي'
-  - 'çakışma: ad uyuşmuyor: أبو أحمد ابن أبى نصر العياضى / نصر بن أحمد بن العباس بن الحسي'
-- 'no': 94
-  karar: ''
-  a: athmar:785
-  b: fawaid:431
-  a_ad: أبو القاسم السمرقندي
-  a_yer: الأثمار الجنية 2/718
-  a_vefat: null
-  b_ad: ناصر الدين بن يوسف أبو القاسم الشهيد الحسيني السمرقندي
-  b_yer: الفوائد البهية 219
-  b_vefat: 156
-  a_sahis: jw1968
-  b_sahis: fws431
-  tur: atıf
-  puan: 2.5
-  benzerlik: 1.0
-  gerekce:
-  - 'atıf: الفوائد البهية:٢١٩.'
-  - künye
-  - 'nisbe: السمرقندي'
-  - 'çakışma: ad uyuşmuyor: ناصر الدين أبو القاسم محمد / ناصر الدين بن يوسف أبو القاسم '
-- 'no': 95
-  karar: ''
-  a: jawahir:1492
-  b: jawahir:1987
-  a_ad: محمد بن محمد بن سلام البلخى أبو نصر
-  a_yer: الجواهر المضية 3/326 (رقم 1491)
-  a_vefat: 305
-  b_ad: أبو نصر البلخى
-  b_yer: الجواهر المضية 4/93 (رقم 1985)
-  b_vefat: null
-  a_sahis: jw1491
-  b_sahis: jw1324
-  tur: isim
-  puan: 2.5
-  benzerlik: 1.0
-  gerekce:
-  - künye
-  - 'nisbe: البلخي'
-  - 'çakışma: jawahir kitabında zaten başka bir madde var'
-- 'no': 96
-  karar: ''
-  a: jawahir:639
-  b: tabaqat_saniyya:955
-  a_ad: شاذان بن إبراهيم
-  a_yer: الجواهر المضية 2/245 (رقم 638)
-  a_vefat: null
-  b_ad: شاذان بن إبراهيم
-  b_yer: الطبقات السنية 4/65 (رقم 954)
-  b_vefat: null
-  a_sahis: jw638
-  b_sahis: jw639
-  tur: atıf
-  puan: 2.0
-  benzerlik: 1.0
-  gerekce:
-  - 'atıf: الطبقات السنية، برقم ٩٥٤، الفوائد البهية ٨٣.'
-  - aynı kitapta birden çok aday
-- 'no': 97
+- 'no': 75
   karar: ''
   a: athmar:34
   b: jawahir:69
@@ -1847,7 +1427,7 @@
   gerekce:
   - 'atıf: الجواهر المضية:١٣١،١/ ١٣٠؛ التميمي، الطبقات السنية:١/'
   - aynı kitapta birden çok aday
-- 'no': 98
+- 'no': 76
   karar: ''
   a: athmar:34
   b: tabaqat_saniyya:129
@@ -1865,7 +1445,7 @@
   gerekce:
   - 'atıf: الطبقات السنية:١/ ٢٦٨.'
   - aynı kitapta birden çok aday
-- 'no': 99
+- 'no': 77
   karar: ''
   a: athmar:113
   b: tabaqat_saniyya:395
@@ -1883,52 +1463,33 @@
   gerekce:
   - 'atıf: الطبقات السنية:٢/ ١١١، ١١٢.'
   - aynı kitapta birden çok aday
-- 'no': 100
+- 'no': 78
   karar: ''
-  a: jawahir:1640
-  b: fawaid:409
-  a_ad: محمود الترجمانى
-  a_yer: الجواهر المضية 3/458 (رقم 1639)
+  a: jawahir:1325
+  b: fawaid:304
+  a_ad: محمد بن سلام الإمام
+  a_yer: الجواهر المضية 3/171 (رقم 1324)
   a_vefat: null
-  b_ad: محمود الترجماني برهان الدين شرف الأئمة المكي الخوارزمي
-  b_yer: الفوائد البهية 211
-  b_vefat: null
-  a_sahis: jw1639
-  b_sahis: fws409
+  b_ad: محمد بن سلام أبو نصر البلخي
+  b_yer: الفوائد البهية 168
+  b_vefat: 5
+  a_sahis: jw1324
+  b_sahis: jw1491
   tur: atıf
   puan: 2.0
   benzerlik: 1.0
   gerekce:
-  - 'atıf: الفوائد البهية ٢١١.'
-  - 'nisbe: الترجماني'
-  - 'çakışma: ad uyuşmuyor: الصدر السعيد محمود الترجماني ا / محمود الترجماني برهان الدين شر'
-- 'no': 101
-  karar: ''
-  a: tabaqat_saniyya:955
-  b: fawaid:159
-  a_ad: شاذان بن إبراهيم
-  a_yer: الطبقات السنية 4/65 (رقم 954)
-  a_vefat: null
-  b_ad: شاذان بن إبراهيم البصري
-  b_yer: الفوائد البهية 83
-  b_vefat: null
-  a_sahis: jw639
-  b_sahis: jw638
-  tur: atıf
-  puan: 2.0
-  benzerlik: 1.0
-  gerekce:
-  - 'atıf: الفوائد البهية ٨٣، كتائب أعلام الأخيار، برقم ١٥٢. وذكر'
+  - 'atıf: الفوائد البهية ١٦٨.'
   - 'çakışma: jawahir kitabında zaten başka bir madde var'
-- 'no': 102
+- 'no': 79
   karar: ''
-  a: athmar:31
-  b: tabaqat_saniyya:112
-  a_ad: إبراهيم بن يوسف بن قدامة أبو إسحاق الباهلي المعروف بالماكيانيّ
-  a_yer: الأثمار الجنية 1/306 (رقم 20)
-  a_vefat: 241
+  a: tabaqat_saniyya:112
+  b: jawahir:64
+  a_ad: إبراهيم بن يوسف
+  a_yer: الطبقات السنية 1/255 (رقم 111)
+  a_vefat: null
   b_ad: إبراهيم بن يوسف
-  b_yer: الطبقات السنية 1/255 (رقم 111)
+  b_yer: الجواهر المضية 1/121 (رقم 63)
   b_vefat: null
   a_sahis: jw62
   b_sahis: jw63
@@ -1936,27 +1497,49 @@
   puan: 2.0
   benzerlik: 1.0
   gerekce:
-  - 'atıf: الطبقات السنية:١/ ٢٥٤ - ٢٥٥؛ اللكنوي، الفوائد البهية:'
+  - 'atıf: الجواهر المضية، برقم ٦٣.'
   - 'çakışma: jawahir kitabında zaten başka bir madde var'
-- 'no': 103
+- 'no': 80
   karar: ''
-  a: athmar:482
-  b: fawaid:279
-  a_ad: محمد بن أحمد
-  a_yer: الأثمار الجنية 2/558 (رقم 471)
-  a_vefat: null
-  b_ad: محمد بن أحمد بن عمر الصاعدي البخاري جلال الدين العيدى
-  b_yer: الفوائد البهية 157
-  b_vefat: 68
-  a_sahis: jw1162
-  b_sahis: jw1189
+  a: kataib:237
+  b: jawahir:502
+  a_ad: أبو علي النسفي
+  a_yer: كتائب أعلام الأخيار 2/116-117 (رقم 237)
+  a_vefat: 424
+  b_ad: الحسين بن الخضر بن النسفى القاضى، أبو على
+  b_yer: الجواهر المضية 2/109 (رقم 501)
+  b_vefat: null
+  a_sahis: jw500
+  b_sahis: jw501
   tur: atıf
-  puan: 2.0
+  puan: 1.5
   benzerlik: 1.0
   gerekce:
-  - 'atıf: الفوائد البهية:١٥٧.'
-  - 'çakışma: kataib kitabında zaten başka bir madde var'
-- 'no': 104
+  - 'atıf: الجواهر المضية" للقرشي (٢/ ١٠٩ - ١١٠)، و"الطبقات السني'
+  - künye
+  - 'çakışma: tabaqat_saniyya kitabında zaten başka bir madde var'
+- 'no': 81
+  karar: ''
+  a: kataib:439
+  b: jawahir:1093
+  a_ad: ناصر الدين غالي الغزنوي
+  a_yer: كتائب أعلام الأخيار 3/107 (رقم 439)
+  a_vefat: 582
+  b_ad: غالى بن إبراهيم بن إسماعيل، أبو علىّ الغزنوىّ، البلقىّ، الإمام، ناصر الدين الملقّب بتاج الشّريعة، ويلقّب نظام الإسلام
+  b_yer: الجواهر المضية 2/686 (رقم 1092)
+  b_vefat: 599
+  a_sahis: tj191
+  b_sahis: jw1092
+  tur: atıf
+  puan: 0.5
+  benzerlik: 1.0
+  gerekce:
+  - 'atıf: الجواهر المضية" للقرشي (٢/ ٦٨٦ - ٦٨٧)، و"تاج التراجم"'
+  - 'nisbe: الغزنوي'
+  - lakap
+  - vefat farklı 582/599
+  - 'çakışma: ad uyuşmuyor: ناصر الدين غالي الغزنوي / عالي بن إبراهيم بن إسماعيل ناص'
+- 'no': 82
   karar: ''
   a: athmar:574
   b: jawahir:1443
@@ -1975,7 +1558,7 @@
   - 'atıf: الجواهر المضية:٣/ ٢٨٤، ٢٨٥؛ اللكنوي، الفوائد البهية:١٨'
   - künye
   - vefat farklı 566/511
-- 'no': 105
+- 'no': 83
   karar: ''
   a: athmar:571
   b: fawaid:335
@@ -1993,7 +1576,7 @@
   gerekce:
   - 'atıf: الفوائد البهية:١٨٢.'
   - zincir 2. halkada ayrılıyor
-- 'no': 106
+- 'no': 84
   karar: ''
   a: kataib:603
   b: jawahir:1453
@@ -2011,7 +1594,7 @@
   gerekce:
   - 'atıf: الجواهر المضية" للقرشي (٣/ ٢٩٢ - ٢٩٣)، و"الطبقات السني'
   - vefat farklı 706/766
-- 'no': 107
+- 'no': 85
   karar: ''
   a: kataib:382
   b: jawahir:1727
@@ -2031,7 +1614,7 @@
   - zincir 1. halkada ayrılıyor
   - 'nisbe: المطرزي'
   - lakap
-- 'no': 108
+- 'no': 86
   karar: ''
   a: kataib:382
   b: taj_tarajim:304
@@ -2051,319 +1634,7 @@
   - zincir 1. halkada ayrılıyor
   - 'nisbe: المطرزي'
   - lakap
-- 'no': 109
-  karar: ''
-  a: kataib:479
-  b: taj_tarajim:119
-  a_ad: نجم الملة الحفصي
-  a_yer: كتائب أعلام الأخيار 3/191 (رقم 479)
-  a_vefat: null
-  b_ad: طاهر بن محمدالحفصي
-  b_yer: تاج التراجم 173 (رقم 119)
-  b_vefat: null
-  a_sahis: jw670
-  b_sahis: tj119
-  tur: atıf
-  puan: 6.0
-  benzerlik: 0.83
-  gerekce:
-  - 'atıf: تاج التراجم" لابن قطلوبغا (ص: ١٧٣)، و"الطبقات السني'
-  - 'nisbe: الحفصي'
-  - 'çakışma: ad uyuşmuyor: أبو طاهر بن محمد بن عمر بن أبي / طاهر بن محمدالحفصي'
-- 'no': 110
-  karar: ''
-  a: taj_tarajim:75
-  b: fawaid:83
-  a_ad: أمير كاتب بن أمير عمر الأتقاني
-  a_yer: تاج التراجم 138-140 (رقم 75)
-  a_vefat: 758
-  b_ad: أمير كاتب العميد بن أمير غازي قوام الدين المكني بأبي حنيفة الاتقاني الفارابي
-  b_yer: الفوائد البهية 50-51
-  b_vefat: 758
-  a_sahis: tj75
-  b_sahis: jw2013
-  tur: isim
-  puan: 6.0
-  benzerlik: 0.83
-  gerekce:
-  - 'nisbe: الاتقاني'
-  - vefat 758
-  - 'çakışma: ad uyuşmuyor: أمير كاتب بن أمير عمر الأتقاني / الإتقانى هو الإمام العلامة قوا'
-- 'no': 111
-  karar: ''
-  a: ghuraf_v1:111
-  b: tabaqat_saniyya:259
-  a_ad: أحمد بن علي بن أحمد ابن أبي سعد رافِع، القَلْعي الدمشقي
-  a_yer: الغرف العلية 1/257-258 (رقم 111)
-  a_vefat: 798
-  b_ad: أحمد بن على بن محمد ابن أيوب بن رافع القلعى، الدمشقى
-  b_yer: الطبقات السنية 1/406 (رقم 258)
-  b_vefat: 798
-  a_sahis: gh111
-  b_sahis: ts258
-  tur: isim
-  puan: 4.0
-  benzerlik: 0.83
-  gerekce:
-  - zincir 3. halkada ayrılıyor
-  - 'nisbe: الدمشقي، القلعي'
-  - vefat 798
-- 'no': 112
-  karar: ''
-  a: ghuraf_v1:152
-  b: jawahir:176
-  a_ad: أحمد بن محمد بن إبراهيم بن بنان، الدمشقي، الحنفي، الشيخ شِهاب الدين أبو العباس
-  a_yer: الغرف العلية 1/313 (رقم 152)
-  a_vefat: 661
-  b_ad: أحمد بن محمد بن إبراهيم، أبو العباس، الرومى، شهاب الدين
-  b_yer: الجواهر المضية 1/244 (رقم 175)
-  b_vefat: null
-  a_sahis: gh152
-  b_sahis: jw175
-  tur: isim
-  puan: 4.0
-  benzerlik: 0.83
-  gerekce:
-  - künye
-  - lakap
-  - aynı kitapta birden çok aday
-- 'no': 113
-  karar: ''
-  a: kataib:601
-  b: fawaid:351
-  a_ad: حافظ الدين أبو طاهر محمد الظاهري
-  a_yer: كتائب أعلام الأخيار 3/486-487 (رقم 601)
-  a_vefat: null
-  b_ad: محمد بن محمد بن الحسن بن علي أبو طاهر حافظ الدين الطاهرى
-  b_yer: الفوائد البهية 186
-  b_vefat: null
-  a_sahis: kt601
-  b_sahis: fws351
-  tur: isim
-  puan: 3.5
-  benzerlik: 0.83
-  gerekce:
-  - künye
-- 'no': 114
-  karar: ''
-  a: tabaqat_saniyya:205
-  b: jawahir:115
-  a_ad: أحمد بن طاهر بن حيدرة ابن إبراهيم بن العباس بن الحسين
-  a_yer: الطبقات السنية 1/361 (رقم 204)
-  a_vefat: null
-  b_ad: أحمد بن طاهر بن حيدرة بن إبراهيم ابن العباس بن الحسن
-  b_yer: الجواهر المضية 1/176 (رقم 114)
-  b_vefat: null
-  a_sahis: ts204
-  b_sahis: jw114
-  tur: atıf
-  puan: 2.0
-  benzerlik: 0.83
-  gerekce:
-  - 'atıf: الجواهر المضية، برقم ١١٤، وفيه: «بن العباس بن الحسن»،'
-  - zincir 6. halkada ayrılıyor
-- 'no': 115
-  karar: ''
-  a: kataib:639
-  b: tabaqat_saniyya:855
-  a_ad: داود بن أغلبك الرومي
-  a_yer: كتائب أعلام الأخيار 4/22 (رقم 639)
-  a_vefat: 715
-  b_ad: داود بن غلبك بن على الرومى، المعروف بالبدر الطويل
-  b_yer: الطبقات السنية 3/231 (رقم 854)
-  b_vefat: 715
-  a_sahis: fws136
-  b_sahis: jw579
-  tur: atıf
-  puan: 1.0
-  benzerlik: 0.83
-  gerekce:
-  - 'atıf: الطبقات السنية" للتميمي (الرقم: ٨٥٤)، و"الفوائد البهية'
-  - zincir 2. halkada ayrılıyor
-  - 'nisbe: الرومي'
-  - vefat 715
-- 'no': 116
-  karar: ''
-  a: jawahir:792
-  b: tabaqat_saniyya:1192
-  a_ad: عبد الرحمن بن محمد بن محمد بن عزيز بن محمد ابن زيد بن محمد، أبو سعد الحاكم، الإمام المعروف بابن درست
-  a_yer: الجواهر المضية 2/403 (رقم 791)
-  a_vefat: 431
-  b_ad: عبد الرحمن بن محمد بن عزيز بن محمد ابن زيد بن محمد، أبو سعد، الحاكم، الإمام، المعروف بابن دوست
-  b_yer: الطبقات السنية 4/309-312 (رقم 1191)
-  b_vefat: null
-  a_sahis: qd414
-  b_sahis: ts1191
-  tur: atıf
-  puan: 0.0
-  benzerlik: 0.83
-  gerekce:
-  - 'atıf: الطبقات السنية، برقم ١١٩١.'
-  - zincir 3. halkada ayrılıyor
-  - künye
-- 'no': 117
-  karar: ''
-  a: jawahir:656
-  b: tabaqat_saniyya:975
-  a_ad: صاعد بن عبد الرحمن بن سليم بن عبد الجبار بن محمد بن على بن محمد، أبو البدر
-  a_yer: الجواهر المضية 2/262 (رقم 655)
-  a_vefat: null
-  b_ad: صاعد بن عبد الرحمن بن سالم بن عبد الجبار ابن محمد بن على بن محمد
-  b_yer: الطبقات السنية 4/80 (رقم 974)
-  b_vefat: null
-  a_sahis: jw655
-  b_sahis: ts974
-  tur: atıf
-  puan: -1.0
-  benzerlik: 0.83
-  gerekce:
-  - 'atıf: الطبقات السنية، برقم ٩٧٤.'
-  - zincir 3. halkada ayrılıyor
-- 'no': 118
-  karar: ''
-  a: kataib:314
-  b: jawahir:1161
-  a_ad: أبو الوضاح محمد بن محمد
-  a_yer: كتائب أعلام الأخيار 2/292-293 (رقم 314)
-  a_vefat: 491
-  b_ad: 'محمد بن أحمد بن حمزة بن الحسين بن القاسم ابن حمزة بن الحسن بن على بن عبيد الله ابن الحسن بن عبيد الله بن العباس ابن على '
-  b_yer: الجواهر المضية 3/28 (رقم 1160)
-  b_vefat: null
-  a_sahis: jw1481
-  b_sahis: jw1160
-  tur: atıf
-  puan: -2.5
-  benzerlik: 0.83
-  gerekce:
-  - 'atıf: الجواهر المضية" للقرشي (٣/ ٢٨، ٤/ ٣٠)، و"الطبقات السني'
-  - zincir 2. halkada ayrılıyor
-- 'no': 119
-  karar: ''
-  a: tabaqat_saniyya:301
-  b: jawahir:185
-  a_ad: أحمد بن محمد بن أحمد بن محمود، أبو الحسين بن أبى جعفر، السمنانى
-  a_yer: الطبقات السنية 2/35 (رقم 300)
-  a_vefat: 466
-  b_ad: أحمد بن محمد بن أحمد بن محمد بن أحمد بن محمود بن الأعين، أبو الحسين، بن أبى جعفر، السمعانى
-  b_yer: الجواهر المضية 1/254-255 (رقم 184)
-  b_vefat: 410
-  a_sahis: ts300
-  b_sahis: jw184
-  tur: atıf
-  puan: -4.0
-  benzerlik: 0.83
-  gerekce:
-  - 'atıf: الجواهر المضية، برقم ١٨٤.'
-  - zincir 4. halkada ayrılıyor
-  - künye
-  - vefat farklı 466/410
-- 'no': 120
-  karar: ''
-  a: tabaqat_saniyya:1279
-  b: jawahir:849
-  a_ad: عبد القادر بن عبد الخالق بن وحشى المسكى، الكتانى، الفقيه، أبو القاسم
-  a_yer: الطبقات السنية 4/363 (رقم 1278)
-  a_vefat: 602
-  b_ad: عبد القوى بن عبد الخالق بن وحشى المسكى، الكتانى، الفقيه، أبو القاسم
-  b_yer: الجواهر المضية 2/451-452 (رقم 848)
-  b_vefat: 602
-  a_sahis: ts1278
-  b_sahis: jw848
-  tur: atıf
-  puan: -4.0
-  benzerlik: 0.83
-  gerekce:
-  - 'atıf: الجواهر المضية، برقم ٨٤٨، حسن المحاضرة ١٤٦،١/ ١٤٥.'
-  - zincir 1. halkada ayrılıyor
-  - künye
-  - 'nisbe: الكتاني، المسكي'
-  - vefat 602
-- 'no': 121
-  karar: ''
-  a: jawahir:841
-  b: tabaqat_saniyya:1270
-  a_ad: عبد الغفور بن لقمان بن محمد، أبو المفاخر، الكردرى، الملقب، تاج الدين
-  a_yer: الجواهر المضية 2/443 (رقم 840)
-  a_vefat: 562
-  b_ad: عبد الغفار بن لقمان بن محمد، أبو المفاخر، الكردرى، الملقب تاج الدين
-  b_yer: الطبقات السنية 4/358 (رقم 1269)
-  b_vefat: 562
-  a_sahis: jw840
-  b_sahis: ts1269
-  tur: atıf
-  puan: -5.0
-  benzerlik: 0.83
-  gerekce:
-  - 'atıf: الطبقات السنية، برقم ١٢٦٩، كشف الظنون ١/ ١١٤، ٣٤٥، ٣٤٦'
-  - zincir 1. halkada ayrılıyor
-  - künye
-  - 'nisbe: الكردري'
-  - lakap
-  - vefat 562
-- 'no': 122
-  karar: ''
-  a: jawahir:1650
-  b: fawaid:416
-  a_ad: مسعود بن شجاع بن محمد بن حسن ابن محمد بن حسن الأموى الملقب برهان الدين، الفقيه
-  a_yer: الجواهر المضية 3/467-468 (رقم 1649)
-  a_vefat: 599
-  b_ad: محمود بن شجاع بن محمد بن الحسن الأموي برهان الدين
-  b_yer: الفوائد البهية 213
-  b_vefat: 599
-  a_sahis: jw1649
-  b_sahis: fws416
-  tur: atıf
-  puan: -6.0
-  benzerlik: 0.83
-  gerekce:
-  - 'atıf: الفوائد البهية ٢١٣، هدية العارفين ٢/ ٤٢٩.'
-  - zincir 1. halkada ayrılıyor
-  - 'nisbe: الاموي'
-  - lakap
-  - vefat 599
-- 'no': 123
-  karar: ''
-  a: jawahir:848
-  b: tabaqat_saniyya:1283
-  a_ad: عبد القاهر ابن أبى حامد محمد بن على بن غالب، أبو محمد، الأسترآباذي
-  a_yer: الجواهر المضية 2/451 (رقم 847)
-  a_vefat: null
-  b_ad: عبد القادر بن أبى حامد محمد بن على بن غالب، أبو محمد، الأسترآباذي
-  b_yer: الطبقات السنية 4/366 (رقم 1282)
-  b_vefat: null
-  a_sahis: jw847
-  b_sahis: ts1282
-  tur: atıf
-  puan: -8.0
-  benzerlik: 0.83
-  gerekce:
-  - 'atıf: الطبقات السنية، برقم ١٢٨٢.'
-  - zincir 1. halkada ayrılıyor
-  - künye
-  - 'nisbe: الاستراباذي'
-- 'no': 124
-  karar: ''
-  a: jawahir:1093
-  b: fawaid:169
-  a_ad: غالى بن إبراهيم بن إسماعيل، أبو علىّ الغزنوىّ، البلقىّ، الإمام، ناصر الدين الملقّب بتاج الشّريعة، ويلقّب نظام الإسلام
-  a_yer: الجواهر المضية 2/686 (رقم 1092)
-  a_vefat: 599
-  b_ad: عالي بن إبراهيم بن إسماعيل ناصر الدين أبو على الغزنوي
-  b_yer: الفوائد البهية 85
-  b_vefat: 582
-  a_sahis: jw1092
-  b_sahis: ts1016
-  tur: atıf
-  puan: -11.0
-  benzerlik: 0.83
-  gerekce:
-  - 'atıf: الفوائد البهية ٨٥، هدية العارفين ١/ ٤٣٥.'
-  - zincir 1. halkada ayrılıyor
-  - künye
-  - 'nisbe: الغزنوي'
-  - lakap
-  - vefat farklı 599/582
-- 'no': 125
+- 'no': 87
   karar: ''
   a: jawahir:1211
   b: athmar:500
@@ -2382,217 +1653,7 @@
   - 'nisbe: الرازي'
   - vefat 360
   - aynı kitapta birden çok aday
-- 'no': 126
-  karar: ''
-  a: jawahir:902
-  b: taj_tarajim:145
-  a_ad: عبيد الله بن عمر بن عيسى الدبوسى، أبو زيد
-  a_yer: الجواهر المضية 2/499-500 (رقم 901)
-  a_vefat: 430
-  b_ad: عبيد الله بن عمر، أبوزيد الدبوسي
-  b_yer: تاج التراجم 192 (رقم 145)
-  b_vefat: 430
-  a_sahis: qd597
-  b_sahis: tj145
-  tur: isim
-  puan: 6.0
-  benzerlik: 0.8
-  gerekce:
-  - 'nisbe: الدبوسي'
-  - vefat 430
-  - aynı kitapta birden çok aday
-- 'no': 127
-  karar: ''
-  a: taj_tarajim:145
-  b: fawaid:197
-  a_ad: عبيد الله بن عمر، أبوزيد الدبوسي
-  a_yer: تاج التراجم 192 (رقم 145)
-  a_vefat: 430
-  b_ad: عبيد الله بن عمر بن عيسى القاضي أبو زيد الدبوسى
-  b_yer: الفوائد البهية 109
-  b_vefat: 430
-  a_sahis: tj145
-  b_sahis: qd597
-  tur: isim
-  puan: 6.0
-  benzerlik: 0.8
-  gerekce:
-  - 'nisbe: الدبوسي'
-  - vefat 430
-  - aynı kitapta birden çok aday
-- 'no': 128
-  karar: ''
-  a: jawahir:1202
-  b: fawaid:280
-  a_ad: محمد بن أحمد بن محمد، أبو بكر ابن أبى الحسين، القدورى
-  a_yer: الجواهر المضية 3/64 (رقم 1201)
-  a_vefat: 440
-  b_ad: محمد بن أحمد بن محمد بن جعفر بن حمدان أبو بكر القدوري
-  b_yer: الفوائد البهية 157
-  b_vefat: null
-  a_sahis: jw1201
-  b_sahis: jw1162
-  tur: isim
-  puan: 6.0
-  benzerlik: 0.8
-  gerekce:
-  - künye
-  - 'nisbe: القدوري'
-  - 'çakışma: athmar kitabında zaten başka bir madde var'
-- 'no': 129
-  karar: ''
-  a: taj_tarajim:145
-  b: taj_tarajim:330
-  a_ad: عبيد الله بن عمر، أبوزيد الدبوسي
-  a_yer: تاج التراجم 192 (رقم 145)
-  a_vefat: 430
-  b_ad: عبيد الله بن عمر، أبو زيد الدبوسي
-  b_yer: تاج التراجم 330 (رقم 330)
-  b_vefat: 430
-  a_sahis: tj145
-  b_sahis: qd597
-  tur: isim
-  puan: 6.0
-  benzerlik: 0.8
-  gerekce:
-  - 'nisbe: الدبوسي'
-  - vefat 430
-  - 'çakışma: ad uyuşmuyor: عبيد الله بن عمر، أبوزيد الدبو / عبد الله بن عمر بن عيسى، أبو ز'
-- 'no': 130
-  karar: ''
-  a: kataib:615
-  b: fawaid:222
-  a_ad: نجم الدين القحفازي
-  a_yer: كتائب أعلام الأخيار 3/513-514 (رقم 615)
-  a_vefat: 684
-  b_ad: علي بن داود أبو الحسن نجم الدين القحقازى
-  b_yer: الفوائد البهية 121
-  b_vefat: 684
-  a_sahis: jw2042
-  b_sahis: fws222
-  tur: isim
-  puan: 5.0
-  benzerlik: 0.8
-  gerekce:
-  - künye
-  - lakap
-  - vefat 684
-  - 'çakışma: ad uyuşmuyor: القحفازى نسبة الإمام العلامة ن / علي بن داود أبو الحسن نجم الدي'
-- 'no': 131
-  karar: ''
-  a: kataib:751
-  b: fawaid:269
-  a_ad: المولى محي الدين النكساري
-  a_yer: كتائب أعلام الأخيار 4/339 (رقم 750)
-  a_vefat: 901
-  b_ad: محمد بن إبراهيم بن حسين محيي الدين النكساري
-  b_yer: الفوائد البهية 155
-  b_vefat: 901
-  a_sahis: kt750
-  b_sahis: fws269
-  tur: isim
-  puan: 4.0
-  benzerlik: 0.8
-  gerekce:
-  - zincir 3. halkada ayrılıyor
-  - 'nisbe: النكساري'
-  - lakap
-  - vefat 901
-- 'no': 132
-  karar: ''
-  a: jawahir:1425
-  b: fawaid:337
-  a_ad: محمد بن على بن محمد بن على بن محمد بن ابن الحسين عبد الملك الدامغانى، أبو عبد الله ابن قاضى القضاة أبو الحسن بن قاضى الق
-  a_yer: الجواهر المضية 3/268 (رقم 1424)
-  a_vefat: 478
-  b_ad: محمد بن علي بن محمد بن الحسين بن عبد الملك بن عبد الوهاب أبو عبد الله الدامغاني
-  b_yer: الفوائد البهية 182
-  b_vefat: 478
-  a_sahis: jw1424
-  b_sahis: jw1425
-  tur: isim
-  puan: 4.0
-  benzerlik: 0.8
-  gerekce:
-  - zincir 4. halkada ayrılıyor
-  - künye
-  - 'nisbe: الدامغاني'
-  - vefat 478
-- 'no': 133
-  karar: ''
-  a: jawahir:1183
-  b: kataib:406
-  a_ad: محمد بن أحمد بن على بن شاهويه أبو بكر، القاضى، الشاهوى، الفارسى
-  a_yer: الجواهر المضية 3/49 (رقم 1182)
-  a_vefat: 361
-  b_ad: أبو بكر القزاز
-  b_yer: كتائب أعلام الأخيار 2/538 (رقم 406)
-  b_vefat: null
-  a_sahis: jw1182
-  b_sahis: kt406
-  tur: isim
-  puan: 4.0
-  benzerlik: 0.8
-  gerekce:
-  - künye
-  - aynı kitapta birden çok aday
-- 'no': 134
-  karar: ''
-  a: jawahir:1205
-  b: kataib:248
-  a_ad: محمد بن أحمد بن محمود بن محمد ابن نصر بن موسى بن أحمد المايمرغى، النسفى، ابن أبى المؤيد أحمد
-  a_yer: الجواهر المضية 3/66 (رقم 1204)
-  a_vefat: null
-  b_ad: أبو جعفر النسفي
-  b_yer: كتائب أعلام الأخيار 2/145-147 (رقم 248)
-  b_vefat: 414
-  a_sahis: jw1204
-  b_sahis: jw1205
-  tur: isim
-  puan: 4.0
-  benzerlik: 0.8
-  gerekce:
-  - 'nisbe: النسفي'
-  - aynı kitapta birden çok aday
-- 'no': 135
-  karar: ''
-  a: jawahir:1205
-  b: fawaid:282
-  a_ad: محمد بن أحمد بن محمود بن محمد ابن نصر بن موسى بن أحمد المايمرغى، النسفى، ابن أبى المؤيد أحمد
-  a_yer: الجواهر المضية 3/66 (رقم 1204)
-  a_vefat: null
-  b_ad: محمد بن أحمد بن محمود القاضى أبو جعفر النسفى
-  b_yer: الفوائد البهية 157
-  b_vefat: 414
-  a_sahis: jw1204
-  b_sahis: jw1205
-  tur: isim
-  puan: 4.0
-  benzerlik: 0.8
-  gerekce:
-  - 'nisbe: النسفي'
-  - aynı kitapta birden çok aday
-  - aynı kitapta birden çok aday
-- 'no': 136
-  karar: ''
-  a: jawahir:1206
-  b: fawaid:283
-  a_ad: محمد بن أحمد بن محمود أبو جعفر، النسفى، القاضى
-  a_yer: الجواهر المضية 3/67 (رقم 1205)
-  a_vefat: null
-  b_ad: محمد بن أحمد بن محمود المايمرغى النسفى
-  b_yer: الفوائد البهية 157
-  b_vefat: 442
-  a_sahis: jw1205
-  b_sahis: jw1204
-  tur: isim
-  puan: 4.0
-  benzerlik: 0.8
-  gerekce:
-  - 'nisbe: النسفي'
-  - aynı kitapta birden çok aday
-  - aynı kitapta birden çok aday
-- 'no': 137
+- 'no': 88
   karar: ''
   a: jawahir:1209
   b: athmar:500
@@ -2610,903 +1671,25 @@
   gerekce:
   - 'nisbe: الرازي'
   - aynı kitapta birden çok aday
-- 'no': 138
+- 'no': 89
   karar: ''
-  a: kataib:187
-  b: fawaid:277
-  a_ad: أبو بكر الإسكاف
-  a_yer: كتائب أعلام الأخيار 2/30-31 (رقم 187)
-  a_vefat: 336
-  b_ad: محمد بن أحمد بن علي أبو بكر القذار البلخي
-  b_yer: الفوائد البهية 156
-  b_vefat: null
-  a_sahis: jw1879
-  b_sahis: jw1185
-  tur: isim
-  puan: 4.0
-  benzerlik: 0.8
-  gerekce:
-  - künye
-  - 'nisbe: البلخي'
-  - aynı kitapta birden çok aday
-  - aynı kitapta birden çok aday
-- 'no': 139
-  karar: ''
-  a: kataib:406
-  b: fawaid:277
-  a_ad: أبو بكر القزاز
-  a_yer: كتائب أعلام الأخيار 2/538 (رقم 406)
-  a_vefat: null
-  b_ad: محمد بن أحمد بن علي أبو بكر القذار البلخي
-  b_yer: الفوائد البهية 156
-  b_vefat: null
-  a_sahis: kt406
-  b_sahis: jw1185
-  tur: isim
-  puan: 4.0
-  benzerlik: 0.8
-  gerekce:
-  - künye
-  - aynı kitapta birden çok aday
-- 'no': 140
-  karar: ''
-  a: kataib:270
-  b: taj_tarajim:145
-  a_ad: أبو زيد الدبوسي
-  a_yer: كتائب أعلام الأخيار 2/188-189 (رقم 270)
-  a_vefat: null
-  b_ad: عبيد الله بن عمر، أبوزيد الدبوسي
-  b_yer: تاج التراجم 192 (رقم 145)
-  b_vefat: 430
-  a_sahis: qd597
-  b_sahis: tj145
-  tur: atıf
-  puan: 4.0
-  benzerlik: 0.8
-  gerekce:
-  - 'atıf: تاج التراجم" لابن قطلوبغا (ص: ١٩٢ - ١٩٣)، و"الفوائد'
-  - 'nisbe: الدبوسي'
-  - 'çakışma: ad uyuşmuyor: عبد الله بن عمر بن عيسى، أبو ز / عبيد الله بن عمر، أبوزيد الدبو'
-- 'no': 141
-  karar: ''
-  a: kataib:544
-  b: jawahir:508
-  a_ad: حسام الدين السغناقي
-  a_yer: كتائب أعلام الأخيار 3/359-364 (رقم 544)
-  a_vefat: null
-  b_ad: الحسين بن على بن حجاج بن على الإمام، الملقب حسام الدين الصغناقى
-  b_yer: الجواهر المضية 2/114-115 (رقم 507)
-  b_vefat: null
-  a_sahis: fws107
-  b_sahis: jw507
-  tur: atıf
-  puan: 4.0
-  benzerlik: 0.8
-  gerekce:
-  - 'atıf: الجواهر المضية" للقرشي (٢/ ١١٤ - ١١٦)، و"تاج التراجم"'
-  - lakap
-  - 'çakışma: ad uyuşmuyor: الحسن بن علي بن حجاج بن علي حس / الحسين بن على بن حجاج بن على، '
-- 'no': 142
-  karar: ''
-  a: kataib:544
-  b: tabaqat_saniyya:759
-  a_ad: حسام الدين السغناقي
-  a_yer: كتائب أعلام الأخيار 3/359-364 (رقم 544)
-  a_vefat: null
-  b_ad: الحسين بن على بن حجاج بن على، الإمام الملقب حسام الدين الصغناقى
-  b_yer: الطبقات السنية 3/150-151 (رقم 758)
-  b_vefat: null
-  a_sahis: fws107
-  b_sahis: jw507
-  tur: atıf
-  puan: 4.0
-  benzerlik: 0.8
-  gerekce:
-  - 'atıf: الطبقات السنية" للتميمي (الرقم: ٧٥٨)، و"الفوائد البهية'
-  - lakap
-  - 'çakışma: ad uyuşmuyor: الحسن بن علي بن حجاج بن علي حس / الحسين بن على بن حجاج بن على، '
-- 'no': 143
-  karar: ''
-  a: ghuraf_v1:40
-  b: taj_tarajim:13
-  a_ad: إبراهيم بن يحيى بن الكَيَّال، الدمشقي، الحنفي، المُحَدِّث، العالم، عِماد الدين
-  a_yer: الغرف العلية 1/140-141 (رقم 40)
-  a_vefat: 732
-  b_ad: إبراهيم بن يحيى البصروي
-  b_yer: تاج التراجم 93 (رقم 13)
-  b_vefat: 732
-  a_sahis: gh40
-  b_sahis: gh39
-  tur: isim
-  puan: 3.0
-  benzerlik: 0.8
-  gerekce:
-  - vefat 732
-- 'no': 144
-  karar: ''
-  a: jawahir:173
-  b: tabaqat_saniyya:290
-  a_ad: أحمد بن محمد بن إبراهيم بن على البخارى أبو سعيد بن أبى الخطاب
-  a_yer: الجواهر المضية 1/242 (رقم 172)
-  a_vefat: null
-  b_ad: أحمد بن محمد بن إبراهيم، أبو سعيد، الفقيه النيسابورى
-  b_yer: الطبقات السنية 2/16 (رقم 289)
-  b_vefat: 383
-  a_sahis: jw172
-  b_sahis: jw171
-  tur: isim
-  puan: 3.0
-  benzerlik: 0.8
-  gerekce:
-  - künye
-- 'no': 145
-  karar: ''
-  a: tabaqat_saniyya:289
-  b: athmar:944
-  a_ad: أحمد بن محمد بن إبراهيم أبو الحسن، الأشعرى اليمنى، القرشى، الحنفى
-  a_yer: الطبقات السنية 2/15 (رقم 288)
-  a_vefat: null
-  b_ad: أحمد أبو الحسن بن محمد بن إبراهيم الأشغريّ
-  b_yer: الأثمار الجنية 2/793 (رقم 5)
-  b_vefat: null
-  a_sahis: ts288
-  b_sahis: ats944
-  tur: isim
-  puan: 3.0
-  benzerlik: 0.8
-  gerekce:
-  - künye
-- 'no': 146
-  karar: ''
-  a: jawahir:1610
-  b: taj_tarajim:273
-  a_ad: محمود بن أحمد بن ظهير شمس الدين، اللارندى
-  a_yer: الجواهر المضية 3/428-429 (رقم 1609)
-  a_vefat: null
-  b_ad: محمود بن أحمد الأرندي
-  b_yer: تاج التراجم 287 (رقم 273)
-  b_vefat: null
-  a_sahis: jw1609
-  b_sahis: tj273
-  tur: isim
-  puan: 3.0
-  benzerlik: 0.8
-  gerekce:
-  - lakap
-- 'no': 147
-  karar: ''
-  a: taj_tarajim:273
-  b: kataib:554
-  a_ad: محمود بن أحمد الأرندي
-  a_yer: تاج التراجم 287 (رقم 273)
-  a_vefat: null
-  b_ad: شمس الدين محمود اللارندي
-  b_yer: كتائب أعلام الأخيار 3/389 (رقم 554)
-  b_vefat: null
-  a_sahis: tj273
-  b_sahis: jw1609
-  tur: isim
-  puan: 3.0
-  benzerlik: 0.8
-  gerekce:
-  - lakap
-- 'no': 148
-  karar: ''
-  a: taj_tarajim:273
-  b: fawaid:390
-  a_ad: محمود بن أحمد الأرندي
-  a_yer: تاج التراجم 287 (رقم 273)
-  a_vefat: null
-  b_ad: محمود بن أحمد بن ظهير شمس الدين اللارندي
-  b_yer: الفوائد البهية 205
-  b_vefat: 720
-  a_sahis: tj273
-  b_sahis: jw1609
-  tur: isim
-  puan: 3.0
-  benzerlik: 0.8
-  gerekce:
-  - lakap
-- 'no': 149
-  karar: ''
-  a: jawahir:489
-  b: tabaqat_saniyya:729
-  a_ad: الحسن بن نصر بن عثمان ابن زيد بن مزيد
-  a_yer: الجواهر المضية 2/96 (رقم 488)
-  a_vefat: null
-  b_ad: الحسن بن نصر بن عثمان ابن زيد بن يزيد
-  b_yer: الطبقات السنية 3/118 (رقم 728)
-  b_vefat: null
-  a_sahis: jw488
-  b_sahis: ts728
-  tur: atıf
-  puan: 1.0
-  benzerlik: 0.8
-  gerekce:
-  - 'atıf: الطبقات السنية، برقم ٧٢٨.'
-  - zincir 5. halkada ayrılıyor
-- 'no': 150
-  karar: ''
-  a: jawahir:1054
-  b: fawaid:250
-  a_ad: عمر بن عبد العزيز بن عمر، ابن مازه، برهان الأئمة، أبو محمد، حسام الدين، المعروف بالصدر الشهيد
-  a_yer: الجواهر المضية 2/649-650 (رقم 1053)
-  a_vefat: 536
-  b_ad: عمر بن عبد العزيز بن عمر بن مازء أبو محمد حسام الدين
-  b_yer: الفوائد البهية 149
-  b_vefat: 83
-  a_sahis: jw1053
-  b_sahis: fws250
-  tur: atıf
-  puan: 1.0
-  benzerlik: 0.8
-  gerekce:
-  - 'atıf: الفوائد البهية ١٤٩، إيضاح المكنون ٢/ ١٢٤، هدية العارفي'
-  - künye
-  - lakap
-  - vefat farklı 536/83
-- 'no': 151
-  karar: ''
-  a: athmar:205
-  b: tabaqat_saniyya:729
-  a_ad: الحسن بن نصر بن عثمان بن زيد بن مزيد
-  a_yer: الأثمار الجنية 1/410 (رقم 194)
-  a_vefat: null
-  b_ad: الحسن بن نصر بن عثمان ابن زيد بن يزيد
-  b_yer: الطبقات السنية 3/118 (رقم 728)
-  b_vefat: null
-  a_sahis: jw488
-  b_sahis: ts728
-  tur: atıf
-  puan: 1.0
-  benzerlik: 0.8
-  gerekce:
-  - 'atıf: الطبقات السنية:٣/ ١١٨.'
-  - zincir 5. halkada ayrılıyor
-- 'no': 152
-  karar: ''
-  a: jawahir:1445
-  b: fawaid:341
-  a_ad: محمد بن عمر بن عبد الله أبو بكر، الإمام، رشيد الدين المعروف بالصائغ السنجى
-  a_yer: الجواهر المضية 3/286 (رقم 1444)
-  a_vefat: 598
-  b_ad: محمد بن عمر بن عبد الله أبو بكر رشيد الدين النيسابوري
-  b_yer: الفوائد البهية 183
-  b_vefat: 98
-  a_sahis: jw1444
-  b_sahis: fws341
-  tur: atıf
-  puan: 0.0
-  benzerlik: 0.8
-  gerekce:
-  - 'atıf: الفوائد البهية ١٨٣.'
-  - künye
-  - lakap
-  - vefat farklı 598/98
-- 'no': 153
-  karar: ''
-  a: tabaqat_saniyya:310
-  b: jawahir:193
-  a_ad: أحمد بن محمد بن بكر بن خالد بن يزيد أبو العباس
-  a_yer: الطبقات السنية 2/40 (رقم 309)
-  a_vefat: 284
-  b_ad: أحمد بن محمد بن بكر ابن خالد، القصير
-  b_yer: الجواهر المضية 1/263 (رقم 192)
-  b_vefat: 249
-  a_sahis: ts309
-  b_sahis: jw192
-  tur: atıf
-  puan: 0.0
-  benzerlik: 0.8
-  gerekce:
-  - 'atıf: الجواهر المضية، برقم ١٩٢.'
-  - vefat farklı 284/249
-- 'no': 154
-  karar: ''
-  a: tabaqat_saniyya:364
-  b: fawaid:52
-  a_ad: أحمد بن محمد بن مكحول بن الفضل أبو البديع، لمكحولى
-  a_yer: الطبقات السنية 2/90 (رقم 363)
-  a_vefat: 379
-  b_ad: أحمد بن محمد بن مكحول أبو البديع المكحولى
-  b_yer: الفوائد البهية 40
-  b_vefat: 79
-  a_sahis: jw239
-  b_sahis: fws52
-  tur: atıf
-  puan: 0.0
-  benzerlik: 0.8
-  gerekce:
-  - 'atıf: الفوائد البهية ٤٠، كتائب أعلام الأخيار، برقم ٢٣٢، اللب'
-  - künye
-  - vefat farklı 379/79
-- 'no': 155
-  karar: ''
-  a: athmar:510
-  b: jawahir:1228
-  a_ad: محمد بن إسحاق بن إبراهيم الزّوزني البحّاثيّ
-  a_yer: الأثمار الجنية 2/569 (رقم 499)
-  a_vefat: 463
-  b_ad: محمد بن إسحاق بن على بن داود بن حامد البحاثي-نسبة إلى الجد-الزوزنى أبو جعفر، القاضى
-  b_yer: الجواهر المضية 3/87 (رقم 1227)
-  b_vefat: 463
-  a_sahis: at499
-  b_sahis: jw1227
-  tur: atıf
-  puan: 0.0
-  benzerlik: 0.8
-  gerekce:
-  - 'atıf: الجواهر المضية:٣/ ٨٧؛ البغدادي، إيضاح المكنون:١ ذ/٢/ ٦'
-  - zincir 3. halkada ayrılıyor
-  - vefat 463
-- 'no': 156
-  karar: ''
-  a: athmar:493
-  b: fawaid:279
-  a_ad: محمد بن أحمد بن عمر القاضي البخاري، ظهير الدين
-  a_yer: الأثمار الجنية 2/562 (رقم 482)
-  a_vefat: 619
-  b_ad: محمد بن أحمد بن عمر الصاعدي البخاري جلال الدين العيدى
-  b_yer: الفوائد البهية 157
-  b_vefat: 68
-  a_sahis: jw1188
-  b_sahis: jw1189
-  tur: atıf
-  puan: -0.5
-  benzerlik: 0.8
-  gerekce:
-  - 'atıf: الفوائد البهية:١٥٧،١٥٦، كحالة، معجم المؤلفين:٨/ ٣٠٣.'
-  - 'nisbe: البخاري'
-  - vefat farklı 619/68
-- 'no': 157
-  karar: ''
-  a: tabaqat_saniyya:190
-  b: fawaid:20
-  a_ad: أحمد باشا ابن المولى حضر بيك، ابن جلال الدين
-  a_yer: الطبقات السنية 1/344 (رقم 189)
-  a_vefat: 927
-  b_ad: أحمد باشا بن خضر بيك بن جلال الدين الرومي
-  b_yer: الفوائد البهية 21
-  b_vefat: 927
-  a_sahis: ts189
-  b_sahis: fws20
+  a: tabaqat_saniyya:111
+  b: fawaid:8
+  a_ad: إبراهيم بن يوسف بن ميمون ابن قدامة، وقيل ابن رزين، أبو إسحاق، الباهلى
+  a_yer: الطبقات السنية 1/254 (رقم 110)
+  a_vefat: 41
+  b_ad: إبراهيم بن يوسف بن ميمون بن قدامة البلخي
+  b_yer: الفوائد البهية 11-12
+  b_vefat: 241
+  a_sahis: ts110
+  b_sahis: jw62
   tur: atıf
   puan: -1.0
   benzerlik: 0.8
   gerekce:
-  - 'atıf: الفوائد البهية ٢١.'
-  - zincir 2. halkada ayrılıyor
-  - vefat 927
-- 'no': 158
-  karar: ''
-  a: athmar:480
-  b: jawahir:1159
-  a_ad: محمد بن أحمد بن حامد أبو جعفر البخاري
-  a_yer: الأثمار الجنية 2/557 (رقم 469)
-  a_vefat: 482
-  b_ad: محمد بن أحمد بن حامد بن عبيد البيكندى أبو جعفر، القاضى
-  b_yer: الجواهر المضية 3/23-26 (رقم 1158)
-  b_vefat: 392
-  a_sahis: at469
-  b_sahis: jw1158
-  tur: atıf
-  puan: -1.0
-  benzerlik: 0.8
-  gerekce:
-  - 'atıf: الجواهر المضية:٣/ ٢٣ - ٢٦؛ ابن قطلوبغا، تاج التراجم: ٦'
-  - künye
-  - vefat farklı 482/392
-- 'no': 159
-  karar: ''
-  a: tabaqat_saniyya:372
-  b: jawahir:211
-  a_ad: أحمد بن محمد بن يحيى بن أبى زكريا ابن أبى العوام، أبو عبد الله ابن عم أبى العباس بن محمد السعدى
-  a_yer: الطبقات السنية 2/94-96 (رقم 371)
-  a_vefat: 18
-  b_ad: أحمد بن محمد بن عبد الله بن محمد بن أحمد بن يحيى بن الحارث، أبو العباس
-  b_yer: الجواهر المضية 1/282-283 (رقم 210)
-  b_vefat: null
-  a_sahis: ts371
-  b_sahis: jw210
-  tur: atıf
-  puan: -1.5
-  benzerlik: 0.8
-  gerekce:
-  - 'atıf: الجواهر المضية، برقم ٢١٠، رفع الإصر ١٠٦،١/ ١٠١، وانظر'
-  - zincir 3. halkada ayrılıyor
-- 'no': 160
-  karar: ''
-  a: jawahir:1808
-  b: fawaid:451
-  a_ad: يحيى بن على بن روبيان التروخالى، الرومى، نجم الدين
-  a_yer: الجواهر المضية 3/595 (رقم 1807)
-  a_vefat: 713
-  b_ad: يحيى بن علي بن رومان نجم الدين الرومي
-  b_yer: الفوائد البهية 225
-  b_vefat: 10
-  a_sahis: jw1807
-  b_sahis: fws451
-  tur: atıf
-  puan: -3.0
-  benzerlik: 0.8
-  gerekce:
-  - 'atıf: الفوائد البهية ٢٢٥.'
-  - zincir 3. halkada ayrılıyor
-  - 'nisbe: الرومي'
-  - lakap
-  - vefat farklı 713/10
-- 'no': 161
-  karar: ''
-  a: jawahir:1972
-  b: fawaid:431
-  a_ad: أبو القاسم بن يوسف الحسينى المدينى الإمام، الملقب ناصر الدين
-  a_yer: الجواهر المضية 4/79 (رقم 1971)
-  a_vefat: null
-  b_ad: ناصر الدين بن يوسف أبو القاسم الشهيد الحسيني السمرقندي
-  b_yer: الفوائد البهية 219
-  b_vefat: 156
-  a_sahis: jw1971
-  b_sahis: fws431
-  tur: atıf
-  puan: -9.0
-  benzerlik: 0.8
-  gerekce:
-  - 'atıf: الفوائد البهية ٢١٩، ٢٢٠، أسماء الكتب ٢٩.'
-  - zincir 1. halkada ayrılıyor
-  - 'nisbe: الحسيني'
-- 'no': 162
-  karar: ''
-  a: jawahir:1093
-  b: tabaqat_saniyya:1017
-  a_ad: غالى بن إبراهيم بن إسماعيل، أبو علىّ الغزنوىّ، البلقىّ، الإمام، ناصر الدين الملقّب بتاج الشّريعة، ويلقّب نظام الإسلام
-  a_yer: الجواهر المضية 2/686 (رقم 1092)
-  a_vefat: 599
-  b_ad: عالى بن إبراهيم بن إسماعيل الغزنوى أبو على الحنفى الفقيه الأديب
-  b_yer: الطبقات السنية 4/118 (رقم 1016)
-  b_vefat: 581
-  a_sahis: jw1092
-  b_sahis: ts1016
-  tur: atıf
-  puan: -12.0
-  benzerlik: 0.8
-  gerekce:
-  - 'atıf: الطبقات السنية، برقم ١٠١٦، كشف الظنون ١/ ٥٦٦، ٢/ ١٨٠٤،'
-  - zincir 1. halkada ayrılıyor
-  - künye
-  - 'nisbe: الغزنوي'
-  - vefat farklı 599/581
-- 'no': 163
-  karar: ''
-  a: jawahir:2046
-  b: fawaid:222
-  a_ad: القحفازى نسبة الإمام العلامة نجم الدين أبى الحسن على بن داود
-  a_yer: الجواهر المضية 4/283-284 (رقم 2042)
-  a_vefat: 745
-  b_ad: علي بن داود أبو الحسن نجم الدين القحقازى
-  b_yer: الفوائد البهية 121
-  b_vefat: 684
-  a_sahis: jw2042
-  b_sahis: fws222
-  tur: atıf
-  puan: -12.0
-  benzerlik: 0.8
-  gerekce:
-  - 'atıf: الفوائد البهية ١٢١.'
-  - zincir 1. halkada ayrılıyor
-  - künye
-  - lakap
-  - vefat farklı 745/684
-- 'no': 164
-  karar: ''
-  a: ghuraf_v1:338
-  b: tabaqat_saniyya:1220
-  a_ad: 'عبد الرحيم بن محمد بن عبد الرحيم بن علي بن الحسن بن محمد بن عبد العزيز بن محمد بن الفُرات، المِصري، الحنفي، القاضي، عِز '
-  a_yer: الغرف العلية 1/619-621 (رقم 339)
-  a_vefat: 851
-  b_ad: عبد الرحيم بن محمد بن الرحيم بن على بن الحسين بن محمد بن عبد العزيز بن محمد القاهرى، الحنفى، القاضى عز الدين، ابن المؤرخ
-  b_yer: الطبقات السنية 4/329 (رقم 1219)
-  b_vefat: 851
-  a_sahis: gh339
-  b_sahis: ts1219
-  tur: isim
-  puan: 4.0
-  benzerlik: 0.78
-  gerekce:
-  - zincir 3. halkada ayrılıyor
-  - 'nisbe: ابن عز'
-  - lakap
-  - vefat 851
-- 'no': 165
-  karar: ''
-  a: ghuraf_v1:63
-  b: tabaqat_saniyya:124
-  a_ad: أحمد بن إبراهيم بن محمد بن محمد بن عبد العزيز بن محمد بن أحمد بن هِبة الله بن محمد بن هِبة الله بن أحمد -ويأتي في ذِكر و
-  a_yer: الغرف العلية 1/170-173 (رقم 63)
-  a_vefat: 847
-  b_ad: أحمد بن إبراهيم بن محمد ابن عمر بن عبد العزيز بن أبى جرادة، العقيلى الحلبى، المعروف بابن العديم
-  b_yer: الطبقات السنية 1/265 (رقم 123)
-  b_vefat: 847
-  a_sahis: gh63
-  b_sahis: ts123
-  tur: isim
-  puan: 3.0
-  benzerlik: 0.78
-  gerekce:
-  - zincir 4. halkada ayrılıyor
-  - 'nisbe: الحلبي'
-  - vefat 847
-- 'no': 166
-  karar: ''
-  a: tabaqat_saniyya:359
-  b: jawahir:236
-  a_ad: 'أحمد بن محمد بن محمد بن محمد-ثلاث محمد بن ابن حسن بن أحمد بن قاسم بن مسيب بن عبد الله ابن عبد الرحمن بن أبى بكر الصديق، '
-  a_yer: الطبقات السنية 2/88 (رقم 358)
-  a_vefat: 712
-  b_ad: أحمد بن محمد بن محمد بن محمد بن حسين بن أحمد بن قاسم بن مسيب بن عبد الله بن عبد الرحمن بن أبى بكر الصديق بن أبى قحافة
-  b_yer: الجواهر المضية 1/313-314 (رقم 235)
-  b_vefat: 712
-  a_sahis: ts358
-  b_sahis: jw235
-  tur: atıf
-  puan: 2.0
-  benzerlik: 0.78
-  gerekce:
-  - 'atıf: الجواهر المضية، برقم ٢٣٥، الدرر الكامنة ١/ ٣١٧.'
-  - zincir 4. halkada ayrılıyor
-  - vefat 712
-- 'no': 167
-  karar: ''
-  a: athmar:95
-  b: tabaqat_saniyya:359
-  a_ad: أحمد بن محمد بن محمد بن محمد بن حسين بن أحمد بن قاسم بن مسيب بن عبد الله بن عبد الرحمن بن أبي بكر الصديق بن أبي قحافة
-  a_yer: الأثمار الجنية 1/344 (رقم 84)
-  a_vefat: 712
-  b_ad: 'أحمد بن محمد بن محمد بن محمد-ثلاث محمد بن ابن حسن بن أحمد بن قاسم بن مسيب بن عبد الله ابن عبد الرحمن بن أبى بكر الصديق، '
-  b_yer: الطبقات السنية 2/88 (رقم 358)
-  b_vefat: 712
-  a_sahis: jw235
-  b_sahis: ts358
-  tur: atıf
-  puan: 2.0
-  benzerlik: 0.78
-  gerekce:
-  - 'atıf: الطبقات السنية:٢/ ٨٨.'
-  - zincir 4. halkada ayrılıyor
-  - vefat 712
-- 'no': 168
-  karar: ''
-  a: jawahir:526
-  b: tabaqat_saniyya:776
-  a_ad: الحسين بن نظام بن الخضر بن محمد بن أبى الحسن على الزينبى، أبو طالب، المعروف بنور الهدى
-  a_yer: الجواهر المضية 2/133-134 (رقم 525)
-  a_vefat: 512
-  b_ad: الحسين بن محمد بن على بن الحسن بن محمد بن عبد الوهاب أبو طالب الزينبى الملقب نور الهدى
-  b_yer: الطبقات السنية 3/162-167 (رقم 775)
-  b_vefat: null
-  a_sahis: jw525
-  b_sahis: gh232
-  tur: atıf
-  puan: 1.0
-  benzerlik: 0.78
-  gerekce:
-  - 'atıf: الطبقات السنية، برقم ٧٧٥، شذرات الذهب ٤/ ٣٤.'
-  - zincir 2. halkada ayrılıyor
-  - künye
-  - 'nisbe: الزينبي، الهدي'
-- 'no': 169
-  karar: ''
-  a: kataib:439
-  b: taj_tarajim:191
-  a_ad: ناصر الدين غالي الغزنوي
-  a_yer: كتائب أعلام الأخيار 3/107 (رقم 439)
-  a_vefat: 582
-  b_ad: عالي بن إبراهيم الغزنوي
-  b_yer: تاج التراجم 228 (رقم 191)
-  b_vefat: 599
-  a_sahis: jw1092
-  b_sahis: tj191
-  tur: atıf
-  puan: -12.0
-  benzerlik: 0.78
-  gerekce:
-  - 'atıf: تاج التراجم" لابن قطلوبغا، (ص: ٢٢٨ - ٢٢٩)، و"الطبقا'
-  - zincir 1. halkada ayrılıyor
-  - 'nisbe: الغزنوي'
-  - lakap
-  - vefat farklı 582/599
-- 'no': 170
-  karar: ''
-  a: jawahir:155
-  b: kataib:225
-  a_ad: أحمد بن على، أبو بكر، الوراق
-  a_yer: الجواهر المضية 1/219 (رقم 154)
-  a_vefat: 370
-  b_ad: أبو بكر الجصاص الرازي
-  b_yer: كتائب أعلام الأخيار 2/93-95 (رقم 225)
-  b_vefat: 370
-  a_sahis: jw154
-  b_sahis: jw155
-  tur: isim
-  puan: 5.0
-  benzerlik: 0.75
-  gerekce:
-  - künye
-  - vefat 370
-  - aynı kitapta birden çok aday
-- 'no': 171
-  karar: ''
-  a: jawahir:155
-  b: taj_tarajim:17
-  a_ad: أحمد بن على، أبو بكر، الوراق
-  a_yer: الجواهر المضية 1/219 (رقم 154)
-  a_vefat: 370
-  b_ad: أحمد بن علي، أبو بكر الرازي، الجصاص
-  b_yer: تاج التراجم 96 (رقم 17)
-  b_vefat: 370
-  a_sahis: jw154
-  b_sahis: jw155
-  tur: isim
-  puan: 5.0
-  benzerlik: 0.75
-  gerekce:
-  - künye
-  - vefat 370
-  - 'çakışma: kataib kitabında zaten başka bir madde var'
-- 'no': 172
-  karar: ''
-  a: jawahir:211
-  b: tabaqat_saniyya:331
-  a_ad: أحمد بن محمد بن عبد الله بن محمد بن أحمد بن يحيى بن الحارث، أبو العباس
-  a_yer: الجواهر المضية 1/282-283 (رقم 210)
-  a_vefat: null
-  b_ad: أحمد بن محمد بن عبد الله الظاهرى أبو العباس، الإمام، الحافظ
-  b_yer: الطبقات السنية 2/62 (رقم 330)
-  b_vefat: 96
-  a_sahis: jw210
-  b_sahis: jw212
-  tur: isim
-  puan: 4.0
-  benzerlik: 0.75
-  gerekce:
-  - künye
-  - aynı kitapta birden çok aday
-- 'no': 173
-  karar: ''
-  a: jawahir:182
-  b: taj_tarajim:20
-  a_ad: أحمد بن محمد بن أحمد بن شجاع، أبو نصر، الصفار، البخارى
-  a_yer: الجواهر المضية 1/252 (رقم 181)
-  a_vefat: null
-  b_ad: أحمد بن محمد، العقيلي، البخاري
-  b_yer: تاج التراجم 99 (رقم 20)
-  b_vefat: 657
-  a_sahis: jw181
-  b_sahis: jw188
-  tur: isim
-  puan: 4.0
-  benzerlik: 0.75
-  gerekce:
-  - 'nisbe: البخاري'
-  - aynı kitapta birden çok aday
-- 'no': 174
-  karar: ''
-  a: tabaqat_saniyya:297
-  b: taj_tarajim:20
-  a_ad: أحمد بن محمد بن أحمد بن شجاع أبو نصر الصفار، البخارى
-  a_yer: الطبقات السنية 2/32 (رقم 296)
-  a_vefat: null
-  b_ad: أحمد بن محمد، العقيلي، البخاري
-  b_yer: تاج التراجم 99 (رقم 20)
-  b_vefat: 657
-  a_sahis: jw181
-  b_sahis: jw188
-  tur: isim
-  puan: 4.0
-  benzerlik: 0.75
-  gerekce:
-  - 'nisbe: البخاري'
-  - aynı kitapta birden çok aday
-- 'no': 175
-  karar: ''
-  a: taj_tarajim:20
-  b: athmar:73
-  a_ad: أحمد بن محمد، العقيلي، البخاري
-  a_yer: تاج التراجم 99 (رقم 20)
-  a_vefat: 657
-  b_ad: أحمد بن محمد بن أحمد بن شجاع أبو نصر الصفار البخاري
-  b_yer: الأثمار الجنية 1/331 (رقم 62)
-  b_vefat: null
-  a_sahis: jw188
-  b_sahis: jw181
-  tur: isim
-  puan: 4.0
-  benzerlik: 0.75
-  gerekce:
-  - 'nisbe: البخاري'
-  - aynı kitapta birden çok aday
-- 'no': 176
-  karar: ''
-  a: jawahir:501
-  b: fawaid:116
-  a_ad: الحسين بن الخضر بن محمد بن دنيف، الفقيه، الفشيديزجى، أبو على
-  a_yer: الجواهر المضية 2/109 (رقم 500)
-  a_vefat: 424
-  b_ad: الحسين بن خضر القاضي أبو على النسفي
-  b_yer: الفوائد البهية 66
-  b_vefat: 424
-  a_sahis: jw500
-  b_sahis: jw501
-  tur: atıf
-  puan: 4.0
-  benzerlik: 0.75
-  gerekce:
-  - 'atıf: الفوائد البهية ٦٦، إيضاح المكنون ٢/ ١٥٧.'
-  - künye
-  - vefat 424
-  - 'çakışma: tabaqat_saniyya kitabında zaten başka bir madde var'
-- 'no': 177
-  karar: ''
-  a: tabaqat_saniyya:745
-  b: fawaid:116
-  a_ad: الحسين بن الخضر بن محمد الفشيديزجى أبو على
-  a_yer: الطبقات السنية 3/130 (رقم 744)
-  a_vefat: 424
-  b_ad: الحسين بن خضر القاضي أبو على النسفي
-  b_yer: الفوائد البهية 66
-  b_vefat: 424
-  a_sahis: jw500
-  b_sahis: jw501
-  tur: atıf
-  puan: 4.0
-  benzerlik: 0.75
-  gerekce:
-  - 'atıf: الفوائد البهية ٦٦، كتائب أعلام الأخيار، برقم ٢٠٩، كشف'
-  - künye
-  - vefat 424
-  - 'çakışma: tabaqat_saniyya kitabında zaten başka bir madde var'
-- 'no': 178
-  karar: ''
-  a: jawahir:726
-  b: taj_tarajim:128
-  a_ad: عبد الله بن محمد بن الحسين ابن ناقيا بن داود بن محمد بن يعقوب أبو القاسم ابن أبى الفتح
-  a_yer: الجواهر المضية 2/329-331 (رقم 725)
-  a_vefat: 485
-  b_ad: عبد الله بن محمد، ابن ناقيا البندار
-  b_yer: تاج التراجم 180 (رقم 128)
-  b_vefat: 485
-  a_sahis: jw725
-  b_sahis: tj128
-  tur: isim
-  puan: 4.0
-  benzerlik: 0.75
-  gerekce:
-  - vefat 485
-  - 'çakışma: ad uyuşmuyor: عبد الله، وقيل عبد الباقى بن م / عبد الله بن محمد، ابن ناقيا ال'
-- 'no': 179
-  karar: ''
-  a: ghuraf_v1:107
-  b: tabaqat_saniyya:258
-  a_ad: أحمد بن علي بن محمد بن علي بن يوسف، الدمشقي، الحنفي، جَمال الدين، المعروف بابن عبد الحَق، ويُعرف قديمًا بابن قاضي الحِصن
-  a_yer: الغرف العلية 1/251-252 (رقم 107)
-  a_vefat: 802
-  b_ad: أحمد بن على بن محمد ابن على بن أحمد بن على بن يوسف الدمشقى كمال الدين، بن صلاح الدين، المعروف بابن عبد الحق
-  b_yer: الطبقات السنية 1/405 (رقم 257)
-  b_vefat: 802
-  a_sahis: gh107
-  b_sahis: gh101
-  tur: isim
-  puan: 3.5
-  benzerlik: 0.75
-  gerekce:
-  - zincir 5. halkada ayrılıyor
-  - 'nisbe: الدمشقي'
-  - vefat 802
-- 'no': 180
-  karar: ''
-  a: jawahir:1295
-  b: athmar:525
-  a_ad: محمد بن الحسين بن محمد الأرسابندى أبو بكر، القاضى، المروزى المعروف بفخر القضاة
-  a_yer: الجواهر المضية 3/145 (رقم 1294)
-  a_vefat: 512
-  b_ad: محمد بن الحسين أبو جعفر الأرسابنديّ
-  b_yer: الأثمار الجنية 2/585 (رقم 514)
-  b_vefat: null
-  a_sahis: jw1294
-  b_sahis: jw1297
-  tur: isim
-  puan: 3.5
-  benzerlik: 0.75
-  gerekce:
-  - 'nisbe: الارسابندي'
-- 'no': 181
-  karar: ''
-  a: jawahir:1298
-  b: kataib:343
-  a_ad: محمد بن الحسين أبو جعفر الأرسابندى
-  a_yer: الجواهر المضية 3/148 (رقم 1297)
-  a_vefat: null
-  b_ad: فخر الدين الأرسابندي
-  b_yer: كتائب أعلام الأخيار 2/376-380 (رقم 343)
-  b_vefat: 512
-  a_sahis: jw1297
-  b_sahis: jw1294
-  tur: isim
-  puan: 3.5
-  benzerlik: 0.75
-  gerekce:
-  - 'nisbe: الارسابندي'
-- 'no': 182
-  karar: ''
-  a: kataib:343
-  b: athmar:525
-  a_ad: فخر الدين الأرسابندي
-  a_yer: كتائب أعلام الأخيار 2/376-380 (رقم 343)
-  a_vefat: 512
-  b_ad: محمد بن الحسين أبو جعفر الأرسابنديّ
-  b_yer: الأثمار الجنية 2/585 (رقم 514)
-  b_vefat: null
-  a_sahis: jw1294
-  b_sahis: jw1297
-  tur: isim
-  puan: 3.5
-  benzerlik: 0.75
-  gerekce:
-  - 'nisbe: الارسابندي'
-- 'no': 183
-  karar: ''
-  a: athmar:74
-  b: tabaqat_saniyya:301
-  a_ad: أحمد بن محمد بن أحمد بن الأعين السّمنانيّ
-  a_yer: الأثمار الجنية 1/332 (رقم 63)
-  a_vefat: 466
-  b_ad: أحمد بن محمد بن أحمد بن محمود، أبو الحسين بن أبى جعفر، السمنانى
-  b_yer: الطبقات السنية 2/35 (رقم 300)
-  b_vefat: 466
-  a_sahis: at63
-  b_sahis: ts300
-  tur: atıf
-  puan: 3.0
-  benzerlik: 0.75
-  gerekce:
-  - 'atıf: الطبقات السنية:٢/ ٣٥ - ٣٦.'
-  - zincir 4. halkada ayrılıyor
-  - 'nisbe: السمناني'
-  - vefat 466
-- 'no': 184
-  karar: ''
-  a: kataib:624
-  b: athmar:74
-  a_ad: ركن الدين علاء الدولة السمناني
-  a_yer: كتائب أعلام الأخيار 3/534-543 (رقم 624)
-  a_vefat: null
-  b_ad: أحمد بن محمد بن أحمد بن الأعين السّمنانيّ
-  b_yer: الأثمار الجنية 1/332 (رقم 63)
-  b_vefat: 466
-  a_sahis: kt624
-  b_sahis: at63
-  tur: isim
-  puan: 3.0
-  benzerlik: 0.75
-  gerekce:
-  - 'nisbe: السمناني'
-- 'no': 185
-  karar: ''
-  a: ghuraf_v1:99
-  b: tabaqat_saniyya:268
-  a_ad: أحمد بن علي بن محمد، الحنفي، الشيخ شِهاب الدين، أبو بكر
-  a_yer: الغرف العلية 1/237-238 (رقم 99)
-  a_vefat: 704
-  b_ad: أحمد بن على، أبو بكر الوراق
-  b_yer: الطبقات السنية 1/412 (رقم 267)
-  b_vefat: null
-  a_sahis: gh99
-  b_sahis: jw154
-  tur: isim
-  puan: 3.0
-  benzerlik: 0.75
-  gerekce:
-  - künye
-- 'no': 186
+  - 'atıf: الفوائد البهية ١١، كتائب أعلام الأخيار، برقم ١١٣، اللب'
+  - vefat farklı 41/241
+- 'no': 90
   karar: ''
   a: ghuraf_v1:99
   b: taj_tarajim:47
@@ -3523,7 +1706,7 @@
   benzerlik: 0.75
   gerekce:
   - künye
-- 'no': 187
+- 'no': 91
   karar: ''
   a: ghuraf_v1:109
   b: tabaqat_saniyya:268
@@ -3540,7 +1723,7 @@
   benzerlik: 0.75
   gerekce:
   - künye
-- 'no': 188
+- 'no': 92
   karar: ''
   a: ghuraf_v1:109
   b: taj_tarajim:47
@@ -3557,7 +1740,7 @@
   benzerlik: 0.75
   gerekce:
   - künye
-- 'no': 189
+- 'no': 93
   karar: ''
   a: jawahir:156
   b: tabaqat_saniyya:268
@@ -3574,7 +1757,7 @@
   benzerlik: 0.75
   gerekce:
   - künye
-- 'no': 190
+- 'no': 94
   karar: ''
   a: jawahir:156
   b: taj_tarajim:47
@@ -3591,7 +1774,7 @@
   benzerlik: 0.75
   gerekce:
   - künye
-- 'no': 191
+- 'no': 95
   karar: ''
   a: tabaqat_saniyya:268
   b: taj_tarajim:17
@@ -3608,7 +1791,7 @@
   benzerlik: 0.75
   gerekce:
   - künye
-- 'no': 192
+- 'no': 96
   karar: ''
   a: tabaqat_saniyya:268
   b: kataib:225
@@ -3625,7 +1808,7 @@
   benzerlik: 0.75
   gerekce:
   - künye
-- 'no': 193
+- 'no': 97
   karar: ''
   a: tabaqat_saniyya:269
   b: taj_tarajim:47
@@ -3642,7 +1825,7 @@
   benzerlik: 0.75
   gerekce:
   - künye
-- 'no': 194
+- 'no': 98
   karar: ''
   a: taj_tarajim:47
   b: kataib:225
@@ -3659,7 +1842,7 @@
   benzerlik: 0.75
   gerekce:
   - künye
-- 'no': 195
+- 'no': 99
   karar: ''
   a: taj_tarajim:47
   b: fawaid:33
@@ -3670,13 +1853,13 @@
   b_yer: الفوائد البهية 27
   b_vefat: 553
   a_sahis: jw154
-  b_sahis: jw1994
+  b_sahis: gh899
   tur: isim
   puan: 3.0
   benzerlik: 0.75
   gerekce:
   - künye
-- 'no': 196
+- 'no': 100
   karar: ''
   a: jawahir:173
   b: taj_tarajim:20
@@ -3693,24 +1876,7 @@
   benzerlik: 0.75
   gerekce:
   - 'nisbe: البخاري'
-- 'no': 197
-  karar: ''
-  a: tabaqat_saniyya:286
-  b: taj_tarajim:20
-  a_ad: أحمد بن محمد بن إبراهيم بن على البخارى، أبو سعيد ابن أبى الخطاب
-  a_yer: الطبقات السنية 2/14 (رقم 285)
-  a_vefat: null
-  b_ad: أحمد بن محمد، العقيلي، البخاري
-  b_yer: تاج التراجم 99 (رقم 20)
-  b_vefat: 657
-  a_sahis: jw172
-  b_sahis: jw188
-  tur: isim
-  puan: 3.0
-  benzerlik: 0.75
-  gerekce:
-  - 'nisbe: البخاري'
-- 'no': 198
+- 'no': 101
   karar: ''
   a: jawahir:230
   b: tabaqat_saniyya:375
@@ -3727,7 +1893,24 @@
   benzerlik: 0.75
   gerekce:
   - künye
-- 'no': 199
+- 'no': 102
+  karar: ''
+  a: tabaqat_saniyya:286
+  b: taj_tarajim:20
+  a_ad: أحمد بن محمد بن إبراهيم بن على البخارى، أبو سعيد ابن أبى الخطاب
+  a_yer: الطبقات السنية 2/14 (رقم 285)
+  a_vefat: null
+  b_ad: أحمد بن محمد، العقيلي، البخاري
+  b_yer: تاج التراجم 99 (رقم 20)
+  b_vefat: 657
+  a_sahis: jw172
+  b_sahis: jw188
+  tur: isim
+  puan: 3.0
+  benzerlik: 0.75
+  gerekce:
+  - 'nisbe: البخاري'
+- 'no': 103
   karar: ''
   a: tabaqat_saniyya:342
   b: taj_tarajim:20
@@ -3744,7 +1927,7 @@
   benzerlik: 0.75
   gerekce:
   - 'nisbe: العقيلي'
-- 'no': 200
+- 'no': 104
   karar: ''
   a: tabaqat_saniyya:375
   b: kataib:311
@@ -3761,7 +1944,7 @@
   benzerlik: 0.75
   gerekce:
   - künye
-- 'no': 201
+- 'no': 105
   karar: ''
   a: tabaqat_saniyya:375
   b: fawaid:42
@@ -3778,7 +1961,7 @@
   benzerlik: 0.75
   gerekce:
   - künye
-- 'no': 202
+- 'no': 106
   karar: ''
   a: jawahir:429
   b: athmar:182
@@ -3795,7 +1978,7 @@
   benzerlik: 0.75
   gerekce:
   - künye
-- 'no': 203
+- 'no': 107
   karar: ''
   a: tabaqat_saniyya:650
   b: athmar:182
@@ -3812,7 +1995,7 @@
   benzerlik: 0.75
   gerekce:
   - künye
-- 'no': 204
+- 'no': 108
   karar: ''
   a: jawahir:478
   b: tabaqat_saniyya:718
@@ -3829,7 +2012,7 @@
   benzerlik: 0.75
   gerekce:
   - künye
-- 'no': 205
+- 'no': 109
   karar: ''
   a: jawahir:481
   b: tabaqat_saniyya:713
@@ -3846,7 +2029,7 @@
   benzerlik: 0.75
   gerekce:
   - künye
-- 'no': 206
+- 'no': 110
   karar: ''
   a: jawahir:549
   b: taj_tarajim:103
@@ -3863,7 +2046,7 @@
   benzerlik: 0.75
   gerekce:
   - künye
-- 'no': 207
+- 'no': 111
   karar: ''
   a: tabaqat_saniyya:810
   b: taj_tarajim:103
@@ -3880,7 +2063,7 @@
   benzerlik: 0.75
   gerekce:
   - künye
-- 'no': 208
+- 'no': 112
   karar: ''
   a: qand:401
   b: tabaqat_saniyya:1193
@@ -3897,7 +2080,7 @@
   benzerlik: 0.75
   gerekce:
   - künye
-- 'no': 209
+- 'no': 113
   karar: ''
   a: ghuraf_v1:387
   b: athmar:374
@@ -3914,7 +2097,7 @@
   benzerlik: 0.75
   gerekce:
   - 'nisbe: السمرقندي'
-- 'no': 210
+- 'no': 114
   karar: ''
   a: qand:674
   b: jawahir:969
@@ -3931,7 +2114,7 @@
   benzerlik: 0.75
   gerekce:
   - künye
-- 'no': 211
+- 'no': 115
   karar: ''
   a: qand:674
   b: jawahir:970
@@ -3948,7 +2131,7 @@
   benzerlik: 0.75
   gerekce:
   - künye
-- 'no': 212
+- 'no': 116
   karar: ''
   a: qand:674
   b: fawaid:221
@@ -3965,7 +2148,7 @@
   benzerlik: 0.75
   gerekce:
   - künye
-- 'no': 213
+- 'no': 117
   karar: ''
   a: qand:678
   b: jawahir:993
@@ -3982,7 +2165,7 @@
   benzerlik: 0.75
   gerekce:
   - künye
-- 'no': 214
+- 'no': 118
   karar: ''
   a: qand:678
   b: jawahir:998
@@ -3999,7 +2182,7 @@
   benzerlik: 0.75
   gerekce:
   - künye
-- 'no': 215
+- 'no': 119
   karar: ''
   a: qand:678
   b: jawahir:1000
@@ -4016,7 +2199,7 @@
   benzerlik: 0.75
   gerekce:
   - künye
-- 'no': 216
+- 'no': 120
   karar: ''
   a: qand:678
   b: jawahir:1002
@@ -4033,7 +2216,7 @@
   benzerlik: 0.75
   gerekce:
   - künye
-- 'no': 217
+- 'no': 121
   karar: ''
   a: qand:678
   b: jawahir:1003
@@ -4050,7 +2233,7 @@
   benzerlik: 0.75
   gerekce:
   - künye
-- 'no': 218
+- 'no': 122
   karar: ''
   a: qand:678
   b: jawahir:1006
@@ -4067,7 +2250,7 @@
   benzerlik: 0.75
   gerekce:
   - künye
-- 'no': 219
+- 'no': 123
   karar: ''
   a: qand:678
   b: jawahir:1008
@@ -4084,7 +2267,7 @@
   benzerlik: 0.75
   gerekce:
   - künye
-- 'no': 220
+- 'no': 124
   karar: ''
   a: qand:678
   b: jawahir:1009
@@ -4101,7 +2284,7 @@
   benzerlik: 0.75
   gerekce:
   - künye
-- 'no': 221
+- 'no': 125
   karar: ''
   a: qand:678
   b: jawahir:1010
@@ -4118,7 +2301,7 @@
   benzerlik: 0.75
   gerekce:
   - künye
-- 'no': 222
+- 'no': 126
   karar: ''
   a: qand:678
   b: taj_tarajim:162
@@ -4135,7 +2318,7 @@
   benzerlik: 0.75
   gerekce:
   - künye
-- 'no': 223
+- 'no': 127
   karar: ''
   a: qand:678
   b: kataib:315
@@ -4152,7 +2335,7 @@
   benzerlik: 0.75
   gerekce:
   - künye
-- 'no': 224
+- 'no': 128
   karar: ''
   a: qand:679
   b: jawahir:1008
@@ -4169,7 +2352,7 @@
   benzerlik: 0.75
   gerekce:
   - künye
-- 'no': 225
+- 'no': 129
   karar: ''
   a: qand:679
   b: jawahir:1010
@@ -4186,7 +2369,7 @@
   benzerlik: 0.75
   gerekce:
   - künye
-- 'no': 226
+- 'no': 130
   karar: ''
   a: qand:683
   b: jawahir:969
@@ -4203,7 +2386,7 @@
   benzerlik: 0.75
   gerekce:
   - künye
-- 'no': 227
+- 'no': 131
   karar: ''
   a: qand:683
   b: jawahir:970
@@ -4220,7 +2403,7 @@
   benzerlik: 0.75
   gerekce:
   - künye
-- 'no': 228
+- 'no': 132
   karar: ''
   a: qand:683
   b: fawaid:221
@@ -4237,7 +2420,7 @@
   benzerlik: 0.75
   gerekce:
   - künye
-- 'no': 229
+- 'no': 133
   karar: ''
   a: qand:684
   b: jawahir:1008
@@ -4254,7 +2437,7 @@
   benzerlik: 0.75
   gerekce:
   - künye
-- 'no': 230
+- 'no': 134
   karar: ''
   a: qand:684
   b: jawahir:1010
@@ -4271,7 +2454,7 @@
   benzerlik: 0.75
   gerekce:
   - künye
-- 'no': 231
+- 'no': 135
   karar: ''
   a: qand:706
   b: jawahir:1008
@@ -4288,7 +2471,7 @@
   benzerlik: 0.75
   gerekce:
   - künye
-- 'no': 232
+- 'no': 136
   karar: ''
   a: qand:706
   b: jawahir:1010
@@ -4305,7 +2488,7 @@
   benzerlik: 0.75
   gerekce:
   - künye
-- 'no': 233
+- 'no': 137
   karar: ''
   a: qand:721
   b: jawahir:1008
@@ -4322,7 +2505,7 @@
   benzerlik: 0.75
   gerekce:
   - künye
-- 'no': 234
+- 'no': 138
   karar: ''
   a: qand:721
   b: jawahir:1010
@@ -4339,7 +2522,7 @@
   benzerlik: 0.75
   gerekce:
   - künye
-- 'no': 235
+- 'no': 139
   karar: ''
   a: qand:737
   b: jawahir:1008
@@ -4356,7 +2539,7 @@
   benzerlik: 0.75
   gerekce:
   - künye
-- 'no': 236
+- 'no': 140
   karar: ''
   a: qand:737
   b: jawahir:1010
@@ -4373,7 +2556,7 @@
   benzerlik: 0.75
   gerekce:
   - künye
-- 'no': 237
+- 'no': 141
   karar: ''
   a: qand:752
   b: jawahir:1008
@@ -4390,7 +2573,7 @@
   benzerlik: 0.75
   gerekce:
   - künye
-- 'no': 238
+- 'no': 142
   karar: ''
   a: qand:752
   b: jawahir:1010
@@ -4407,7 +2590,7 @@
   benzerlik: 0.75
   gerekce:
   - künye
-- 'no': 239
+- 'no': 143
   karar: ''
   a: qand:753
   b: jawahir:1008
@@ -4424,7 +2607,7 @@
   benzerlik: 0.75
   gerekce:
   - künye
-- 'no': 240
+- 'no': 144
   karar: ''
   a: qand:753
   b: jawahir:1010
@@ -4441,7 +2624,7 @@
   benzerlik: 0.75
   gerekce:
   - künye
-- 'no': 241
+- 'no': 145
   karar: ''
   a: qand:756
   b: jawahir:993
@@ -4458,7 +2641,7 @@
   benzerlik: 0.75
   gerekce:
   - künye
-- 'no': 242
+- 'no': 146
   karar: ''
   a: qand:756
   b: jawahir:998
@@ -4475,7 +2658,7 @@
   benzerlik: 0.75
   gerekce:
   - künye
-- 'no': 243
+- 'no': 147
   karar: ''
   a: qand:756
   b: jawahir:1000
@@ -4492,7 +2675,7 @@
   benzerlik: 0.75
   gerekce:
   - künye
-- 'no': 244
+- 'no': 148
   karar: ''
   a: qand:756
   b: jawahir:1002
@@ -4509,7 +2692,7 @@
   benzerlik: 0.75
   gerekce:
   - künye
-- 'no': 245
+- 'no': 149
   karar: ''
   a: qand:756
   b: jawahir:1003
@@ -4526,7 +2709,7 @@
   benzerlik: 0.75
   gerekce:
   - künye
-- 'no': 246
+- 'no': 150
   karar: ''
   a: qand:756
   b: jawahir:1006
@@ -4543,7 +2726,7 @@
   benzerlik: 0.75
   gerekce:
   - künye
-- 'no': 247
+- 'no': 151
   karar: ''
   a: qand:756
   b: jawahir:1008
@@ -4560,7 +2743,7 @@
   benzerlik: 0.75
   gerekce:
   - künye
-- 'no': 248
+- 'no': 152
   karar: ''
   a: qand:756
   b: jawahir:1009
@@ -4577,7 +2760,7 @@
   benzerlik: 0.75
   gerekce:
   - künye
-- 'no': 249
+- 'no': 153
   karar: ''
   a: qand:756
   b: jawahir:1010
@@ -4594,7 +2777,7 @@
   benzerlik: 0.75
   gerekce:
   - künye
-- 'no': 250
+- 'no': 154
   karar: ''
   a: qand:756
   b: taj_tarajim:162
@@ -4611,7 +2794,7 @@
   benzerlik: 0.75
   gerekce:
   - künye
-- 'no': 251
+- 'no': 155
   karar: ''
   a: qand:756
   b: kataib:315
@@ -4628,7 +2811,7 @@
   benzerlik: 0.75
   gerekce:
   - künye
-- 'no': 252
+- 'no': 156
   karar: ''
   a: qand:765
   b: jawahir:1008
@@ -4645,7 +2828,7 @@
   benzerlik: 0.75
   gerekce:
   - künye
-- 'no': 253
+- 'no': 157
   karar: ''
   a: qand:765
   b: jawahir:1010
@@ -4662,7 +2845,7 @@
   benzerlik: 0.75
   gerekce:
   - künye
-- 'no': 254
+- 'no': 158
   karar: ''
   a: qand:787
   b: jawahir:1008
@@ -4679,7 +2862,7 @@
   benzerlik: 0.75
   gerekce:
   - künye
-- 'no': 255
+- 'no': 159
   karar: ''
   a: qand:787
   b: jawahir:1010
@@ -4696,7 +2879,7 @@
   benzerlik: 0.75
   gerekce:
   - künye
-- 'no': 256
+- 'no': 160
   karar: ''
   a: qand:788
   b: jawahir:1008
@@ -4713,7 +2896,7 @@
   benzerlik: 0.75
   gerekce:
   - künye
-- 'no': 257
+- 'no': 161
   karar: ''
   a: qand:788
   b: jawahir:1010
@@ -4730,7 +2913,7 @@
   benzerlik: 0.75
   gerekce:
   - künye
-- 'no': 258
+- 'no': 162
   karar: ''
   a: qand:793
   b: jawahir:1008
@@ -4747,7 +2930,7 @@
   benzerlik: 0.75
   gerekce:
   - künye
-- 'no': 259
+- 'no': 163
   karar: ''
   a: qand:793
   b: jawahir:1010
@@ -4764,7 +2947,7 @@
   benzerlik: 0.75
   gerekce:
   - künye
-- 'no': 260
+- 'no': 164
   karar: ''
   a: qand:794
   b: jawahir:1008
@@ -4781,7 +2964,7 @@
   benzerlik: 0.75
   gerekce:
   - künye
-- 'no': 261
+- 'no': 165
   karar: ''
   a: qand:794
   b: jawahir:1010
@@ -4798,7 +2981,7 @@
   benzerlik: 0.75
   gerekce:
   - künye
-- 'no': 262
+- 'no': 166
   karar: ''
   a: qand:796
   b: jawahir:1008
@@ -4815,7 +2998,7 @@
   benzerlik: 0.75
   gerekce:
   - künye
-- 'no': 263
+- 'no': 167
   karar: ''
   a: qand:796
   b: jawahir:1010
@@ -4832,7 +3015,7 @@
   benzerlik: 0.75
   gerekce:
   - künye
-- 'no': 264
+- 'no': 168
   karar: ''
   a: qand:796
   b: taj_tarajim:162
@@ -4849,7 +3032,7 @@
   benzerlik: 0.75
   gerekce:
   - vefat 485/482
-- 'no': 265
+- 'no': 169
   karar: ''
   a: qand:798
   b: jawahir:1008
@@ -4866,7 +3049,7 @@
   benzerlik: 0.75
   gerekce:
   - künye
-- 'no': 266
+- 'no': 170
   karar: ''
   a: qand:798
   b: jawahir:1010
@@ -4883,7 +3066,7 @@
   benzerlik: 0.75
   gerekce:
   - künye
-- 'no': 267
+- 'no': 171
   karar: ''
   a: qand:801
   b: jawahir:1008
@@ -4900,7 +3083,7 @@
   benzerlik: 0.75
   gerekce:
   - künye
-- 'no': 268
+- 'no': 172
   karar: ''
   a: qand:801
   b: jawahir:1010
@@ -4917,7 +3100,7 @@
   benzerlik: 0.75
   gerekce:
   - künye
-- 'no': 269
+- 'no': 173
   karar: ''
   a: jawahir:963
   b: athmar:392
@@ -4934,7 +3117,7 @@
   benzerlik: 0.75
   gerekce:
   - 'nisbe: النيسابوري'
-- 'no': 270
+- 'no': 174
   karar: ''
   a: qand:604
   b: jawahir:1074
@@ -4951,7 +3134,7 @@
   benzerlik: 0.75
   gerekce:
   - künye
-- 'no': 271
+- 'no': 175
   karar: ''
   a: qand:616
   b: jawahir:1074
@@ -4968,7 +3151,7 @@
   benzerlik: 0.75
   gerekce:
   - künye
-- 'no': 272
+- 'no': 176
   karar: ''
   a: qand:624
   b: jawahir:1074
@@ -4985,7 +3168,7 @@
   benzerlik: 0.75
   gerekce:
   - künye
-- 'no': 273
+- 'no': 177
   karar: ''
   a: qand:641
   b: jawahir:1074
@@ -5002,7 +3185,7 @@
   benzerlik: 0.75
   gerekce:
   - künye
-- 'no': 274
+- 'no': 178
   karar: ''
   a: qand:642
   b: jawahir:1074
@@ -5019,7 +3202,7 @@
   benzerlik: 0.75
   gerekce:
   - künye
-- 'no': 275
+- 'no': 179
   karar: ''
   a: jawahir:1046
   b: kataib:607
@@ -5037,7 +3220,7 @@
   gerekce:
   - künye
   - 'nisbe: الغزنوي'
-- 'no': 276
+- 'no': 180
   karar: ''
   a: jawahir:1074
   b: kataib:336
@@ -5054,7 +3237,7 @@
   benzerlik: 0.75
   gerekce:
   - künye
-- 'no': 277
+- 'no': 181
   karar: ''
   a: jawahir:1074
   b: kataib:607
@@ -5072,7 +3255,7 @@
   gerekce:
   - künye
   - 'nisbe: الغزنوي'
-- 'no': 278
+- 'no': 182
   karar: ''
   a: jawahir:1186
   b: kataib:261
@@ -5089,7 +3272,7 @@
   benzerlik: 0.75
   gerekce:
   - künye
-- 'no': 279
+- 'no': 183
   karar: ''
   a: jawahir:1218
   b: taj_tarajim:197
@@ -5106,7 +3289,7 @@
   benzerlik: 0.75
   gerekce:
   - 'nisbe: البخاري'
-- 'no': 280
+- 'no': 184
   karar: ''
   a: jawahir:1218
   b: taj_tarajim:199
@@ -5123,7 +3306,7 @@
   benzerlik: 0.75
   gerekce:
   - 'nisbe: البخاري'
-- 'no': 281
+- 'no': 185
   karar: ''
   a: jawahir:1218
   b: kataib:427
@@ -5140,7 +3323,7 @@
   benzerlik: 0.75
   gerekce:
   - 'nisbe: البخاري'
-- 'no': 282
+- 'no': 186
   karar: ''
   a: jawahir:1218
   b: kataib:550
@@ -5157,7 +3340,7 @@
   benzerlik: 0.75
   gerekce:
   - 'nisbe: البخاري'
-- 'no': 283
+- 'no': 187
   karar: ''
   a: jawahir:1218
   b: athmar:492
@@ -5174,7 +3357,7 @@
   benzerlik: 0.75
   gerekce:
   - 'nisbe: البخاري'
-- 'no': 284
+- 'no': 188
   karar: ''
   a: jawahir:1218
   b: athmar:493
@@ -5191,7 +3374,7 @@
   benzerlik: 0.75
   gerekce:
   - 'nisbe: البخاري'
-- 'no': 285
+- 'no': 189
   karar: ''
   a: jawahir:1218
   b: fawaid:278
@@ -5208,7 +3391,7 @@
   benzerlik: 0.75
   gerekce:
   - 'nisbe: البخاري'
-- 'no': 286
+- 'no': 190
   karar: ''
   a: jawahir:1218
   b: fawaid:279
@@ -5225,7 +3408,7 @@
   benzerlik: 0.75
   gerekce:
   - 'nisbe: البخاري'
-- 'no': 287
+- 'no': 191
   karar: ''
   a: jawahir:1222
   b: kataib:187
@@ -5242,7 +3425,7 @@
   benzerlik: 0.75
   gerekce:
   - künye
-- 'no': 288
+- 'no': 192
   karar: ''
   a: jawahir:1222
   b: kataib:261
@@ -5259,7 +3442,7 @@
   benzerlik: 0.75
   gerekce:
   - künye
-- 'no': 289
+- 'no': 193
   karar: ''
   a: jawahir:1222
   b: kataib:406
@@ -5270,13 +3453,13 @@
   b_yer: كتائب أعلام الأخيار 2/538 (رقم 406)
   b_vefat: null
   a_sahis: jw1151
-  b_sahis: kt406
+  b_sahis: jw1185
   tur: isim
   puan: 3.0
   benzerlik: 0.75
   gerekce:
   - künye
-- 'no': 290
+- 'no': 194
   karar: ''
   a: jawahir:1222
   b: athmar:504
@@ -5293,7 +3476,7 @@
   benzerlik: 0.75
   gerekce:
   - künye
-- 'no': 291
+- 'no': 195
   karar: ''
   a: jawahir:1222
   b: fawaid:274
@@ -5310,7 +3493,7 @@
   benzerlik: 0.75
   gerekce:
   - künye
-- 'no': 292
+- 'no': 196
   karar: ''
   a: jawahir:1222
   b: fawaid:277
@@ -5327,7 +3510,7 @@
   benzerlik: 0.75
   gerekce:
   - künye
-- 'no': 293
+- 'no': 197
   karar: ''
   a: jawahir:1222
   b: fawaid:280
@@ -5344,7 +3527,7 @@
   benzerlik: 0.75
   gerekce:
   - künye
-- 'no': 294
+- 'no': 198
   karar: ''
   a: jawahir:1222
   b: fawaid:290
@@ -5361,7 +3544,7 @@
   benzerlik: 0.75
   gerekce:
   - künye
-- 'no': 295
+- 'no': 199
   karar: ''
   a: kataib:387
   b: athmar:596
@@ -5379,7 +3562,7 @@
   gerekce:
   - künye
   - 'nisbe: السمرقندي'
-- 'no': 296
+- 'no': 200
   karar: ''
   a: ghuraf_v2:94
   b: taj_tarajim:232
@@ -5396,7 +3579,7 @@
   benzerlik: 0.75
   gerekce:
   - vefat 406
-- 'no': 297
+- 'no': 201
   karar: ''
   a: jawahir:1552
   b: taj_tarajim:218
@@ -5413,7 +3596,7 @@
   benzerlik: 0.75
   gerekce:
   - vefat 506
-- 'no': 298
+- 'no': 202
   karar: ''
   a: athmar:736
   b: fawaid:472
@@ -5430,7 +3613,7 @@
   benzerlik: 0.75
   gerekce:
   - 'nisbe: الخوارزمي'
-- 'no': 299
+- 'no': 203
   karar: ''
   a: jawahir:813
   b: tabaqat_saniyya:1235
@@ -5447,7 +3630,7 @@
   benzerlik: 0.75
   gerekce:
   - künye
-- 'no': 300
+- 'no': 204
   karar: ''
   a: jawahir:814
   b: tabaqat_saniyya:1234
@@ -5464,7 +3647,7 @@
   benzerlik: 0.75
   gerekce:
   - künye
-- 'no': 301
+- 'no': 205
   karar: ''
   a: kataib:403
   b: athmar:664
@@ -5481,7 +3664,7 @@
   benzerlik: 0.75
   gerekce:
   - 'nisbe: اليزدي'
-- 'no': 302
+- 'no': 206
   karar: ''
   a: tabaqat_saniyya:268
   b: fawaid:33
@@ -5492,15 +3675,15 @@
   b_yer: الفوائد البهية 27
   b_vefat: 553
   a_sahis: jw154
-  b_sahis: jw1994
+  b_sahis: gh899
   tur: atıf
   puan: 3.0
   benzerlik: 0.75
   gerekce:
   - 'atıf: الفوائد البهية ٢٧، كتائب أعلام الأخيار، برقم ٢٠٢، كشف'
   - künye
-  - 'çakışma: insan kararı: farklı kişiler'
-- 'no': 303
+  - 'çakışma: kataib kitabında zaten başka bir madde var'
+- 'no': 207
   karar: ''
   a: jawahir:1075
   b: fawaid:257
@@ -5520,7 +3703,7 @@
   - zincir 3. halkada ayrılıyor
   - lakap
   - vefat 717
-- 'no': 304
+- 'no': 208
   karar: ''
   a: tabaqat_saniyya:584
   b: jawahir:387
@@ -5540,27 +3723,26 @@
   - zincir 3. halkada ayrılıyor
   - künye
   - vefat 620
-- 'no': 305
+- 'no': 209
   karar: ''
-  a: jawahir:580
-  b: fawaid:136
-  a_ad: داود بن غلبك بن على الرومى عرف بالبدر الطويل
-  a_yer: الجواهر المضية 2/190 (رقم 579)
-  a_vefat: 715
-  b_ad: داود بن أغلبك بن علي الرومى
-  b_yer: الفوائد البهية 72
-  b_vefat: 715
-  a_sahis: jw579
-  b_sahis: fws136
+  a: tabaqat_saniyya:897
+  b: fawaid:149
+  a_ad: سديد بن محمد الخياطى، علاء الدين، الملقب بشيخ الإسلام
+  a_yer: الطبقات السنية 4/7 (رقم 896)
+  a_vefat: null
+  b_ad: سديد بن محمد شيخ الإسلام علاء الدين الحناطي
+  b_yer: الفوائد البهية 78
+  b_vefat: null
+  a_sahis: jw2030
+  b_sahis: fws149
   tur: atıf
-  puan: 1.0
+  puan: 2.0
   benzerlik: 0.75
   gerekce:
-  - 'atıf: الفوائد البهية ٧٢.'
-  - zincir 2. halkada ayrılıyor
-  - 'nisbe: الرومي'
-  - vefat 715
-- 'no': 306
+  - 'atıf: الفوائد البهية ٧٨، كتائب أعلام الأخيار، برقم ٣٨٨، مجمع'
+  - lakap
+  - 'çakışma: ad uyuşmuyor: الخياطى علاء الأئمة / سديد بن محمد شيخ الإسلام علاء '
+- 'no': 210
   karar: ''
   a: tabaqat_saniyya:39
   b: jawahir:21
@@ -5580,7 +3762,7 @@
   - zincir 2. halkada ayrılıyor
   - künye
   - 'nisbe: الشكاني'
-- 'no': 307
+- 'no': 211
   karar: ''
   a: tabaqat_saniyya:494
   b: fawaid:70
@@ -5600,47 +3782,7 @@
   - zincir 2. halkada ayrılıyor
   - künye
   - vefat 402
-- 'no': 308
-  karar: ''
-  a: tabaqat_saniyya:855
-  b: fawaid:136
-  a_ad: داود بن غلبك بن على الرومى، المعروف بالبدر الطويل
-  a_yer: الطبقات السنية 3/231 (رقم 854)
-  a_vefat: 715
-  b_ad: داود بن أغلبك بن علي الرومى
-  b_yer: الفوائد البهية 72
-  b_vefat: 715
-  a_sahis: jw579
-  b_sahis: fws136
-  tur: atıf
-  puan: 1.0
-  benzerlik: 0.75
-  gerekce:
-  - 'atıf: الفوائد البهية ٧٢، كتائب أعلام الأخيار، برقم ٥٩٤.'
-  - zincir 2. halkada ayrılıyor
-  - 'nisbe: الرومي'
-  - vefat 715
-- 'no': 309
-  karar: ''
-  a: athmar:246
-  b: fawaid:136
-  a_ad: داود بن غلبك بن علي الرومي
-  a_yer: الأثمار الجنية 1/428 (رقم 235)
-  a_vefat: 715
-  b_ad: داود بن أغلبك بن علي الرومى
-  b_yer: الفوائد البهية 72
-  b_vefat: 715
-  a_sahis: jw579
-  b_sahis: fws136
-  tur: atıf
-  puan: 1.0
-  benzerlik: 0.75
-  gerekce:
-  - 'atıf: الفوائد البهية:٧٢.'
-  - zincir 2. halkada ayrılıyor
-  - 'nisbe: الرومي'
-  - vefat 715
-- 'no': 310
+- 'no': 212
   karar: ''
   a: athmar:514
   b: jawahir:1241
@@ -5659,7 +3801,7 @@
   - 'atıf: الجواهر المضية:٣/ ٩٩.'
   - zincir 3. halkada ayrılıyor
   - 'nisbe: البوشنجي'
-- 'no': 311
+- 'no': 213
   karar: ''
   a: tabaqat_saniyya:425
   b: jawahir:284
@@ -5679,7 +3821,7 @@
   - zincir 2. halkada ayrılıyor
   - künye
   - lakap
-- 'no': 312
+- 'no': 214
   karar: ''
   a: athmar:664
   b: fawaid:422
@@ -5698,25 +3840,7 @@
   - 'atıf: الفوائد البهية:٢١٥.'
   - zincir 3. halkada ayrılıyor
   - 'nisbe: اليزدي'
-- 'no': 313
-  karar: ''
-  a: athmar:100
-  b: fawaid:52
-  a_ad: أحمد بن محمد بن مكحول بن الفضل
-  a_yer: الأثمار الجنية 1/346 (رقم 89)
-  a_vefat: 379
-  b_ad: أحمد بن محمد بن مكحول أبو البديع المكحولى
-  b_yer: الفوائد البهية 40
-  b_vefat: 79
-  a_sahis: jw239
-  b_sahis: fws52
-  tur: atıf
-  puan: -1.0
-  benzerlik: 0.75
-  gerekce:
-  - 'atıf: الفوائد البهية:٤٠.'
-  - vefat farklı 379/79
-- 'no': 314
+- 'no': 215
   karar: ''
   a: athmar:488
   b: jawahir:1175
@@ -5734,7 +3858,7 @@
   gerekce:
   - 'atıf: الجواهر المضية:٤٠،٣/ ٣٩.'
   - vefat farklı 73/573
-- 'no': 315
+- 'no': 216
   karar: ''
   a: athmar:664
   b: jawahir:1672
@@ -5753,7 +3877,7 @@
   - 'atıf: الجواهر المضية:٣/ ٤٨٥؛ ابن قطلوبغا، تاج التراجم:٧٧؛ حا'
   - zincir 2. halkada ayrılıyor
   - 'nisbe: اليزدي'
-- 'no': 316
+- 'no': 217
   karar: ''
   a: jawahir:1433
   b: fawaid:335
@@ -5771,7 +3895,7 @@
   gerekce:
   - 'atıf: الفوائد البهية ١٨٢.'
   - zincir 2. halkada ayrılıyor
-- 'no': 317
+- 'no': 218
   karar: ''
   a: athmar:172
   b: jawahir:397
@@ -5791,26 +3915,7 @@
   - zincir 3. halkada ayrılıyor
   - 'nisbe: الرازي'
   - vefat farklı 180/8
-- 'no': 318
-  karar: ''
-  a: athmar:74
-  b: jawahir:185
-  a_ad: أحمد بن محمد بن أحمد بن الأعين السّمنانيّ
-  a_yer: الأثمار الجنية 1/332 (رقم 63)
-  a_vefat: 466
-  b_ad: أحمد بن محمد بن أحمد بن محمد بن أحمد بن محمود بن الأعين، أبو الحسين، بن أبى جعفر، السمعانى
-  b_yer: الجواهر المضية 1/254-255 (رقم 184)
-  b_vefat: 410
-  a_sahis: at63
-  b_sahis: jw184
-  tur: atıf
-  puan: -5.0
-  benzerlik: 0.75
-  gerekce:
-  - 'atıf: الجواهر المضية:١/ ٢٥٤ - ٢٥٦؛ التميمي، الطبقات السنية:٢'
-  - zincir 4. halkada ayrılıyor
-  - vefat farklı 466/410
-- 'no': 319
+- 'no': 219
   karar: ''
   a: athmar:152
   b: jawahir:369
@@ -5831,7 +3936,7 @@
   - künye
   - 'nisbe: النيسابوري'
   - vefat 251
-- 'no': 320
+- 'no': 220
   karar: ''
   a: athmar:152
   b: tabaqat_saniyya:557
@@ -5852,7 +3957,7 @@
   - künye
   - 'nisbe: النيسابوري'
   - vefat 251
-- 'no': 321
+- 'no': 221
   karar: ''
   a: athmar:240
   b: jawahir:567
@@ -5872,7 +3977,7 @@
   - zincir 1. halkada ayrılıyor
   - 'nisbe: الخوارزمي، القرشي'
   - vefat 638
-- 'no': 322
+- 'no': 222
   karar: ''
   a: athmar:240
   b: tabaqat_saniyya:840
@@ -5892,7 +3997,7 @@
   - zincir 1. halkada ayrılıyor
   - 'nisbe: الخوارزمي، القرشي'
   - vefat 638
-- 'no': 323
+- 'no': 223
   karar: ''
   a: athmar:240
   b: fawaid:131
@@ -5912,7 +4017,7 @@
   - zincir 1. halkada ayrılıyor
   - 'nisbe: الخوارزمي، القرشي'
   - vefat 638
-- 'no': 324
+- 'no': 224
   karar: ''
   a: jawahir:1545
   b: fawaid:374
@@ -5931,7 +4036,7 @@
   - 'atıf: الفوائد البهية ٢٠١، إيضاح المكنون ٢/ ٢٣٢، هدية العارفي'
   - zincir 3. halkada ayrılıyor
   - vefat 911, jawahir müellifinden çok sonra
-- 'no': 325
+- 'no': 225
   karar: ''
   a: tabaqat_saniyya:466
   b: fawaid:66
@@ -5951,7 +4056,7 @@
   - zincir 1. halkada ayrılıyor
   - 'nisbe: البجلي، الكوفي'
   - vefat 188/190
-- 'no': 326
+- 'no': 226
   karar: ''
   a: athmar:162
   b: fawaid:94
@@ -5971,7 +4076,7 @@
   - zincir 1. halkada ayrılıyor
   - 'nisbe: التركي، الناصري'
   - lakap
-- 'no': 327
+- 'no': 227
   karar: ''
   a: athmar:241
   b: jawahir:570
@@ -5991,7 +4096,7 @@
   - zincir 1. halkada ayrılıyor
   - 'nisbe: السجزي'
   - vefat 368
-- 'no': 328
+- 'no': 228
   karar: ''
   a: jawahir:782
   b: fawaid:177
@@ -6010,7 +4115,7 @@
   - 'atıf: الفوائد البهية ٩١، ٩٢،'
   - zincir 2. halkada ayrılıyor
   - vefat farklı 543/43
-- 'no': 329
+- 'no': 229
   karar: ''
   a: tabaqat_saniyya:1182
   b: fawaid:177
@@ -6029,7 +4134,7 @@
   - 'atıf: الفوائد البهية ٩٢،٩١، كشف الظنون ٢١١،١/ ٩٦، ١٦٣٥،١٤١٤،'
   - zincir 2. halkada ayrılıyor
   - vefat farklı 543/43
-- 'no': 330
+- 'no': 230
   karar: ''
   a: kataib:117
   b: jawahir:394
@@ -6049,7 +4154,7 @@
   - zincir 1. halkada ayrılıyor
   - künye
   - 'nisbe: المروزي'
-- 'no': 331
+- 'no': 231
   karar: ''
   a: ghuraf_v1:152
   b: jawahir:177
@@ -6069,7 +4174,7 @@
   - künye
   - 'nisbe: الدمشقي'
   - vefat 661
-- 'no': 332
+- 'no': 232
   karar: ''
   a: ghuraf_v1:152
   b: tabaqat_saniyya:288
@@ -6089,7 +4194,7 @@
   - künye
   - 'nisbe: الدمشقي'
   - vefat 661
-- 'no': 333
+- 'no': 233
   karar: ''
   a: jawahir:486
   b: fawaid:112
@@ -6109,7 +4214,7 @@
   - 'nisbe: الاوزجندي، الفرغاني'
   - lakap
   - vefat 592
-- 'no': 334
+- 'no': 234
   karar: ''
   a: kataib:544
   b: taj_tarajim:96
@@ -6119,8 +4224,8 @@
   b_ad: الحسين بن علي، الصغناقي
   b_yer: تاج التراجم 160 (رقم 96)
   b_vefat: null
-  a_sahis: fws107
-  b_sahis: jw507
+  a_sahis: jw507
+  b_sahis: tj96
   tur: atıf
   puan: 4.0
   benzerlik: 0.71
@@ -6128,7 +4233,7 @@
   - 'atıf: تاج التراجم" لابن قطلوبغا (ص: ١٦٠)، و"بغية الوعاة"'
   - lakap
   - 'çakışma: ad uyuşmuyor: الحسن بن علي بن حجاج بن علي حس / الحسين بن علي، الصغناقي'
-- 'no': 335
+- 'no': 235
   karar: ''
   a: taj_tarajim:87
   b: fawaid:112
@@ -6146,7 +4251,7 @@
   gerekce:
   - vefat 592
   - 'çakışma: ad uyuşmuyor: فخر الدين قاضي خان / حسن بن منصور بن محود فخر الدين'
-- 'no': 336
+- 'no': 236
   karar: ''
   a: ghuraf_v1:330
   b: tabaqat_saniyya:1201
@@ -6166,7 +4271,7 @@
   - 'nisbe: السيرامي'
   - lakap
   - vefat 880
-- 'no': 337
+- 'no': 237
   karar: ''
   a: jawahir:1038
   b: taj_tarajim:185
@@ -6183,8 +4288,8 @@
   benzerlik: 0.67
   gerekce:
   - vefat 660
-  - 'çakışma: ad uyuşmuyor: عمر بن أحمد بن هبة الله / جمال الدين بن العديم'
-- 'no': 338
+  - 'çakışma: ad uyuşmuyor: عمر بن أحمد بن هبة الله بن محم / جمال الدين بن العديم'
+- 'no': 238
   karar: ''
   a: jawahir:191
   b: taj_tarajim:51
@@ -6202,7 +4307,7 @@
   gerekce:
   - vefat 350
   - aynı kitapta birden çok aday
-- 'no': 339
+- 'no': 239
   karar: ''
   a: jawahir:204
   b: taj_tarajim:51
@@ -6220,7 +4325,7 @@
   gerekce:
   - vefat 352
   - aynı kitapta birden çok aday
-- 'no': 340
+- 'no': 240
   karar: ''
   a: jawahir:2101
   b: tabaqat_saniyya:355
@@ -6238,7 +4343,7 @@
   gerekce:
   - künye
   - aynı kitapta birden çok aday
-- 'no': 341
+- 'no': 241
   karar: ''
   a: tabaqat_saniyya:307
   b: taj_tarajim:51
@@ -6256,7 +4361,7 @@
   gerekce:
   - vefat 350
   - aynı kitapta birden çok aday
-- 'no': 342
+- 'no': 242
   karar: ''
   a: tabaqat_saniyya:321
   b: taj_tarajim:51
@@ -6274,7 +4379,7 @@
   gerekce:
   - vefat 352
   - aynı kitapta birden çok aday
-- 'no': 343
+- 'no': 243
   karar: ''
   a: taj_tarajim:51
   b: athmar:77
@@ -6292,7 +4397,7 @@
   gerekce:
   - vefat 351
   - aynı kitapta birden çok aday
-- 'no': 344
+- 'no': 244
   karar: ''
   a: ghuraf_v1:170
   b: tabaqat_saniyya:447
@@ -6310,7 +4415,7 @@
   gerekce:
   - 'nisbe: الناصري'
   - vefat 731
-- 'no': 345
+- 'no': 245
   karar: ''
   a: qand:639
   b: athmar:442
@@ -6328,7 +4433,7 @@
   gerekce:
   - vefat 523
   - aynı kitapta birden çok aday
-- 'no': 346
+- 'no': 246
   karar: ''
   a: qand:642
   b: athmar:442
@@ -6346,7 +4451,7 @@
   gerekce:
   - vefat 522
   - aynı kitapta birden çok aday
-- 'no': 347
+- 'no': 247
   karar: ''
   a: jawahir:1197
   b: taj_tarajim:226
@@ -6364,7 +4469,7 @@
   gerekce:
   - vefat 444
   - aynı kitapta birden çok aday
-- 'no': 348
+- 'no': 248
   karar: ''
   a: jawahir:1197
   b: athmar:495
@@ -6382,7 +4487,7 @@
   gerekce:
   - vefat 444
   - aynı kitapta birden çok aday
-- 'no': 349
+- 'no': 249
   karar: ''
   a: jawahir:1517
   b: athmar:596
@@ -6401,7 +4506,7 @@
   - 'nisbe: السمرقندي'
   - aynı kitapta birden çok aday
   - aynı kitapta birden çok aday
-- 'no': 350
+- 'no': 250
   karar: ''
   a: jawahir:1341
   b: kataib:308
@@ -6419,7 +4524,25 @@
   gerekce:
   - künye
   - aynı kitapta birden çok aday
-- 'no': 351
+- 'no': 251
+  karar: ''
+  a: taj_tarajim:128
+  b: athmar:317
+  a_ad: عبد الله بن محمد، ابن ناقيا البندار
+  a_yer: تاج التراجم 180 (رقم 128)
+  a_vefat: 485
+  b_ad: عبد الله بن محمد بن الحسين المعروف بالبندار الشاعر
+  b_yer: الأثمار الجنية 2/465 (رقم 306)
+  b_vefat: 485
+  a_sahis: jw725
+  b_sahis: at306
+  tur: isim
+  puan: 4.0
+  benzerlik: 0.67
+  gerekce:
+  - vefat 485
+  - 'çakışma: ad uyuşmuyor: عبد الله، وقيل عبد الباقى بن م / عبد الله بن محمد بن الحسين الم'
+- 'no': 252
   karar: ''
   a: ghuraf_v1:137
   b: tabaqat_saniyya:380
@@ -6436,7 +4559,7 @@
   benzerlik: 0.67
   gerekce:
   - vefat 790
-- 'no': 352
+- 'no': 253
   karar: ''
   a: qand:771
   b: kataib:315
@@ -6454,7 +4577,7 @@
   gerekce:
   - künye
   - vefat 483
-- 'no': 353
+- 'no': 254
   karar: ''
   a: jawahir:1065
   b: kataib:336
@@ -6471,7 +4594,7 @@
   benzerlik: 0.67
   gerekce:
   - künye
-- 'no': 354
+- 'no': 255
   karar: ''
   a: athmar:47
   b: jawahir:94
@@ -6490,7 +4613,7 @@
   - 'atıf: الجواهر المضية:١/ ١٥٤؛ ابن حجر، الدرر الكامنة:١/ ١٢٧ -'
   - zincir 5. halkada ayrılıyor
   - vefat 745
-- 'no': 355
+- 'no': 256
   karar: ''
   a: jawahir:39
   b: kataib:234
@@ -6507,7 +4630,7 @@
   benzerlik: 0.67
   gerekce:
   - vefat 373
-- 'no': 356
+- 'no': 257
   karar: ''
   a: tabaqat_saniyya:70
   b: kataib:234
@@ -6524,7 +4647,7 @@
   benzerlik: 0.67
   gerekce:
   - vefat 373
-- 'no': 357
+- 'no': 258
   karar: ''
   a: ghuraf_v1:135
   b: jawahir:176
@@ -6541,7 +4664,7 @@
   benzerlik: 0.67
   gerekce:
   - künye
-- 'no': 358
+- 'no': 259
   karar: ''
   a: jawahir:176
   b: tabaqat_saniyya:285
@@ -6558,7 +4681,7 @@
   benzerlik: 0.67
   gerekce:
   - künye
-- 'no': 359
+- 'no': 260
   karar: ''
   a: jawahir:176
   b: tabaqat_saniyya:288
@@ -6575,7 +4698,7 @@
   benzerlik: 0.67
   gerekce:
   - künye
-- 'no': 360
+- 'no': 261
   karar: ''
   a: ghuraf_v1:121
   b: jawahir:176
@@ -6592,7 +4715,7 @@
   benzerlik: 0.67
   gerekce:
   - lakap
-- 'no': 361
+- 'no': 262
   karar: ''
   a: jawahir:172
   b: tabaqat_saniyya:286
@@ -6609,7 +4732,7 @@
   benzerlik: 0.67
   gerekce:
   - künye
-- 'no': 362
+- 'no': 263
   karar: ''
   a: jawahir:193
   b: taj_tarajim:53
@@ -6626,7 +4749,7 @@
   benzerlik: 0.67
   gerekce:
   - vefat 249/247
-- 'no': 363
+- 'no': 264
   karar: ''
   a: jawahir:317
   b: taj_tarajim:68
@@ -6643,7 +4766,7 @@
   benzerlik: 0.67
   gerekce:
   - vefat 629
-- 'no': 364
+- 'no': 265
   karar: ''
   a: tabaqat_saniyya:477
   b: taj_tarajim:68
@@ -6660,7 +4783,7 @@
   benzerlik: 0.67
   gerekce:
   - vefat 630
-- 'no': 365
+- 'no': 266
   karar: ''
   a: qand:389
   b: jawahir:785
@@ -6677,7 +4800,7 @@
   benzerlik: 0.67
   gerekce:
   - 'nisbe: النيسابوري'
-- 'no': 366
+- 'no': 267
   karar: ''
   a: qand:389
   b: tabaqat_saniyya:1185
@@ -6694,7 +4817,7 @@
   benzerlik: 0.67
   gerekce:
   - 'nisbe: النيسابوري'
-- 'no': 367
+- 'no': 268
   karar: ''
   a: qand:389
   b: kataib:335
@@ -6711,7 +4834,7 @@
   benzerlik: 0.67
   gerekce:
   - 'nisbe: النيسابوري'
-- 'no': 368
+- 'no': 269
   karar: ''
   a: qand:376
   b: jawahir:691
@@ -6728,7 +4851,7 @@
   benzerlik: 0.67
   gerekce:
   - künye
-- 'no': 369
+- 'no': 270
   karar: ''
   a: qand:376
   b: tabaqat_saniyya:1035
@@ -6745,7 +4868,7 @@
   benzerlik: 0.67
   gerekce:
   - künye
-- 'no': 370
+- 'no': 271
   karar: ''
   a: qand:318
   b: jawahir:715
@@ -6762,7 +4885,7 @@
   benzerlik: 0.67
   gerekce:
   - künye
-- 'no': 371
+- 'no': 272
   karar: ''
   a: qand:318
   b: tabaqat_saniyya:1069
@@ -6779,7 +4902,7 @@
   benzerlik: 0.67
   gerekce:
   - künye
-- 'no': 372
+- 'no': 273
   karar: ''
   a: tabaqat_saniyya:1103
   b: fawaid:191
@@ -6796,7 +4919,7 @@
   benzerlik: 0.67
   gerekce:
   - lakap
-- 'no': 373
+- 'no': 274
   karar: ''
   a: qand:689
   b: jawahir:981
@@ -6813,7 +4936,7 @@
   benzerlik: 0.67
   gerekce:
   - künye
-- 'no': 374
+- 'no': 275
   karar: ''
   a: qand:690
   b: jawahir:980
@@ -6830,7 +4953,7 @@
   benzerlik: 0.67
   gerekce:
   - künye
-- 'no': 375
+- 'no': 276
   karar: ''
   a: qand:690
   b: jawahir:981
@@ -6847,7 +4970,7 @@
   benzerlik: 0.67
   gerekce:
   - künye
-- 'no': 376
+- 'no': 277
   karar: ''
   a: qand:690
   b: fawaid:226
@@ -6864,7 +4987,7 @@
   benzerlik: 0.67
   gerekce:
   - künye
-- 'no': 377
+- 'no': 278
   karar: ''
   a: qand:719
   b: jawahir:958
@@ -6881,7 +5004,7 @@
   benzerlik: 0.67
   gerekce:
   - künye
-- 'no': 378
+- 'no': 279
   karar: ''
   a: qand:719
   b: jawahir:959
@@ -6898,7 +5021,7 @@
   benzerlik: 0.67
   gerekce:
   - künye
-- 'no': 379
+- 'no': 280
   karar: ''
   a: qand:719
   b: jawahir:961
@@ -6915,7 +5038,7 @@
   benzerlik: 0.67
   gerekce:
   - künye
-- 'no': 380
+- 'no': 281
   karar: ''
   a: qand:719
   b: jawahir:962
@@ -6932,7 +5055,7 @@
   benzerlik: 0.67
   gerekce:
   - künye
-- 'no': 381
+- 'no': 282
   karar: ''
   a: qand:719
   b: jawahir:964
@@ -6949,7 +5072,7 @@
   benzerlik: 0.67
   gerekce:
   - künye
-- 'no': 382
+- 'no': 283
   karar: ''
   a: qand:719
   b: kataib:305
@@ -6966,7 +5089,7 @@
   benzerlik: 0.67
   gerekce:
   - künye
-- 'no': 383
+- 'no': 284
   karar: ''
   a: qand:719
   b: kataib:373
@@ -6983,7 +5106,7 @@
   benzerlik: 0.67
   gerekce:
   - künye
-- 'no': 384
+- 'no': 285
   karar: ''
   a: qand:719
   b: fawaid:220
@@ -7000,7 +5123,7 @@
   benzerlik: 0.67
   gerekce:
   - künye
-- 'no': 385
+- 'no': 286
   karar: ''
   a: qand:722
   b: fawaid:226
@@ -7017,7 +5140,7 @@
   benzerlik: 0.67
   gerekce:
   - künye
-- 'no': 386
+- 'no': 287
   karar: ''
   a: qand:768
   b: kataib:305
@@ -7034,7 +5157,7 @@
   benzerlik: 0.67
   gerekce:
   - vefat 484
-- 'no': 387
+- 'no': 288
   karar: ''
   a: qand:771
   b: kataib:305
@@ -7051,7 +5174,7 @@
   benzerlik: 0.67
   gerekce:
   - vefat 483
-- 'no': 388
+- 'no': 289
   karar: ''
   a: taj_tarajim:171
   b: athmar:404
@@ -7068,7 +5191,7 @@
   benzerlik: 0.67
   gerekce:
   - vefat 750
-- 'no': 389
+- 'no': 290
   karar: ''
   a: taj_tarajim:171
   b: fawaid:227
@@ -7085,7 +5208,7 @@
   benzerlik: 0.67
   gerekce:
   - vefat 750
-- 'no': 390
+- 'no': 291
   karar: ''
   a: qand:768
   b: jawahir:1005
@@ -7102,7 +5225,7 @@
   benzerlik: 0.67
   gerekce:
   - vefat 484/482
-- 'no': 391
+- 'no': 292
   karar: ''
   a: qand:768
   b: athmar:411
@@ -7119,7 +5242,7 @@
   benzerlik: 0.67
   gerekce:
   - vefat 484/481
-- 'no': 392
+- 'no': 293
   karar: ''
   a: qand:768
   b: fawaid:231
@@ -7136,7 +5259,7 @@
   benzerlik: 0.67
   gerekce:
   - vefat 484/482
-- 'no': 393
+- 'no': 294
   karar: ''
   a: jawahir:1005
   b: taj_tarajim:162
@@ -7153,7 +5276,7 @@
   benzerlik: 0.67
   gerekce:
   - vefat 482
-- 'no': 394
+- 'no': 295
   karar: ''
   a: jawahir:1183
   b: fawaid:277
@@ -7170,7 +5293,7 @@
   benzerlik: 0.67
   gerekce:
   - künye
-- 'no': 395
+- 'no': 296
   karar: ''
   a: jawahir:1196
   b: taj_tarajim:199
@@ -7187,7 +5310,7 @@
   benzerlik: 0.67
   gerekce:
   - vefat 622/619
-- 'no': 396
+- 'no': 297
   karar: ''
   a: jawahir:1216
   b: taj_tarajim:199
@@ -7204,7 +5327,7 @@
   benzerlik: 0.67
   gerekce:
   - vefat 616/619
-- 'no': 397
+- 'no': 298
   karar: ''
   a: jawahir:1223
   b: taj_tarajim:230
@@ -7221,7 +5344,7 @@
   benzerlik: 0.67
   gerekce:
   - vefat 313
-- 'no': 398
+- 'no': 299
   karar: ''
   a: taj_tarajim:199
   b: athmar:503
@@ -7238,7 +5361,7 @@
   benzerlik: 0.67
   gerekce:
   - vefat 619/616
-- 'no': 399
+- 'no': 300
   karar: ''
   a: taj_tarajim:230
   b: athmar:508
@@ -7255,7 +5378,7 @@
   benzerlik: 0.67
   gerekce:
   - vefat 313
-- 'no': 400
+- 'no': 301
   karar: ''
   a: jawahir:1483
   b: athmar:591
@@ -7272,7 +5395,7 @@
   benzerlik: 0.67
   gerekce:
   - 'nisbe: السمرقندي'
-- 'no': 401
+- 'no': 302
   karar: ''
   a: jawahir:1517
   b: taj_tarajim:215
@@ -7289,7 +5412,7 @@
   benzerlik: 0.67
   gerekce:
   - 'nisbe: السمرقندي'
-- 'no': 402
+- 'no': 303
   karar: ''
   a: jawahir:1517
   b: kataib:475
@@ -7306,7 +5429,7 @@
   benzerlik: 0.67
   gerekce:
   - 'nisbe: السمرقندي'
-- 'no': 403
+- 'no': 304
   karar: ''
   a: jawahir:1454
   b: fawaid:340
@@ -7323,7 +5446,7 @@
   benzerlik: 0.67
   gerekce:
   - vefat 564/566
-- 'no': 404
+- 'no': 305
   karar: ''
   a: jawahir:1501
   b: taj_tarajim:342
@@ -7340,7 +5463,7 @@
   benzerlik: 0.67
   gerekce:
   - künye
-- 'no': 405
+- 'no': 306
   karar: ''
   a: taj_tarajim:342
   b: kataib:601
@@ -7351,13 +5474,13 @@
   b_yer: كتائب أعلام الأخيار 3/486-487 (رقم 601)
   b_vefat: null
   a_sahis: jw1489
-  b_sahis: kt601
+  b_sahis: fws351
   tur: isim
   puan: 3.0
   benzerlik: 0.67
   gerekce:
   - künye
-- 'no': 406
+- 'no': 307
   karar: ''
   a: taj_tarajim:342
   b: fawaid:351
@@ -7374,7 +5497,7 @@
   benzerlik: 0.67
   gerekce:
   - künye
-- 'no': 407
+- 'no': 308
   karar: ''
   a: jawahir:1613
   b: athmar:633
@@ -7391,7 +5514,7 @@
   benzerlik: 0.67
   gerekce:
   - vefat 599
-- 'no': 408
+- 'no': 309
   karar: ''
   a: ghuraf_v2:314
   b: fawaid:404
@@ -7408,7 +5531,7 @@
   benzerlik: 0.67
   gerekce:
   - vefat 798
-- 'no': 409
+- 'no': 310
   karar: ''
   a: jawahir:1696
   b: taj_tarajim:300
@@ -7425,7 +5548,7 @@
   benzerlik: 0.67
   gerekce:
   - vefat 485
-- 'no': 410
+- 'no': 311
   karar: ''
   a: ghuraf_v2:398
   b: taj_tarajim:321
@@ -7442,7 +5565,7 @@
   benzerlik: 0.67
   gerekce:
   - vefat 676
-- 'no': 411
+- 'no': 312
   karar: ''
   a: qand:538
   b: jawahir:831
@@ -7459,7 +5582,7 @@
   benzerlik: 0.67
   gerekce:
   - künye
-- 'no': 412
+- 'no': 313
   karar: ''
   a: jawahir:454
   b: tabaqat_saniyya:687
@@ -7476,7 +5599,7 @@
   benzerlik: 0.67
   gerekce:
   - künye
-- 'no': 413
+- 'no': 314
   karar: ''
   a: tabaqat_saniyya:687
   b: athmar:194
@@ -7487,13 +5610,13 @@
   b_yer: الأثمار الجنية 1/397-398 (رقم 183)
   b_vefat: 428
   a_sahis: jw457
-  b_sahis: at183
+  b_sahis: jw453
   tur: isim
   puan: 3.0
   benzerlik: 0.67
   gerekce:
   - künye
-- 'no': 414
+- 'no': 315
   karar: ''
   a: jawahir:1799
   b: athmar:713
@@ -7510,7 +5633,7 @@
   benzerlik: 0.67
   gerekce:
   - vefat 194/197
-- 'no': 415
+- 'no': 316
   karar: ''
   a: taj_tarajim:285
   b: athmar:648
@@ -7527,7 +5650,7 @@
   benzerlik: 0.67
   gerekce:
   - 'nisbe: الدهلوي'
-- 'no': 416
+- 'no': 317
   karar: ''
   a: jawahir:1387
   b: fawaid:326
@@ -7545,7 +5668,7 @@
   gerekce:
   - 'atıf: الفوائد البهية ١٧٨.'
   - aynı kitapta birden çok aday
-- 'no': 417
+- 'no': 318
   karar: ''
   a: tabaqat_saniyya:1191
   b: jawahir:790
@@ -7564,7 +5687,7 @@
   - 'atıf: الجواهر المضية، برقم ٧٨٩، الفوائد البهية ٩٣، كتائب أعل'
   - aynı kitapta birden çok aday
   - aynı kitapta birden çok aday
-- 'no': 418
+- 'no': 319
   karar: ''
   a: athmar:14
   b: jawahir:8
@@ -7584,7 +5707,7 @@
   - zincir 2. halkada ayrılıyor
   - 'nisbe: الطرزي'
   - vefat 682
-- 'no': 419
+- 'no': 320
   karar: ''
   a: athmar:14
   b: tabaqat_saniyya:18
@@ -7604,7 +5727,7 @@
   - zincir 2. halkada ayrılıyor
   - 'nisbe: الطرزي'
   - vefat 682
-- 'no': 420
+- 'no': 321
   karar: ''
   a: athmar:505
   b: fawaid:289
@@ -7622,7 +5745,7 @@
   gerekce:
   - 'atıf: الفوائد البهية:١٥٩،١٥٨؛ البغدادي، هدية العارفين:٢/ ٧٦.'
   - aynı kitapta birden çok aday
-- 'no': 421
+- 'no': 322
   karar: ''
   a: athmar:576
   b: fawaid:340
@@ -7640,7 +5763,7 @@
   gerekce:
   - 'atıf: الفوائد البهية:١٨٣؛ البغدادي، إيضاح المكنون:٣٥٥/ ٢. هد'
   - aynı kitapta birden çok aday
-- 'no': 422
+- 'no': 323
   karar: ''
   a: kataib:396
   b: jawahir:1587
@@ -7658,8 +5781,8 @@
   gerekce:
   - 'atıf: الجواهر المضية" للقرشي (٣/ ٤٠٩)، و"الطبقات السنية" للت'
   - künye
-  - 'çakışma: ad uyuşmuyor: أبو القاسم بن يوسف السمرقندي / محمد بن يوسف بن محمد ابن على ب'
-- 'no': 423
+  - 'çakışma: ad uyuşmuyor: أبو القاسم بن يوسف العلوى السم / محمد بن يوسف بن محمد ابن على ب'
+- 'no': 324
   karar: ''
   a: jawahir:838
   b: tabaqat_saniyya:1265
@@ -7678,7 +5801,7 @@
   - 'atıf: الطبقات السنية، برقم ١٢٦٤.'
   - zincir 3. halkada ayrılıyor
   - vefat 666
-- 'no': 424
+- 'no': 325
   karar: ''
   a: jawahir:1453
   b: fawaid:343
@@ -7697,7 +5820,7 @@
   - 'atıf: الفوائد البهية ١٨٤.'
   - zincir 3. halkada ayrılıyor
   - vefat 766
-- 'no': 425
+- 'no': 326
   karar: ''
   a: athmar:283
   b: jawahir:646
@@ -7716,7 +5839,7 @@
   - 'atıf: الجواهر المضية:٢/ ٢٥٢؛ ابن حجر، تبصير المنتبه بتحرير ا'
   - zincir 3. halkada ayrılıyor
   - vefat 261
-- 'no': 426
+- 'no': 327
   karar: ''
   a: athmar:495
   b: fawaid:289
@@ -7734,7 +5857,7 @@
   gerekce:
   - 'atıf: الفوائد البهية:١٦٠،١٥٩.'
   - aynı kitapta birden çok aday
-- 'no': 427
+- 'no': 328
   karar: ''
   a: jawahir:1626
   b: fawaid:401
@@ -7752,7 +5875,7 @@
   gerekce:
   - 'atıf: الفوائد البهية ٢٠٩.'
   - 'çakışma: jawahir kitabında zaten başka bir madde var'
-- 'no': 428
+- 'no': 329
   karar: ''
   a: athmar:56
   b: jawahir:108
@@ -7771,26 +5894,7 @@
   - 'atıf: الجواهر المضية:١/ ١٦٩، ووردت ترجمته باسم (أحمد بن مهرا'
   - zincir 2. halkada ayrılıyor
   - vefat 344
-- 'no': 429
-  karar: ''
-  a: athmar:103
-  b: jawahir:245
-  a_ad: أحمد بن نصر، عرف باللباد النيسابوري
-  a_yer: الأثمار الجنية 1/347 (رقم 92)
-  a_vefat: 280
-  b_ad: أحمد بن محمد بن نصر، أبو نصر، الفقيه
-  b_yer: الجواهر المضية 1/320-321 (رقم 244)
-  b_vefat: 280
-  a_sahis: jw269
-  b_sahis: jw244
-  tur: atıf
-  puan: 0.0
-  benzerlik: 0.67
-  gerekce:
-  - 'atıf: الجواهر المضية:٣٢١،١/ ٣٢٠؛ التميمي، الطبقات السنية:٩٤،'
-  - zincir 2. halkada ayrılıyor
-  - vefat 280
-- 'no': 430
+- 'no': 330
   karar: ''
   a: athmar:307
   b: jawahir:696
@@ -7809,7 +5913,7 @@
   - 'atıf: الجواهر المضية:٢/ ٢٩٩.'
   - zincir 2. halkada ayrılıyor
   - 'nisbe: النصري'
-- 'no': 431
+- 'no': 331
   karar: ''
   a: jawahir:706
   b: tabaqat_saniyya:1053
@@ -7828,7 +5932,7 @@
   - 'atıf: الطبقات السنية، برقم ١٠٥٢.'
   - zincir 2. halkada ayrılıyor
   - künye
-- 'no': 432
+- 'no': 332
   karar: ''
   a: jawahir:1062
   b: fawaid:255
@@ -7847,7 +5951,7 @@
   - 'atıf: الفوائد البهية ١٤٩، هدية العارفين ١/ ٧٨٥.'
   - zincir 2. halkada ayrılıyor
   - künye
-- 'no': 433
+- 'no': 333
   karar: ''
   a: jawahir:1672
   b: fawaid:422
@@ -7866,7 +5970,7 @@
   - 'atıf: الفوائد البهية ٢١٥.'
   - zincir 2. halkada ayrılıyor
   - 'nisbe: اليزدي'
-- 'no': 434
+- 'no': 334
   karar: ''
   a: jawahir:1845
   b: fawaid:462
@@ -7885,7 +5989,7 @@
   - 'atıf: الفوائد البهية ٢٢٧.'
   - zincir 2. halkada ayrılıyor
   - 'nisbe: الحلبي'
-- 'no': 435
+- 'no': 335
   karar: ''
   a: kataib:135
   b: taj_tarajim:288
@@ -7904,7 +6008,7 @@
   - 'atıf: تاج التراجم" لابن قطلوبغا (ص ٢٩٧)، و"الفوائد البهية'
   - zincir 2. halkada ayrılıyor
   - 'nisbe: الرازي'
-- 'no': 436
+- 'no': 336
   karar: ''
   a: kataib:403
   b: jawahir:1672
@@ -7923,7 +6027,7 @@
   - 'atıf: الجواهر المضية" للقرشي (٣/ ٤٨٥)، و"تاج التراجم" لابن ق'
   - zincir 2. halkada ayrılıyor
   - 'nisbe: اليزدي'
-- 'no': 437
+- 'no': 337
   karar: ''
   a: athmar:92
   b: tabaqat_saniyya:351
@@ -7941,7 +6045,7 @@
   gerekce:
   - 'atıf: الطبقات السنية:٧٨،٢/ ١٨٧ وفيه: «قال الدارقطني: ولم يؤر'
   - zincir 3. halkada ayrılıyor
-- 'no': 438
+- 'no': 338
   karar: ''
   a: athmar:122
   b: tabaqat_saniyya:425
@@ -7960,7 +6064,7 @@
   - 'atıf: الطبقات السنية: ٢/ ١٣٢.'
   - zincir 2. halkada ayrılıyor
   - lakap
-- 'no': 439
+- 'no': 339
   karar: ''
   a: athmar:609
   b: jawahir:1550
@@ -7978,7 +6082,7 @@
   gerekce:
   - 'atıf: الجواهر المضية:٣/ ٣٧٣؛ حاجي خليفة، كشف الظنون:٢/ ١٦٦٣،'
   - zincir 3. halkada ayrılıyor
-- 'no': 440
+- 'no': 340
   karar: ''
   a: jawahir:598
   b: tabaqat_saniyya:881
@@ -7996,7 +6100,7 @@
   gerekce:
   - 'atıf: الطبقات السنية، برقم ٨٨٠، شذرات الذهب ١/ ٢٢٤.'
   - vefat farklı 7/149
-- 'no': 441
+- 'no': 341
   karar: ''
   a: jawahir:790
   b: fawaid:177
@@ -8014,7 +6118,7 @@
   gerekce:
   - 'atıf: الفوائد البهية ٩٣.'
   - zincir 2. halkada ayrılıyor
-- 'no': 442
+- 'no': 342
   karar: ''
   a: jawahir:982
   b: fawaid:229
@@ -8032,25 +6136,7 @@
   gerekce:
   - 'atıf: الفوائد البهية ١٢٣.'
   - zincir 2. halkada ayrılıyor
-- 'no': 443
-  karar: ''
-  a: jawahir:1746
-  b: fawaid:438
-  a_ad: 'نصير بن يحيى وقيل: نصر'
-  a_yer: الجواهر المضية 3/546 (رقم 1745)
-  a_vefat: 268
-  b_ad: نصير بن يحيى البلخي
-  b_yer: الفوائد البهية 221
-  b_vefat: 68
-  a_sahis: jw1745
-  b_sahis: jw1746
-  tur: atıf
-  puan: -2.0
-  benzerlik: 0.67
-  gerekce:
-  - 'atıf: الفوائد البهية ٢٢١.'
-  - vefat farklı 268/68
-- 'no': 444
+- 'no': 343
   karar: ''
   a: tabaqat_saniyya:1194
   b: fawaid:177
@@ -8068,7 +6154,7 @@
   gerekce:
   - 'atıf: الفوائد البهية ٩٣، كتائب أعلام الأخيار، برقم ٢١٢.'
   - zincir 2. halkada ayrılıyor
-- 'no': 445
+- 'no': 344
   karar: ''
   a: kataib:472
   b: jawahir:1023
@@ -8086,7 +6172,7 @@
   gerekce:
   - 'atıf: الجواهر المضية" للقرشي (٢/ ٦٢١)، و"تاج التراجم" لابن ق'
   - zincir 2. halkada ayrılıyor
-- 'no': 446
+- 'no': 345
   karar: ''
   a: kataib:547
   b: taj_tarajim:31
@@ -8105,7 +6191,7 @@
   - 'atıf: تاج التراجم" لابن قطلوبغا (ص: ١٠٧ - ١٠٨)، و"الطبقات'
   - 'nisbe: السروجي'
   - vefat farklı 868/710
-- 'no': 447
+- 'no': 346
   karar: ''
   a: athmar:408
   b: fawaid:229
@@ -8123,7 +6209,7 @@
   gerekce:
   - 'atıf: الفوائد البهية:١٢٤،١٢٣؛ البغدادي، إيضاح المكنون:٢/ ٦٦،'
   - vefat farklı 493/535
-- 'no': 448
+- 'no': 347
   karar: ''
   a: athmar:524
   b: fawaid:298
@@ -8141,7 +6227,7 @@
   gerekce:
   - 'atıf: الفوائد البهية:١٦٤،١٦٣.'
   - vefat farklı 483/511
-- 'no': 449
+- 'no': 348
   karar: ''
   a: athmar:648
   b: jawahir:1632
@@ -8159,7 +6245,7 @@
   gerekce:
   - 'atıf: الجواهر المضية:٣/ ٤٥٠؛ ابن قطلوبغا، تاج التراجم:٧٣.'
   - zincir 2. halkada ayrılıyor
-- 'no': 450
+- 'no': 349
   karar: ''
   a: jawahir:1443
   b: fawaid:340
@@ -8177,7 +6263,7 @@
   gerekce:
   - 'atıf: الفوائد البهية ١٨٣.'
   - vefat farklı 511/566
-- 'no': 451
+- 'no': 350
   karar: ''
   a: kataib:334
   b: jawahir:1358
@@ -8195,7 +6281,7 @@
   gerekce:
   - 'atıf: الجواهر المضية" للقرشي (٣/ ٢١٠)، و"تاج التراجم" لابن ق'
   - vefat farklı 546/503
-- 'no': 452
+- 'no': 351
   karar: ''
   a: kataib:652
   b: taj_tarajim:300
@@ -8213,7 +6299,7 @@
   gerekce:
   - 'atıf: تاج التراجم" لابن قطلوبغا (ص: ٣٠٦)، و"الفوائد البهي'
   - vefat farklı 775/485
-- 'no': 453
+- 'no': 352
   karar: ''
   a: athmar:294
   b: fawaid:165
@@ -8231,7 +6317,7 @@
   gerekce:
   - 'atıf: الفوائد البهية:٨٤؛ والبغدادي، هدية العارفين:١/ ٤٣٠؛ كح'
   - zincir 2. halkada ayrılıyor
-- 'no': 454
+- 'no': 353
   karar: ''
   a: athmar:515
   b: fawaid:294
@@ -8249,7 +6335,7 @@
   gerekce:
   - 'atıf: الفوائد البهية:١٦١.'
   - zincir 2. halkada ayrılıyor
-- 'no': 455
+- 'no': 354
   karar: ''
   a: jawahir:558
   b: tabaqat_saniyya:831
@@ -8270,7 +6356,7 @@
   - künye
   - 'nisbe: الاتابكي'
   - vefat 557
-- 'no': 456
+- 'no': 355
   karar: ''
   a: jawahir:985
   b: fawaid:226
@@ -8290,7 +6376,7 @@
   - zincir 2. halkada ayrılıyor
   - künye
   - vefat farklı 769/467
-- 'no': 457
+- 'no': 356
   karar: ''
   a: tabaqat_saniyya:35
   b: jawahir:17
@@ -8309,7 +6395,7 @@
   - 'atıf: الجواهر المضية، برقم ١٦.'
   - zincir 2. halkada ayrılıyor
   - vefat farklı 645/333
-- 'no': 458
+- 'no': 357
   karar: ''
   a: kataib:413
   b: tabaqat_saniyya:1270
@@ -8319,8 +6405,8 @@
   b_ad: عبد الغفار بن لقمان بن محمد، أبو المفاخر، الكردرى، الملقب تاج الدين
   b_yer: الطبقات السنية 4/358 (رقم 1269)
   b_vefat: 562
-  a_sahis: jw840
-  b_sahis: ts1269
+  a_sahis: tj148
+  b_sahis: jw840
   tur: atıf
   puan: -6.0
   benzerlik: 0.67
@@ -8330,7 +6416,7 @@
   - künye
   - 'nisbe: الكردري'
   - vefat 562
-- 'no': 459
+- 'no': 358
   karar: ''
   a: kataib:470
   b: taj_tarajim:79
@@ -8351,7 +6437,7 @@
   - 'nisbe: التركي'
   - lakap
   - vefat 652
-- 'no': 460
+- 'no': 359
   karar: ''
   a: athmar:28
   b: jawahir:46
@@ -8370,7 +6456,7 @@
   - 'atıf: الجواهر المضية:١٠٤/ ١،١٠٣؛ التميمي، الطبقات السنية:١/'
   - zincir 3. halkada ayrılıyor
   - vefat farklı 300/713
-- 'no': 461
+- 'no': 360
   karar: ''
   a: athmar:165
   b: jawahir:386
@@ -8389,7 +6475,7 @@
   - 'atıf: الجواهر المضية:٤٧١/ ١،٤٧٠، وكنيته فيه:&quot;أبو محمد&q'
   - zincir 2. halkada ayrılıyor
   - vefat farklı 204/380
-- 'no': 462
+- 'no': 361
   karar: ''
   a: athmar:428
   b: fawaid:249
@@ -8399,7 +6485,7 @@
   b_ad: عمر بن إسحاق بن أحمد أبو حفص سراج الدين الهندي الغزنوى
   b_yer: الفوائد البهية 148
   b_vefat: 793
-  a_sahis: jw1037
+  a_sahis: tj185
   b_sahis: gh468
   tur: atıf
   puan: -6.0
@@ -8408,7 +6494,7 @@
   - 'atıf: الفوائد البهية:١٤٨،١٤٧؛ البغدادي، هدية العارفين:١/ ٧٨٧'
   - zincir 2. halkada ayrılıyor
   - vefat farklı 660/793
-- 'no': 463
+- 'no': 362
   karar: ''
   a: athmar:351
   b: jawahir:841
@@ -8418,7 +6504,7 @@
   b_ad: عبد الغفور بن لقمان بن محمد، أبو المفاخر، الكردرى، الملقب، تاج الدين
   b_yer: الجواهر المضية 2/443 (رقم 840)
   b_vefat: 562
-  a_sahis: ts1269
+  a_sahis: at340
   b_sahis: jw840
   tur: atıf
   puan: -7.0
@@ -8428,7 +6514,7 @@
   - zincir 1. halkada ayrılıyor
   - 'nisbe: الكردري'
   - vefat 562
-- 'no': 464
+- 'no': 363
   karar: ''
   a: athmar:659
   b: fawaid:416
@@ -8438,8 +6524,8 @@
   b_ad: محمود بن شجاع بن محمد بن الحسن الأموي برهان الدين
   b_yer: الفوائد البهية 213
   b_vefat: 599
-  a_sahis: jw1649
-  b_sahis: fws416
+  a_sahis: tj295
+  b_sahis: jw1649
   tur: atıf
   puan: -7.0
   benzerlik: 0.67
@@ -8448,26 +6534,7 @@
   - zincir 1. halkada ayrılıyor
   - 'nisbe: الاموي'
   - vefat 599
-- 'no': 465
-  karar: ''
-  a: jawahir:2033
-  b: tabaqat_saniyya:897
-  a_ad: الخياطى علاء الأئمة
-  a_yer: الجواهر المضية 4/198 (رقم 2030)
-  a_vefat: null
-  b_ad: سديد بن محمد الخياطى، علاء الدين، الملقب بشيخ الإسلام
-  b_yer: الطبقات السنية 4/7 (رقم 896)
-  b_vefat: null
-  a_sahis: jw2030
-  b_sahis: ts896
-  tur: atıf
-  puan: -8.0
-  benzerlik: 0.67
-  gerekce:
-  - 'atıf: الطبقات السنية، برقم ٨٩٦.'
-  - zincir 1. halkada ayrılıyor
-  - 'nisbe: الخياطي'
-- 'no': 466
+- 'no': 364
   karar: ''
   a: athmar:232
   b: tabaqat_saniyya:809
@@ -8486,7 +6553,7 @@
   - 'atıf: الطبقات السنية:١٩٤،٣/ ١٩٣ ..'
   - zincir 1. halkada ayrılıyor
   - vefat 238
-- 'no': 467
+- 'no': 365
   karar: ''
   a: jawahir:548
   b: tabaqat_saniyya:638
@@ -8505,7 +6572,7 @@
   - 'atıf: الطبقات السنية، برقم ٦٣٧، ٨٠٨.'
   - zincir 1. halkada ayrılıyor
   - künye
-- 'no': 468
+- 'no': 366
   karar: ''
   a: athmar:582
   b: fawaid:231
@@ -8524,7 +6591,7 @@
   - 'atıf: الفوائد البهية:١٢٥. وفاته سنة (٤٩٣ هـ /١٠٩٩ م). ينظر:'
   - zincir 1. halkada ayrılıyor
   - 'nisbe: البزدوي'
-- 'no': 469
+- 'no': 367
   karar: ''
   a: kataib:349
   b: jawahir:1161
@@ -8542,7 +6609,7 @@
   gerekce:
   - 'atıf: الجواهر المضية" للقرشي (٣/ ٢٨)، و"الطبقات السنية" للتم'
   - zincir 1. halkada ayrılıyor
-- 'no': 470
+- 'no': 368
   karar: ''
   a: kataib:576
   b: jawahir:557
@@ -8560,7 +6627,7 @@
   gerekce:
   - 'atıf: الجواهر المضية" للقرشي (٢/ ١٦٦)، و"تاج التراجم" لابن ق'
   - zincir 1. halkada ayrılıyor
-- 'no': 471
+- 'no': 369
   karar: ''
   a: kataib:576
   b: taj_tarajim:104
@@ -8578,7 +6645,7 @@
   gerekce:
   - 'atıf: تاج التراجم" لابن قطلوبغا (ص: ١٦٥ - ١٦٦)، و"الطبقات'
   - zincir 1. halkada ayrılıyor
-- 'no': 472
+- 'no': 370
   karar: ''
   a: athmar:798
   b: jawahir:1222
@@ -8596,7 +6663,7 @@
   gerekce:
   - 'atıf: الجواهر المضية:٣/ ٨٢.'
   - zincir 1. halkada ayrılıyor
-- 'no': 473
+- 'no': 371
   karar: ''
   a: athmar:454
   b: fawaid:169
@@ -8606,8 +6673,8 @@
   b_ad: عالي بن إبراهيم بن إسماعيل ناصر الدين أبو على الغزنوي
   b_yer: الفوائد البهية 85
   b_vefat: 582
-  a_sahis: jw1092
-  b_sahis: ts1016
+  a_sahis: at443
+  b_sahis: jw1092
   tur: atıf
   puan: -13.0
   benzerlik: 0.67
@@ -8616,7 +6683,7 @@
   - zincir 1. halkada ayrılıyor
   - 'nisbe: الغزنوي'
   - vefat farklı 599/582
-- 'no': 474
+- 'no': 372
   karar: ''
   a: kataib:353
   b: jawahir:245
@@ -8635,7 +6702,7 @@
   - 'atıf: الجواهر المضية" للقرشي (١/ ٣١٩)، و"تاج التراجم" لابن ق'
   - zincir 1. halkada ayrılıyor
   - vefat farklı 573/280
-- 'no': 475
+- 'no': 373
   karar: ''
   a: athmar:712
   b: jawahir:1797
@@ -8654,45 +6721,7 @@
   - 'atıf: الجواهر المضية:٥٨٦/ ٣،٥٨٥؛ ابن حجر، تقريب التهذيب:٢/ ٣'
   - zincir 1. halkada ayrılıyor
   - vefat farklı 200/2
-- 'no': 476
-  karar: ''
-  a: jawahir:182
-  b: athmar:76
-  a_ad: أحمد بن محمد بن أحمد بن شجاع، أبو نصر، الصفار، البخارى
-  a_yer: الجواهر المضية 1/252 (رقم 181)
-  a_vefat: null
-  b_ad: أحمد بن محمد بن أحمد العقيلي الأنصاري البخاري
-  b_yer: الأثمار الجنية 1/333 (رقم 65)
-  b_vefat: 657
-  a_sahis: jw181
-  b_sahis: jw188
-  tur: isim
-  puan: 4.0
-  benzerlik: 0.6
-  gerekce:
-  - 'nisbe: البخاري'
-  - aynı kitapta birden çok aday
-  - aynı kitapta birden çok aday
-- 'no': 477
-  karar: ''
-  a: tabaqat_saniyya:297
-  b: athmar:76
-  a_ad: أحمد بن محمد بن أحمد بن شجاع أبو نصر الصفار، البخارى
-  a_yer: الطبقات السنية 2/32 (رقم 296)
-  a_vefat: null
-  b_ad: أحمد بن محمد بن أحمد العقيلي الأنصاري البخاري
-  b_yer: الأثمار الجنية 1/333 (رقم 65)
-  b_vefat: 657
-  a_sahis: jw181
-  b_sahis: jw188
-  tur: isim
-  puan: 4.0
-  benzerlik: 0.6
-  gerekce:
-  - 'nisbe: البخاري'
-  - aynı kitapta birden çok aday
-  - aynı kitapta birden çok aday
-- 'no': 478
+- 'no': 374
   karar: ''
   a: ghuraf_v1:134
   b: tabaqat_saniyya:379
@@ -8712,7 +6741,45 @@
   - vefat 809
   - aynı kitapta birden çok aday
   - aynı kitapta birden çok aday
-- 'no': 479
+- 'no': 375
+  karar: ''
+  a: jawahir:182
+  b: athmar:76
+  a_ad: أحمد بن محمد بن أحمد بن شجاع، أبو نصر، الصفار، البخارى
+  a_yer: الجواهر المضية 1/252 (رقم 181)
+  a_vefat: null
+  b_ad: أحمد بن محمد بن أحمد العقيلي الأنصاري البخاري
+  b_yer: الأثمار الجنية 1/333 (رقم 65)
+  b_vefat: 657
+  a_sahis: jw181
+  b_sahis: jw188
+  tur: isim
+  puan: 4.0
+  benzerlik: 0.6
+  gerekce:
+  - 'nisbe: البخاري'
+  - aynı kitapta birden çok aday
+  - aynı kitapta birden çok aday
+- 'no': 376
+  karar: ''
+  a: tabaqat_saniyya:297
+  b: athmar:76
+  a_ad: أحمد بن محمد بن أحمد بن شجاع أبو نصر الصفار، البخارى
+  a_yer: الطبقات السنية 2/32 (رقم 296)
+  a_vefat: null
+  b_ad: أحمد بن محمد بن أحمد العقيلي الأنصاري البخاري
+  b_yer: الأثمار الجنية 1/333 (رقم 65)
+  b_vefat: 657
+  a_sahis: jw181
+  b_sahis: jw188
+  tur: isim
+  puan: 4.0
+  benzerlik: 0.6
+  gerekce:
+  - 'nisbe: البخاري'
+  - aynı kitapta birden çok aday
+  - aynı kitapta birden çok aday
+- 'no': 377
   karar: ''
   a: ghuraf_v1:25
   b: tabaqat_saniyya:64
@@ -8729,7 +6796,7 @@
   benzerlik: 0.6
   gerekce:
   - vefat 897
-- 'no': 480
+- 'no': 378
   karar: ''
   a: jawahir:244
   b: tabaqat_saniyya:370
@@ -8740,13 +6807,13 @@
   b_yer: الطبقات السنية 2/93 (رقم 369)
   b_vefat: 280
   a_sahis: jw243
-  b_sahis: jw269
+  b_sahis: jw244
   tur: isim
   puan: 3.0
   benzerlik: 0.6
   gerekce:
   - künye
-- 'no': 481
+- 'no': 379
   karar: ''
   a: tabaqat_saniyya:634
   b: kataib:377
@@ -8763,7 +6830,7 @@
   benzerlik: 0.6
   gerekce:
   - lakap
-- 'no': 482
+- 'no': 380
   karar: ''
   a: jawahir:432
   b: taj_tarajim:88
@@ -8780,7 +6847,7 @@
   benzerlik: 0.6
   gerekce:
   - künye
-- 'no': 483
+- 'no': 381
   karar: ''
   a: jawahir:969
   b: fawaid:221
@@ -8798,7 +6865,7 @@
   gerekce:
   - künye
   - vefat 464/461
-- 'no': 484
+- 'no': 382
   karar: ''
   a: ghuraf_v2:58
   b: jawahir:1174
@@ -8815,7 +6882,7 @@
   benzerlik: 0.6
   gerekce:
   - lakap
-- 'no': 485
+- 'no': 383
   karar: ''
   a: jawahir:1186
   b: kataib:187
@@ -8832,7 +6899,7 @@
   benzerlik: 0.6
   gerekce:
   - künye
-- 'no': 486
+- 'no': 384
   karar: ''
   a: jawahir:1186
   b: athmar:504
@@ -8849,7 +6916,7 @@
   benzerlik: 0.6
   gerekce:
   - künye
-- 'no': 487
+- 'no': 385
   karar: ''
   a: jawahir:1186
   b: fawaid:290
@@ -8866,7 +6933,7 @@
   benzerlik: 0.6
   gerekce:
   - künye
-- 'no': 488
+- 'no': 386
   karar: ''
   a: kataib:406
   b: athmar:504
@@ -8876,14 +6943,14 @@
   b_ad: محمد بن أحمد أبو بكر الأسكاف، إمام كبير، أستاذ أبي جعفر الفقيه الهنداوي
   b_yer: الأثمار الجنية 2/565 (رقم 493)
   b_vefat: null
-  a_sahis: kt406
+  a_sahis: jw1185
   b_sahis: jw1879
   tur: isim
   puan: 3.0
   benzerlik: 0.6
   gerekce:
   - künye
-- 'no': 489
+- 'no': 387
   karar: ''
   a: kataib:406
   b: fawaid:290
@@ -8893,14 +6960,14 @@
   b_ad: محمد بن أحمد أبو بكر الاسكاف البلخي
   b_yer: الفوائد البهية 160
   b_vefat: 333
-  a_sahis: kt406
+  a_sahis: jw1185
   b_sahis: jw1879
   tur: isim
   puan: 3.0
   benzerlik: 0.6
   gerekce:
   - künye
-- 'no': 490
+- 'no': 388
   karar: ''
   a: jawahir:1370
   b: kataib:399
@@ -8917,7 +6984,7 @@
   benzerlik: 0.6
   gerekce:
   - 'nisbe: البخاري'
-- 'no': 491
+- 'no': 389
   karar: ''
   a: athmar:82
   b: fawaid:46
@@ -8937,7 +7004,7 @@
   - zincir 3. halkada ayrılıyor
   - künye
   - vefat farklı 482/586
-- 'no': 492
+- 'no': 390
   karar: ''
   a: tabaqat_saniyya:325
   b: fawaid:46
@@ -8957,7 +7024,7 @@
   - zincir 3. halkada ayrılıyor
   - künye
   - vefat farklı 482/586
-- 'no': 493
+- 'no': 391
   karar: ''
   a: tabaqat_saniyya:295
   b: fawaid:41
@@ -8976,45 +7043,7 @@
   - 'atıf: الفوائد البهية ٣١،٣٠، كتائب أعلام الأخيار، برقم ٢٤٣، ك'
   - zincir 3. halkada ayrılıyor
   - vefat farklı 428/44
-- 'no': 494
-  karar: ''
-  a: jawahir:508
-  b: fawaid:107
-  a_ad: الحسين بن على بن حجاج بن على الإمام، الملقب حسام الدين الصغناقى
-  a_yer: الجواهر المضية 2/114-115 (رقم 507)
-  a_vefat: null
-  b_ad: الحسن بن علي بن حجاج بن علي حسام الدين السغناقي
-  b_yer: الفوائد البهية 62
-  b_vefat: 710
-  a_sahis: jw507
-  b_sahis: fws107
-  tur: atıf
-  puan: -10.0
-  benzerlik: 0.6
-  gerekce:
-  - 'atıf: الفوائد البهية ٦٢.'
-  - zincir 1. halkada ayrılıyor
-  - lakap
-- 'no': 495
-  karar: ''
-  a: tabaqat_saniyya:759
-  b: fawaid:107
-  a_ad: الحسين بن على بن حجاج بن على، الإمام الملقب حسام الدين الصغناقى
-  a_yer: الطبقات السنية 3/150-151 (رقم 758)
-  a_vefat: null
-  b_ad: الحسن بن علي بن حجاج بن علي حسام الدين السغناقي
-  b_yer: الفوائد البهية 62
-  b_vefat: 710
-  a_sahis: jw507
-  b_sahis: fws107
-  tur: atıf
-  puan: -10.0
-  benzerlik: 0.6
-  gerekce:
-  - 'atıf: الفوائد البهية ٦٢، كتائب أعلام الأخيار، برقم ٥٠٦، كشف'
-  - zincir 1. halkada ayrılıyor
-  - lakap
-- 'no': 496
+- 'no': 392
   karar: ''
   a: tabaqat_saniyya:408
   b: jawahir:272
@@ -9032,7 +7061,7 @@
   gerekce:
   - 'atıf: الجواهر المضية، برقم ٢٧١، وقد استوفى عبد القادر نسبه ف'
   - vefat 514
-- 'no': 497
+- 'no': 393
   karar: ''
   a: ghuraf_v1:352
   b: tabaqat_saniyya:1031
@@ -9050,7 +7079,7 @@
   gerekce:
   - 'nisbe: القزويني'
   - vefat 731
-- 'no': 498
+- 'no': 394
   karar: ''
   a: ghuraf_v1:328
   b: tabaqat_saniyya:1198
@@ -9070,7 +7099,7 @@
   - 'nisbe: السوادي'
   - lakap
   - vefat 724
-- 'no': 499
+- 'no': 395
   karar: ''
   a: tabaqat_saniyya:155
   b: jawahir:74
@@ -9088,7 +7117,7 @@
   gerekce:
   - 'atıf: الجواهر المضية، برقم ٧٣، شذرات الذهب ٢/ ٩٢، العبر ١/ ٤'
   - zincir 3. halkada ayrılıyor
-- 'no': 500
+- 'no': 396
   karar: ''
   a: jawahir:1357
   b: fawaid:321
@@ -9108,7 +7137,7 @@
   - zincir 2. halkada ayrılıyor
   - 'nisbe: الاسمندي'
   - vefat farklı 552/488
-- 'no': 501
+- 'no': 397
   karar: ''
   a: ghuraf_v1:260
   b: tabaqat_saniyya:904
@@ -9127,7 +7156,7 @@
   - 'nisbe: المقدسي'
   - lakap
   - vefat 867
-- 'no': 502
+- 'no': 398
   karar: ''
   a: jawahir:780
   b: tabaqat_saniyya:1179
@@ -9148,7 +7177,7 @@
   - künye
   - lakap
   - vefat 677
-- 'no': 503
+- 'no': 399
   karar: ''
   a: ghuraf_v1:447
   b: tabaqat_saniyya:1357
@@ -9166,7 +7195,7 @@
   gerekce:
   - lakap
   - vefat 851
-- 'no': 504
+- 'no': 400
   karar: ''
   a: ghuraf_v1:6
   b: tabaqat_saniyya:14
@@ -9184,7 +7213,7 @@
   gerekce:
   - lakap
   - vefat 898
-- 'no': 505
+- 'no': 401
   karar: ''
   a: athmar:47
   b: fawaid:17
@@ -9202,7 +7231,7 @@
   gerekce:
   - 'atıf: الفوائد البهية: ص ١٦ - ١٨.'
   - vefat 745
-- 'no': 506
+- 'no': 402
   karar: ''
   a: kataib:670
   b: fawaid:356
@@ -9219,7 +7248,7 @@
   benzerlik: 0.5
   gerekce:
   - vefat 827
-- 'no': 507
+- 'no': 403
   karar: ''
   a: tabaqat_saniyya:486
   b: jawahir:323
@@ -9237,7 +7266,7 @@
   gerekce:
   - 'atıf: الجواهر المضية، برقم ٣٢٢، حسن المحاضر ١/ ٥٠٧، الدرر ال'
   - 'nisbe: القوصي'
-- 'no': 508
+- 'no': 404
   karar: ''
   a: athmar:317
   b: jawahir:726
@@ -9247,7 +7276,7 @@
   b_ad: عبد الله بن محمد بن الحسين ابن ناقيا بن داود بن محمد بن يعقوب أبو القاسم ابن أبى الفتح
   b_yer: الجواهر المضية 2/329-331 (رقم 725)
   b_vefat: 485
-  a_sahis: tj128
+  a_sahis: at306
   b_sahis: jw725
   tur: atıf
   puan: 5.0
@@ -9255,7 +7284,7 @@
   gerekce:
   - 'atıf: الجواهر المضية:٢/ ٣٢٩ - ٣٣٢؛ ابن حجر، لسان الميزان:٣/'
   - vefat 485
-- 'no': 509
+- 'no': 405
   karar: ''
   a: kataib:647
   b: athmar:943
@@ -9273,126 +7302,7 @@
   gerekce:
   - künye
   - vefat 767
-- 'no': 510
-  karar: ''
-  a: jawahir:182
-  b: tabaqat_saniyya:305
-  a_ad: أحمد بن محمد بن أحمد بن شجاع، أبو نصر، الصفار، البخارى
-  a_yer: الجواهر المضية 1/252 (رقم 181)
-  a_vefat: null
-  b_ad: أحمد بن محمد بن أحمد العقيلى، الأنصارى البخارى، العلامة، شمس الدين
-  b_yer: الطبقات السنية 2/38 (رقم 304)
-  b_vefat: 657
-  a_sahis: jw181
-  b_sahis: jw188
-  tur: isim
-  puan: 4.0
-  benzerlik: 0.5
-  gerekce:
-  - 'nisbe: البخاري'
-- 'no': 511
-  karar: ''
-  a: jawahir:182
-  b: fawaid:39
-  a_ad: أحمد بن محمد بن أحمد بن شجاع، أبو نصر، الصفار، البخارى
-  a_yer: الجواهر المضية 1/252 (رقم 181)
-  a_vefat: null
-  b_ad: أحمد بن محمد بن أحمد شمس الدين العقيلى الأنصارى البخارى
-  b_yer: الفوائد البهية 30
-  b_vefat: 657
-  a_sahis: jw181
-  b_sahis: jw188
-  tur: isim
-  puan: 4.0
-  benzerlik: 0.5
-  gerekce:
-  - 'nisbe: البخاري'
-- 'no': 512
-  karar: ''
-  a: jawahir:189
-  b: tabaqat_saniyya:297
-  a_ad: أحمد بن محمد بن أحمد العقيلى، الأنصارى، البخارى، العلامة، شمس الدين
-  a_yer: الجواهر المضية 1/260 (رقم 188)
-  a_vefat: 657
-  b_ad: أحمد بن محمد بن أحمد بن شجاع أبو نصر الصفار، البخارى
-  b_yer: الطبقات السنية 2/32 (رقم 296)
-  b_vefat: null
-  a_sahis: jw188
-  b_sahis: jw181
-  tur: isim
-  puan: 4.0
-  benzerlik: 0.5
-  gerekce:
-  - 'nisbe: البخاري'
-- 'no': 513
-  karar: ''
-  a: jawahir:189
-  b: athmar:73
-  a_ad: أحمد بن محمد بن أحمد العقيلى، الأنصارى، البخارى، العلامة، شمس الدين
-  a_yer: الجواهر المضية 1/260 (رقم 188)
-  a_vefat: 657
-  b_ad: أحمد بن محمد بن أحمد بن شجاع أبو نصر الصفار البخاري
-  b_yer: الأثمار الجنية 1/331 (رقم 62)
-  b_vefat: null
-  a_sahis: jw188
-  b_sahis: jw181
-  tur: isim
-  puan: 4.0
-  benzerlik: 0.5
-  gerekce:
-  - 'nisbe: البخاري'
-- 'no': 514
-  karar: ''
-  a: tabaqat_saniyya:297
-  b: fawaid:39
-  a_ad: أحمد بن محمد بن أحمد بن شجاع أبو نصر الصفار، البخارى
-  a_yer: الطبقات السنية 2/32 (رقم 296)
-  a_vefat: null
-  b_ad: أحمد بن محمد بن أحمد شمس الدين العقيلى الأنصارى البخارى
-  b_yer: الفوائد البهية 30
-  b_vefat: 657
-  a_sahis: jw181
-  b_sahis: jw188
-  tur: isim
-  puan: 4.0
-  benzerlik: 0.5
-  gerekce:
-  - 'nisbe: البخاري'
-- 'no': 515
-  karar: ''
-  a: tabaqat_saniyya:305
-  b: athmar:73
-  a_ad: أحمد بن محمد بن أحمد العقيلى، الأنصارى البخارى، العلامة، شمس الدين
-  a_yer: الطبقات السنية 2/38 (رقم 304)
-  a_vefat: 657
-  b_ad: أحمد بن محمد بن أحمد بن شجاع أبو نصر الصفار البخاري
-  b_yer: الأثمار الجنية 1/331 (رقم 62)
-  b_vefat: null
-  a_sahis: jw188
-  b_sahis: jw181
-  tur: isim
-  puan: 4.0
-  benzerlik: 0.5
-  gerekce:
-  - 'nisbe: البخاري'
-- 'no': 516
-  karar: ''
-  a: athmar:73
-  b: fawaid:39
-  a_ad: أحمد بن محمد بن أحمد بن شجاع أبو نصر الصفار البخاري
-  a_yer: الأثمار الجنية 1/331 (رقم 62)
-  a_vefat: null
-  b_ad: أحمد بن محمد بن أحمد شمس الدين العقيلى الأنصارى البخارى
-  b_yer: الفوائد البهية 30
-  b_vefat: 657
-  a_sahis: jw181
-  b_sahis: jw188
-  tur: isim
-  puan: 4.0
-  benzerlik: 0.5
-  gerekce:
-  - 'nisbe: البخاري'
-- 'no': 517
+- 'no': 406
   karar: ''
   a: jawahir:174
   b: taj_tarajim:24
@@ -9409,7 +7319,75 @@
   benzerlik: 0.5
   gerekce:
   - vefat 474
-- 'no': 518
+- 'no': 407
+  karar: ''
+  a: jawahir:182
+  b: tabaqat_saniyya:305
+  a_ad: أحمد بن محمد بن أحمد بن شجاع، أبو نصر، الصفار، البخارى
+  a_yer: الجواهر المضية 1/252 (رقم 181)
+  a_vefat: null
+  b_ad: أحمد بن محمد بن أحمد العقيلى، الأنصارى البخارى، العلامة، شمس الدين
+  b_yer: الطبقات السنية 2/38 (رقم 304)
+  b_vefat: 657
+  a_sahis: jw181
+  b_sahis: jw188
+  tur: isim
+  puan: 4.0
+  benzerlik: 0.5
+  gerekce:
+  - 'nisbe: البخاري'
+- 'no': 408
+  karar: ''
+  a: jawahir:182
+  b: fawaid:39
+  a_ad: أحمد بن محمد بن أحمد بن شجاع، أبو نصر، الصفار، البخارى
+  a_yer: الجواهر المضية 1/252 (رقم 181)
+  a_vefat: null
+  b_ad: أحمد بن محمد بن أحمد شمس الدين العقيلى الأنصارى البخارى
+  b_yer: الفوائد البهية 30
+  b_vefat: 657
+  a_sahis: jw181
+  b_sahis: jw188
+  tur: isim
+  puan: 4.0
+  benzerlik: 0.5
+  gerekce:
+  - 'nisbe: البخاري'
+- 'no': 409
+  karar: ''
+  a: jawahir:189
+  b: tabaqat_saniyya:297
+  a_ad: أحمد بن محمد بن أحمد العقيلى، الأنصارى، البخارى، العلامة، شمس الدين
+  a_yer: الجواهر المضية 1/260 (رقم 188)
+  a_vefat: 657
+  b_ad: أحمد بن محمد بن أحمد بن شجاع أبو نصر الصفار، البخارى
+  b_yer: الطبقات السنية 2/32 (رقم 296)
+  b_vefat: null
+  a_sahis: jw188
+  b_sahis: jw181
+  tur: isim
+  puan: 4.0
+  benzerlik: 0.5
+  gerekce:
+  - 'nisbe: البخاري'
+- 'no': 410
+  karar: ''
+  a: jawahir:189
+  b: athmar:73
+  a_ad: أحمد بن محمد بن أحمد العقيلى، الأنصارى، البخارى، العلامة، شمس الدين
+  a_yer: الجواهر المضية 1/260 (رقم 188)
+  a_vefat: 657
+  b_ad: أحمد بن محمد بن أحمد بن شجاع أبو نصر الصفار البخاري
+  b_yer: الأثمار الجنية 1/331 (رقم 62)
+  b_vefat: null
+  a_sahis: jw188
+  b_sahis: jw181
+  tur: isim
+  puan: 4.0
+  benzerlik: 0.5
+  gerekce:
+  - 'nisbe: البخاري'
+- 'no': 411
   karar: ''
   a: tabaqat_saniyya:287
   b: taj_tarajim:24
@@ -9426,7 +7404,58 @@
   benzerlik: 0.5
   gerekce:
   - vefat 474
-- 'no': 519
+- 'no': 412
+  karar: ''
+  a: tabaqat_saniyya:297
+  b: fawaid:39
+  a_ad: أحمد بن محمد بن أحمد بن شجاع أبو نصر الصفار، البخارى
+  a_yer: الطبقات السنية 2/32 (رقم 296)
+  a_vefat: null
+  b_ad: أحمد بن محمد بن أحمد شمس الدين العقيلى الأنصارى البخارى
+  b_yer: الفوائد البهية 30
+  b_vefat: 657
+  a_sahis: jw181
+  b_sahis: jw188
+  tur: isim
+  puan: 4.0
+  benzerlik: 0.5
+  gerekce:
+  - 'nisbe: البخاري'
+- 'no': 413
+  karar: ''
+  a: tabaqat_saniyya:305
+  b: athmar:73
+  a_ad: أحمد بن محمد بن أحمد العقيلى، الأنصارى البخارى، العلامة، شمس الدين
+  a_yer: الطبقات السنية 2/38 (رقم 304)
+  a_vefat: 657
+  b_ad: أحمد بن محمد بن أحمد بن شجاع أبو نصر الصفار البخاري
+  b_yer: الأثمار الجنية 1/331 (رقم 62)
+  b_vefat: null
+  a_sahis: jw188
+  b_sahis: jw181
+  tur: isim
+  puan: 4.0
+  benzerlik: 0.5
+  gerekce:
+  - 'nisbe: البخاري'
+- 'no': 414
+  karar: ''
+  a: athmar:73
+  b: fawaid:39
+  a_ad: أحمد بن محمد بن أحمد بن شجاع أبو نصر الصفار البخاري
+  a_yer: الأثمار الجنية 1/331 (رقم 62)
+  a_vefat: null
+  b_ad: أحمد بن محمد بن أحمد شمس الدين العقيلى الأنصارى البخارى
+  b_yer: الفوائد البهية 30
+  b_vefat: 657
+  a_sahis: jw181
+  b_sahis: jw188
+  tur: isim
+  puan: 4.0
+  benzerlik: 0.5
+  gerekce:
+  - 'nisbe: البخاري'
+- 'no': 415
   karar: ''
   a: jawahir:708
   b: kataib:274
@@ -9444,7 +7473,7 @@
   gerekce:
   - künye
   - vefat 446
-- 'no': 520
+- 'no': 416
   karar: ''
   a: jawahir:1197
   b: fawaid:288
@@ -9461,7 +7490,7 @@
   benzerlik: 0.5
   gerekce:
   - vefat 444
-- 'no': 521
+- 'no': 417
   karar: ''
   a: ghuraf_v2:218
   b: kataib:572
@@ -9478,7 +7507,7 @@
   benzerlik: 0.5
   gerekce:
   - 'nisbe: النسفي'
-- 'no': 522
+- 'no': 418
   karar: ''
   a: kataib:497
   b: fawaid:283
@@ -9496,7 +7525,7 @@
   gerekce:
   - 'nisbe: المايمرغي'
   - vefat 442
-- 'no': 523
+- 'no': 419
   karar: ''
   a: ghuraf_v1:24
   b: tabaqat_saniyya:87
@@ -9513,7 +7542,7 @@
   benzerlik: 0.5
   gerekce:
   - vefat 887
-- 'no': 524
+- 'no': 420
   karar: ''
   a: jawahir:1030
   b: fawaid:230
@@ -9531,7 +7560,7 @@
   gerekce:
   - 'atıf: الفوائد البهية ١٢٤.'
   - vefat 708
-- 'no': 525
+- 'no': 421
   karar: ''
   a: kataib:578
   b: jawahir:1030
@@ -9549,7 +7578,7 @@
   gerekce:
   - 'atıf: الجواهر المضية" للقرشي (٢/ ٦٢٦ - ٦٢٧)، "الدرر الكامنة"'
   - vefat 708
-- 'no': 526
+- 'no': 422
   karar: ''
   a: athmar:47
   b: tabaqat_saniyya:170
@@ -9568,92 +7597,7 @@
   - 'atıf: الطبقات السنية:١/ ٣٢٤ - ٣٢٧؛ اللكنوي، الفوائد البهية:'
   - zincir 5. halkada ayrılıyor
   - vefat 745
-- 'no': 527
-  karar: ''
-  a: jawahir:173
-  b: kataib:466
-  a_ad: أحمد بن محمد بن إبراهيم بن على البخارى أبو سعيد بن أبى الخطاب
-  a_yer: الجواهر المضية 1/242 (رقم 172)
-  a_vefat: null
-  b_ad: شمس الدين أحمد العقيلي
-  b_yer: كتائب أعلام الأخيار 3/177 (رقم 466)
-  b_vefat: 657
-  a_sahis: jw172
-  b_sahis: jw188
-  tur: isim
-  puan: 3.0
-  benzerlik: 0.5
-  gerekce:
-  - 'nisbe: البخاري'
-- 'no': 528
-  karar: ''
-  a: jawahir:182
-  b: kataib:466
-  a_ad: أحمد بن محمد بن أحمد بن شجاع، أبو نصر، الصفار، البخارى
-  a_yer: الجواهر المضية 1/252 (رقم 181)
-  a_vefat: null
-  b_ad: شمس الدين أحمد العقيلي
-  b_yer: كتائب أعلام الأخيار 3/177 (رقم 466)
-  b_vefat: 657
-  a_sahis: jw181
-  b_sahis: jw188
-  tur: isim
-  puan: 3.0
-  benzerlik: 0.5
-  gerekce:
-  - 'nisbe: البخاري'
-- 'no': 529
-  karar: ''
-  a: tabaqat_saniyya:286
-  b: kataib:466
-  a_ad: أحمد بن محمد بن إبراهيم بن على البخارى، أبو سعيد ابن أبى الخطاب
-  a_yer: الطبقات السنية 2/14 (رقم 285)
-  a_vefat: null
-  b_ad: شمس الدين أحمد العقيلي
-  b_yer: كتائب أعلام الأخيار 3/177 (رقم 466)
-  b_vefat: 657
-  a_sahis: jw172
-  b_sahis: jw188
-  tur: isim
-  puan: 3.0
-  benzerlik: 0.5
-  gerekce:
-  - 'nisbe: البخاري'
-- 'no': 530
-  karar: ''
-  a: tabaqat_saniyya:297
-  b: kataib:466
-  a_ad: أحمد بن محمد بن أحمد بن شجاع أبو نصر الصفار، البخارى
-  a_yer: الطبقات السنية 2/32 (رقم 296)
-  a_vefat: null
-  b_ad: شمس الدين أحمد العقيلي
-  b_yer: كتائب أعلام الأخيار 3/177 (رقم 466)
-  b_vefat: 657
-  a_sahis: jw181
-  b_sahis: jw188
-  tur: isim
-  puan: 3.0
-  benzerlik: 0.5
-  gerekce:
-  - 'nisbe: البخاري'
-- 'no': 531
-  karar: ''
-  a: kataib:466
-  b: athmar:73
-  a_ad: شمس الدين أحمد العقيلي
-  a_yer: كتائب أعلام الأخيار 3/177 (رقم 466)
-  a_vefat: 657
-  b_ad: أحمد بن محمد بن أحمد بن شجاع أبو نصر الصفار البخاري
-  b_yer: الأثمار الجنية 1/331 (رقم 62)
-  b_vefat: null
-  a_sahis: jw188
-  b_sahis: jw181
-  tur: isim
-  puan: 3.0
-  benzerlik: 0.5
-  gerekce:
-  - 'nisbe: البخاري'
-- 'no': 532
+- 'no': 423
   karar: ''
   a: ghuraf_v1:129
   b: tabaqat_saniyya:366
@@ -9670,7 +7614,41 @@
   benzerlik: 0.5
   gerekce:
   - vefat 809
-- 'no': 533
+- 'no': 424
+  karar: ''
+  a: jawahir:173
+  b: kataib:466
+  a_ad: أحمد بن محمد بن إبراهيم بن على البخارى أبو سعيد بن أبى الخطاب
+  a_yer: الجواهر المضية 1/242 (رقم 172)
+  a_vefat: null
+  b_ad: شمس الدين أحمد العقيلي
+  b_yer: كتائب أعلام الأخيار 3/177 (رقم 466)
+  b_vefat: 657
+  a_sahis: jw172
+  b_sahis: jw188
+  tur: isim
+  puan: 3.0
+  benzerlik: 0.5
+  gerekce:
+  - 'nisbe: البخاري'
+- 'no': 425
+  karar: ''
+  a: jawahir:182
+  b: kataib:466
+  a_ad: أحمد بن محمد بن أحمد بن شجاع، أبو نصر، الصفار، البخارى
+  a_yer: الجواهر المضية 1/252 (رقم 181)
+  a_vefat: null
+  b_ad: شمس الدين أحمد العقيلي
+  b_yer: كتائب أعلام الأخيار 3/177 (رقم 466)
+  b_vefat: 657
+  a_sahis: jw181
+  b_sahis: jw188
+  tur: isim
+  puan: 3.0
+  benzerlik: 0.5
+  gerekce:
+  - 'nisbe: البخاري'
+- 'no': 426
   karar: ''
   a: jawahir:241
   b: kataib:466
@@ -9687,7 +7665,7 @@
   benzerlik: 0.5
   gerekce:
   - 'nisbe: الانصاري'
-- 'no': 534
+- 'no': 427
   karar: ''
   a: jawahir:247
   b: taj_tarajim:20
@@ -9704,7 +7682,24 @@
   benzerlik: 0.5
   gerekce:
   - vefat 658
-- 'no': 535
+- 'no': 428
+  karar: ''
+  a: tabaqat_saniyya:286
+  b: kataib:466
+  a_ad: أحمد بن محمد بن إبراهيم بن على البخارى، أبو سعيد ابن أبى الخطاب
+  a_yer: الطبقات السنية 2/14 (رقم 285)
+  a_vefat: null
+  b_ad: شمس الدين أحمد العقيلي
+  b_yer: كتائب أعلام الأخيار 3/177 (رقم 466)
+  b_vefat: 657
+  a_sahis: jw172
+  b_sahis: jw188
+  tur: isim
+  puan: 3.0
+  benzerlik: 0.5
+  gerekce:
+  - 'nisbe: البخاري'
+- 'no': 429
   karar: ''
   a: tabaqat_saniyya:294
   b: taj_tarajim:22
@@ -9721,7 +7716,24 @@
   benzerlik: 0.5
   gerekce:
   - vefat 447
-- 'no': 536
+- 'no': 430
+  karar: ''
+  a: tabaqat_saniyya:297
+  b: kataib:466
+  a_ad: أحمد بن محمد بن أحمد بن شجاع أبو نصر الصفار، البخارى
+  a_yer: الطبقات السنية 2/32 (رقم 296)
+  a_vefat: null
+  b_ad: شمس الدين أحمد العقيلي
+  b_yer: كتائب أعلام الأخيار 3/177 (رقم 466)
+  b_vefat: 657
+  a_sahis: jw181
+  b_sahis: jw188
+  tur: isim
+  puan: 3.0
+  benzerlik: 0.5
+  gerekce:
+  - 'nisbe: البخاري'
+- 'no': 431
   karar: ''
   a: tabaqat_saniyya:365
   b: kataib:466
@@ -9738,7 +7750,7 @@
   benzerlik: 0.5
   gerekce:
   - 'nisbe: الانصاري'
-- 'no': 537
+- 'no': 432
   karar: ''
   a: tabaqat_saniyya:373
   b: taj_tarajim:20
@@ -9755,7 +7767,24 @@
   benzerlik: 0.5
   gerekce:
   - vefat 658
-- 'no': 538
+- 'no': 433
+  karar: ''
+  a: kataib:466
+  b: athmar:73
+  a_ad: شمس الدين أحمد العقيلي
+  a_yer: كتائب أعلام الأخيار 3/177 (رقم 466)
+  a_vefat: 657
+  b_ad: أحمد بن محمد بن أحمد بن شجاع أبو نصر الصفار البخاري
+  b_yer: الأثمار الجنية 1/331 (رقم 62)
+  b_vefat: null
+  a_sahis: jw188
+  b_sahis: jw181
+  tur: isim
+  puan: 3.0
+  benzerlik: 0.5
+  gerekce:
+  - 'nisbe: البخاري'
+- 'no': 434
   karar: ''
   a: kataib:466
   b: athmar:101
@@ -9772,7 +7801,7 @@
   benzerlik: 0.5
   gerekce:
   - 'nisbe: الانصاري'
-- 'no': 539
+- 'no': 435
   karar: ''
   a: kataib:466
   b: fawaid:53
@@ -9789,7 +7818,7 @@
   benzerlik: 0.5
   gerekce:
   - 'nisbe: الانصاري'
-- 'no': 540
+- 'no': 436
   karar: ''
   a: qand:287
   b: jawahir:738
@@ -9806,7 +7835,7 @@
   benzerlik: 0.5
   gerekce:
   - künye
-- 'no': 541
+- 'no': 437
   karar: ''
   a: qand:287
   b: tabaqat_saniyya:1102
@@ -9823,7 +7852,7 @@
   benzerlik: 0.5
   gerekce:
   - künye
-- 'no': 542
+- 'no': 438
   karar: ''
   a: qand:295
   b: jawahir:738
@@ -9840,7 +7869,7 @@
   benzerlik: 0.5
   gerekce:
   - künye
-- 'no': 543
+- 'no': 439
   karar: ''
   a: qand:295
   b: tabaqat_saniyya:1102
@@ -9857,7 +7886,7 @@
   benzerlik: 0.5
   gerekce:
   - künye
-- 'no': 544
+- 'no': 440
   karar: ''
   a: qand:296
   b: jawahir:738
@@ -9874,7 +7903,7 @@
   benzerlik: 0.5
   gerekce:
   - künye
-- 'no': 545
+- 'no': 441
   karar: ''
   a: qand:296
   b: tabaqat_saniyya:1102
@@ -9891,7 +7920,7 @@
   benzerlik: 0.5
   gerekce:
   - künye
-- 'no': 546
+- 'no': 442
   karar: ''
   a: qand:302
   b: jawahir:738
@@ -9908,7 +7937,7 @@
   benzerlik: 0.5
   gerekce:
   - künye
-- 'no': 547
+- 'no': 443
   karar: ''
   a: qand:302
   b: tabaqat_saniyya:1102
@@ -9925,7 +7954,7 @@
   benzerlik: 0.5
   gerekce:
   - künye
-- 'no': 548
+- 'no': 444
   karar: ''
   a: qand:303
   b: jawahir:738
@@ -9942,7 +7971,7 @@
   benzerlik: 0.5
   gerekce:
   - künye
-- 'no': 549
+- 'no': 445
   karar: ''
   a: qand:303
   b: tabaqat_saniyya:1102
@@ -9959,7 +7988,7 @@
   benzerlik: 0.5
   gerekce:
   - künye
-- 'no': 550
+- 'no': 446
   karar: ''
   a: qand:304
   b: jawahir:738
@@ -9976,7 +8005,7 @@
   benzerlik: 0.5
   gerekce:
   - künye
-- 'no': 551
+- 'no': 447
   karar: ''
   a: qand:304
   b: tabaqat_saniyya:1102
@@ -9993,7 +8022,7 @@
   benzerlik: 0.5
   gerekce:
   - künye
-- 'no': 552
+- 'no': 448
   karar: ''
   a: qand:307
   b: jawahir:738
@@ -10010,7 +8039,7 @@
   benzerlik: 0.5
   gerekce:
   - künye
-- 'no': 553
+- 'no': 449
   karar: ''
   a: qand:307
   b: tabaqat_saniyya:1102
@@ -10027,7 +8056,7 @@
   benzerlik: 0.5
   gerekce:
   - künye
-- 'no': 554
+- 'no': 450
   karar: ''
   a: qand:309
   b: jawahir:738
@@ -10044,7 +8073,7 @@
   benzerlik: 0.5
   gerekce:
   - künye
-- 'no': 555
+- 'no': 451
   karar: ''
   a: qand:309
   b: tabaqat_saniyya:1102
@@ -10061,7 +8090,7 @@
   benzerlik: 0.5
   gerekce:
   - künye
-- 'no': 556
+- 'no': 452
   karar: ''
   a: qand:319
   b: jawahir:738
@@ -10078,7 +8107,7 @@
   benzerlik: 0.5
   gerekce:
   - künye
-- 'no': 557
+- 'no': 453
   karar: ''
   a: qand:319
   b: tabaqat_saniyya:1102
@@ -10095,7 +8124,7 @@
   benzerlik: 0.5
   gerekce:
   - künye
-- 'no': 558
+- 'no': 454
   karar: ''
   a: qand:321
   b: jawahir:738
@@ -10112,7 +8141,7 @@
   benzerlik: 0.5
   gerekce:
   - künye
-- 'no': 559
+- 'no': 455
   karar: ''
   a: qand:321
   b: tabaqat_saniyya:1102
@@ -10129,7 +8158,7 @@
   benzerlik: 0.5
   gerekce:
   - künye
-- 'no': 560
+- 'no': 456
   karar: ''
   a: qand:323
   b: jawahir:738
@@ -10146,7 +8175,7 @@
   benzerlik: 0.5
   gerekce:
   - künye
-- 'no': 561
+- 'no': 457
   karar: ''
   a: qand:323
   b: tabaqat_saniyya:1102
@@ -10163,7 +8192,7 @@
   benzerlik: 0.5
   gerekce:
   - künye
-- 'no': 562
+- 'no': 458
   karar: ''
   a: qand:324
   b: jawahir:738
@@ -10180,7 +8209,7 @@
   benzerlik: 0.5
   gerekce:
   - künye
-- 'no': 563
+- 'no': 459
   karar: ''
   a: qand:324
   b: tabaqat_saniyya:1102
@@ -10197,7 +8226,7 @@
   benzerlik: 0.5
   gerekce:
   - künye
-- 'no': 564
+- 'no': 460
   karar: ''
   a: qand:332
   b: jawahir:738
@@ -10214,7 +8243,7 @@
   benzerlik: 0.5
   gerekce:
   - künye
-- 'no': 565
+- 'no': 461
   karar: ''
   a: qand:332
   b: tabaqat_saniyya:1102
@@ -10231,7 +8260,7 @@
   benzerlik: 0.5
   gerekce:
   - künye
-- 'no': 566
+- 'no': 462
   karar: ''
   a: qand:342
   b: jawahir:738
@@ -10248,7 +8277,7 @@
   benzerlik: 0.5
   gerekce:
   - künye
-- 'no': 567
+- 'no': 463
   karar: ''
   a: qand:342
   b: tabaqat_saniyya:1102
@@ -10265,7 +8294,7 @@
   benzerlik: 0.5
   gerekce:
   - künye
-- 'no': 568
+- 'no': 464
   karar: ''
   a: qand:348
   b: jawahir:738
@@ -10282,7 +8311,7 @@
   benzerlik: 0.5
   gerekce:
   - künye
-- 'no': 569
+- 'no': 465
   karar: ''
   a: qand:348
   b: tabaqat_saniyya:1102
@@ -10299,7 +8328,7 @@
   benzerlik: 0.5
   gerekce:
   - künye
-- 'no': 570
+- 'no': 466
   karar: ''
   a: qand:365
   b: jawahir:715
@@ -10316,7 +8345,7 @@
   benzerlik: 0.5
   gerekce:
   - künye
-- 'no': 571
+- 'no': 467
   karar: ''
   a: qand:365
   b: tabaqat_saniyya:1069
@@ -10333,7 +8362,7 @@
   benzerlik: 0.5
   gerekce:
   - künye
-- 'no': 572
+- 'no': 468
   karar: ''
   a: qand:373
   b: jawahir:738
@@ -10350,7 +8379,7 @@
   benzerlik: 0.5
   gerekce:
   - künye
-- 'no': 573
+- 'no': 469
   karar: ''
   a: qand:373
   b: tabaqat_saniyya:1102
@@ -10367,7 +8396,7 @@
   benzerlik: 0.5
   gerekce:
   - künye
-- 'no': 574
+- 'no': 470
   karar: ''
   a: qand:374
   b: jawahir:738
@@ -10384,7 +8413,7 @@
   benzerlik: 0.5
   gerekce:
   - künye
-- 'no': 575
+- 'no': 471
   karar: ''
   a: qand:374
   b: tabaqat_saniyya:1102
@@ -10401,7 +8430,7 @@
   benzerlik: 0.5
   gerekce:
   - künye
-- 'no': 576
+- 'no': 472
   karar: ''
   a: qand:379
   b: jawahir:738
@@ -10418,7 +8447,7 @@
   benzerlik: 0.5
   gerekce:
   - künye
-- 'no': 577
+- 'no': 473
   karar: ''
   a: qand:379
   b: tabaqat_saniyya:1102
@@ -10435,7 +8464,7 @@
   benzerlik: 0.5
   gerekce:
   - künye
-- 'no': 578
+- 'no': 474
   karar: ''
   a: ghuraf_v1:365
   b: tabaqat_saniyya:1104
@@ -10452,7 +8481,7 @@
   benzerlik: 0.5
   gerekce:
   - vefat 762
-- 'no': 579
+- 'no': 475
   karar: ''
   a: qand:323
   b: taj_tarajim:123
@@ -10469,7 +8498,7 @@
   benzerlik: 0.5
   gerekce:
   - vefat 343/340
-- 'no': 580
+- 'no': 476
   karar: ''
   a: qand:689
   b: jawahir:980
@@ -10486,7 +8515,7 @@
   benzerlik: 0.5
   gerekce:
   - künye
-- 'no': 581
+- 'no': 477
   karar: ''
   a: qand:796
   b: kataib:305
@@ -10503,7 +8532,7 @@
   benzerlik: 0.5
   gerekce:
   - vefat 485
-- 'no': 582
+- 'no': 478
   karar: ''
   a: jawahir:1275
   b: fawaid:295
@@ -10520,7 +8549,7 @@
   benzerlik: 0.5
   gerekce:
   - künye
-- 'no': 583
+- 'no': 479
   karar: ''
   a: jawahir:1180
   b: taj_tarajim:224
@@ -10537,7 +8566,7 @@
   benzerlik: 0.5
   gerekce:
   - vefat 482
-- 'no': 584
+- 'no': 480
   karar: ''
   a: taj_tarajim:224
   b: athmar:480
@@ -10548,13 +8577,13 @@
   b_yer: الأثمار الجنية 2/557 (رقم 469)
   b_vefat: 482
   a_sahis: tj224
-  b_sahis: at469
+  b_sahis: jw1158
   tur: isim
   puan: 3.0
   benzerlik: 0.5
   gerekce:
   - vefat 482
-- 'no': 585
+- 'no': 481
   karar: ''
   a: jawahir:1450
   b: kataib:501
@@ -10571,7 +8600,7 @@
   benzerlik: 0.5
   gerekce:
   - 'nisbe: البخاري'
-- 'no': 586
+- 'no': 482
   karar: ''
   a: ghuraf_v2:189
   b: kataib:572
@@ -10588,7 +8617,7 @@
   benzerlik: 0.5
   gerekce:
   - künye
-- 'no': 587
+- 'no': 483
   karar: ''
   a: ghuraf_v2:141
   b: taj_tarajim:239
@@ -10605,7 +8634,7 @@
   benzerlik: 0.5
   gerekce:
   - vefat 768
-- 'no': 588
+- 'no': 484
   karar: ''
   a: ghuraf_v2:150
   b: fawaid:328
@@ -10622,7 +8651,7 @@
   benzerlik: 0.5
   gerekce:
   - vefat 825/827
-- 'no': 589
+- 'no': 485
   karar: ''
   a: jawahir:1478
   b: taj_tarajim:217
@@ -10639,7 +8668,7 @@
   benzerlik: 0.5
   gerekce:
   - vefat 334
-- 'no': 590
+- 'no': 486
   karar: ''
   a: jawahir:1503
   b: athmar:587
@@ -10656,7 +8685,7 @@
   benzerlik: 0.5
   gerekce:
   - vefat 601
-- 'no': 591
+- 'no': 487
   karar: ''
   a: jawahir:1527
   b: taj_tarajim:256
@@ -10673,7 +8702,7 @@
   benzerlik: 0.5
   gerekce:
   - vefat 494
-- 'no': 592
+- 'no': 488
   karar: ''
   a: taj_tarajim:213
   b: fawaid:364
@@ -10690,7 +8719,7 @@
   benzerlik: 0.5
   gerekce:
   - vefat 687
-- 'no': 593
+- 'no': 489
   karar: ''
   a: taj_tarajim:217
   b: athmar:581
@@ -10707,7 +8736,7 @@
   benzerlik: 0.5
   gerekce:
   - vefat 333
-- 'no': 594
+- 'no': 490
   karar: ''
   a: taj_tarajim:256
   b: kataib:314
@@ -10724,7 +8753,7 @@
   benzerlik: 0.5
   gerekce:
   - vefat 493/491
-- 'no': 595
+- 'no': 491
   karar: ''
   a: taj_tarajim:348
   b: fawaid:356
@@ -10741,7 +8770,7 @@
   benzerlik: 0.5
   gerekce:
   - vefat 827
-- 'no': 596
+- 'no': 492
   karar: ''
   a: kataib:557
   b: athmar:47
@@ -10758,7 +8787,7 @@
   benzerlik: 0.5
   gerekce:
   - vefat 745
-- 'no': 597
+- 'no': 493
   karar: ''
   a: jawahir:1358
   b: athmar:547
@@ -10775,7 +8804,7 @@
   benzerlik: 0.5
   gerekce:
   - vefat 503/500
-- 'no': 598
+- 'no': 494
   karar: ''
   a: jawahir:721
   b: tabaqat_saniyya:1077
@@ -10792,7 +8821,7 @@
   benzerlik: 0.5
   gerekce:
   - 'atıf: الطبقات السنية، برقم ١٠٧٦، كشف الظنون ١/ ٥٧، ٩١١، ٢/ ١'
-- 'no': 599
+- 'no': 495
   karar: ''
   a: tabaqat_saniyya:1077
   b: fawaid:190
@@ -10809,7 +8838,7 @@
   benzerlik: 0.5
   gerekce:
   - 'atıf: الفوائد البهية ١٠٤،١٠٣، كتائب أعلام الأخيار، برقم ٨٦،'
-- 'no': 600
+- 'no': 496
   karar: ''
   a: athmar:581
   b: fawaid:352
@@ -10826,7 +8855,7 @@
   benzerlik: 0.5
   gerekce:
   - 'atıf: الفوائد البهية:١٨٦،١٨٥؛ البغدادي، هدية العارفين:٢/ ٣٧.'
-- 'no': 601
+- 'no': 497
   karar: ''
   a: kataib:260
   b: jawahir:242
@@ -10843,7 +8872,7 @@
   benzerlik: 0.5
   gerekce:
   - 'atıf: الجواهر المضية" للقرشي (١/ ٣١٨)، و"الطبقات السنية" للت'
-- 'no': 602
+- 'no': 498
   karar: ''
   a: jawahir:866
   b: fawaid:200
@@ -10860,7 +8889,7 @@
   benzerlik: 0.5
   gerekce:
   - 'atıf: الفوائد البهية ١١٢.'
-- 'no': 603
+- 'no': 499
   karar: ''
   a: tabaqat_saniyya:215
   b: fawaid:29
@@ -10877,7 +8906,7 @@
   benzerlik: 0.5
   gerekce:
   - 'atıf: الفوائد البهية ٢٥،٢٤، كتائب أعلام الأخيار، برقم ٢٤٩، ا'
-- 'no': 604
+- 'no': 500
   karar: ''
   a: tabaqat_saniyya:219
   b: fawaid:29
@@ -10894,7 +8923,7 @@
   benzerlik: 0.5
   gerekce:
   - 'atıf: الفوائد البهية ٢٥، كشف الظنون ٢/ ١٥٤٥،١/ ١٩٢.'
-- 'no': 605
+- 'no': 501
   karar: ''
   a: tabaqat_saniyya:535
   b: fawaid:78
@@ -10912,7 +8941,7 @@
   gerekce:
   - 'atıf: الفوائد البهية ٤٩، كشف الظنون ٢/ ١٤٨١.'
   - lakap
-- 'no': 606
+- 'no': 502
   karar: ''
   a: kataib:350
   b: jawahir:1246
@@ -10929,7 +8958,7 @@
   benzerlik: 0.5
   gerekce:
   - 'atıf: الجواهر المضية" للقرشي (٣/ ١٠٣ - ١٠٤)، و"تاج التراجم"'
-- 'no': 607
+- 'no': 503
   karar: ''
   a: kataib:394
   b: jawahir:866
@@ -10946,7 +8975,7 @@
   benzerlik: 0.5
   gerekce:
   - 'atıf: الجواهر المضية" للقرشي (٢/ ٤٦٩)، و"الطبقات السنية" للت'
-- 'no': 608
+- 'no': 504
   karar: ''
   a: kataib:509
   b: jawahir:1852
@@ -10966,7 +8995,7 @@
   - zincir 2. halkada ayrılıyor
   - künye
   - vefat 654
-- 'no': 609
+- 'no': 505
   karar: ''
   a: kataib:546
   b: tabaqat_saniyya:139
@@ -10983,7 +9012,7 @@
   benzerlik: 0.5
   gerekce:
   - 'atıf: الطبقات السنية" للتميمي (الرقم: ١٣٨)، و"الفوائد البهية'
-- 'no': 610
+- 'no': 506
   karar: ''
   a: athmar:359
   b: fawaid:200
@@ -11000,7 +9029,7 @@
   benzerlik: 0.5
   gerekce:
   - 'atıf: الفوائد البهية:١١٢.'
-- 'no': 611
+- 'no': 507
   karar: ''
   a: athmar:409
   b: fawaid:230
@@ -11017,7 +9046,7 @@
   benzerlik: 0.5
   gerekce:
   - 'atıf: الفوائد البهية:١٢٤؛ البغدادي، هدية العارفين:١/ ٦٩٧؛ كح'
-- 'no': 612
+- 'no': 508
   karar: ''
   a: athmar:775
   b: jawahir:1941
@@ -11035,7 +9064,7 @@
   gerekce:
   - 'atıf: الجواهر المضية:٤/ ٦٠.'
   - 'nisbe: الطالقاني'
-- 'no': 613
+- 'no': 509
   karar: ''
   a: athmar:781
   b: jawahir:1954
@@ -11053,7 +9082,7 @@
   gerekce:
   - 'atıf: الجواهر المضية:٤/ ٦٩؛ الكلنوي، الفوائد البهية:١٤٦.'
   - 'nisbe: الرازي'
-- 'no': 614
+- 'no': 510
   karar: ''
   a: athmar:781
   b: fawaid:244
@@ -11071,7 +9100,7 @@
   gerekce:
   - 'atıf: الفوائد البهية:١٤٦.'
   - 'nisbe: الرازي'
-- 'no': 615
+- 'no': 511
   karar: ''
   a: jawahir:1917
   b: fawaid:123
@@ -11089,7 +9118,7 @@
   gerekce:
   - 'atıf: الفوائد البهية ٦٨. وفى م «السفكردى» والكلمة مضطربة الر'
   - künye
-- 'no': 616
+- 'no': 512
   karar: ''
   a: jawahir:808
   b: tabaqat_saniyya:1224
@@ -11106,7 +9135,7 @@
   benzerlik: 0.5
   gerekce:
   - 'atıf: الطبقات السنية، برقم ١٢٢٣.'
-- 'no': 617
+- 'no': 513
   karar: ''
   a: jawahir:1031
   b: fawaid:239
@@ -11125,7 +9154,7 @@
   - 'atıf: الفوائد البهية ١٤١ - ١٤٤، إيضاح المكنون ٢/ ٥٧٠، هدية ا'
   - zincir 2. halkada ayrılıyor
   - vefat 593
-- 'no': 618
+- 'no': 514
   karar: ''
   a: jawahir:2051
   b: fawaid:116
@@ -11136,13 +9165,13 @@
   b_yer: الفوائد البهية 66
   b_vefat: 424
   a_sahis: jw2047
-  b_sahis: jw501
+  b_sahis: jw500
   tur: atıf
   puan: 0.0
   benzerlik: 0.5
   gerekce:
   - 'atıf: الفوائد البهية ٦٥.'
-- 'no': 619
+- 'no': 515
   karar: ''
   a: jawahir:2059
   b: fawaid:144
@@ -11160,7 +9189,7 @@
   gerekce:
   - 'atıf: الفوائد البهية ٧٤.'
   - lakap
-- 'no': 620
+- 'no': 516
   karar: ''
   a: tabaqat_saniyya:646
   b: fawaid:102
@@ -11178,7 +9207,7 @@
   gerekce:
   - 'atıf: الفوائد البهية ٦٠، وفيه «المعروف بابن المدرس». والتوقا'
   - lakap
-- 'no': 621
+- 'no': 517
   karar: ''
   a: tabaqat_saniyya:726
   b: fawaid:114
@@ -11188,14 +9217,14 @@
   b_ad: الحسن القاضى الماتريدي
   b_yer: الفوائد البهية 65
   b_vefat: null
-  a_sahis: ts725
+  a_sahis: jw485
   b_sahis: fws114
   tur: atıf
   puan: 0.0
   benzerlik: 0.5
   gerekce:
   - 'atıf: الفوائد البهية ٦٥،٦٤، كتائب أعلام الأخيار، برقم ٣٨١، ك'
-- 'no': 622
+- 'no': 518
   karar: ''
   a: tabaqat_saniyya:805
   b: fawaid:127
@@ -11212,7 +9241,7 @@
   benzerlik: 0.5
   gerekce:
   - 'atıf: الفوائد البهية ٦٩، كتائب أعلام الأخيار، برقم ٧١٧، وفيه'
-- 'no': 623
+- 'no': 519
   karar: ''
   a: kataib:168
   b: jawahir:529
@@ -11229,7 +9258,7 @@
   benzerlik: 0.5
   gerekce:
   - 'atıf: الجواهر المضية" للقرشي (٢/ ١٣٧ - ١٣٨)، و"بغية الوعاة"'
-- 'no': 624
+- 'no': 520
   karar: ''
   a: kataib:175
   b: jawahir:1888
@@ -11246,7 +9275,7 @@
   benzerlik: 0.5
   gerekce:
   - 'atıf: الجواهر المضية" للقرشي (٤/ ١٨)، و"الطبقات السنية" للتم'
-- 'no': 625
+- 'no': 521
   karar: ''
   a: kataib:511
   b: jawahir:2059
@@ -11264,7 +9293,7 @@
   gerekce:
   - 'atıf: الجواهر المضية" للقرشي (٤/ ٣٣٨ - ٣٣٩)، و"الطبقات السني'
   - lakap
-- 'no': 626
+- 'no': 522
   karar: ''
   a: kataib:562
   b: jawahir:2034
@@ -11282,7 +9311,7 @@
   gerekce:
   - 'atıf: الجواهر المضية" للقرشي (٤/ ٢٠٣ - ٢٠٤)، و"الطبقات السني'
   - lakap
-- 'no': 627
+- 'no': 523
   karar: ''
   a: kataib:564
   b: jawahir:2021
@@ -11300,7 +9329,7 @@
   gerekce:
   - 'atıf: الجواهر المضية" للقرشي (٤/ ١٤٦ - ١٤٧)، و"الطبقات السني'
   - lakap
-- 'no': 628
+- 'no': 524
   karar: ''
   a: athmar:199
   b: fawaid:114
@@ -11317,7 +9346,7 @@
   benzerlik: 0.5
   gerekce:
   - 'atıf: الفوائد البهية:٦٤،٦٣.'
-- 'no': 629
+- 'no': 525
   karar: ''
   a: athmar:425
   b: fawaid:239
@@ -11336,7 +9365,7 @@
   - 'atıf: الفوائد البهية:١٤١ - ١٤٤.'
   - zincir 2. halkada ayrılıyor
   - vefat 593
-- 'no': 630
+- 'no': 526
   karar: ''
   a: athmar:652
   b: fawaid:410
@@ -11353,7 +9382,7 @@
   benzerlik: 0.5
   gerekce:
   - 'atıf: الفوائد البهية:٢١١،٢١٠؛ البغدادي، إيضاح المكنون:٤٨٦/ ١'
-- 'no': 631
+- 'no': 527
   karar: ''
   a: athmar:710
   b: jawahir:1793
@@ -11372,7 +9401,7 @@
   - 'atıf: الجواهر المضية:٥٨٣،٣/ ٥٨٢؛ ابن حجر، تقريب التهذيب:٣٤٣،'
   - zincir 2. halkada ayrılıyor
   - vefat 242
-- 'no': 632
+- 'no': 528
   karar: ''
   a: jawahir:1908
   b: fawaid:97
@@ -11389,7 +9418,7 @@
   benzerlik: 0.5
   gerekce:
   - 'atıf: الفوائد البهية ٥٧، ٥٨.'
-- 'no': 633
+- 'no': 529
   karar: ''
   a: kataib:169
   b: jawahir:699
@@ -11406,7 +9435,7 @@
   benzerlik: 0.5
   gerekce:
   - 'atıf: الجواهر المضية" للقرشي (٢/ ٣٠١)، و"الطبقات السنية" للت'
-- 'no': 634
+- 'no': 530
   karar: ''
   a: kataib:242
   b: jawahir:1908
@@ -11423,7 +9452,7 @@
   benzerlik: 0.5
   gerekce:
   - 'atıf: الجواهر المضية" للقرشي (٤/ ٣٢)، و"الطبقات السنية" للتم'
-- 'no': 635
+- 'no': 531
   karar: ''
   a: kataib:256
   b: jawahir:188
@@ -11440,7 +9469,7 @@
   benzerlik: 0.5
   gerekce:
   - 'atıf: الجواهر المضية" للقرشي (١/ ٢٥٩)، و"الطبقات السنية" للت'
-- 'no': 636
+- 'no': 532
   karar: ''
   a: kataib:383
   b: jawahir:443
@@ -11457,7 +9486,7 @@
   benzerlik: 0.5
   gerekce:
   - 'atıf: الجواهر المضية" للقرشي (٢/ ٥١).'
-- 'no': 637
+- 'no': 533
   karar: ''
   a: kataib:386
   b: taj_tarajim:112
@@ -11474,7 +9503,7 @@
   benzerlik: 0.5
   gerekce:
   - 'atıf: تاج التراجم" لابن قطلوبغا (ص: ١٧٠)، و"الطبقات السني'
-- 'no': 638
+- 'no': 534
   karar: ''
   a: kataib:397
   b: jawahir:2119
@@ -11491,7 +9520,7 @@
   benzerlik: 0.5
   gerekce:
   - 'atıf: الجواهر المضية" للقرشي (٤/ ٥١٨)، و"الطبقات السنية" للت'
-- 'no': 639
+- 'no': 535
   karar: ''
   a: athmar:72
   b: fawaid:39
@@ -11509,26 +9538,7 @@
   gerekce:
   - 'atıf: الفوائد البهية:٣٠ - ٣١.'
   - vefat farklı 400/657
-- 'no': 640
-  karar: ''
-  a: athmar:215
-  b: tabaqat_saniyya:776
-  a_ad: الحسين بن نظام المعروف بنور الهدى
-  a_yer: الأثمار الجنية 1/415 (رقم 204)
-  a_vefat: 512
-  b_ad: الحسين بن محمد بن على بن الحسن بن محمد بن عبد الوهاب أبو طالب الزينبى الملقب نور الهدى
-  b_yer: الطبقات السنية 3/162-167 (رقم 775)
-  b_vefat: null
-  a_sahis: jw525
-  b_sahis: gh232
-  tur: atıf
-  puan: -1.0
-  benzerlik: 0.5
-  gerekce:
-  - 'atıf: الطبقات السنية: ٣/ ١٦٢ - ١٦٧ وفيه ورد أسمه (الحسين ين'
-  - zincir 2. halkada ayrılıyor
-  - 'nisbe: الهدي'
-- 'no': 641
+- 'no': 536
   karar: ''
   a: athmar:316
   b: jawahir:723
@@ -11546,7 +9556,7 @@
   gerekce:
   - 'atıf: الجواهر المضية:٢/ ٣٢٧. وفيه «ولم يذكر القرشي شيئا عن ت'
   - zincir 3. halkada ayrılıyor
-- 'no': 642
+- 'no': 537
   karar: ''
   a: athmar:463
   b: fawaid:267
@@ -11563,7 +9573,7 @@
   benzerlik: 0.5
   gerekce:
   - 'atıf: الفوائد البهية:١٥٤،١٥٣؛ البغدادي، هدية العارفين:١/ ٨٢٨'
-- 'no': 643
+- 'no': 538
   karar: ''
   a: athmar:542
   b: jawahir:1344
@@ -11581,7 +9591,7 @@
   gerekce:
   - 'atıf: الجواهر المضية:١٩٠/ ٣،١٨٩؛ المقريزي، تقي الدين أحمد بن'
   - zincir 3. halkada ayrılıyor
-- 'no': 644
+- 'no': 539
   karar: ''
   a: jawahir:795
   b: tabaqat_saniyya:1199
@@ -11599,7 +9609,7 @@
   gerekce:
   - 'atıf: الطبقات السنية، برقم ١١٩٨.'
   - zincir 2. halkada ayrılıyor
-- 'no': 645
+- 'no': 540
   karar: ''
   a: jawahir:1023
   b: fawaid:223
@@ -11617,7 +9627,7 @@
   gerekce:
   - 'atıf: الفوائد البهية ١٢١.'
   - zincir 2. halkada ayrılıyor
-- 'no': 646
+- 'no': 541
   karar: ''
   a: jawahir:1383
   b: fawaid:324
@@ -11635,7 +9645,7 @@
   gerekce:
   - 'atıf: الفوائد البهية ١٧٧، ١٧٨، هدية العارفين ٢/ ١٠٧.'
   - zincir 2. halkada ayrılıyor
-- 'no': 647
+- 'no': 542
   karar: ''
   a: jawahir:1852
   b: fawaid:468
@@ -11653,7 +9663,7 @@
   gerekce:
   - 'atıf: الفوائد البهية ٢٣٠، ٢٣١، هدية العارفين ٢/ ٥٥٤، ٥٥٥، إي'
   - zincir 2. halkada ayrılıyor
-- 'no': 648
+- 'no': 543
   karar: ''
   a: tabaqat_saniyya:200
   b: fawaid:21
@@ -11671,7 +9681,7 @@
   gerekce:
   - 'atıf: الفوائد البهية ٢٢،٢١، كشف الظنون ١/ ٤١، الكواكب السائر'
   - zincir 2. halkada ayrılıyor
-- 'no': 649
+- 'no': 544
   karar: ''
   a: tabaqat_saniyya:230
   b: fawaid:29
@@ -11689,7 +9699,7 @@
   gerekce:
   - 'atıf: الفوائد البهية ٢٤، كتائب أعلام الأخيار، برقم ٣٤٣.'
   - zincir 2. halkada ayrılıyor
-- 'no': 650
+- 'no': 545
   karar: ''
   a: tabaqat_saniyya:394
   b: jawahir:259
@@ -11707,7 +9717,7 @@
   gerekce:
   - 'atıf: الجواهر المضية، برقم ٢٥٨، وفيه: «أحمد بن مضى».'
   - zincir 2. halkada ayrılıyor
-- 'no': 651
+- 'no': 546
   karar: ''
   a: tabaqat_saniyya:676
   b: jawahir:478
@@ -11725,7 +9735,7 @@
   gerekce:
   - 'atıf: الجواهر المضية، برقم ٤٧٧.'
   - zincir 2. halkada ayrılıyor
-- 'no': 652
+- 'no': 547
   karar: ''
   a: tabaqat_saniyya:1003
   b: jawahir:669
@@ -11743,7 +9753,7 @@
   gerekce:
   - 'atıf: الجواهر المضية، برقم ٦٦٨.'
   - zincir 2. halkada ayrılıyor
-- 'no': 653
+- 'no': 548
   karar: ''
   a: tabaqat_saniyya:1191
   b: fawaid:177
@@ -11762,7 +9772,7 @@
   - 'atıf: الفوائد البهية ٩٣، كتائب أعلام الأخيار، برقم ٢١٢.'
   - zincir 2. halkada ayrılıyor
   - künye
-- 'no': 654
+- 'no': 549
   karar: ''
   a: athmar:110
   b: tabaqat_saniyya:393
@@ -11780,7 +9790,7 @@
   gerekce:
   - 'atıf: الطبقات السنية:٢/ ١١٠.'
   - zincir 2. halkada ayrılıyor
-- 'no': 655
+- 'no': 550
   karar: ''
   a: athmar:116
   b: tabaqat_saniyya:397
@@ -11798,7 +9808,7 @@
   gerekce:
   - 'atıf: الطبقات السنية:١١٢،٢/ ١١٤.'
   - zincir 2. halkada ayrılıyor
-- 'no': 656
+- 'no': 551
   karar: ''
   a: athmar:142
   b: fawaid:70
@@ -11816,7 +9826,7 @@
   gerekce:
   - 'atıf: الفوائد البهية:٤٦.'
   - zincir 2. halkada ayrılıyor
-- 'no': 657
+- 'no': 552
   karar: ''
   a: athmar:272
   b: fawaid:155
@@ -11834,25 +9844,7 @@
   gerekce:
   - 'atıf: الفوائد البهية:٨١،٨٠.'
   - zincir 2. halkada ayrılıyor
-- 'no': 658
-  karar: ''
-  a: athmar:435
-  b: fawaid:250
-  a_ad: عمر بن عبد العزيز المعروف بحسام الشهيد، وبالصدر الشهيد
-  a_yer: الأثمار الجنية 2/530 (رقم 424)
-  a_vefat: 536
-  b_ad: عمر بن عبد العزيز بن عمر بن مازء أبو محمد حسام الدين
-  b_yer: الفوائد البهية 149
-  b_vefat: 83
-  a_sahis: jw1053
-  b_sahis: fws250
-  tur: atıf
-  puan: -2.0
-  benzerlik: 0.5
-  gerekce:
-  - 'atıf: الفوائد البهية:١٤٩، البغدادي، إيضاح المكنون:٢/ ١٢٤، هد'
-  - vefat farklı 536/83
-- 'no': 659
+- 'no': 553
   karar: ''
   a: athmar:557
   b: fawaid:325
@@ -11870,7 +9862,7 @@
   gerekce:
   - 'atıf: الفوائد البهية:١٧٨،١٧٧؛ البغدادي، هدية العارفين:٢/ ١٠٧'
   - zincir 2. halkada ayrılıyor
-- 'no': 660
+- 'no': 554
   karar: ''
   a: athmar:610
   b: fawaid:379
@@ -11888,7 +9880,7 @@
   gerekce:
   - 'atıf: الفوائد البهية:٢٠٢،٢٠١.'
   - zincir 2. halkada ayrılıyor
-- 'no': 661
+- 'no': 555
   karar: ''
   a: athmar:624
   b: jawahir:1581
@@ -11906,7 +9898,7 @@
   gerekce:
   - 'atıf: الجواهر المضية:٤٠٢/ ٣،٤٠١؛ العيمي، الدارس:١/ ٥٢٤.'
   - vefat farklı 614/555
-- 'no': 662
+- 'no': 556
   karar: ''
   a: athmar:683
   b: jawahir:1739
@@ -11924,7 +9916,7 @@
   gerekce:
   - 'atıf: الجواهر المضية:٣/ ٥٤٠.'
   - zincir 2. halkada ayrılıyor
-- 'no': 663
+- 'no': 557
   karar: ''
   a: athmar:728
   b: fawaid:473
@@ -11942,7 +9934,7 @@
   gerekce:
   - 'atıf: الفوائد البهية:٢٣٢،٢٣١.'
   - zincir 2. halkada ayrılıyor
-- 'no': 664
+- 'no': 558
   karar: ''
   a: kataib:610
   b: jawahir:1181
@@ -11959,7 +9951,7 @@
   benzerlik: 0.5
   gerekce:
   - 'atıf: الجواهر المضية" للقرشي (٣/ ٤٧)، و"المنهل الصافي" لابن'
-- 'no': 665
+- 'no': 559
   karar: ''
   a: jawahir:642
   b: fawaid:161
@@ -11977,7 +9969,7 @@
   gerekce:
   - 'atıf: الفوائد البهية ٨٣.'
   - zincir 2. halkada ayrılıyor
-- 'no': 666
+- 'no': 560
   karar: ''
   a: jawahir:667
   b: fawaid:165
@@ -11995,7 +9987,7 @@
   gerekce:
   - 'atıf: الفوائد البهية ٨٤.'
   - zincir 2. halkada ayrılıyor
-- 'no': 667
+- 'no': 561
   karar: ''
   a: jawahir:1246
   b: fawaid:293
@@ -12013,7 +10005,7 @@
   gerekce:
   - 'atıf: الفوائد البهية ١٦١.'
   - zincir 2. halkada ayrılıyor
-- 'no': 668
+- 'no': 562
   karar: ''
   a: tabaqat_saniyya:958
   b: fawaid:161
@@ -12031,7 +10023,7 @@
   gerekce:
   - 'atıf: الفوائد البهية ٨٣، كتائب أعلام الأخيار، برقم ١١٤.'
   - zincir 2. halkada ayrılıyor
-- 'no': 669
+- 'no': 563
   karar: ''
   a: tabaqat_saniyya:998
   b: fawaid:165
@@ -12049,7 +10041,7 @@
   gerekce:
   - 'atıf: الفوائد البهية ٨٤، كتائب أعلام الأخيار، برقم ٤١٤، كشف'
   - zincir 2. halkada ayrılıyor
-- 'no': 670
+- 'no': 564
   karar: ''
   a: tabaqat_saniyya:1320
   b: fawaid:200
@@ -12067,7 +10059,7 @@
   gerekce:
   - 'atıf: الفوائد البهية ١١٢، الكامل، لابن الأثير ١٠/ ٢٦١، كتائب'
   - vefat farklı 489/521
-- 'no': 671
+- 'no': 565
   karar: ''
   a: athmar:198
   b: fawaid:109
@@ -12085,7 +10077,7 @@
   gerekce:
   - 'atıf: الفوائد البهية:٦٣،٦٢، وفيه&quot;أن المترجم تفقه على بر'
   - zincir 2. halkada ayrılıyor
-- 'no': 672
+- 'no': 566
   karar: ''
   a: athmar:279
   b: fawaid:161
@@ -12103,7 +10095,7 @@
   gerekce:
   - 'atıf: الفوائد البهية:٨٣.'
   - zincir 2. halkada ayrılıyor
-- 'no': 673
+- 'no': 567
   karar: ''
   a: tabaqat_saniyya:269
   b: fawaid:35
@@ -12121,7 +10113,7 @@
   gerekce:
   - 'atıf: الفوائد البهية ٢٨،٢٧، كتائب أعلام الأخيار، برقم ١٩٦، ك'
   - vefat farklı 344/782
-- 'no': 674
+- 'no': 568
   karar: ''
   a: tabaqat_saniyya:382
   b: fawaid:56
@@ -12139,7 +10131,7 @@
   gerekce:
   - 'atıf: الفوائد البهية ٤٢،٤١، كتائب أعلام الأخيار، برقم ٤٧٠، ا'
   - vefat farklı 698/580
-- 'no': 675
+- 'no': 569
   karar: ''
   a: tabaqat_saniyya:355
   b: fawaid:50
@@ -12158,7 +10150,7 @@
   - 'atıf: الفوائد البهية ٤٠،٣٩، كتائب أعلام الأخيار، برقم ٣١١.'
   - zincir 4. halkada ayrılıyor
   - vefat farklı 542/474
-- 'no': 676
+- 'no': 570
   karar: ''
   a: jawahir:1038
   b: fawaid:248
@@ -12177,7 +10169,7 @@
   - 'atıf: الفوائد البهية ١٤٧، ١٤٨، هدية العارفين ١/ ٧٨٧، أعيان ا'
   - zincir 3. halkada ayrılıyor
   - vefat farklı 660/673
-- 'no': 677
+- 'no': 571
   karar: ''
   a: kataib:470
   b: jawahir:379
@@ -12198,7 +10190,7 @@
   - 'nisbe: التركي، الناصري'
   - lakap
   - vefat 652
-- 'no': 678
+- 'no': 572
   karar: ''
   a: kataib:499
   b: jawahir:1199
@@ -12216,7 +10208,7 @@
   gerekce:
   - 'atıf: الجواهر المضية" للقرشي (٣/ ٦٢)، و"الطبقات السنية" للتم'
   - vefat farklı 656/353
-- 'no': 679
+- 'no': 573
   karar: ''
   a: kataib:622
   b: jawahir:1800
@@ -12234,7 +10226,7 @@
   gerekce:
   - 'atıf: الجواهر المضية" للقرشي (٣/ ٥٨٩)، و"الطبقات السنية" للت'
   - vefat farklı 713/728
-- 'no': 680
+- 'no': 574
   karar: ''
   a: jawahir:1462
   b: fawaid:343
@@ -12253,7 +10245,7 @@
   - 'atıf: الفوائد البهية ١٨٤، هدية العارفين ٢/ ٥٢.'
   - zincir 2. halkada ayrılıyor
   - vefat farklı 381/766
-- 'no': 681
+- 'no': 575
   karar: ''
   a: athmar:65
   b: fawaid:35
@@ -12272,7 +10264,7 @@
   - 'atıf: الفوائد البهية: ص ٢٨،٢٧.'
   - zincir 3. halkada ayrılıyor
   - vefat farklı 344/782
-- 'no': 682
+- 'no': 576
   karar: ''
   a: athmar:245
   b: fawaid:138
@@ -12291,7 +10283,7 @@
   - 'atıf: الفوائد البهية:٧٣،٧٢.'
   - zincir 2. halkada ayrılıyor
   - vefat farklı 239/656
-- 'no': 683
+- 'no': 577
   karar: ''
   a: athmar:390
   b: fawaid:219
@@ -12310,7 +10302,7 @@
   - 'atıf: الفوائد البهية:١٢٠،١١٩.'
   - zincir 2. halkada ayrılıyor
   - vefat farklı 230/484
-- 'no': 684
+- 'no': 578
   karar: ''
   a: athmar:532
   b: jawahir:1311
@@ -12329,7 +10321,7 @@
   - 'atıf: الجواهر المضية:١٥٥/ ٣،١٥٤.'
   - zincir 2. halkada ayrılıyor
   - vefat farklı 207/291
-- 'no': 685
+- 'no': 579
   karar: ''
   a: athmar:533
   b: jawahir:1311
@@ -12348,7 +10340,7 @@
   - 'atıf: الجواهر المضية:٣/ ١٥٥ - ١٥٧.'
   - zincir 2. halkada ayrılıyor
   - vefat farklı 191/291
-- 'no': 686
+- 'no': 580
   karar: ''
   a: athmar:577
   b: fawaid:344
@@ -12367,7 +10359,7 @@
   - 'atıf: الفوائد البهية:١٨٤؛ البغدادي، هدية العارفين:٢/ ٥٢.'
   - zincir 2. halkada ayrılıyor
   - vefat farklı 371/885
-- 'no': 687
+- 'no': 581
   karar: ''
   a: athmar:734
   b: fawaid:473
@@ -12386,7 +10378,7 @@
   - 'atıf: الفوائد البهية:٢٣١،٢٣٠؛ البغدادي، هدية العارفين:٥٥٥،٢/'
   - zincir 2. halkada ayrılıyor
   - vefat farklı 654/972
-- 'no': 688
+- 'no': 582
   karar: ''
   a: jawahir:785
   b: fawaid:177
@@ -12405,7 +10397,7 @@
   - 'atıf: الفوائد البهية ٩٢، ٩٣.'
   - zincir 2. halkada ayrılıyor
   - vefat farklı 553/43
-- 'no': 689
+- 'no': 583
   karar: ''
   a: tabaqat_saniyya:223
   b: fawaid:29
@@ -12424,7 +10416,7 @@
   - 'atıf: الفوائد البهية ٢٤،٢٣، كتائب أعلام الأخيار، برقم ٢٧١، ا'
   - zincir 2. halkada ayrılıyor
   - vefat farklı 493/4
-- 'no': 690
+- 'no': 584
   karar: ''
   a: tabaqat_saniyya:1185
   b: fawaid:177
@@ -12443,7 +10435,7 @@
   - 'atıf: الفوائد البهية ٩٣،٩٢، كتائب أعلام الأخيار، برقم ٣٠٦.'
   - zincir 2. halkada ayrılıyor
   - vefat farklı 553/43
-- 'no': 691
+- 'no': 585
   karar: ''
   a: athmar:334
   b: fawaid:177
@@ -12462,7 +10454,7 @@
   - 'atıf: الفوائد البهية:٩٢،٩١.'
   - zincir 2. halkada ayrılıyor
   - vefat farklı 543/43
-- 'no': 692
+- 'no': 586
   karar: ''
   a: athmar:412
   b: fawaid:236
@@ -12481,7 +10473,7 @@
   - 'atıf: الفوائد البهية:١٣٨،١٣٧.'
   - zincir 2. halkada ayrılıyor
   - vefat farklı 342/557
-- 'no': 693
+- 'no': 587
   karar: ''
   a: athmar:599
   b: fawaid:363
@@ -12500,7 +10492,7 @@
   - 'atıf: الفوائد البهية:١٩٥؛ البغدادي، هدية العارفين:٢/ ١٧١؛ كح'
   - zincir 2. halkada ayrılıyor
   - vefat farklı 786/333
-- 'no': 694
+- 'no': 588
   karar: ''
   a: jawahir:559
   b: tabaqat_saniyya:832
@@ -12519,7 +10511,7 @@
   - 'atıf: الطبقات السنية، برقم ٨٣١.'
   - zincir 1. halkada ayrılıyor
   - 'nisbe: التركي، الواسطي'
-- 'no': 695
+- 'no': 589
   karar: ''
   a: athmar:210
   b: fawaid:107
@@ -12529,8 +10521,8 @@
   b_ad: الحسن بن علي بن حجاج بن علي حسام الدين السغناقي
   b_yer: الفوائد البهية 62
   b_vefat: 710
-  a_sahis: jw507
-  b_sahis: fws107
+  a_sahis: tj96
+  b_sahis: jw507
   tur: atıf
   puan: -8.0
   benzerlik: 0.5
@@ -12539,7 +10531,7 @@
   - zincir 1. halkada ayrılıyor
   - lakap
   - vefat 710
-- 'no': 696
+- 'no': 590
   karar: ''
   a: kataib:285
   b: jawahir:2051
@@ -12558,7 +10550,7 @@
   - 'atıf: الجواهر المضية" للقرشي (٤/ ٣٠٧)، و"الطبقات السنية" للت'
   - zincir 1. halkada ayrılıyor
   - 'nisbe: الماتريدي'
-- 'no': 697
+- 'no': 591
   karar: ''
   a: kataib:547
   b: jawahir:73
@@ -12577,7 +10569,7 @@
   - 'atıf: الجواهر المضية" للقرشي (١/ ١٣٢ - ١٣٣)، و"الدرر الكامنة'
   - vefat farklı 868/620
   - vefat 868, jawahir müellifinden çok sonra
-- 'no': 698
+- 'no': 592
   karar: ''
   a: jawahir:665
   b: tabaqat_saniyya:1002
@@ -12595,7 +10587,7 @@
   gerekce:
   - 'atıf: الطبقات السنية، برقم ١٠٠١.'
   - zincir 1. halkada ayrılıyor
-- 'no': 699
+- 'no': 593
   karar: ''
   a: jawahir:2048
   b: fawaid:352
@@ -12613,7 +10605,7 @@
   gerekce:
   - 'atıf: الفوائد البهية ١٨٦، هدية العارفين ٢/ ١٥٥.'
   - zincir 1. halkada ayrılıyor
-- 'no': 700
+- 'no': 594
   karar: ''
   a: jawahir:2072
   b: fawaid:400
@@ -12631,7 +10623,7 @@
   gerekce:
   - 'atıf: الفوائد البهية ٢٠٧، نقلا عن كتائب أعلام الأخيار.'
   - zincir 1. halkada ayrılıyor
-- 'no': 701
+- 'no': 595
   karar: ''
   a: athmar:711
   b: jawahir:1794
@@ -12649,7 +10641,7 @@
   gerekce:
   - 'atıf: الجواهر المضية:٣/ ٥٨٣؛ ابن قطلوبغا، تاج التراجم:٨٣.'
   - zincir 1. halkada ayrılıyor
-- 'no': 702
+- 'no': 596
   karar: ''
   a: athmar:778
   b: jawahir:1458
@@ -12667,7 +10659,7 @@
   gerekce:
   - 'atıf: الجواهر المضية:٣/ ٢٩٥، ٢٩٦؛ حاجي خليفة، كشف الظنون:٥٧١'
   - zincir 1. halkada ayrılıyor
-- 'no': 703
+- 'no': 597
   karar: ''
   a: kataib:461
   b: jawahir:72
@@ -12685,7 +10677,7 @@
   gerekce:
   - 'atıf: الجواهر المضية" للقرشي (١/ ١٣٣)، و"تاج التراجم" لابن ق'
   - zincir 1. halkada ayrılıyor
-- 'no': 704
+- 'no': 598
   karar: ''
   a: kataib:461
   b: tabaqat_saniyya:150
@@ -12703,7 +10695,7 @@
   gerekce:
   - 'atıf: الطبقات السنية" للتميمي (الرقم: ١٤٩)، و"كشف الظنون" لح'
   - zincir 1. halkada ayrılıyor
-- 'no': 705
+- 'no': 599
   karar: ''
   a: kataib:461
   b: taj_tarajim:14
@@ -12721,7 +10713,7 @@
   gerekce:
   - 'atıf: تاج التراجم" لابن قطلوبغا (ص: ٩٤)، و"الطبقات السنية'
   - zincir 1. halkada ayrılıyor
-- 'no': 706
+- 'no': 600
   karar: ''
   a: jawahir:945
   b: fawaid:214
@@ -12741,7 +10733,7 @@
   - zincir 3. halkada ayrılıyor
   - vefat farklı 732/932
   - vefat 932, jawahir müellifinden çok sonra
-- 'no': 707
+- 'no': 601
   karar: ''
   a: jawahir:1994
   b: fawaid:231
@@ -12760,7 +10752,7 @@
   - 'atıf: الفوائد البهية ١٢٥ نقلا عن سير أعلام النبلاء، للذهبى.'
   - zincir 1. halkada ayrılıyor
   - vefat farklı 493/482
-- 'no': 708
+- 'no': 602
   karar: ''
   a: kataib:502
   b: taj_tarajim:105
@@ -12779,7 +10771,7 @@
   - 'atıf: تاج التراجم" لابن قطلوبغا (ص: ١٦٥ - ١٦٦)، و"الطبقات'
   - zincir 1. halkada ayrılıyor
   - vefat farklı 624/205
-- 'no': 709
+- 'no': 603
   karar: ''
   a: jawahir:1176
   b: fawaid:29
@@ -12798,7 +10790,7 @@
   - 'atıf: الفوائد البهية ٢٤ (أثناء ترجمة أبيه).'
   - zincir 1. halkada ayrılıyor
   - vefat farklı 518/4
-- 'no': 710
+- 'no': 604
   karar: ''
   a: kataib:560
   b: jawahir:985
@@ -12817,7 +10809,7 @@
   - 'atıf: الجواهر المضية" للقرشي (٢/ ٥٨١ - ٥٨٣)، و"الدرر الكامنة'
   - 'nisbe: المارديني'
   - vefat 769
-- 'no': 711
+- 'no': 605
   karar: ''
   a: tabaqat_saniyya:58
   b: fawaid:6
@@ -12827,7 +10819,7 @@
   b_ad: إبراهيم بن محمد بن حمدان أبو إسحاق الخطيب المهلبي
   b_yer: الفوائد البهية 11
   b_vefat: null
-  a_sahis: jw148
+  a_sahis: gh22
   b_sahis: jw41
   tur: atıf
   puan: -2.0
@@ -12836,7 +10828,7 @@
   - 'atıf: الفوائد البهية ١١،١٠ (نقلا عن كتائب أعلام الأخيار) قضا'
   - zincir 2. halkada ayrılıyor
   - künye
-- 'no': 712
+- 'no': 606
   karar: ''
   a: tabaqat_saniyya:273
   b: fawaid:41
@@ -12855,7 +10847,7 @@
   - 'atıf: الفوائد البهية ٣٠،٢٩، كتائب أعلام الأخيار، برقم ١٣٧، ك'
   - zincir 2. halkada ayrılıyor
   - künye
-- 'no': 713
+- 'no': 607
   karar: ''
   a: tabaqat_saniyya:449
   b: fawaid:65
@@ -12875,7 +10867,7 @@
   - zincir 2. halkada ayrılıyor
   - 'nisbe: السمرقندي'
   - vefat farklı 411/42
-- 'no': 714
+- 'no': 608
   karar: ''
   a: jawahir:1001
   b: fawaid:231
@@ -12894,7 +10886,7 @@
   - 'atıf: الفوائد البهية ١٢٥، إيضاح المكنون ٢/ ٦١٦، هدية العارفي'
   - zincir 3. halkada ayrılıyor
   - vefat farklı 666/482
-- 'no': 715
+- 'no': 609
   karar: ''
   a: tabaqat_saniyya:249
   b: fawaid:32
@@ -12913,7 +10905,7 @@
   - 'atıf: الفوائد البهية ٢٦، كتائب أعلام الأخيار، برقم ٦٥٤، كشف'
   - zincir 3. halkada ayrılıyor
   - vefat farklı 755/694
-- 'no': 716
+- 'no': 610
   karar: ''
   a: tabaqat_saniyya:322
   b: fawaid:40
@@ -12932,7 +10924,7 @@
   - 'atıf: الفوائد البهية ٣١ - ٣٤، كشف الظنون ٢/ ١٠٤٦،٦٧٤،٥٦٨،٥٦٢'
   - zincir 3. halkada ayrılıyor
   - vefat farklı 321/44
-- 'no': 717
+- 'no': 611
   karar: ''
   a: athmar:81
   b: fawaid:40
@@ -12951,7 +10943,7 @@
   - 'atıf: الفوائد البهية:٣١ - ٣٤.'
   - zincir 3. halkada ayrılıyor
   - vefat farklı 321/44
-- 'no': 718
+- 'no': 612
   karar: ''
   a: kataib:649
   b: tabaqat_saniyya:1067
@@ -12972,7 +10964,7 @@
   - künye
   - lakap
   - vefat 800
-- 'no': 719
+- 'no': 613
   karar: ''
   a: kataib:515
   b: jawahir:1038
@@ -12991,7 +10983,7 @@
   - 'atıf: الجواهر المضية" للقرشي (٢/ ٦٣٤ - ٦٣٦)، و"المنهل الصافي'
   - zincir 1. halkada ayrılıyor
   - vefat 660
-- 'no': 720
+- 'no': 614
   karar: ''
   a: kataib:576
   b: tabaqat_saniyya:830
@@ -13009,7 +11001,7 @@
   gerekce:
   - 'atıf: الطبقات السنية" للتميمي (الرقم: ٨٢٩)، و"الشقائق النعما'
   - zincir 1. halkada ayrılıyor
-- 'no': 721
+- 'no': 615
   karar: ''
   a: jawahir:428
   b: fawaid:18
