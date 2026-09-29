@@ -90,7 +90,7 @@ const findPersons = (q, n = 30) => {
   return IDX.filter(p => toks.every(t => p.key.includes(t)))
     .sort((a, b) => (b.n + b.nt + b.ns) - (a.n + a.nt + a.ns)).slice(0, n);
 };
-function setupSearch(q) {
+function setupSearch(q, onEnter) {
   if (!q) return;
   const box = q.parentElement.querySelector(".results");
   let sel = -1, hits = [];
@@ -106,6 +106,7 @@ function setupSearch(q) {
     else if (e.key === "Enter") {
       e.preventDefault();
       if (sel >= 0 && hits[sel]) location.hash = `#/p/${hits[sel].id}`;
+      else if (onEnter) onEnter();
       else { SEARCH.q = q.value; if (location.hash === "#/search") route(); else location.hash = "#/search"; }
       box.hidden = true; q.blur();
     }
@@ -252,7 +253,14 @@ async function viewHome(view) {
       <div class="txt">
         <p class="kicker">تراجم الحنفية من كتب الطبقات، في فهرسٍ واحد</p>
         <h1>طبقات الحنفية</h1>
-        <div class="search"><input id="hq" type="search" placeholder="ابحث عن عَلَم… (مثل: السرخسي، أبو حفص الكبير)" autocomplete="off" aria-label="بحث"><div class="results" hidden></div></div>
+        <form class="hsearch" id="hf" autocomplete="off" role="search">
+          <div class="hrow">
+            <div class="search"><input id="hq" name="q" type="search" placeholder="ابحث عن عَلَم… (مثل: السرخسي، أبو حفص الكبير)" aria-label="بحث"><div class="results" hidden></div></div>
+            <button type="button" class="advbtn" aria-expanded="false" aria-controls="hadv"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M7 12h10M10 18h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>البحث المفصّل</button>
+          </div>
+          <div class="sform advpanel" id="hadv" hidden>${await searchFields()}
+            <div class="advact"><button type="reset" class="btn ghost">مسح</button><button type="submit" class="btn gold">اعرض النتائج</button></div></div>
+        </form>
       </div>
       <figure class="silsile">
         <figcaption><span class="lbl">سلسلة التفقّه</span> <span id="scap"></span></figcaption>
@@ -265,6 +273,7 @@ async function viewHome(view) {
         <a class="t4 c3" href="#/net/jws1"><span class="n">${AR(g.edges.length)}</span>${ILL.silsile}<span class="l">صلات الشيوخ والتلاميذ</span></a>
         <a class="t4 c4" href="#books"><span class="n">${AR(bk)}</span>${ILL.kitap}<span class="l">كتب الطبقات</span></a>
       </div></div></section>
+    <div class="wrap" id="hres"></div>
     <hr class="divider">
     ${secHead("مجموعات مختارة", "حلقات العلم كما رسمتها التراجم")}
     <div class="coll">${COLL.map(([t, ids, href]) => `<div class="ccard"><h3>${t}</h3>${ORN.medal}
@@ -286,7 +295,15 @@ async function viewHome(view) {
           <span><b>خريطة البلدان</b><span>مواطن الأعلام ورحلاتهم وولاياتهم عبر القرون</span></span><span class="btn gold">افتح الخريطة</span></a>
       </div>
     </div>`;
-  setupSearch($("#hq"));
+  // arama: aynı kutu; "البحث المفصّل" süzgeçleri hemen altında açar, sonuçlar hero'nun altında
+  const hf = $("#hf"), adv = $("#hadv"), advBtn = $(".advbtn", hf), hres = $("#hres");
+  const runHome = bindSearch(hf, hres, () => !adv.hidden);
+  const show = () => { runHome(); hres.scrollIntoView({ behavior: "smooth", block: "start" }); };
+  setupSearch($("#hq"), () => show());
+  hf.addEventListener("submit", () => setTimeout(() => hres.scrollIntoView({ behavior: "smooth", block: "start" }), 50));
+  hf.addEventListener("reset", () => setTimeout(() => { hres.innerHTML = ""; Object.assign(SEARCH, { q: "", c0: "", c1: "", book: "", place: "", net: false }); }, 0));
+  advBtn.addEventListener("click", () => { adv.hidden = !adv.hidden; advBtn.setAttribute("aria-expanded", String(!adv.hidden));
+    advBtn.classList.toggle("on", !adv.hidden); if (!adv.hidden) adv.querySelector("select").focus(); });
   // silsile: her ziyarette başka bir halka dizisi
   let sp = Math.floor(Math.random() * CH.chains.length);
   const drawChain = () => { const c = silsile($("#thread"), CH, sp), a = c[0], z = c[c.length - 1];
@@ -326,26 +343,23 @@ async function viewList(view, kind, arg) {
 
 // ---------- البحث المفصل ----------
 const SEARCH = { q: "", c0: "", c1: "", book: "", place: "", net: false };
-async function viewSearch(view) {
+async function searchFields() {
   const places = await load("places.json");
   const top = places.filter(p => p.n >= 5).sort((a, b) => a.name.localeCompare(b.name, "ar"));
   const opts = [...Array(14)].map((_, i) => `<option value="${i + 1}">${CENT[i + 1]}</option>`).join("");
-  view.innerHTML = `<div class="pagehead"><h1>البحث المفصّل</h1></div>
-    <form class="sform" id="sf" autocomplete="off">
-      <label class="wide">الاسم أو جزء منه<input name="q" type="search" placeholder="مثل: أبو بكر البلخي، النسفي، شمس الأئمة"></label>
-      <label>من القرن<select name="c0"><option value="">—</option>${opts}</select></label>
+  return `<label>من القرن<select name="c0"><option value="">—</option>${opts}</select></label>
       <label>إلى القرن<select name="c1"><option value="">—</option>${opts}</select></label>
       <label>الكتاب<select name="book"><option value="">كل الكتب</option>${Object.entries(BOOKS).map(([id, b]) => `<option value="${id}">${esc(b.title)}</option>`).join("")}</select></label>
       <label>البلد<select name="place"><option value="">كل البلدان</option>${top.map(p => `<option value="${esc(p.id)}">${esc(p.name)}</option>`).join("")}</select></label>
-      <label class="chk"><input type="checkbox" name="net"> له شيوخ أو تلاميذ في السلسلة</label>
-    </form><div id="sres"></div>`;
-  const f = $("#sf");
+      <label class="chk"><input type="checkbox" name="net"> له شيوخ أو تلاميذ في السلسلة</label>`;
+}
+// formu SEARCH'e yükle, süzgeçleri uygula, sonuçları host'a kartlarla yaz
+function bindSearch(f, host, live = () => true) {
   Object.entries(SEARCH).forEach(([k, v]) => { const el = f.elements[k]; if (!el) return; if (el.type === "checkbox") el.checked = !!v; else el.value = v; });
-  const PL = await placesById();
   let timer, gen = 0;
   const run = async () => {
-    const my = ++gen;
-    Object.keys(SEARCH).forEach(k => { const el = f.elements[k]; SEARCH[k] = el.type === "checkbox" ? el.checked : el.value; });
+    const my = ++gen, PL = await placesById();
+    Object.keys(SEARCH).forEach(k => { const el = f.elements[k]; if (el) SEARCH[k] = el.type === "checkbox" ? el.checked : el.value; });
     const toks = norm(SEARCH.q).split(" ").filter(Boolean);
     const c0 = +SEARCH.c0 || 0, c1 = +SEARCH.c1 || 99;
     const atPl = SEARCH.place ? new Set((PL.get(SEARCH.place)?.people || []).map(x => x[0])) : null;
@@ -354,14 +368,21 @@ async function viewSearch(view) {
       && (!SEARCH.book || p.books.includes(SEARCH.book))
       && (!atPl || atPl.has(p.id)) && (!SEARCH.net || p.nt || p.ns))
       .sort((a, b) => toks.length ? (b.n + b.nt + b.ns) - (a.n + a.nt + a.ns) : (a.d || 9999) - (b.d || 9999));
-    const host = $("#sres");
     if (my !== gen) return;
     host.innerHTML = `<p class="legend num">${AR(res.length)} نتيجة</p>`;
     await cardGrid(host, res);
   };
-  f.addEventListener("input", () => { clearTimeout(timer); timer = setTimeout(run, 200); });
+  f.addEventListener("input", () => { clearTimeout(timer); if (live()) timer = setTimeout(run, 200); });
   f.addEventListener("submit", e => { e.preventDefault(); run(); });
-  run();
+  return run;
+}
+async function viewSearch(view) {
+  view.innerHTML = `<div class="pagehead"><h1>البحث المفصّل</h1></div>
+    <form class="sform" id="sf" autocomplete="off">
+      <label class="wide">الاسم أو جزء منه<input name="q" type="search" placeholder="مثل: أبو بكر البلخي، النسفي، شمس الأئمة"></label>
+      ${await searchFields()}
+    </form><div id="sres"></div>`;
+  bindSearch($("#sf"), $("#sres"))();
 }
 
 // ---------- person ----------
