@@ -82,6 +82,25 @@ def pre_hanafi(root: Path, persons: list[dict]) -> set[str]:
     return out
 
 
+def _excerpt(items: list[dict], n: int = 230) -> str:
+    """Kart özeti: en uzun metnin başı; dipnot işaretleri, başlıklar ve muhakkik eki atılır."""
+    order = ["kataib", "athmar", "jawahir", "tabaqat_saniyya", "fawaid", "taj_tarajim",
+             "ghuraf_v1", "ghuraf_v2", "qand"]
+    ok = [x for x in items if len(x["text"]) >= 80
+          and not re.match(r"\s*(?:#|بسم الله|الحمد لله|فصل)", x["text"])]
+    best = min(ok, key=lambda x: order.index(x["book"]) if x["book"] in order else 99,
+               default=None)
+    if not best:
+        return ""
+    t = best["text"].split("<hr>")[0]
+    t = re.sub(r"\[\^\w+\]|^#+\s*|<[^>]+>", " ", t, flags=re.M)
+    t = re.sub(r"\s+", " ", t).strip()
+    if len(t) <= n:
+        return t
+    cut = t[:n].rsplit(" ", 1)[0]
+    return cut.rstrip("،,.:؛ ") + "…"
+
+
 def _texts(root: Path, persons: list[dict]) -> dict[int, dict]:
     entries = {}
     for f in sorted((root / "data" / "entries").glob("*.json")):
@@ -150,7 +169,8 @@ def export(root: Path) -> dict:
         if not d and p.get("death_est"):
             d, est = p["death_est"], True
         index.append([pid, p["name"], d, int(est), len(p["sources"]), len(teachers[pid]),
-                      len(students[pid]), main_place.get(pid, "")])
+                      len(students[pid]), main_place.get(pid, ""),
+                      sorted({s["book"] for s in p["sources"]})])
         shards[shard(pid)][pid] = {
             "name": p["name"], "heading": p.get("heading", ""), "death": p.get("death", ""),
             "death_h": d, "est": est,
@@ -169,6 +189,12 @@ def export(root: Path) -> dict:
     texts = _texts(root, listed)
     for k, v in texts.items():
         _dump(out / "t" / f"{k:02d}.json", v)
+    # kartlar için kısa özet (ilk kaynağın metninin başı) ve öne çıkan âlimler
+    excerpts = {pid: _excerpt(items) for v in texts.values() for pid, items in v.items()}
+    _dump(out / "excerpts.json", {k: v for k, v in excerpts.items() if v})
+    score = {r[0]: r[4] * 3 + r[5] + r[6] for r in index}
+    featured = sorted((r for r in index if excerpts.get(r[0])), key=lambda r: -score[r[0]])[:18]
+    _dump(out / "featured.json", [r[0] for r in featured])
 
     in_net = sorted({x for e in rel for x in (e["teacher"], e["student"])})
     pos = {pid: i for i, pid in enumerate(in_net)}

@@ -24,12 +24,13 @@ let IDX, BOOKS, SALAF = new Map(), P = new Map();
 async function init() {
   const d = await load("index.json");
   BOOKS = d.books;
-  IDX = d.persons.map(r => ({ id: r[0], name: r[1], d: r[2], est: !!r[3], n: r[4], nt: r[5], ns: r[6], place: r[7], key: norm(r[1]) }));
+  IDX = d.persons.map(r => ({ id: r[0], name: r[1], d: r[2], est: !!r[3], n: r[4], nt: r[5], ns: r[6], place: r[7], books: r[8] || [], key: norm(r[1]) }));
   IDX.forEach(p => P.set(p.id, p));
   // Ebû Hanîfe öncesi (peygamberler, sahâbe, tâbiûn): sayfası yok, yalnız silsilede
   SALAF = new Map(Object.entries(d.salaf || {}).map(([id, [name, dd]]) => [id, { id, name, d: dd, salaf: true }]));
   window.addEventListener("hashchange", route);
-  setupSearch();
+  setupTheme();
+  setupSearch($("#q"));
   route();
 }
 const shardOf = id => { const d = id.replace(/\D/g, ""); return d ? (+d % 64) : 0; };
@@ -50,73 +51,270 @@ const plink = (id, cls = "") => {
 async function route() {
   const [, v = "", arg = ""] = location.hash.split("/");
   const view = $("#view");
-  document.querySelectorAll("nav.tabs a").forEach(a => a.classList.toggle("on", a.dataset.v === (v || "home") || (v === "p" && false)));
+  document.querySelectorAll("nav.tabs a").forEach(a => a.classList.toggle("on", a.dataset.v === (v || "home")));
+  document.body.classList.toggle("home", !v);
   view.innerHTML = `<p class="empty">جارٍ التحميل…</p>`;
   try {
     if (v === "p") await viewPerson(view, decodeURIComponent(arg));
     else if (v === "net") await viewNet(view, decodeURIComponent(arg));
     else if (v === "map") await viewMap(view, decodeURIComponent(arg));
     else if (v === "about") viewAbout(view);
-    else if (v === "c") viewHome(view, +arg);
-    else viewHome(view, 0);
+    else if (v === "c") await viewList(view, "c", +arg);
+    else if (v === "b") await viewList(view, "b", decodeURIComponent(arg));
+    else if (v === "search") await viewSearch(view);
+    else await viewHome(view);
   } catch (e) {
     view.innerHTML = `<p class="empty">تعذّر التحميل (${esc(e.message)}).</p>`;
   }
   window.scrollTo(0, 0);
 }
 
+// ---------- theme ----------
+function setupTheme() {
+  const root = document.documentElement, btns = document.querySelectorAll(".theme button");
+  const mark = () => { const t = root.dataset.theme || "system"; btns.forEach(b => b.classList.toggle("on", b.dataset.t === t)); };
+  btns.forEach(b => b.addEventListener("click", () => {
+    const t = b.dataset.t;
+    if (t === "system") delete root.dataset.theme; else root.dataset.theme = t;
+    try { t === "system" ? localStorage.removeItem("theme") : localStorage.setItem("theme", t); } catch (e) {}
+    mark();
+    if (location.hash === "#/net") route();   // tuval renkleri yeniden çizilsin
+  }));
+  mark();
+}
+
 // ---------- search ----------
-function setupSearch() {
-  const q = $("#q"), box = $("#res");
+const findPersons = (q, n = 30) => {
+  const toks = norm(q).split(" ").filter(Boolean);
+  if (!toks.length) return [];
+  return IDX.filter(p => toks.every(t => p.key.includes(t)))
+    .sort((a, b) => (b.n + b.nt + b.ns) - (a.n + a.nt + a.ns)).slice(0, n);
+};
+function setupSearch(q) {
+  if (!q) return;
+  const box = q.parentElement.querySelector(".results");
   let sel = -1, hits = [];
   const render = () => {
-    box.innerHTML = hits.map((p, i) => `<a href="#/p/${p.id}" class="${i === sel ? "sel" : ""}"><span>${esc(p.name)}</span><span class="d">${deathTxt(p)}</span></a>`).join("");
+    box.innerHTML = hits.map((p, i) => `<a href="#/p/${p.id}" class="${i === sel ? "sel" : ""}"><span>${esc(p.name)}</span><span class="d">${deathTxt(p)}</span></a>`).join("")
+      + (hits.length ? `<a href="#/search" data-q="1"><span>كل النتائج في البحث المفصّل…</span></a>` : "");
     box.hidden = !hits.length;
   };
-  q.addEventListener("input", () => {
-    const toks = norm(q.value).split(" ").filter(Boolean);
-    sel = -1;
-    if (!toks.length) { hits = []; return render(); }
-    hits = IDX.filter(p => toks.every(t => p.key.includes(t)))
-      .sort((a, b) => (b.n + b.nt + b.ns) - (a.n + a.nt + a.ns)).slice(0, 30);
-    render();
-  });
+  q.addEventListener("input", () => { sel = -1; hits = findPersons(q.value); render(); });
   q.addEventListener("keydown", e => {
     if (e.key === "ArrowDown") { sel = Math.min(hits.length - 1, sel + 1); render(); e.preventDefault(); }
     else if (e.key === "ArrowUp") { sel = Math.max(0, sel - 1); render(); e.preventDefault(); }
-    else if (e.key === "Enter" && hits.length) { location.hash = `#/p/${hits[Math.max(0, sel)].id}`; box.hidden = true; q.blur(); }
+    else if (e.key === "Enter") {
+      e.preventDefault();
+      if (sel >= 0 && hits[sel]) location.hash = `#/p/${hits[sel].id}`;
+      else { SEARCH.q = q.value; if (location.hash === "#/search") route(); else location.hash = "#/search"; }
+      box.hidden = true; q.blur();
+    }
     else if (e.key === "Escape") box.hidden = true;
   });
-  box.addEventListener("click", () => { box.hidden = true; q.value = ""; });
-  document.addEventListener("click", e => { if (!e.target.closest(".search")) box.hidden = true; });
+  box.addEventListener("click", e => { if (e.target.closest("[data-q]")) SEARCH.q = q.value; box.hidden = true; q.value = ""; });
+  document.addEventListener("click", e => { if (!q.parentElement.contains(e.target)) box.hidden = true; });
 }
 
+// ---------- tezyinat (SVG) ----------
+const ORN = {
+  // lale ayraç
+  lale: `<svg class="lale" viewBox="0 0 180 26" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.2">
+    <path d="M4 14H66M114 14H176"/><circle cx="72" cy="14" r="2" fill="currentColor"/><circle cx="108" cy="14" r="2" fill="currentColor"/>
+    <path d="M90 2C85 7 83 12 86 18c1 1.5 7 1.5 8 0 3-6 1-11-4-16Z" fill="currentColor" fill-opacity=".18"/>
+    <path d="M81 6c-3 6-1 11 5 12M99 6c3 6 1 11-5 12M90 20v5M84 24c3-2 9-2 12 0"/></g></svg>`,
+  // köşebent (tezhip köşesi)
+  kose: cls => `<svg class="kose ${cls}" viewBox="0 0 46 46" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.3">
+    <path d="M3 43V16Q3 3 16 3H43"/><path d="M9 43V20Q9 9 20 9H43" opacity=".6"/>
+    <path d="M9 9C15 13 16 18 13 22 9 18 7 13 9 9Z" fill="currentColor" fill-opacity=".25"/><circle cx="3" cy="3" r="2.2" fill="currentColor"/></g></svg>`,
+  // şemse madalyon
+  medal: `<svg class="medal" viewBox="0 0 100 100" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.4">
+    <circle cx="50" cy="50" r="44"/><circle cx="50" cy="50" r="38" stroke-dasharray="2 3"/>
+    ${Array.from({ length: 12 }, (_, i) => `<path transform="rotate(${i * 30} 50 50)" d="M50 16C55 26 55 34 50 40 45 34 45 26 50 16Z" fill="currentColor" fill-opacity=".12"/>`).join("")}
+    <circle cx="50" cy="50" r="8" fill="currentColor" fill-opacity=".3"/></g></svg>`,
+  arrow: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h16M8 8l-4 4 4 4M16 8l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+};
+// hero yıldızı: iç içe on iki ve sekiz köşeli yıldızlar, dağınık pastel parçalar
+function heroStar() {
+  const pts = (n, R, r, rot = 0, cx = 260, cy = 260) => Array.from({ length: n * 2 }, (_, i) => {
+    const a = (Math.PI / n) * i + rot, rr = i % 2 ? r : R; return `${(cx + rr * Math.sin(a)).toFixed(1)},${(cy - rr * Math.cos(a)).toFixed(1)}`; }).join(" ");
+  const shard = (x, y, s, rot, c, o) => `<polygon points="0,-${s} ${s * .9},${s * .5} -${s * .9},${s * .5}" transform="translate(${x} ${y}) rotate(${rot})" fill="var(--${c})" opacity="${o}"/>`;
+  return `<svg class="star" viewBox="0 0 520 520" aria-hidden="true">
+    <polygon points="${pts(12, 200, 120)}" fill="var(--peach)" opacity=".75"/>
+    <polygon points="${pts(12, 190, 128, Math.PI / 12)}" fill="var(--butter)" opacity=".55"/>
+    <polygon points="${pts(8, 150, 105, Math.PI / 8)}" fill="var(--mint)" opacity=".9"/>
+    <polygon points="${pts(8, 120, 88)}" fill="var(--sage)" opacity=".55"/>
+    <polygon points="${pts(8, 64, 44, Math.PI / 8)}" fill="none" stroke="var(--gold)" stroke-width="1.2" opacity=".6"/>
+    ${shard(60, 70, 34, 20, "sage", .45)}${shard(470, 90, 30, -25, "butter", .8)}${shard(40, 300, 28, 90, "butter", .7)}
+    ${shard(490, 300, 26, 200, "mint", .9)}${shard(250, 490, 30, 180, "sage", .45)}${shard(430, 470, 22, 40, "peach", .8)}
+  </svg>`;
+}
+// kategori çizimleri: sarık, pusula-gül, silsile, kitaplar
+const ILL = {
+  sarik: `<svg viewBox="0 0 100 100" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round">
+    <path d="M22 62c-4-16 6-34 26-38 20-4 34 8 33 26-1 10-6 16-12 18"/><path d="M26 66c10 6 30 8 44 2"/>
+    <path d="M30 46c10-6 28-8 40 0M28 54c12-6 30-6 44 2M34 38c8-4 20-5 30 0"/><path d="M48 24c-2-6 2-10 6-10s6 5 3 10"/>
+    <path d="M24 64c-6 4-6 12 0 16 10 6 42 6 52 0 6-4 6-12 0-16"/></g></svg>`,
+  gul: `<svg viewBox="0 0 100 100" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.8">
+    <circle cx="50" cy="52" r="34"/><circle cx="50" cy="52" r="15"/>
+    ${Array.from({ length: 16 }, (_, i) => `<path transform="rotate(${i * 22.5} 50 52)" d="M50 18 54 37 50 52 46 37Z"/>`).join("")}
+    <path d="M50 4v10M46 8l4-4 4 4"/></g></svg>`,
+  silsile: `<svg viewBox="0 0 100 100" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="2">
+    <circle cx="50" cy="16" r="8"/><circle cx="26" cy="50" r="8"/><circle cx="74" cy="50" r="8"/><circle cx="14" cy="84" r="7"/><circle cx="38" cy="84" r="7"/><circle cx="62" cy="84" r="7"/><circle cx="86" cy="84" r="7"/>
+    <path d="M45 23 30 43M55 23 70 43M22 57 16 77M30 57 36 77M70 57 64 77M78 57 84 77"/></g></svg>`,
+  kitap: `<svg viewBox="0 0 100 100" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round">
+    <path d="M12 58 50 46 88 58 50 70Z"/><path d="M12 58v8l38 12 38-12v-8"/><path d="M18 50 50 40 82 50"/><path d="M18 50v6M82 50v6"/>
+    <path d="M24 42 50 34 76 42"/><ellipse cx="50" cy="58" rx="9" ry="3.5"/><path d="M50 78v10"/></g></svg>`,
+};
+
+// ---------- kartlar ----------
+let EXC;
+const excerpts = async () => EXC || (EXC = await load("excerpts.json"));
+function pcard(p, ex, PL) {
+  const pl = p.place && PL ? PL.get(p.place)?.name : "";
+  const lq = [deathTxt(p), pl].filter(Boolean).join(" · ");
+  return `<a class="pcard" href="#/p/${p.id}"><h3>${esc(p.name)}</h3>${lq ? `<span class="lq num">${esc(lq)}</span>` : ""}
+    ${ex ? `<p class="ex">${esc(ex)}</p>` : ""}
+    <span class="ft"><span class="badges num"><span>${AR(p.n)} ${p.n > 1 ? "مصادر" : "مصدر"}</span>${p.nt ? `<span>${AR(p.nt)} شيوخ</span>` : ""}${p.ns ? `<span>${AR(p.ns)} تلاميذ</span>` : ""}</span>
+    <span class="go">قراءة الترجمة ←</span></span></a>`;
+}
+async function cardGrid(host, list, step = 36) {
+  const [EX, PL] = await Promise.all([excerpts(), placesById()]);
+  let shown = 0;
+  const grid = document.createElement("div"); grid.className = "cards";
+  const more = document.createElement("div"); more.className = "more";
+  host.append(grid, more);
+  const next = () => {
+    grid.insertAdjacentHTML("beforeend", list.slice(shown, shown + step).map(p => pcard(p, EX[p.id], PL)).join(""));
+    shown += step;
+    more.innerHTML = shown < list.length ? `<button type="button" class="btn gold">المزيد (${AR(list.length - shown)})</button>` : "";
+  };
+  more.addEventListener("click", e => { if (e.target.closest("button")) next(); });
+  next();
+}
+const secHead = (t, sub) => `<div class="sechead"><h2>${t}</h2>${sub ? `<p>${sub}</p>` : ""}${ORN.lale}</div>`;
+
 // ---------- home ----------
-function viewHome(view, c) {
+async function viewHome(view) {
+  const [featured, PL, g, places] = await Promise.all([load("featured.json"), placesById(), graph(), load("places.json")]);
   const byC = {};
-  IDX.forEach(p => { const k = century(p.d); byC[k] = (byC[k] || 0) + 1; });
-  const multi = IDX.filter(p => p.n > 1).length;
-  const linked = IDX.filter(p => p.nt || p.ns).length;
-  const list = c ? IDX.filter(p => century(p.d) === c).sort((a, b) => a.d - b.d) : [];
+  IDX.forEach(p => { const k = century(p.d); if (k) byC[k] = (byC[k] || 0) + 1; });
+  const studentsOf = id => { const i = g.byId.get(id); return i === undefined ? [] : g.down[i].map(([j, n]) => [g.nodes[j].id, n]).sort((a, b) => b[1] - a[1]).map(x => x[0]); };
+  const atPlace = (pid, kinds) => { const pl = PL.get(pid); if (!pl) return [];
+    const ids = [...new Set(pl.people.filter(([, k]) => !kinds || kinds.includes(k)).map(x => x[0]))];
+    return ids.filter(id => P.has(id)).sort((a, b) => (P.get(b).n + P.get(b).ns) - (P.get(a).n + P.get(a).ns)); };
+  const COLL = [
+    ["أصحاب أبي حنيفة", studentsOf("jws1"), "#/net/jws1"],
+    ["تلاميذ أبي يوسف", studentsOf("jw1825"), "#/net/jw1825"],
+    ["تلاميذ الإمام محمد", studentsOf("jw1270"), "#/net/jw1270"],
+    ["تلاميذ أبي الحسن الكرخي", studentsOf("jw894"), "#/net/jw894"],
+    ["تلاميذ شمس الأئمة الحلواني", studentsOf("jw821"), "#/net/jw821"],
+    ["علماء سمرقند", atPlace("SAMARQAND_670E396N_S"), "#/map/SAMARQAND_670E396N_S"],
+    ["قضاة القاهرة ومدرّسوها", atPlace("QAHIRA_312E300N_S", ["office"]), "#/map/QAHIRA_312E300N_S"],
+  ].filter(c => c[1].length);
+  const bk = Object.keys(BOOKS).length;
   view.innerHTML = `
-    <h1 style="font-size:2.2rem">تراجم الحنفية في كتب الطبقات</h1>
-    <p class="lede">فهرس موحّد لأعلام الحنفية كما وردوا في تسعة من كتب الطبقات والتراجم؛ لكل عَلَم مواضعه في الكتب بالجزء والصفحة،
-      وشيوخه وتلاميذه كما نصّت عليهم التراجم، والبلدان التي وُلد فيها ورحل إليها وتولّى فيها ومات.</p>
-    <div class="stats num">
-      <div><b>${AR(IDX.length)}</b><span>عَلَمًا</span></div>
-      <div><b>${AR(multi)}</b><span>مترجمًا في أكثر من كتاب</span></div>
-      <div><b>${AR(linked)}</b><span>في سلسلة الشيوخ والتلاميذ</span></div>
-      <div><b>${AR(Object.keys(BOOKS).length)}</b><span>كتب</span></div>
-    </div>
-    <section><h2>الأعلام بحسب قرن الوفاة</h2>
-      <div class="cent num">${Object.keys(byC).map(Number).filter(Boolean).sort((a, b) => a - b).map(k =>
-        `<a href="#/c/${k}" class="${k === c ? "on" : ""}">القرن ${CENT[k] || AR(k)}<b>${AR(byC[k])}</b></a>`).join("")}
-        ${byC[0] ? `<span class="label" style="align-self:center">ومن لم تُعرف وفاته: ${AR(byC[0])}</span>` : ""}</div>
-      ${c ? `<h3 style="margin-top:1rem">وفيات القرن ${CENT[c] || AR(c)} <span class="label" style="display:inline">(${AR(list.length)})</span></h3>
-        <ul class="plist num" style="margin-top:.5rem">${list.map(p => `<li>${plink(p.id)}<span class="d">${deathTxt(p)}</span></li>`).join("")}</ul>` : ""}
-    </section>
-    <section><h2>الكتب</h2><div class="books">${Object.entries(BOOKS).map(([id, b]) =>
-      `<div class="book"><b>${esc(b.title)}</b><span>${esc(b.author)}${b.death ? ` (ت ${AR(b.death)}هـ)` : ""}</span></div>`).join("")}</div></section>`;
+    <section class="hero" style="margin:0"><div class="inner">${heroStar()}
+      <div class="txt">
+        <div class="kicker">الطبقات الرقمية</div>
+        <h1>طبقات الحنفية</h1>
+        <div class="search"><input id="hq" type="search" placeholder="ابحث عن عَلَم… (مثل: السرخسي، أبو حفص الكبير)" autocomplete="off" aria-label="بحث"><div class="results" hidden></div></div>
+        <p class="sub">فهرسٌ موحَّد موثَّق: كل ترجمة بمواضعها في الكتب، وكل عَلَم بشيوخه وتلاميذه وبلدانه.</p>
+      </div>
+      <div class="tiles4 num">
+        <a class="t4 c1" href="#/search"><span class="n">${AR(IDX.length)}</span>${ILL.sarik}<span class="l">الأعلام</span></a>
+        <a class="t4 c2" href="#/map"><span class="n">${AR(places.length)}</span>${ILL.gul}<span class="l">البلدان</span></a>
+        <a class="t4 c3" href="#/net/jws1"><span class="n">${AR(g.edges.length)}</span>${ILL.silsile}<span class="l">صلات الشيوخ والتلاميذ</span></a>
+        <a class="t4 c4" href="#books"><span class="n">${AR(bk)}</span>${ILL.kitap}<span class="l">كتب الطبقات</span></a>
+      </div></div></section>
+    <hr class="divider">
+    ${secHead("مجموعات مختارة", "حلقات العلم كما رسمتها التراجم")}
+    <div class="coll">${COLL.map(([t, ids, href]) => `<div class="ccard"><h3>${t}</h3>${ORN.medal}
+      <ul>${ids.slice(0, 8).map(id => `<li>${plink(id)}</li>`).join("")}</ul>
+      <a class="go" href="${href}" aria-label="${t}">${ORN.arrow}</a></div>`).join("")}</div>
+    <div class="wrap">
+      ${secHead("أعلام مختارون", "من أكثر الأعلام ذكرًا في كتب الطبقات")}
+      <div id="feat"></div>
+      ${secHead("الأعلام بحسب قرن الوفاة")}
+      <div class="tiles num">${Object.keys(byC).map(Number).sort((a, b) => a - b).map(k =>
+        `<a class="tile" href="#/c/${k}"><b>القرن ${CENT[k] || AR(k)}</b><span>${AR(byC[k])} عَلَمًا</span></a>`).join("")}</div>
+      <div id="books">${secHead("كتب الطبقات", "المصادر التي جُمعت منها التراجم")}</div>
+      <div class="books">${Object.entries(BOOKS).map(([id, b]) => { const n = IDX.filter(p => p.books.includes(id)).length;
+        return `<a class="book" href="#/b/${id}"><b>${esc(b.title)}</b><span>${esc(b.author)}${b.death ? ` (ت ${AR(b.death)}هـ)` : ""}</span> <em class="num">· ${AR(n)} ترجمة</em></a>`; }).join("")}</div>
+      <div class="cta">
+        <a href="#/search"><span class="ic"><svg viewBox="0 0 24 24"><path d="M4 6h16M7 12h10M10 18h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+          <span><b>البحث المفصّل</b><span>ابحث بين ${AR(IDX.length)} عَلَمًا بالاسم والقرن والكتاب والبلد</span></span><span class="btn gold">ابدأ البحث</span></a>
+        <a href="#/map"><span class="ic"><svg viewBox="0 0 24 24"><path d="M12 21s-6-6.5-6-11a6 6 0 0 1 12 0c0 4.5-6 11-6 11Z" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="10" r="2" fill="currentColor"/></svg></span>
+          <span><b>خريطة البلدان</b><span>مواطن الأعلام ورحلاتهم وولاياتهم عبر القرون</span></span><span class="btn gold">افتح الخريطة</span></a>
+      </div>
+    </div>`;
+  setupSearch($("#hq"));
+  view.querySelector('a[href="#books"]').addEventListener("click", e => { e.preventDefault(); $("#books").scrollIntoView({ behavior: "smooth" }); });
+  // seçkiler: ortadaki kart büyür
+  const coll = $(".coll", view), cards = [...coll.querySelectorAll(".ccard")];
+  const focus = () => { const c = coll.getBoundingClientRect(), mid = c.left + c.width / 2;
+    let best = null, bd = 1e9; cards.forEach(el => { const r = el.getBoundingClientRect(), d = Math.abs(r.left + r.width / 2 - mid); if (d < bd) { bd = d; best = el; } });
+    cards.forEach(el => el.classList.toggle("on", el === best)); };
+  coll.addEventListener("scroll", () => requestAnimationFrame(focus), { passive: true });
+  cards.forEach(el => el.addEventListener("click", e => { if (!el.classList.contains("on") && !e.target.closest("a")) el.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" }); }));
+  const start = cards[Math.min(2, cards.length - 1)];
+  if (start) coll.scrollLeft += (start.getBoundingClientRect().left + start.offsetWidth / 2) - (coll.getBoundingClientRect().left + coll.clientWidth / 2);
+  focus();
+  await cardGrid($("#feat"), featured.map(id => P.get(id)).filter(Boolean), 18);
+}
+
+// ---------- listeler: asır, kitap ----------
+async function viewList(view, kind, arg) {
+  let title, sub, list;
+  if (kind === "c") {
+    title = `أعلام القرن ${CENT[arg] || AR(arg)}`; sub = "مرتّبون على سنة الوفاة";
+    list = IDX.filter(p => century(p.d) === arg).sort((a, b) => a.d - b.d);
+  } else {
+    const b = BOOKS[arg]; if (!b) { view.innerHTML = `<p class="empty">لا يوجد هذا الكتاب.</p>`; return; }
+    title = b.title; sub = `${b.author}${b.death ? ` (ت ${AR(b.death)}هـ)` : ""}`;
+    list = IDX.filter(p => p.books.includes(arg)).sort((a, b) => (a.d || 9999) - (b.d || 9999));
+  }
+  view.innerHTML = `<div class="pagehead"><h1>${esc(title)}</h1><span class="c num">${AR(list.length)} عَلَمًا</span></div><p class="lede">${esc(sub)}</p><div id="lst"></div>`;
+  await cardGrid($("#lst"), list);
+}
+
+// ---------- البحث المفصل ----------
+const SEARCH = { q: "", c0: "", c1: "", book: "", place: "", net: false };
+async function viewSearch(view) {
+  const places = await load("places.json");
+  const top = places.filter(p => p.n >= 5).sort((a, b) => a.name.localeCompare(b.name, "ar"));
+  const opts = [...Array(14)].map((_, i) => `<option value="${i + 1}">${CENT[i + 1]}</option>`).join("");
+  view.innerHTML = `<div class="pagehead"><h1>البحث المفصّل</h1></div>
+    <form class="sform" id="sf" autocomplete="off">
+      <label class="wide">الاسم أو جزء منه<input name="q" type="search" placeholder="مثل: أبو بكر البلخي، النسفي، شمس الأئمة"></label>
+      <label>من القرن<select name="c0"><option value="">—</option>${opts}</select></label>
+      <label>إلى القرن<select name="c1"><option value="">—</option>${opts}</select></label>
+      <label>الكتاب<select name="book"><option value="">كل الكتب</option>${Object.entries(BOOKS).map(([id, b]) => `<option value="${id}">${esc(b.title)}</option>`).join("")}</select></label>
+      <label>البلد<select name="place"><option value="">كل البلدان</option>${top.map(p => `<option value="${esc(p.id)}">${esc(p.name)}</option>`).join("")}</select></label>
+      <label class="chk"><input type="checkbox" name="net"> له شيوخ أو تلاميذ في السلسلة</label>
+    </form><div id="sres"></div>`;
+  const f = $("#sf");
+  Object.entries(SEARCH).forEach(([k, v]) => { const el = f.elements[k]; if (!el) return; if (el.type === "checkbox") el.checked = !!v; else el.value = v; });
+  const PL = await placesById();
+  let timer, gen = 0;
+  const run = async () => {
+    const my = ++gen;
+    Object.keys(SEARCH).forEach(k => { const el = f.elements[k]; SEARCH[k] = el.type === "checkbox" ? el.checked : el.value; });
+    const toks = norm(SEARCH.q).split(" ").filter(Boolean);
+    const c0 = +SEARCH.c0 || 0, c1 = +SEARCH.c1 || 99;
+    const atPl = SEARCH.place ? new Set((PL.get(SEARCH.place)?.people || []).map(x => x[0])) : null;
+    const res = IDX.filter(p => (!toks.length || toks.every(t => p.key.includes(t)))
+      && (!(SEARCH.c0 || SEARCH.c1) || (century(p.d) >= c0 && century(p.d) <= c1))
+      && (!SEARCH.book || p.books.includes(SEARCH.book))
+      && (!atPl || atPl.has(p.id)) && (!SEARCH.net || p.nt || p.ns))
+      .sort((a, b) => toks.length ? (b.n + b.nt + b.ns) - (a.n + a.nt + a.ns) : (a.d || 9999) - (b.d || 9999));
+    const host = $("#sres");
+    if (my !== gen) return;
+    host.innerHTML = `<p class="legend num">${AR(res.length)} نتيجة</p>`;
+    await cardGrid(host, res);
+  };
+  f.addEventListener("input", () => { clearTimeout(timer); timer = setTimeout(run, 200); });
+  f.addEventListener("submit", e => { e.preventDefault(); run(); });
+  run();
 }
 
 // ---------- person ----------
@@ -147,10 +345,14 @@ async function viewPerson(view, id) {
   const byKind = {};
   d.places.forEach(([pl, k, cite, t]) => (byKind[k] = byKind[k] || []).push([pl, cite, t]));
   view.innerHTML = `
-    <div class="phead">
+    <div class="phead">${ORN.kose("tr")}${ORN.kose("tl")}${ORN.kose("br")}${ORN.kose("bl")}
       <h1>${esc(d.name)}</h1>
       <div class="death num">${d.death ? esc(d.death) : p.d ? `نحو ${AR(p.d)}هـ <span class="est">(تقدير من طبقة شيوخه وتلاميذه)</span>` : `<span class="est">لم تُذكر وفاته</span>`}</div>
-      <div class="filters">${p.nt || p.ns ? `<a class="btn" href="#/net/${id}">سلسلة شيوخه وتلاميذه</a>` : ""}</div>
+      <div class="facts num"><span><b>${AR(d.sources.length)}</b> ${d.sources.length > 1 ? "مصادر" : "مصدر"}</span>
+        <span><b>${AR(d.teachers.length)}</b> شيوخ</span><span><b>${AR(d.students.length)}</b> تلاميذ</span>
+        <span><b>${AR(new Set(d.places.map(x => x[0])).size)}</b> بلدان</span></div>
+      <div class="filters">${p.nt || p.ns ? `<a class="btn" href="#/net/${id}">سلسلة شيوخه وتلاميذه</a>` : ""}
+        <button type="button" class="btn" data-go="texts">نصوص الترجمة</button></div>
     </div>
     <section><h2>مواضع الترجمة<span class="c num">${AR(d.sources.length)}</span></h2>
       <ul class="srcs num">${d.sources.map(([b, cite, h]) => `<li>${esc(cite)}<span class="h">${esc(h)}</span></li>`).join("")}</ul></section>
@@ -243,6 +445,10 @@ function renderEntry(t, fid) {
   }
   return html;
 }
+document.addEventListener("click", e => {   // sayfa içi kaydırma (adres değişmeden)
+  const b = e.target.closest("[data-go]");
+  if (b) { e.preventDefault(); document.getElementById(b.dataset.go)?.scrollIntoView({ behavior: "smooth" }); }
+});
 document.addEventListener("click", e => {   // الحواشي: انتقال داخل الصفحة دون المساس بعنوان الصفحة
   const a = e.target.closest("[data-fn]");
   if (!a) return;

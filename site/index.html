@@ -4,31 +4,60 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>طبقات الحنفية</title>
-  <meta name="description" content="تراجم الحنفية الموحدة من كتب الطبقات، مع سلسلة الشيوخ والتلاميذ وخريطة الرحلات.">
+  <meta name="description" content="موسوعة موحّدة لتراجم فقهاء الحنفية من كتب الطبقات، مع سلسلة الشيوخ والتلاميذ وخريطة البلدان.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Noto+Naskh+Arabic:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Noto+Naskh+Arabic:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="app.css">
+  <script>try { const t = localStorage.getItem("theme"); if (t === "dark" || t === "light") document.documentElement.dataset.theme = t; } catch (e) {}</script>
 </head>
 <body>
   <header class="top">
     <div class="bar">
-      <a class="brand" href="#/">طبقات الحنفية<small>تراجم · شيوخ وتلاميذ · بلدان</small></a>
-      <nav class="tabs">
+      <a class="brand" href="#/" aria-label="طبقات الحنفية — الرئيسة">
+        <svg class="emblem" viewBox="0 0 40 40" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.6"><path d="M20 2 25 13 38 15 28 24 31 38 20 31 9 38 12 24 2 15 15 13Z" opacity=".35"/><path d="M20 5 23.5 16.5 35 20 23.5 23.5 20 35 16.5 23.5 5 20 16.5 16.5Z"/><path d="M9.4 9.4 20 14 30.6 9.4 26 20 30.6 30.6 20 26 9.4 30.6 14 20Z"/><circle cx="20" cy="20" r="3.2" fill="currentColor" stroke="none"/></g></svg>
+        <span>طبقات الحنفية</span>
+      </a>
+      <nav class="tabs" aria-label="الأقسام">
         <a href="#/" data-v="home">الرئيسة</a>
         <a href="#/net/jws1" data-v="net">السلسلة</a>
         <a href="#/map" data-v="map">الخريطة</a>
+        <a href="#/search" data-v="search">البحث المفصّل</a>
         <a href="#/about" data-v="about">عن المشروع</a>
       </nav>
-      <div class="search">
-        <input id="q" type="search" placeholder="ابحث عن عَلَم… (مثل: السرخسي، أبو حفص الكبير)" autocomplete="off" aria-label="بحث">
-        <div id="res" class="results" hidden></div>
+      <div class="search top-search">
+        <input id="q" type="search" placeholder="ابحث عن عَلَم…" autocomplete="off" aria-label="بحث">
+        <div class="results" hidden></div>
+      </div>
+      <div class="theme" role="group" aria-label="المظهر">
+        <button type="button" data-t="system" title="بحسب الجهاز" aria-label="بحسب الجهاز"><svg viewBox="0 0 20 20" aria-hidden="true"><rect x="3" y="4" width="14" height="10" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M7 17h6" stroke="currentColor" stroke-width="1.5"/></svg></button>
+        <button type="button" data-t="dark" title="داكن" aria-label="داكن"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M14.5 12.8A6 6 0 0 1 7.2 5.5 6 6 0 1 0 14.5 12.8Z" fill="currentColor"/></svg></button>
+        <button type="button" data-t="light" title="فاتح" aria-label="فاتح"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="3.5" fill="currentColor"/><g stroke="currentColor" stroke-width="1.5"><path d="M10 1.5v2.5M10 16v2.5M1.5 10H4M16 10h2.5M4 4l1.8 1.8M14.2 14.2 16 16M4 16l1.8-1.8M14.2 5.8 16 4"/></g></svg></button>
       </div>
     </div>
+    <div class="zencirek" aria-hidden="true"></div>
   </header>
   <main id="view"><p class="empty">جارٍ التحميل…</p></main>
-  <footer>
-    المصادر: كتب الطبقات الحنفية المذكورة في «عن المشروع». الإحداثيات من مشروع الثريا (CC BY 4.0) وخرائط Natural Earth.
+  <footer class="foot">
+    <div class="zencirek" aria-hidden="true"></div>
+    <div class="footin">
+      <div class="fabout">
+        <a class="brand" href="#/"><span>طبقات الحنفية</span></a>
+        <p>فهرس موحّد لتراجم الحنفية من تسعة من كتب الطبقات، بمواضعها في الكتب، وشيوخ كل عَلَم وتلاميذه، والبلدان التي ارتبط بها.</p>
+      </div>
+      <div class="flinks">
+        <b>روابط</b>
+        <a href="#/search">البحث المفصّل</a>
+        <a href="#/net/jws1">سلسلة الشيوخ والتلاميذ</a>
+        <a href="#/map">خريطة البلدان</a>
+        <a href="#/about">عن المشروع والمصادر</a>
+      </div>
+      <div class="flinks">
+        <b>المصادر المفتوحة</b>
+        <span>الإحداثيات: مشروع الثريا (CC BY 4.0)</span>
+        <span>الخرائط: Natural Earth</span>
+      </div>
+    </div>
   </footer>
   <script src="app.js"></script>
 </body>
