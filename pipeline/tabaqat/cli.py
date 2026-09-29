@@ -16,7 +16,8 @@ def load_book(book: str) -> dict:
 
 
 PARSE_OPTS = ("start_after_heading", "unnumbered_entry", "section_heading", "stop_at_heading",
-              "entry_sections", "series", "preamble_entry", "co_entries")
+              "entry_sections", "series", "preamble_entry", "co_entries",
+              "entry_paragraph")
 
 
 def load_names(cfg: dict) -> list[name_index.IndexEntry] | None:

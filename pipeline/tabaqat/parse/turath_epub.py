@@ -31,6 +31,19 @@ _HEADING = re.compile(r"^و?\[?\s*([\d٠-٩]+)\s*[-.]\s*(.+?)\s*\]?$")
 _P_HEADING = re.compile(r"^و?\[?\s*([\d٠-٩]+)\s*-\s*(.+?)\s*\]?$")
 _INLINE_HEADING = re.compile(r"([\d٠-٩]+)\s*-\s*\[[^\]]+\]")
 _FN_LINE = re.compile(r"\(\^([\d٠-٩]+|\*+)\)")
+# Başlıksız madde paragrafında künyenin bittiği yer: tercümeyi açan ilk fiil/kalıp
+_BIO_START = re.compile(r"\s(?:كان|أخذ|اخذ|تفقه|قرأ|ولد|روى|سمع|درس|له|هو|نسبة|نسبته|إمام|امام|قال|اشتغل)\s")
+
+
+def _split_par_heading(txt: str, max_words: int = 16) -> tuple[str, str]:
+    """"[X] بن Y الشهير بكذا كان إماما ..." → ("[X] بن Y الشهير بكذا", "كان إماما ...")"""
+    txt = re.sub(r"\s*\(\s*[\d٠-٩]+\s*\)", "", txt)  # dipnot işaretleri: "(١)"
+    m = _BIO_START.search(txt)
+    cut = m.start() if m else len(txt)
+    words = txt[:cut].split()
+    if len(words) > max_words:
+        return " ".join(words[:max_words]), " ".join(words[max_words:]) + txt[cut:]
+    return txt[:cut].strip(), txt[cut:].strip()
 
 
 def _spine_pages(z: zipfile.ZipFile) -> list[str]:
@@ -72,7 +85,7 @@ def parse(path: str, book_id: str, start_after_heading: str | None = None,
           unnumbered_entry: str | None = None, section_heading: str | None = None,
           stop_at_heading: str | None = None, entry_sections: str | None = None,
           series: dict[str, str] | None = None, preamble_entry: dict | None = None,
-          co_entries: bool = False) -> list[Entry]:
+          co_entries: bool = False, entry_paragraph: str | None = None) -> list[Entry]:
     """
     start_after_heading: bu başlığa kadar olan kısım (tahkik mukaddimesi vb.) atlanır.
     stop_at_heading: bu başlıktan sonrası (hâtime, fihristler) atlanır.
@@ -85,12 +98,15 @@ def parse(path: str, book_id: str, start_after_heading: str | None = None,
         doğrudan başlayan Ebû Hanîfe tercümesi).
     co_entries: aralarında metin olmayan ardışık başlıklar tek metni paylaşır (Ketâib'deki
         ortak tercümeler). Kapalıyken her başlık ayrı maddedir (tercüme başlıkta bitebilir).
+    entry_paragraph: `entry_sections` içinde başlık etiketi almamış, bu kalıpla başlayan
+        paragraf yeni maddedir (Fevâid'de "[عبد الرحمن بن محمد] بن أميرويه ... كان ...").
     """
     start_re = re.compile(start_after_heading) if start_after_heading else None
     stop_re = re.compile(stop_at_heading) if stop_at_heading else None
     unnum_re = re.compile(unnumbered_entry) if unnumbered_entry else None
     section_re = re.compile(section_heading) if section_heading else None
     entry_sec_re = re.compile(entry_sections) if entry_sections else None
+    entry_par_re = re.compile(entry_paragraph) if entry_paragraph else None
     series_res = [(re.compile(k), v) for k, v in (series or {}).items()]
     started = start_re is None and preamble_entry is None
     stopped = False
@@ -180,6 +196,13 @@ def parse(path: str, book_id: str, start_after_heading: str | None = None,
                     sep_seen = True
                     continue
                 clean = re.sub(r"\s+", " ", _FN_LINE.sub("", raw)).strip().rstrip("*").strip()
+                if (kind == "p" and in_entry_section and entry_par_re and group
+                        and entry_par_re.match(clean)):
+                    head, rest = _split_par_heading(clean)
+                    new_unnumbered(head, raw, page_notes, vol, page)
+                    if rest:
+                        paras.append(rest)
+                    continue
                 m = _HEADING.match(clean) if kind == "h" else _P_HEADING.match(clean)
                 if kind == "p" and started and not m:
                     # Paragraf ortasına gömülmüş sıradaki madde başlığı: "... ٢١٠٦ - [النجم الملطى] صاحبنا ..."

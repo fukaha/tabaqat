@@ -18,8 +18,9 @@ def entries():
 
 
 def test_every_heading_between_letters_is_an_entry(entries):
-    # حرف الألف .. الخاتمة arası 495 başlık = 21 harf bölümü + 474 madde
-    assert len(entries) == 474
+    # حرف الألف .. الخاتمة arası 495 başlık = 21 harf bölümü + 474 madde; ayrıca başlık
+    # etiketi almamış 35 madde paragrafı
+    assert len(entries) == 509
     assert len({e.section for e in entries}) == 21
     assert not any("حرف" in e.heading_raw[:6] for e in entries)
 
@@ -33,3 +34,12 @@ def test_first_and_abu_yusuf(entries):
     assert entries[0].heading_raw.startswith("(إبراهيم بن إسماعيل)")
     assert entries[0].section == "(حرف الألف)"
     assert any(e.heading_raw.startswith("[يعقوب بن إبراهيم] بن حبيب أبو يوسف") for e in entries)
+
+
+def test_untagged_entry_paragraphs(entries):
+    heads = [e.heading_raw for e in entries]
+    # Kirmânî, Hayzâhazî maddesinin içinde kalmıyor; ara sözler madde sayılmıyor
+    kirmani = next(e for e in entries if e.heading_raw.startswith("[عبد الرحمن بن محمد] بن أميرويه"))
+    assert kirmani.text.startswith("هو الشيخ الكبير")
+    assert any(h.startswith("[محمد بن الحسن] بن واقد أبو عبد الله الشيباني") for h in heads)
+    assert not any(h.startswith(("(قال الجامع)", "(وذكر)", "(ثم)")) for h in heads)
