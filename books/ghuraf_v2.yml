@@ -10,3 +10,6 @@ source: sources/ghuraf/raw/v2/pages
 first_pdf_page: 5
 page_offset: 2  # basılı sayfa = PDF sayfası + 2 (OCR'ın okuduğu numaralar ara sıra hatalı)
 first_entry: 497  # numaralama 1. ciltten devam eder
+# Muhakkik fihristi (iki cilt): numara düzeltme ve şahıs adlarının esası
+index: data/index/ghuraf.json
+index_source: sources/ghuraf/raw/index.docx

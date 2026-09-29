@@ -24,7 +24,7 @@ from ..schema import Entry
 _DIGITS = str.maketrans("٠١٢٣٤٥٦٧٨٩", "0123456789")
 _AR = str.maketrans("0123456789", "٠١٢٣٤٥٦٧٨٩")
 _FN_START = re.compile(r"^[٠-٩]+\.?\s+(?!\[)")  # "٣ انظر ..." / "٣. انظر" (ama "١ [٣٥] / ذكر" gövdedir)
-_STRAY_MARK = re.compile(r"^[٠-٩]+\s+(?=\[)")  # gövde başında kalmış dipnot rakamı
+_STRAY_MARK = re.compile(r"^[٠-٩]+\s+(?=\[|باب|حرف|ذكر)")  # başlık başında kalmış dipnot rakamı
 _SUP = re.compile(r"\$\^\{[^}]*\}\$|[¹²³⁴⁵⁶⁷⁸⁹⁰]+")
 # Üst simge olarak okunmamış dipnot işareti: kelimeye/noktalamaya yapışık rakam ("الدين٧", "،٨")
 _GLUED_MARK = re.compile(r"(?<=[\u0621-\u064A\u064B-\u0652»)،.:؛])[٠-٩]{1,2}(?=[\s،.:؛»)\]]|$)")
@@ -39,6 +39,7 @@ _SLASH = re.compile(r"(^|\s)/(?=\s|$)")
 _MAX_ENTRY_STEP = 6
 _PENDING = object()
 _PENDING_MARK = "\x00"
+_ENTRY_START = re.compile(r"^\[[٠-٩]+\]\s*/?\s*(\S+ ){1,3}(بن|ابن|بنت) ")
 _NAME_START = re.compile(r"^(\S+ ){1,3}(بن|ابن|بنت) ")
 _ENTRY_HEAD = re.compile(r"^\S+ (بن|ابن) .*\[ت\.", re.S)
 _NOT_ENTRY = re.compile(r"^(ذكر|حرف|قال|وقال|بسم)")
@@ -71,20 +72,30 @@ def _page_dirs(root: Path) -> list[tuple[int, Path]]:
 def _body_blocks(blocks: list[dict], height: int) -> list[dict]:
     """Dipnot sınırının üstündeki gövde bloklarını döndürür."""
     blocks = [dict(b) for b in blocks]
+    # Dipnot sınırı: sayfanın üst %30'undan aşağıdaki, rakamla başlayan gerçek dipnot blokları.
+    # (Sayfa başlığı şeridinden içeriğe çevrilen "١ / باب الكنى" gibi bloklar sayılmaz.)
+    fn_y = [b["topLeftY"] for b in blocks
+            if b["type"] in ("references", "text", "list", "header") and b["topLeftY"] > 0.3 * height
+            and _FN_START.match(b["content"].strip())]
     for b in blocks:
         # Sayfa başlığı şeridinin (üst ~%10) altındaki "header" blokları içeriktir:
         # harf başlıkları ("حرف التاء") ve madde başları yanlış etiketlenmiş.
         if (b["type"] == "header" and b["topLeftY"] > 0.1 * height
                 and not re.fullmatch(r"[٠-٩]+", b["content"].strip())):
             b["type"] = "text"
-    fn_y = [b["topLeftY"] for b in blocks
-            if b["type"] != "title" and _FN_START.match(b["content"].strip())]
     ref_y = [b["topLeftY"] for b in blocks if b["type"] == "references"]
     bound = min(fn_y) if fn_y else (min(ref_y) if ref_y else float("inf"))
     body = []
     for b in blocks:
         c = b["content"].strip()
-        if not c or b["topLeftY"] >= bound - 3:
+        if not c:
+            continue
+        # "[٨٥٧] / يعقوب بن إدريس ...": madde başı dipnot bölgesine düşmüş ya da "references"
+        # diye etiketlenmiş olabilir; dipnotlar "[" ile başlamaz
+        if _ENTRY_START.match(c) and b["type"] != "header":
+            body.append(b)
+            continue
+        if b["topLeftY"] >= bound - 3:
             continue
         if b["type"] in ("text", "title", "list"):
             body.append(b)
@@ -210,8 +221,11 @@ def to_markdown(pages: list[Page], title: str) -> str:
 _SECTION = re.compile(r"^(?:## )?(حرف|ذكر|باب|خاتمة)(\s|$)")
 
 
-def to_entries(pages: list[Page], book_id: str, vol: int = 1) -> list[Entry]:
-    """Temiz sayfalardan madde listesi: "[N] ..." ile başlayan blok yeni madde açar."""
+def to_entries(pages: list[Page], book_id: str, vol: int = 1, names: dict | None = None) -> list[Entry]:
+    """Temiz sayfalardan madde listesi: "[N] ..." ile başlayan blok yeni madde açar.
+
+    names: {madde no: IndexEntry}; verilirse şahıs adı ve vefat notu fihristten alınır.
+    """
     entries: list[Entry] = []
     cur: Entry | None = None
     paras: list[str] = []
@@ -232,6 +246,10 @@ def to_entries(pages: list[Page], book_id: str, vol: int = 1) -> list[Entry]:
                 cur = Entry(book_id, len(entries) + 1, b, "", vol=vol, page_start=p.page,
                             page_end=p.page, number=int(m.group(1).translate(_DIGITS)),
                             section=section)
+                head_extended = False
+                ie = (names or {}).get(cur.number)
+                if ie is not None:
+                    cur.name, cur.death = ie.name, ie.death
                 continue
             plain = _strip_harakat(b)
             if _SECTION.match(plain) and len(plain.split()) <= 5 and ":" not in plain:
@@ -241,8 +259,10 @@ def to_entries(pages: list[Page], book_id: str, vol: int = 1) -> list[Entry]:
             if cur is None:
                 continue
             # Başlık bir sonraki bloğa taşmışsa ("[ت." ... "١٣٤٣/١٧٤٤م]") başlığa ekle
-            if not paras and cur.heading_raw.count("[") > cur.heading_raw.count("]"):
+            if (not paras and not head_extended
+                    and cur.heading_raw.count("[") > cur.heading_raw.count("]")):
                 cur.heading_raw += " " + b
+                head_extended = True  # yalnız bir blok; OCR köşeli parantezi kapatmamış olabilir
                 continue
             paras.append(b)
             cur.page_end = p.page

@@ -20,6 +20,8 @@ class Entry:
     footnotes: dict[str, str] = field(default_factory=dict)
     references: list[str] = field(default_factory=list)  # başlığa bağlı çapraz atıflar
     group: int | None = None  # ortak metni paylaşan maddelerin grup no'su
+    name: str = ""  # şahsın esas adı (varsa muhakkik fihristinden, harekeli)
+    death: str = ""  # vefat notu ("٩١٦هـ/١٥١١م", "بعد ٦٥٦هـ", "؟")
 
     @property
     def source_ref(self) -> str:

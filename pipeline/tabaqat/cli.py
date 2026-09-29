@@ -5,7 +5,7 @@ from pathlib import Path
 
 import yaml
 
-from .parse import mistral_ocr, turath_epub
+from .parse import mistral_ocr, name_index, turath_epub
 
 ROOT = Path(__file__).resolve().parents[2]
 PARSERS = {"turath_epub": turath_epub.parse}
@@ -19,27 +19,46 @@ PARSE_OPTS = ("start_after_heading", "unnumbered_entry", "section_heading", "sto
               "entry_sections", "series", "preamble_entry", "co_entries")
 
 
-def clean_ocr(cfg: dict) -> list[mistral_ocr.Page]:
-    return mistral_ocr.clean_pages(ROOT / cfg["source"], cfg["first_pdf_page"], cfg["page_offset"],
-                                   cfg.get("first_entry", 1))
+def load_names(cfg: dict) -> list[name_index.IndexEntry] | None:
+    return name_index.load_index(ROOT / cfg["index"]) if cfg.get("index") else None
+
+
+def clean_ocr(cfg: dict, report: bool = False) -> list[mistral_ocr.Page]:
+    pages = mistral_ocr.clean_pages(ROOT / cfg["source"], cfg["first_pdf_page"], cfg["page_offset"],
+                                    cfg.get("first_entry", 1))
+    names = load_names(cfg)
+    if names:  # madde numaralarını muhakkik fihristine göre düzelt
+        rep = name_index.apply_index(pages, names, cfg.get("vol", 1))
+        if report:
+            print(f"fihrist: {rep.matched} doğru, {len(rep.renumbered)} yeniden numaralandı, "
+                  f"{len(rep.recovered)} kurtarıldı, {len(rep.unnumbered)} numarası silindi; "
+                  f"metinde bulunamayan: {rep.not_found}")
+    return pages
 
 
 def parse_book(cfg: dict):
     if cfg["parser"] == "mistral_ocr":
-        return mistral_ocr.to_entries(clean_ocr(cfg), cfg["book_id"], cfg.get("vol", 1))
+        names = {e.number: e for e in load_names(cfg) or []}
+        return mistral_ocr.to_entries(clean_ocr(cfg), cfg["book_id"], cfg.get("vol", 1), names)
     opts = {k: cfg[k] for k in PARSE_OPTS if k in cfg}
     return PARSERS[cfg["parser"]](str(ROOT / cfg["source"]), cfg["book_id"], **opts)
 
 
 def main() -> None:
     ap = argparse.ArgumentParser()
-    ap.add_argument("cmd", choices=["parse", "report", "clean"])
+    ap.add_argument("cmd", choices=["parse", "report", "clean", "index"])
     ap.add_argument("book")
     ap.add_argument("--out", default=str(ROOT / "data" / "entries"))
     a = ap.parse_args()
     cfg = load_book(a.book)
+    if a.cmd == "index":  # Word fihristinden data/index/*.json
+        entries = name_index.read_docx_index(ROOT / cfg["index_source"])
+        (ROOT / cfg["index"]).parent.mkdir(parents=True, exist_ok=True)
+        name_index.save_index(entries, ROOT / cfg["index"])
+        print(f"{len(entries)} fihrist maddesi")
+        return
     if a.cmd == "clean":  # OCR kaynağından temiz metin (yalnız gövde + sayfa numaraları)
-        pages = clean_ocr(cfg)
+        pages = clean_ocr(cfg, report=True)
         out = ROOT / "data" / "clean"
         out.mkdir(parents=True, exist_ok=True)
         (out / f"{cfg['book_id']}.md").write_text(

@@ -9,3 +9,6 @@ edition: تحقيق علي السيد عبد اللطيف، مراجعة محم�
 source: sources/ghuraf/raw/pages
 first_pdf_page: 7
 page_offset: 2  # basılı sayfa = PDF sayfası + 2 (OCR'ın okuduğu numaralar ara sıra hatalı)
+# Muhakkik fihristi (iki cilt): numara düzeltme ve şahıs adlarının esası
+index: data/index/ghuraf.json
+index_source: sources/ghuraf/raw/index.docx
