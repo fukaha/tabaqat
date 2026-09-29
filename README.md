@@ -157,7 +157,9 @@ python -m tabaqat.geo.basemap <natural-earth-dizini>   # → site/data/basemap.j
   olarak altın çizgiyle gösterilir: önce zayıf olmayan bağlar, her adımda hoca talebeden önce ölmüş ve fark
   ≤ 100 yıl; vefatı bilinmeyen aracıya talebesinden ~35 yıl önce bir tahmin verilir. Ayrıca bütün
   ağın vefat yılına göre zaman eksenli genel görünümü. Silsile ve harita "Büyük ekran" ile tam
-  ekrana alınabilir.
+  ekrana alınabilir. Âlim silsilesi "PNG" ya da "SVG" düğmesiyle dışa aktarılır: ekrandaki ağaç
+  ölçülüp kutu, çizgi ve satır satır yazı olarak yeniden çizilir (PNG 2× çözünürlükte, SVG düzenlenebilir
+  metinle); altına site adı ve silsile sahibi yazılır.
 - **Harita:** asır ve atıf türü süzgeçleri; bölge adları (Horasan, Mâverâünnehir…) ve büyük
   merkezlerin adları (çakışanlar gizlenir); bir şehre tıklayınca yanında yüzen pencerede oradaki
   fakihlerin listesi.

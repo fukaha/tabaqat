@@ -725,7 +725,7 @@ async function viewMap(view, sel) {
       "Her daire biyografilerde geçen bir şehirdir; büyüklüğü, seçilen yüzyıl ve bağ türüne göre o şehirle ilişkili âlim sayısını gösterir. Fakihlerini görmek için bir şehre tıklayın.")}</p>
     <div class="stage" id="mstage">
     <div class="filters stagebar" id="fk"><span class="label">${T("نوع الصلة", "Bağ türü")}</span>${KIND_ORDER.map(k => `<button type="button" class="btn on" data-k="${k}">${KIND[k]}</button>`).join("")}
-      <span class="grow"></span>${fsButton()}</div>
+      <span class="grow"></span>${full ? "" : expButtons()}${fsButton()}</div>
     <div class="filters num" id="fc"><span class="label">${T("قرن الوفاة", "Vefat yüzyılı (hicrî)")}</span>${[...Array(14)].map((_, i) => `<button type="button" class="btn" data-c="${i + 1}">${LANG === "tr" ? ROM(i + 1) : AR(i + 1)}</button>`).join("")}
       <button type="button" class="btn" data-c="all">${T("الكل", "Tümü")}</button></div>
     <div class="mapwrap big" id="bigmap"></div></div>`;
@@ -820,6 +820,120 @@ function stageToggle(stage, btn, onChange) {
 }
 const fsButton = () => `<button type="button" class="btn fsbtn" aria-pressed="false">${FS_ICON}<span>${T("ملء الشاشة", "Büyük ekran")}</span></button>`;
 
+/* Silsileyi dışa aktarma (PNG / SVG). Ekrandaki ağaç ölçülüp bir sahneye çevrilir: kutular (kartlar,
+   etiketler), çizgiler ve satır satır yazılar. PNG tuvalde çizilir (sayfa yazı tipleriyle); SVG aynı
+   sahneden yazılır ve yazı tiplerini Google Fonts'tan çağırır. */
+const FONT_CSS = "https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Noto+Naskh+Arabic:wght@400;600;700&family=EB+Garamond:ital,wght@0,500;0,700;1,500&family=Noto+Serif:wght@400;600;700&display=swap";
+const DL_ICON = `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+const expButtons = () => `<span class="expgrp" role="group" aria-label="${T("تصدير", "Dışa aktar")}">${DL_ICON}<button type="button" class="btn" data-exp="png">PNG</button><button type="button" class="btn" data-exp="svg">SVG</button></span>`;
+// her CSS rengini (color-mix dahil) rgba'ya çevirir; saydamsa null
+const colorOf = (() => { const c = document.createElement("canvas"); c.width = c.height = 1; const x = c.getContext("2d", { willReadFrequently: true }); const memo = new Map();
+  return s => { if (!s || s === "none") return null; if (memo.has(s)) return memo.get(s);
+    x.clearRect(0, 0, 1, 1); x.fillStyle = "#000"; x.fillStyle = s; x.fillRect(0, 0, 1, 1);
+    const [r, g, b, a] = x.getImageData(0, 0, 1, 1).data, v = a ? `rgba(${r},${g},${b},${+(a / 255).toFixed(3)})` : null;
+    memo.set(s, v); return v; }; })();
+function treeScene(host, caption) {
+  const tree = $(".tree", host), box = tree.getBoundingClientRect();
+  const W = Math.ceil(Math.max(tree.scrollWidth, box.width)), H0 = Math.ceil(Math.max(tree.scrollHeight, box.height));
+  const rel = r => ({ x: r.left - box.left, y: r.top - box.top, w: r.width, h: r.height });
+  const paths = [], boxes = [], texts = [];
+  tree.querySelectorAll("svg.links path").forEach(p => { const cs = getComputedStyle(p);
+    paths.push({ d: p.getAttribute("d"), stroke: colorOf(cs.stroke), sw: parseFloat(cs.strokeWidth) || 1, op: +cs.strokeOpacity || 1,
+      dash: cs.strokeDasharray && cs.strokeDasharray !== "none" ? cs.strokeDasharray.replace(/px/g, "").split(/[ ,]+/).map(Number) : null }); });
+  tree.querySelectorAll("*").forEach(el => {
+    if (el.closest("svg")) return;
+    const cs = getComputedStyle(el); if (cs.display === "none" || cs.visibility === "hidden") return;
+    const r = el.getBoundingClientRect(); if (!r.width || !r.height) return;
+    const b = rel(r), fill = colorOf(cs.backgroundColor);
+    const S = ["Top", "Right", "Bottom", "Left"].map(s => ({ w: cs[`border${s}Style`] === "none" ? 0 : parseFloat(cs[`border${s}Width`]) || 0, c: colorOf(cs[`border${s}Color`]), s: cs[`border${s}Style`] }));
+    const dashOf = s => s === "dashed" ? [4, 3] : s === "dotted" ? [1, 2] : null;
+    const same = S.every(x => x.w === S[0].w && x.c === S[0].c && x.s === S[0].s);
+    const rad = Math.min(parseFloat(cs.borderTopLeftRadius) || 0, b.w / 2, b.h / 2);
+    if (fill || (same && S[0].w && S[0].c)) boxes.push({ ...b, r: rad, fill, stroke: same && S[0].w ? S[0].c : null, sw: S[0].w, dash: dashOf(S[0].s) });
+    if (!same) S.forEach((x, k) => { if (!x.w || !x.c) return;
+      const h = x.w / 2, [x1, y1, x2, y2] = [[b.x, b.y + h, b.x + b.w, b.y + h], [b.x + b.w - h, b.y, b.x + b.w - h, b.y + b.h], [b.x, b.y + b.h - h, b.x + b.w, b.y + b.h - h], [b.x + h, b.y, b.x + h, b.y + b.h]][k];
+      boxes.push({ line: [x1, y1, x2, y2], stroke: x.c, sw: x.w, dash: dashOf(x.s) }); });
+  });
+  // yazılar: her metin düğümü kelimelere bölünür, kelimeler ekrandaki satırlarına göre toplanır
+  const tw = document.createTreeWalker(tree, NodeFilter.SHOW_TEXT, { acceptNode: n => n.parentElement.closest("svg") || !n.data.trim() ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_ACCEPT });
+  for (let n; (n = tw.nextNode());) {
+    const el = n.parentElement, cs = getComputedStyle(el); if (cs.visibility === "hidden") continue;
+    const clipEl = el.closest(".chip2"), clip = clipEl && clipEl.scrollWidth > clipEl.clientWidth + 1 ? clipEl.getBoundingClientRect() : null;
+    const lines = []; let cut = false;
+    for (const m of n.data.matchAll(/[^\s-]*-|[^\s-]+/g)) {   // tire sonrası da satır kırılabilir
+      const rg = document.createRange(); rg.setStart(n, m.index); rg.setEnd(n, m.index + m[0].length);
+      const r = rg.getClientRects()[0]; if (!r) continue;
+      if (clip && (r.right > clip.right - 4 || r.left < clip.left + 4)) { cut = true; continue; }
+      let L = lines.find(l => Math.abs(l.top - r.top) < 3);
+      if (!L) lines.push(L = { top: r.top, bottom: r.bottom, l: r.left, r: r.right, s: n.data.slice(m.index, m.index + m[0].length), a: m.index, e: m.index + m[0].length });
+      else { L.l = Math.min(L.l, r.left); L.r = Math.max(L.r, r.right); L.e = m.index + m[0].length; L.s = n.data.slice(L.a, L.e).replace(/\s+/g, " "); }
+    }
+    if (cut && lines.length) lines[lines.length - 1].s += "…";
+    const font = { family: cs.fontFamily, size: parseFloat(cs.fontSize), weight: cs.fontWeight, style: cs.fontStyle };
+    const rtl = cs.direction === "rtl" || /[؀-ۿ]/.test(n.data);
+    lines.forEach(L => texts.push({ x: (L.l + L.r) / 2 - box.left, y: (L.top + L.bottom) / 2 - box.top, s: L.s, font, fill: colorOf(cs.color), rtl }));
+  }
+  const root = getComputedStyle(document.documentElement);
+  const bg = colorOf(getComputedStyle($(".treewrap", host)).backgroundColor) || colorOf(root.getPropertyValue("--paper"));
+  const FOOT = 44;
+  texts.push({ x: W / 2, y: H0 + FOOT / 2 - 6, s: caption, font: { family: getComputedStyle(document.body).fontFamily, size: 13, weight: "400", style: "normal" },
+    fill: colorOf(root.getPropertyValue("--muted")), rtl: LANG === "ar" });
+  return { W, H: H0 + FOOT, bg, paths, boxes, texts };
+}
+function sceneSVG(sc) {
+  const a = v => esc(String(v)), n = v => +v.toFixed(2);
+  const col = c => c ? `rgb(${c.match(/\d+/g).slice(0, 3).join(",")})` : "none";
+  const alpha = c => c ? +c.split(",")[3].replace(")", "") : 1;
+  const out = [`<svg xmlns="http://www.w3.org/2000/svg" width="${sc.W}" height="${sc.H}" viewBox="0 0 ${sc.W} ${sc.H}">`,
+    `<style>@import url('${a(FONT_CSS)}');</style>`, `<rect width="100%" height="100%" fill="${col(sc.bg)}"/>`];
+  sc.paths.forEach(p => out.push(`<path d="${a(p.d)}" fill="none" stroke="${col(p.stroke)}" stroke-opacity="${n(alpha(p.stroke) * p.op)}" stroke-width="${p.sw}" stroke-linejoin="round"${p.dash ? ` stroke-dasharray="${p.dash.join(" ")}"` : ""}/>`));
+  sc.boxes.forEach(b => {
+    const st = b.stroke ? ` stroke="${col(b.stroke)}" stroke-opacity="${alpha(b.stroke)}" stroke-width="${b.sw}"${b.dash ? ` stroke-dasharray="${b.dash.join(" ")}"` : ""}` : "";
+    if (b.line) out.push(`<line x1="${n(b.line[0])}" y1="${n(b.line[1])}" x2="${n(b.line[2])}" y2="${n(b.line[3])}"${st}/>`);
+    else { const h = (b.sw || 0) / 2; out.push(`<rect x="${n(b.x + h)}" y="${n(b.y + h)}" width="${n(b.w - 2 * h)}" height="${n(b.h - 2 * h)}" rx="${n(b.r)}" fill="${col(b.fill)}" fill-opacity="${alpha(b.fill)}"${st}/>`); }
+  });
+  sc.texts.forEach(t => out.push(`<text x="${n(t.x)}" y="${n(t.y)}" text-anchor="middle" dominant-baseline="central"${t.rtl ? ` direction="rtl" unicode-bidi="embed"` : ""} font-family="${a(t.font.family)}" font-size="${t.font.size}" font-weight="${t.font.weight}"${t.font.style !== "normal" ? ` font-style="${t.font.style}"` : ""} fill="${col(t.fill)}" fill-opacity="${alpha(t.fill)}">${esc(t.s)}</text>`));
+  out.push("</svg>");
+  return new Blob([out.join("\n")], { type: "image/svg+xml" });
+}
+function scenePNG(sc, k = 2) {
+  const c = document.createElement("canvas"); c.width = Math.ceil(sc.W * k); c.height = Math.ceil(sc.H * k);
+  const x = c.getContext("2d"); x.scale(k, k);
+  x.fillStyle = sc.bg || "#fff"; x.fillRect(0, 0, sc.W, sc.H);
+  x.lineJoin = "round";
+  sc.paths.forEach(p => { x.save(); x.globalAlpha = p.op; x.strokeStyle = p.stroke; x.lineWidth = p.sw; x.setLineDash(p.dash || []); x.stroke(new Path2D(p.d)); x.restore(); });
+  sc.boxes.forEach(b => { x.save(); x.setLineDash(b.dash || []);
+    if (b.line) { x.beginPath(); x.moveTo(b.line[0], b.line[1]); x.lineTo(b.line[2], b.line[3]); x.strokeStyle = b.stroke; x.lineWidth = b.sw; x.stroke(); }
+    else { const h = (b.sw || 0) / 2; x.beginPath(); x.roundRect(b.x + h, b.y + h, b.w - 2 * h, b.h - 2 * h, Math.max(0, b.r));
+      if (b.fill) { x.fillStyle = b.fill; x.fill(); }
+      if (b.stroke) { x.strokeStyle = b.stroke; x.lineWidth = b.sw; x.stroke(); } }
+    x.restore(); });
+  x.textAlign = "center"; x.textBaseline = "middle";
+  sc.texts.forEach(t => { x.font = `${t.font.style} ${t.font.weight} ${t.font.size}px ${t.font.family}`; x.fillStyle = t.fill; x.direction = t.rtl ? "rtl" : "ltr"; x.fillText(t.s, t.x, t.y); });
+  return new Promise(res => c.toBlob(res, "image/png"));
+}
+// sonuç: indirme bağlantısı ve önizleme (indirme engellenirse resim sağ tıkla kaydedilebilir)
+function showExport(blob, name) {
+  const url = URL.createObjectURL(blob);
+  const d = document.createElement("div"); d.className = "expbox"; d.setAttribute("role", "dialog");
+  d.innerHTML = `<div class="in"><div class="hd"><b>${esc(name)}</b><span class="grow"></span>
+      <a class="btn gold" href="${url}" download="${esc(name)}">${DL_ICON}${T("تنزيل", "İndir")}</a><button type="button" class="btn">${T("إغلاق", "Kapat")}</button></div>
+    <p class="hint">${T("إن لم يبدأ التنزيل فانقر على الصورة بالزر الأيمن واحفظها.", "İndirme başlamazsa resme sağ tıklayıp kaydedin.")}</p>
+    <div class="pv"><img src="${url}" alt="${esc(name)}"></div></div>`;
+  const close = () => { d.remove(); URL.revokeObjectURL(url); document.removeEventListener("keydown", key); };
+  const key = e => e.key === "Escape" && close();
+  d.addEventListener("click", e => { if (e.target === d || e.target.matches("button")) close(); });
+  document.addEventListener("keydown", key);
+  (document.fullscreenElement || document.body).appendChild(d);
+  try { $("a", d).click(); } catch (e) {}
+}
+async function exportTree(host, fmt, id, name) {
+  if (document.fonts) await document.fonts.ready;
+  const sc = treeScene(host, `${T("طبقات الحنفية", "Hanefî Tabakātı")} · ${T("سلسلة", "Silsile")}: ${name}`);
+  const file = `silsile-${id}.${fmt}`;
+  showExport(fmt === "svg" ? sceneSVG(sc) : await scenePNG(sc), file);
+}
+
 let LINEAGE = true;
 async function viewNet(view, id) {
   const g = await graph();
@@ -830,7 +944,7 @@ async function viewNet(view, id) {
       <a class="btn ${full ? "on" : ""}" href="#/net">${T("المشهد العام", "Genel görünüm")}</a>
       ${full ? "" : `<span class="label" style="margin-inline-start:1rem">${T("الطبقات", "Kuşak")}</span><button type="button" class="btn on" data-depth="1">${T("طبقة واحدة", "Bir kuşak")}</button><button type="button" class="btn" data-depth="2">${T("طبقتان", "İki kuşak")}</button>
         <button type="button" class="btn${LINEAGE ? " on" : ""}" id="lin" aria-pressed="${LINEAGE}">${T("الوصل بأبي حنيفة", "Ebû Hanîfe’ye bağla")}</button>`}
-      <span class="grow"></span>${fsButton()}</div>
+      <span class="grow"></span>${full ? "" : expButtons()}${fsButton()}</div>
     <div id="netbody"></div></div>`;
   const stage = $("#nstage");
   if (full) { const redraw = fullNet($("#netbody"), g); stageToggle(stage, $(".fsbtn", stage), () => redraw && redraw()); return; }
@@ -842,6 +956,8 @@ async function viewNet(view, id) {
     depth = +b.dataset.depth; view.querySelectorAll("[data-depth]").forEach(x => x.classList.toggle("on", x === b)); draw(); }));
   $("#lin").addEventListener("click", e => { LINEAGE = !LINEAGE; e.currentTarget.classList.toggle("on", LINEAGE); e.currentTarget.setAttribute("aria-pressed", LINEAGE); draw(); });
   stageToggle(stage, $(".fsbtn", stage));
+  view.querySelectorAll("[data-exp]").forEach(b => b.addEventListener("click", async () => {
+    b.disabled = true; try { await exportTree($("#netbody"), b.dataset.exp, id, g.nodes[i].name); } finally { b.disabled = false; } }));
   draw();
 }
 
