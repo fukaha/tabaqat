@@ -110,6 +110,27 @@ python -m tabaqat.cli geo            # → data/places.json, data/person_places.
 
   "بها / فيها" en son anılan yere döner. Nisbeler de yere bağlanır (البخاري → بخارى).
 
+## Türkçe adlar (DİA yazımı)
+
+Site Arapça ve Türkçe iki dillidir; dil üst menüdeki `ع | TR` düğmesiyle seçilir ve tarayıcıda
+saklanır (Türkçe tarayıcıda varsayılan Türkçe). Türkçede şahıs, eser ve yer adları TDV İslâm
+Ansiklopedisi usulüyle yazılır; biyografi metinleri Arapça aslıyla kalır.
+
+- `pipeline/tabaqat/tr/names.py` Arapça adı parçalarına ayırır (lakap, künye, nesep, nisbe,
+  şöhret; unvan ve tavsifler atılır) ve DİA düzeninde kurar:
+  `Lakap Künye İsim b. Baba b. Dede nisbeler` — ör. *Şemsüleimme Abdülazîz b. Ahmed b. Nasr
+  el-Halvânî*. Kısa ad: şöhret (“المعروف ب…”) ya da lakap/künye + son nisbe (*Kādîhan*,
+  *Ebü’l-Hasen el-Kerhî*). Makale ve güneş harfleri (*es-Serahsî*, *eş-Şeybânî*), nesepte -i
+  hâli (*b. Abdillâh*, *b. Ebî Bekr*), künyede *Ebü’l-* kuralla kurulur.
+- Sözlükler `review/tr/`: `ism.tsv`, `nisba.tsv` (makalesiz kök), `laqab.tsv`, `kunya.tsv`
+  (istisnalar), `override.tsv` (kişiye özel tam ad | kısa ad), `places.tsv`, `books.tsv`.
+  Sözlükte olmayan kelimeler adda atlanır ve her `site` koşusunda `review/tr/bilinmeyen.tsv`
+  dosyasına sıklıklarıyla yazılır; ilgili sözlüğe eklenince adlarda görünür.
+- Tarihler `(ö. 150/767)` biçimindedir; milâdî yıl hicrî yılın ortasına göre hesaplanır. Ağdan
+  tahmin edilen vefatlar `[?]` ile işaretlenir. Hicrî yüzyıllar *V. (XI.) yüzyıl* biçimindedir.
+- Türkçe arama işaretsiz yapılır (`nesefi` → *en-Nesefî*); Arapça harfle yazılırsa Arapça adda
+  aranır.
+
 ## Site
 
 ```

@@ -7,28 +7,30 @@
   <meta name="description" content="موسوعة موحّدة لتراجم فقهاء الحنفية من كتب الطبقات، مع سلسلة الشيوخ والتلاميذ وخريطة البلدان.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Noto+Naskh+Arabic:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Noto+Naskh+Arabic:wght@400;600;700&family=EB+Garamond:ital,wght@0,500;0,700;1,500&family=Noto+Serif:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="app.css">
-  <script>try { const t = localStorage.getItem("theme"); if (t === "dark" || t === "light") document.documentElement.dataset.theme = t; } catch (e) {}</script>
+  <script>try { const t = localStorage.getItem("theme"); if (t === "dark" || t === "light") document.documentElement.dataset.theme = t; } catch (e) {}
+  try { const l = localStorage.getItem("lang") || (/^tr/i.test(navigator.language) ? "tr" : "ar"); if (l === "tr") { document.documentElement.lang = "tr"; document.documentElement.dir = "ltr"; } } catch (e) {}</script>
 </head>
 <body>
   <header class="top">
     <div class="bar">
       <a class="brand" href="#/" aria-label="طبقات الحنفية — الرئيسة">
         <svg class="emblem" viewBox="0 0 40 40" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.6"><path d="M20 2 25 13 38 15 28 24 31 38 20 31 9 38 12 24 2 15 15 13Z" opacity=".35"/><path d="M20 5 23.5 16.5 35 20 23.5 23.5 20 35 16.5 23.5 5 20 16.5 16.5Z"/><path d="M9.4 9.4 20 14 30.6 9.4 26 20 30.6 30.6 20 26 9.4 30.6 14 20Z"/><circle cx="20" cy="20" r="3.2" fill="currentColor" stroke="none"/></g></svg>
-        <span>طبقات الحنفية</span>
+        <span data-i18n="brand">طبقات الحنفية</span>
       </a>
       <nav class="tabs" aria-label="الأقسام">
-        <a href="#/" data-v="home">الرئيسة</a>
-        <a href="#/net/jws1" data-v="net">السلسلة</a>
-        <a href="#/map" data-v="map">الخريطة</a>
-        <a href="#/search" data-v="search">البحث المفصّل</a>
-        <a href="#/about" data-v="about">عن المشروع</a>
+        <a href="#/" data-v="home" data-i18n="home">الرئيسة</a>
+        <a href="#/net/jws1" data-v="net" data-i18n="net">السلسلة</a>
+        <a href="#/map" data-v="map" data-i18n="map">الخريطة</a>
+        <a href="#/search" data-v="search" data-i18n="search">البحث المفصّل</a>
+        <a href="#/about" data-v="about" data-i18n="about">عن المشروع</a>
       </nav>
       <div class="search top-search">
-        <input id="q" type="search" placeholder="ابحث عن عَلَم…" autocomplete="off" aria-label="بحث">
+        <input id="q" type="search" data-i18n-ph="q" placeholder="ابحث عن عَلَم…" autocomplete="off" aria-label="بحث">
         <div class="results" hidden></div>
       </div>
+      <div class="lang" role="group" aria-label="اللغة / Dil"><button type="button" data-l="ar" lang="ar" title="العربية">ع</button><button type="button" data-l="tr" lang="tr" title="Türkçe">TR</button></div>
       <div class="theme" role="group" aria-label="المظهر">
         <button type="button" data-t="system" title="بحسب الجهاز" aria-label="بحسب الجهاز"><svg viewBox="0 0 20 20" aria-hidden="true"><rect x="3" y="4" width="14" height="10" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M7 17h6" stroke="currentColor" stroke-width="1.5"/></svg></button>
         <button type="button" data-t="dark" title="داكن" aria-label="داكن"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M14.5 12.8A6 6 0 0 1 7.2 5.5 6 6 0 1 0 14.5 12.8Z" fill="currentColor"/></svg></button>
@@ -42,20 +44,20 @@
     <div class="zencirek" aria-hidden="true"></div>
     <div class="footin">
       <div class="fabout">
-        <a class="brand" href="#/"><span>طبقات الحنفية</span></a>
-        <p>فهرس موحّد لتراجم الحنفية من تسعة من كتب الطبقات، بمواضعها في الكتب، وشيوخ كل عَلَم وتلاميذه، والبلدان التي ارتبط بها.</p>
+        <a class="brand" href="#/"><span data-i18n="brand">طبقات الحنفية</span></a>
+        <p data-i18n="fabout">فهرس موحّد لتراجم الحنفية من تسعة من كتب الطبقات، بمواضعها في الكتب، وشيوخ كل عَلَم وتلاميذه، والبلدان التي ارتبط بها.</p>
       </div>
       <div class="flinks">
-        <b>روابط</b>
-        <a href="#/search">البحث المفصّل</a>
-        <a href="#/net/jws1">سلسلة الشيوخ والتلاميذ</a>
-        <a href="#/map">خريطة البلدان</a>
-        <a href="#/about">عن المشروع والمصادر</a>
+        <b data-i18n="links">روابط</b>
+        <a href="#/search" data-i18n="search">البحث المفصّل</a>
+        <a href="#/net/jws1" data-i18n="fnet">سلسلة الشيوخ والتلاميذ</a>
+        <a href="#/map" data-i18n="fmap">خريطة البلدان</a>
+        <a href="#/about" data-i18n="fabout2">عن المشروع والمصادر</a>
       </div>
       <div class="flinks">
-        <b>المصادر المفتوحة</b>
-        <span>الإحداثيات: مشروع الثريا (CC BY 4.0)</span>
-        <span>الخرائط: Natural Earth</span>
+        <b data-i18n="open">المصادر المفتوحة</b>
+        <span data-i18n="coords">الإحداثيات: مشروع الثريا (CC BY 4.0)</span>
+        <span data-i18n="maps">الخرائط: Natural Earth</span>
       </div>
     </div>
   </footer>

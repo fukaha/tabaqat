@@ -3,17 +3,34 @@
 
 const $ = (s, el = document) => el.querySelector(s);
 const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
-const AR = n => String(n).replace(/\d/g, d => "٠١٢٣٤٥٦٧٨٩"[d]);
+// dil: ar (sağdan sola) ya da tr (DİA yazımı); tercih tarayıcıda saklanır
+let LANG = (() => { try { const l = localStorage.getItem("lang"); if (l === "ar" || l === "tr") return l; } catch (e) {}
+  return /^tr/i.test(navigator.language || "") ? "tr" : "ar"; })();
+const T = (ar, tr) => LANG === "tr" ? tr : ar;
+const AR = n => LANG === "ar" ? String(n).replace(/\d/g, d => "٠١٢٣٤٥٦٧٨٩"[d]) : String(n);
+// hicrî → milâdî (yılın ortasına göre; DİA'daki 150/767 gibi)
+const CE = h => Math.floor(622.54 + (h - 1) * 0.970224 + 0.485);
+const ROM = n => [["M", 1000], ["CM", 900], ["D", 500], ["CD", 400], ["C", 100], ["XC", 90], ["L", 50], ["XL", 40], ["X", 10], ["IX", 9], ["V", 5], ["IV", 4], ["I", 1]]
+  .reduce((o, [r, v]) => { while (n >= v) { o += r; n -= v; } return o; }, "");
+// Türkçe arama anahtarı: işaretsiz, küçük harf
+const fold = s => String(s || "").toLocaleLowerCase("tr").normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+  .replace(/ı/g, "i").replace(/[’‘'ʿʾ`]/g, "").replace(/[^a-z0-9\s]/g, " ").replace(/\s+/g, " ").trim();
 const norm = s => String(s || "").replace(/[ً-ٰٟۖ-ۭ]/g, "").replace(/ـ/g, "")
   .replace(/[أإآٱ]/g, "ا").replace(/[ىئ]/g, "ي").replace(/ؤ/g, "و").replace(/ة/g, "ه")
   .replace(/[^؀-ۿ\s]/g, " ").replace(/\s+/g, " ").trim();
 
-const REL = { fiqh: "تفقّه", took: "أخذ", hadith: "سماع/رواية", read: "قراءة", companion: "صحبة", manual: "يدوي" };
-const KIND = { birth: "مولد", death: "وفاة", burial: "مدفن", travel: "رحلة", residence: "إقامة",
-  office: "ولاية/تدريس", activity: "تحديث/طلب", origin: "أصل", nisba: "نسبة" };
+const REL_L = { ar: { fiqh: "تفقّه", took: "أخذ", hadith: "سماع/رواية", read: "قراءة", companion: "صحبة", manual: "يدوي" },
+  tr: { fiqh: "fıkıh", took: "ilim aldı", hadith: "hadis/rivayet", read: "kıraat", companion: "sohbet", manual: "elle" } };
+const KIND_L = { ar: { birth: "مولد", death: "وفاة", burial: "مدفن", travel: "رحلة", residence: "إقامة",
+  office: "ولاية/تدريس", activity: "تحديث/طلب", origin: "أصل", nisba: "نسبة" },
+  tr: { birth: "doğum", death: "vefat", burial: "defin", travel: "seyahat", residence: "ikamet",
+  office: "görev/tedris", activity: "rivayet/tahsil", origin: "asıl", nisba: "nisbe" } };
+const REL = new Proxy({}, { get: (_, k) => REL_L[LANG][k] });
+const KIND = new Proxy({}, { get: (_, k) => KIND_L[LANG][k] });
 const KIND_ORDER = ["nisba", "origin", "birth", "residence", "travel", "activity", "office", "death", "burial"];
 const CENT = ["", "الأول", "الثاني", "الثالث", "الرابع", "الخامس", "السادس", "السابع", "الثامن", "التاسع",
   "العاشر", "الحادي عشر", "الثاني عشر", "الثالث عشر", "الرابع عشر"];
+const centName = k => LANG === "tr" ? `${ROM(k)}. (${ROM(Math.floor((CE((k - 1) * 100 + 50) - 1) / 100) + 1)}.) yüzyıl` : `القرن ${CENT[k] || AR(k)}`;
 const century = d => d ? Math.floor((d - 1) / 100) + 1 : 0;
 
 // ---------- data ----------
@@ -24,12 +41,16 @@ let IDX, BOOKS, SALAF = new Map(), P = new Map();
 async function init() {
   const d = await load("index.json");
   BOOKS = d.books;
-  IDX = d.persons.map(r => ({ id: r[0], name: r[1], d: r[2], est: !!r[3], n: r[4], nt: r[5], ns: r[6], place: r[7], books: r[8] || [], key: norm(r[1]) }));
+  IDX = d.persons.map(r => ({ id: r[0], ar: r[1], d: r[2], est: !!r[3], n: r[4], nt: r[5], ns: r[6], place: r[7], books: r[8] || [],
+    tr: r[9] || r[1], trs: r[10] || r[9] || r[1], key: norm(r[1]), tkey: fold(r[9]) }));
+  IDX.forEach(p => Object.defineProperty(p, "name", { get() { return LANG === "tr" ? this.tr : this.ar; } }));
   IDX.forEach(p => P.set(p.id, p));
   // Ebû Hanîfe öncesi (peygamberler, sahâbe, tâbiûn): sayfası yok, yalnız silsilede
-  SALAF = new Map(Object.entries(d.salaf || {}).map(([id, [name, dd]]) => [id, { id, name, d: dd, salaf: true }]));
+  SALAF = new Map(Object.entries(d.salaf || {}).map(([id, [ar, dd, tr, trs]]) => [id, { id, ar, tr: tr || ar, trs: trs || tr || ar, d: dd, salaf: true,
+    get name() { return LANG === "tr" ? this.tr : this.ar; } }]));
   window.addEventListener("hashchange", route);
   setupTheme();
+  setupLang();
   setupSearch($("#q"));
   route();
 }
@@ -38,13 +59,22 @@ async function person(id) {
   const s = await load(`p/${String(shardOf(id)).padStart(2, "0")}.json`);
   return s[id];
 }
-const deathTxt = p => p.d ? (p.est ? `نحو ${AR(p.d)}هـ` : `ت ${AR(p.d)}هـ`) : "";
+// vefat: ت ١٥٠هـ / (ö. 150/767); tahminî: نحو … / [?]
+const yearTxt = (d, est) => LANG === "tr" ? `ö. ${d}/${CE(d)}${est ? " [?]" : ""}` : `${est ? "نحو" : "ت"} ${AR(d)}هـ`;
+const deathTxt = p => p.d ? (LANG === "tr" ? `(${yearTxt(p.d, p.est)})` : yearTxt(p.d, p.est)) : "";
+const plName = pl => pl ? (LANG === "tr" && pl.name_tr || pl.name) : "";
+const bookTitle = b => LANG === "tr" && b.title_tr || b.title;
+const bookAuthor = b => LANG === "tr" ? `${b.author_tr || b.author}${b.death ? ` (ö. ${b.death}/${CE(b.death)})` : ""}`
+  : `${b.author}${b.death ? ` (ت ${AR(b.death)}هـ)` : ""}`;
+// künye/sayfa atfı: "الجواهر المضية 3/122-126 (رقم 1270)" → "3/122-126 (nr. 1270)"
+const citeTr = c => { const t = String(c).replace(/[٠-٩]/g, d => "٠١٢٣٤٥٦٧٨٩".indexOf(d)); const i = t.search(/\d/);
+  return (i < 0 ? t : t.slice(i)).replace(/رقم/g, "nr.").replace(/ج\s*/g, "c. ").replace(/ص\s*/g, "s. ").trim(); };
 const who = id => P.get(id) || SALAF.get(id);
 const plink = (id, cls = "") => {
   const p = P.get(id);
   if (p) return `<a class="${cls}" href="#/p/${id}">${esc(p.name)}</a>`;
   const s = SALAF.get(id);
-  return s ? `<span class="salaf" title="من السلف قبل أبي حنيفة">${esc(s.name)}</span>` : esc(id);
+  return s ? `<span class="salaf" title="${T("من السلف قبل أبي حنيفة", "Ebû Hanîfe öncesi selef")}">${esc(s.name)}</span>` : esc(id);
 };
 
 // ---------- router ----------
@@ -53,7 +83,7 @@ async function route() {
   const view = $("#view");
   document.querySelectorAll("nav.tabs a").forEach(a => a.classList.toggle("on", a.dataset.v === (v || "home")));
   document.body.classList.toggle("home", !v);
-  view.innerHTML = `<p class="empty">جارٍ التحميل…</p>`;
+  view.innerHTML = `<p class="empty">${T("جارٍ التحميل…", "Yükleniyor…")}</p>`;
   try {
     if (v === "p") await viewPerson(view, decodeURIComponent(arg));
     else if (v === "net") await viewNet(view, decodeURIComponent(arg));
@@ -64,7 +94,7 @@ async function route() {
     else if (v === "search") await viewSearch(view);
     else await viewHome(view);
   } catch (e) {
-    view.innerHTML = `<p class="empty">تعذّر التحميل (${esc(e.message)}).</p>`;
+    view.innerHTML = `<p class="empty">${T("تعذّر التحميل", "Yüklenemedi")} (${esc(e.message)}).</p>`;
   }
   window.scrollTo(0, 0);
 }
@@ -83,11 +113,44 @@ function setupTheme() {
   mark();
 }
 
+// ---------- dil ----------
+const UI = {   // index.html'deki sabit metinler (data-i18n)
+  brand: ["طبقات الحنفية", "Hanefî Tabakātı"], home: ["الرئيسة", "Ana sayfa"], net: ["السلسلة", "Silsile"], map: ["الخريطة", "Harita"],
+  search: ["البحث المفصّل", "Detaylı arama"], about: ["عن المشروع", "Proje hakkında"], q: ["ابحث عن عَلَم…", "Âlim ara…"],
+  fabout: ["فهرس موحّد لتراجم الحنفية من تسعة من كتب الطبقات، بمواضعها في الكتب، وشيوخ كل عَلَم وتلاميذه، والبلدان التي ارتبط بها.",
+    "Dokuz tabakāt kitabındaki Hanefî biyografilerinin birleşik dizini: her âlimin kitaplardaki yerleri, hocaları, talebeleri ve bağlı olduğu şehirler."],
+  links: ["روابط", "Bağlantılar"], fnet: ["سلسلة الشيوخ والتلاميذ", "Hoca–talebe silsilesi"], fmap: ["خريطة البلدان", "Şehirler haritası"],
+  fabout2: ["عن المشروع والمصادر", "Proje ve kaynaklar"], open: ["المصادر المفتوحة", "Açık kaynaklar"],
+  coords: ["الإحداثيات: مشروع الثريا (CC BY 4.0)", "Koordinatlar: al-Thurayya (CC BY 4.0)"], maps: ["الخرائط: Natural Earth", "Haritalar: Natural Earth"],
+};
+function applyLang() {
+  const root = document.documentElement;
+  root.lang = LANG; root.dir = LANG === "ar" ? "rtl" : "ltr";
+  document.title = UI.brand[LANG === "ar" ? 0 : 1];
+  document.querySelectorAll("[data-i18n]").forEach(el => { const v = UI[el.dataset.i18n]; if (v) el.textContent = v[LANG === "ar" ? 0 : 1]; });
+  document.querySelectorAll("[data-i18n-ph]").forEach(el => { const v = UI[el.dataset.i18nPh]; if (v) el.placeholder = v[LANG === "ar" ? 0 : 1]; });
+  document.querySelectorAll(".lang button").forEach(b => b.classList.toggle("on", b.dataset.l === LANG));
+}
+function setupLang() {
+  document.querySelectorAll(".lang button").forEach(b => b.addEventListener("click", () => {
+    if (b.dataset.l === LANG) return;
+    LANG = b.dataset.l;
+    try { localStorage.setItem("lang", LANG); } catch (e) {}
+    applyLang(); route();
+  }));
+  applyLang();
+}
+
 // ---------- search ----------
+// Arapça harfle yazılırsa Arapça adda, Latin harfle yazılırsa Türkçe adda arar
+const matcher = q => {
+  if (/[\u0600-\u06ff]/.test(q)) { const toks = norm(q).split(" ").filter(Boolean); return toks.length ? p => toks.every(t => p.key.includes(t)) : null; }
+  const toks = fold(q).split(" ").filter(Boolean); return toks.length ? p => toks.every(t => p.tkey.includes(t)) : null;
+};
 const findPersons = (q, n = 30) => {
-  const toks = norm(q).split(" ").filter(Boolean);
-  if (!toks.length) return [];
-  return IDX.filter(p => toks.every(t => p.key.includes(t)))
+  const m = matcher(q);
+  if (!m) return [];
+  return IDX.filter(m)
     .sort((a, b) => (b.n + b.nt + b.ns) - (a.n + a.nt + a.ns)).slice(0, n);
 };
 function setupSearch(q, onEnter) {
@@ -96,7 +159,7 @@ function setupSearch(q, onEnter) {
   let sel = -1, hits = [];
   const render = () => {
     box.innerHTML = hits.map((p, i) => `<a href="#/p/${p.id}" class="${i === sel ? "sel" : ""}"><span>${esc(p.name)}</span><span class="d">${deathTxt(p)}</span></a>`).join("")
-      + (hits.length ? `<a href="#/search" data-q="1"><span>كل النتائج في البحث المفصّل…</span></a>` : "");
+      + (hits.length ? `<a href="#/search" data-q="1"><span>${T("كل النتائج في البحث المفصّل…", "Tüm sonuçlar detaylı aramada…")}</span></a>` : "");
     box.hidden = !hits.length;
   };
   q.addEventListener("input", () => { sel = -1; hits = findPersons(q.value); render(); });
@@ -152,31 +215,33 @@ function ebru() {
 // altın silsile: Ebû Hanîfe'den geç dönem bir âlime, asırlar cetveli üzerinde
 const STAR8 = (x, y, r) => { const p = []; for (let i = 0; i < 16; i++) { const a = Math.PI / 8 * i, rr = i % 2 ? r * .72 : r; p.push(`${(x + rr * Math.sin(a)).toFixed(1)},${(y - rr * Math.cos(a)).toFixed(1)}`); } return p.join(" "); };
 function silsile(host, data, pick) {
-  const chain = data.chains[pick].map(id => ({ id, name: data.names[id] || who(id).name, d: who(id)?.d }))
+  const names = LANG === "tr" ? data.names_tr || {} : data.names;
+  const chain = data.chains[pick].map(id => ({ id, name: names[id] || (LANG === "tr" ? who(id)?.trs : who(id)?.name), d: who(id)?.d }))
     .filter(n => n.d);
   const W = Math.max(host.clientWidth, 720), H = 200, mid = 88, pad = 60;
   const y0 = 100 * Math.floor((chain[0].d - 20) / 100), y1 = Math.max(y0 + 300, 100 * Math.ceil((chain[chain.length - 1].d + 30) / 100));
-  const X = d => W - pad - (d - y0) / (y1 - y0) * (W - 2 * pad);   // sağdan sola: eskiden yeniye
+  const rtl = LANG === "ar", X = d => { const f = (d - y0) / (y1 - y0) * (W - 2 * pad); return rtl ? W - pad - f : pad + f; };   // eskiden yeniye: ar sağdan sola, tr soldan sağa
   const pts = chain.map((n, i) => ({ ...n, x: X(n.d), y: mid + Math.sin(i * 1.3) * 10 }));
   // iplik: noktalardan geçen yumuşak eğri
-  let path = `M${pts[0].x + 40},${mid} L${pts[0].x},${pts[0].y}`;
+  let path = `M${pts[0].x + (rtl ? 40 : -40)},${mid} L${pts[0].x},${pts[0].y}`;
   for (let i = 1; i < pts.length; i++) { const a = pts[i - 1], b = pts[i], cx = (a.x + b.x) / 2;
     path += ` C${cx},${a.y + (i % 2 ? 26 : -26)} ${cx},${b.y + (i % 2 ? -26 : 26)} ${b.x},${b.y}`; }
   const ticks = []; for (let t = y0; t <= y1; t += 50) { const x = X(t);
-    ticks.push(`<line x1="${x}" x2="${x}" y1="${H - 26}" y2="${H - (t % 100 ? 30 : 36)}" />${t % 100 ? "" : `<text x="${x}" y="${H - 8}">${AR(t)}هـ</text>`}`); }
+    ticks.push(`<line x1="${x}" x2="${x}" y1="${H - 26}" y2="${H - (t % 100 ? 30 : 36)}" />${t % 100 ? "" : `<text x="${x}" y="${H - 8}">${LANG === "tr" ? `${t}/${CE(t)}` : `${AR(t)}هـ`}</text>`}`); }
   host.innerHTML = `<svg class="thread" viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" aria-hidden="true">
       <g class="ruler"><line x1="${pad - 20}" x2="${W - pad + 20}" y1="${H - 26}" y2="${H - 26}"/>${ticks.join("")}</g>
       <path class="gold" d="${path}" pathLength="1"/><path class="gold thin" d="${path}" transform="translate(0 3)" pathLength="1"/>
       ${pts.map((p, i) => `<g class="bead${i === 0 || i === pts.length - 1 ? " end" : ""}" style="--i:${i}">
         <polygon points="${STAR8(p.x, p.y, i === 0 || i === pts.length - 1 ? 12 : 8)}"/><circle cx="${p.x}" cy="${p.y}" r="${i === 0 || i === pts.length - 1 ? 3.2 : 2.2}"/></g>`).join("")}
       <g class="leads"></g></svg>
-    ${pts.map((p, i) => `<a class="nm${i === 0 || i === pts.length - 1 ? " end" : ""}" href="#/p/${p.id}" style="--i:${i}"><b>${esc(p.name)}</b><span class="num">${AR(p.d)}</span></a>`).join("")}`;
+    ${pts.map((p, i) => `<a class="nm${i === 0 || i === pts.length - 1 ? " end" : ""}" href="#/p/${p.id}" style="--i:${i}"><b>${esc(p.name)}</b><span class="num">${LANG === "tr" ? `ö. ${p.d}/${CE(p.d)}` : AR(p.d)}</span></a>`).join("")}`;
   // adları çakışmayacak şekilde üst/alt kulvarlara yerleştir
   const lanes = [-30, 26, -62, 58], edge = lanes.map(() => Infinity), leads = [];
   host.querySelectorAll("a.nm").forEach((a, i) => { const p = pts[i], w = a.offsetWidth, h = a.offsetHeight;
-    let L = lanes.findIndex((_, k) => p.x + w / 2 + 6 < edge[k]); if (L < 0) L = edge.indexOf(Math.max(...edge));
+    const lead = rtl ? p.x + w / 2 : -(p.x - w / 2);   // soldan sağa dizilişte eksen ters çevrilir
+    let L = lanes.findIndex((_, k) => lead + 6 < edge[k]); if (L < 0) L = edge.indexOf(Math.max(...edge));
     if (i === 0 || i === pts.length - 1) L = L % 2 ? 1 : 0;
-    edge[L] = p.x - w / 2;
+    edge[L] = rtl ? p.x - w / 2 : -(p.x + w / 2);
     const top = lanes[L] < 0 ? p.y + lanes[L] - h / 2 : p.y + lanes[L] - h / 2 + 4;
     a.style.left = `${p.x - w / 2}px`; a.style.top = `${Math.max(0, top)}px`;
     if (L > 1) leads.push(`<line x1="${p.x}" x2="${p.x}" y1="${p.y + (lanes[L] < 0 ? -10 : 10)}" y2="${lanes[L] < 0 ? top + h : top}"/>`); });
@@ -206,12 +271,13 @@ const ILL = {
 let EXC;
 const excerpts = async () => EXC || (EXC = await load("excerpts.json"));
 function pcard(p, ex, PL) {
-  const pl = p.place && PL ? PL.get(p.place)?.name : "";
+  const pl = p.place && PL ? plName(PL.get(p.place)) : "";
   const lq = [deathTxt(p), pl].filter(Boolean).join(" · ");
-  return `<a class="pcard" href="#/p/${p.id}"><h3>${esc(p.name)}</h3>${lq ? `<span class="lq num">${esc(lq)}</span>` : ""}
-    ${ex ? `<p class="ex">${esc(ex)}</p>` : ""}
-    <span class="ft"><span class="badges num"><span>${AR(p.n)} ${p.n > 1 ? "مصادر" : "مصدر"}</span>${p.nt ? `<span>${AR(p.nt)} شيوخ</span>` : ""}${p.ns ? `<span>${AR(p.ns)} تلاميذ</span>` : ""}</span>
-    <span class="go">قراءة الترجمة ←</span></span></a>`;
+  return `<a class="pcard" href="#/p/${p.id}"><h3>${esc(p.name)}</h3>${LANG === "tr" ? `<span class="arn" lang="ar" dir="rtl">${esc(p.ar)}</span>` : ""}
+    ${lq ? `<span class="lq num">${esc(lq)}</span>` : ""}
+    ${ex ? `<p class="ex" lang="ar" dir="rtl">${esc(ex)}</p>` : ""}
+    <span class="ft"><span class="badges num"><span>${AR(p.n)} ${T(p.n > 1 ? "مصادر" : "مصدر", "kaynak")}</span>${p.nt ? `<span>${AR(p.nt)} ${T("شيوخ", "hoca")}</span>` : ""}${p.ns ? `<span>${AR(p.ns)} ${T("تلاميذ", "talebe")}</span>` : ""}</span>
+    <span class="go">${T("قراءة الترجمة ←", "Biyografi →")}</span></span></a>`;
 }
 async function cardGrid(host, list, step = 36) {
   const [EX, PL] = await Promise.all([excerpts(), placesById()]);
@@ -222,7 +288,7 @@ async function cardGrid(host, list, step = 36) {
   const next = () => {
     grid.insertAdjacentHTML("beforeend", list.slice(shown, shown + step).map(p => pcard(p, EX[p.id], PL)).join(""));
     shown += step;
-    more.innerHTML = shown < list.length ? `<button type="button" class="btn gold">المزيد (${AR(list.length - shown)})</button>` : "";
+    more.innerHTML = shown < list.length ? `<button type="button" class="btn gold">${T("المزيد", "Daha fazla")} (${AR(list.length - shown)})</button>` : "";
   };
   more.addEventListener("click", e => { if (e.target.closest("button")) next(); });
   next();
@@ -239,60 +305,60 @@ async function viewHome(view) {
     const ids = [...new Set(pl.people.filter(([, k]) => !kinds || kinds.includes(k)).map(x => x[0]))];
     return ids.filter(id => P.has(id)).sort((a, b) => (P.get(b).n + P.get(b).ns) - (P.get(a).n + P.get(a).ns)); };
   const COLL = [
-    ["أصحاب أبي حنيفة", studentsOf("jws1"), "#/net/jws1"],
-    ["تلاميذ أبي يوسف", studentsOf("jw1825"), "#/net/jw1825"],
-    ["تلاميذ الإمام محمد", studentsOf("jw1270"), "#/net/jw1270"],
-    ["تلاميذ أبي الحسن الكرخي", studentsOf("jw894"), "#/net/jw894"],
-    ["تلاميذ شمس الأئمة الحلواني", studentsOf("jw821"), "#/net/jw821"],
-    ["علماء سمرقند", atPlace("SAMARQAND_670E396N_S"), "#/map/SAMARQAND_670E396N_S"],
-    ["قضاة القاهرة ومدرّسوها", atPlace("QAHIRA_312E300N_S", ["office"]), "#/map/QAHIRA_312E300N_S"],
+    [T("أصحاب أبي حنيفة", "Ebû Hanîfe’nin ashâbı"), studentsOf("jws1"), "#/net/jws1"],
+    [T("تلاميذ أبي يوسف", "Ebû Yûsuf’un talebeleri"), studentsOf("jw1825"), "#/net/jw1825"],
+    [T("تلاميذ الإمام محمد", "İmam Muhammed’in talebeleri"), studentsOf("jw1270"), "#/net/jw1270"],
+    [T("تلاميذ أبي الحسن الكرخي", "Kerhî’nin talebeleri"), studentsOf("jw894"), "#/net/jw894"],
+    [T("تلاميذ شمس الأئمة الحلواني", "Şemsüleimme el-Halvânî’nin talebeleri"), studentsOf("jw821"), "#/net/jw821"],
+    [T("علماء سمرقند", "Semerkant âlimleri"), atPlace("SAMARQAND_670E396N_S"), "#/map/SAMARQAND_670E396N_S"],
+    [T("قضاة القاهرة ومدرّسوها", "Kahire kadıları ve müderrisleri"), atPlace("QAHIRA_312E300N_S", ["office"]), "#/map/QAHIRA_312E300N_S"],
   ].filter(c => c[1].length);
   const bk = Object.keys(BOOKS).length;
   view.innerHTML = `
     <section class="hero" style="margin:0">${ebru()}<div class="inner">
       <div class="txt">
-        <p class="kicker">تراجم الحنفية من كتب الطبقات، في فهرسٍ واحد</p>
-        <h1>طبقات الحنفية</h1>
+        <p class="kicker">${T("تراجم الحنفية من كتب الطبقات، في فهرسٍ واحد", "Tabakāt kitaplarındaki Hanefî biyografileri, tek bir dizinde")}</p>
+        <h1>${T("طبقات الحنفية", "Hanefî Tabakātı")}</h1>
         <form class="hsearch" id="hf" autocomplete="off" role="search">
           <div class="hrow">
-            <div class="search"><input id="hq" name="q" type="search" placeholder="ابحث عن عَلَم… (مثل: السرخسي، أبو حفص الكبير)" aria-label="بحث"><div class="results" hidden></div></div>
-            <button type="button" class="advbtn" aria-expanded="false" aria-controls="hadv"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M7 12h10M10 18h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>البحث المفصّل</button>
+            <div class="search"><input id="hq" name="q" type="search" placeholder="${T("ابحث عن عَلَم… (مثل: السرخسي، أبو حفص الكبير)", "Âlim ara… (ör. Serahsî, Ebû Hafs el-Kebîr, السرخسي)")}" aria-label="${T("بحث", "Ara")}"><div class="results" hidden></div></div>
+            <button type="button" class="advbtn" aria-expanded="false" aria-controls="hadv"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M7 12h10M10 18h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>${T("البحث المفصّل", "Detaylı arama")}</button>
           </div>
           <div class="sform advpanel" id="hadv" hidden>${await searchFields()}
-            <div class="advact"><button type="reset" class="btn ghost">مسح</button><button type="submit" class="btn gold">اعرض النتائج</button></div></div>
+            <div class="advact"><button type="reset" class="btn ghost">${T("مسح", "Temizle")}</button><button type="submit" class="btn gold">${T("اعرض النتائج", "Sonuçları göster")}</button></div></div>
         </form>
       </div>
       <figure class="silsile">
-        <figcaption><span class="lbl">سلسلة التفقّه</span> <span id="scap"></span></figcaption>
+        <figcaption><span class="lbl">${T("سلسلة التفقّه", "Fıkıh silsilesi")}</span> <span id="scap"></span></figcaption>
         <div class="scroll"><div id="thread"></div></div>
-        <div class="sbar"><button type="button" class="btn ghost" id="snext">↻ سلسلة أخرى</button><a class="btn ghost" id="sopen" href="#/net/jws1">افتحها في السلسلة ←</a></div>
+        <div class="sbar"><button type="button" class="btn ghost" id="snext">↻ ${T("سلسلة أخرى", "Başka bir silsile")}</button><a class="btn ghost" id="sopen" href="#/net/jws1">${T("افتحها في السلسلة ←", "Silsilede aç →")}</a></div>
       </figure>
       <div class="tiles4 num">
-        <a class="t4 c1" href="#/search"><span class="n">${AR(IDX.length)}</span>${ILL.sarik}<span class="l">الأعلام</span></a>
-        <a class="t4 c2" href="#/map"><span class="n">${AR(places.length)}</span>${ILL.gul}<span class="l">البلدان</span></a>
-        <a class="t4 c3" href="#/net/jws1"><span class="n">${AR(g.edges.length)}</span>${ILL.silsile}<span class="l">صلات الشيوخ والتلاميذ</span></a>
-        <a class="t4 c4" href="#books"><span class="n">${AR(bk)}</span>${ILL.kitap}<span class="l">كتب الطبقات</span></a>
+        <a class="t4 c1" href="#/search"><span class="n">${AR(IDX.length)}</span>${ILL.sarik}<span class="l">${T("الأعلام", "Âlimler")}</span></a>
+        <a class="t4 c2" href="#/map"><span class="n">${AR(places.length)}</span>${ILL.gul}<span class="l">${T("البلدان", "Şehirler")}</span></a>
+        <a class="t4 c3" href="#/net/jws1"><span class="n">${AR(g.edges.length)}</span>${ILL.silsile}<span class="l">${T("صلات الشيوخ والتلاميذ", "Hoca–talebe bağları")}</span></a>
+        <a class="t4 c4" href="#books"><span class="n">${AR(bk)}</span>${ILL.kitap}<span class="l">${T("كتب الطبقات", "Tabakāt kitapları")}</span></a>
       </div></div></section>
     <div class="wrap" id="hres"></div>
     <hr class="divider">
-    ${secHead("مجموعات مختارة", "حلقات العلم كما رسمتها التراجم")}
+    ${secHead(T("مجموعات مختارة", "Seçkiler"), T("حلقات العلم كما رسمتها التراجم", "Biyografilerin çizdiği ilim halkaları"))}
     <div class="coll">${COLL.map(([t, ids, href]) => `<div class="ccard"><h3>${t}</h3>${ORN.medal}
       <ul>${ids.slice(0, 8).map(id => `<li>${plink(id)}</li>`).join("")}</ul>
       <a class="go" href="${href}" aria-label="${t}">${ORN.arrow}</a></div>`).join("")}</div>
     <div class="wrap">
-      ${secHead("أعلام مختارون", "من أكثر الأعلام ذكرًا في كتب الطبقات")}
+      ${secHead(T("أعلام مختارون", "Öne çıkan âlimler"), T("من أكثر الأعلام ذكرًا في كتب الطبقات", "Tabakāt kitaplarında en çok anılanlardan"))}
       <div id="feat"></div>
-      ${secHead("الأعلام بحسب قرن الوفاة")}
+      ${secHead(T("الأعلام بحسب قرن الوفاة", "Vefat yüzyılına göre âlimler"))}
       <div class="tiles num">${Object.keys(byC).map(Number).sort((a, b) => a - b).map(k =>
-        `<a class="tile" href="#/c/${k}"><b>القرن ${CENT[k] || AR(k)}</b><span>${AR(byC[k])} عَلَمًا</span></a>`).join("")}</div>
-      <div id="books">${secHead("كتب الطبقات", "المصادر التي جُمعت منها التراجم")}</div>
+        `<a class="tile" href="#/c/${k}"><b>${centName(k)}</b><span>${AR(byC[k])} ${T("عَلَمًا", "âlim")}</span></a>`).join("")}</div>
+      <div id="books">${secHead(T("كتب الطبقات", "Tabakāt kitapları"), T("المصادر التي جُمعت منها التراجم", "Biyografilerin derlendiği kaynaklar"))}</div>
       <div class="books">${Object.entries(BOOKS).map(([id, b]) => { const n = IDX.filter(p => p.books.includes(id)).length;
-        return `<a class="book" href="#/b/${id}"><b>${esc(b.title)}</b><span>${esc(b.author)}${b.death ? ` (ت ${AR(b.death)}هـ)` : ""}</span> <em class="num">· ${AR(n)} ترجمة</em></a>`; }).join("")}</div>
+        return `<a class="book" href="#/b/${id}"><b>${esc(bookTitle(b))}</b><span>${esc(bookAuthor(b))}</span> <em class="num">· ${AR(n)} ${T("ترجمة", "biyografi")}</em></a>`; }).join("")}</div>
       <div class="cta">
         <a href="#/search"><span class="ic"><svg viewBox="0 0 24 24"><path d="M4 6h16M7 12h10M10 18h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
-          <span><b>البحث المفصّل</b><span>ابحث بين ${AR(IDX.length)} عَلَمًا بالاسم والقرن والكتاب والبلد</span></span><span class="btn gold">ابدأ البحث</span></a>
+          <span><b>${T("البحث المفصّل", "Detaylı arama")}</b><span>${T(`ابحث بين ${AR(IDX.length)} عَلَمًا بالاسم والقرن والكتاب والبلد`, `${IDX.length} âlim arasında ada, yüzyıla, kitaba ve şehre göre arayın`)}</span></span><span class="btn gold">${T("ابدأ البحث", "Aramaya başla")}</span></a>
         <a href="#/map"><span class="ic"><svg viewBox="0 0 24 24"><path d="M12 21s-6-6.5-6-11a6 6 0 0 1 12 0c0 4.5-6 11-6 11Z" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="10" r="2" fill="currentColor"/></svg></span>
-          <span><b>خريطة البلدان</b><span>مواطن الأعلام ورحلاتهم وولاياتهم عبر القرون</span></span><span class="btn gold">افتح الخريطة</span></a>
+          <span><b>${T("خريطة البلدان", "Şehirler haritası")}</b><span>${T("مواطن الأعلام ورحلاتهم وولاياتهم عبر القرون", "Âlimlerin memleketleri, seyahatleri ve görev yerleri, yüzyıllar boyunca")}</span></span><span class="btn gold">${T("افتح الخريطة", "Haritayı aç")}</span></a>
       </div>
     </div>`;
   // arama: aynı kutu; "البحث المفصّل" süzgeçleri hemen altında açar, sonuçlar hero'nun altında
@@ -307,7 +373,9 @@ async function viewHome(view) {
   // silsile: her ziyarette başka bir halka dizisi
   let sp = Math.floor(Math.random() * CH.chains.length);
   const drawChain = () => { const c = silsile($("#thread"), CH, sp), a = c[0], z = c[c.length - 1];
-    $("#scap").innerHTML = `من ${esc(a.name)} (ت ${AR(a.d)}هـ) إلى ${esc(z.name)} (ت ${AR(z.d)}هـ): ${AR(c.length)} ${c.length <= 10 ? "حلقات" : "حلقةً"}، كلّ صلةٍ منها موثّقة في التراجم`;
+    $("#scap").innerHTML = LANG === "tr"
+      ? `${esc(a.name)} (ö. ${a.d}/${CE(a.d)}) ile ${esc(z.name)} (ö. ${z.d}/${CE(z.d)}) arasında ${c.length} halka; her bağ biyografilerde belgeli`
+      : `من ${esc(a.name)} (ت ${AR(a.d)}هـ) إلى ${esc(z.name)} (ت ${AR(z.d)}هـ): ${AR(c.length)} ${c.length <= 10 ? "حلقات" : "حلقةً"}، كلّ صلةٍ منها موثّقة في التراجم`;
     $("#sopen").href = `#/net/${z.id}`; };
   drawChain();
   $("#snext").addEventListener("click", () => { sp = (sp + 1 + Math.floor(Math.random() * (CH.chains.length - 1))) % CH.chains.length; drawChain(); });
@@ -330,14 +398,14 @@ async function viewHome(view) {
 async function viewList(view, kind, arg) {
   let title, sub, list;
   if (kind === "c") {
-    title = `أعلام القرن ${CENT[arg] || AR(arg)}`; sub = "مرتّبون على سنة الوفاة";
+    title = T(`أعلام القرن ${CENT[arg] || AR(arg)}`, `${centName(arg)} âlimleri`); sub = T("مرتّبون على سنة الوفاة", "Vefat yılına göre sıralı");
     list = IDX.filter(p => century(p.d) === arg).sort((a, b) => a.d - b.d);
   } else {
-    const b = BOOKS[arg]; if (!b) { view.innerHTML = `<p class="empty">لا يوجد هذا الكتاب.</p>`; return; }
-    title = b.title; sub = `${b.author}${b.death ? ` (ت ${AR(b.death)}هـ)` : ""}`;
+    const b = BOOKS[arg]; if (!b) { view.innerHTML = `<p class="empty">${T("لا يوجد هذا الكتاب.", "Böyle bir kitap yok.")}</p>`; return; }
+    title = bookTitle(b); sub = bookAuthor(b);
     list = IDX.filter(p => p.books.includes(arg)).sort((a, b) => (a.d || 9999) - (b.d || 9999));
   }
-  view.innerHTML = `<div class="pagehead"><h1>${esc(title)}</h1><span class="c num">${AR(list.length)} عَلَمًا</span></div><p class="lede">${esc(sub)}</p><div id="lst"></div>`;
+  view.innerHTML = `<div class="pagehead"><h1>${esc(title)}</h1><span class="c num">${AR(list.length)} ${T("عَلَمًا", "âlim")}</span></div><p class="lede">${esc(sub)}</p><div id="lst"></div>`;
   await cardGrid($("#lst"), list);
 }
 
@@ -345,13 +413,13 @@ async function viewList(view, kind, arg) {
 const SEARCH = { q: "", c0: "", c1: "", book: "", place: "", net: false };
 async function searchFields() {
   const places = await load("places.json");
-  const top = places.filter(p => p.n >= 5).sort((a, b) => a.name.localeCompare(b.name, "ar"));
-  const opts = [...Array(14)].map((_, i) => `<option value="${i + 1}">${CENT[i + 1]}</option>`).join("");
-  return `<label>من القرن<select name="c0"><option value="">—</option>${opts}</select></label>
-      <label>إلى القرن<select name="c1"><option value="">—</option>${opts}</select></label>
-      <label>الكتاب<select name="book"><option value="">كل الكتب</option>${Object.entries(BOOKS).map(([id, b]) => `<option value="${id}">${esc(b.title)}</option>`).join("")}</select></label>
-      <label>البلد<select name="place"><option value="">كل البلدان</option>${top.map(p => `<option value="${esc(p.id)}">${esc(p.name)}</option>`).join("")}</select></label>
-      <label class="chk"><input type="checkbox" name="net"> له شيوخ أو تلاميذ في السلسلة</label>`;
+  const top = places.filter(p => p.n >= 5).sort((a, b) => plName(a).localeCompare(plName(b), LANG));
+  const opts = [...Array(14)].map((_, i) => `<option value="${i + 1}">${LANG === "tr" ? centName(i + 1).replace(" yüzyıl", "") : CENT[i + 1]}</option>`).join("");
+  return `<label>${T("من القرن", "Yüzyıldan (hicrî)")}<select name="c0"><option value="">—</option>${opts}</select></label>
+      <label>${T("إلى القرن", "Yüzyıla")}<select name="c1"><option value="">—</option>${opts}</select></label>
+      <label>${T("الكتاب", "Kitap")}<select name="book"><option value="">${T("كل الكتب", "Tüm kitaplar")}</option>${Object.entries(BOOKS).map(([id, b]) => `<option value="${id}">${esc(bookTitle(b))}</option>`).join("")}</select></label>
+      <label>${T("البلد", "Şehir")}<select name="place"><option value="">${T("كل البلدان", "Tüm şehirler")}</option>${top.map(p => `<option value="${esc(p.id)}">${esc(plName(p))}</option>`).join("")}</select></label>
+      <label class="chk"><input type="checkbox" name="net"> ${T("له شيوخ أو تلاميذ في السلسلة", "Silsilede hocası ya da talebesi olanlar")}</label>`;
 }
 // formu SEARCH'e yükle, süzgeçleri uygula, sonuçları host'a kartlarla yaz
 function bindSearch(f, host, live = () => true) {
@@ -360,16 +428,16 @@ function bindSearch(f, host, live = () => true) {
   const run = async () => {
     const my = ++gen, PL = await placesById();
     Object.keys(SEARCH).forEach(k => { const el = f.elements[k]; if (el) SEARCH[k] = el.type === "checkbox" ? el.checked : el.value; });
-    const toks = norm(SEARCH.q).split(" ").filter(Boolean);
+    const m = matcher(SEARCH.q);
     const c0 = +SEARCH.c0 || 0, c1 = +SEARCH.c1 || 99;
     const atPl = SEARCH.place ? new Set((PL.get(SEARCH.place)?.people || []).map(x => x[0])) : null;
-    const res = IDX.filter(p => (!toks.length || toks.every(t => p.key.includes(t)))
+    const res = IDX.filter(p => (!m || m(p))
       && (!(SEARCH.c0 || SEARCH.c1) || (century(p.d) >= c0 && century(p.d) <= c1))
       && (!SEARCH.book || p.books.includes(SEARCH.book))
       && (!atPl || atPl.has(p.id)) && (!SEARCH.net || p.nt || p.ns))
-      .sort((a, b) => toks.length ? (b.n + b.nt + b.ns) - (a.n + a.nt + a.ns) : (a.d || 9999) - (b.d || 9999));
+      .sort((a, b) => m ? (b.n + b.nt + b.ns) - (a.n + a.nt + a.ns) : (a.d || 9999) - (b.d || 9999));
     if (my !== gen) return;
-    host.innerHTML = `<p class="legend num">${AR(res.length)} نتيجة</p>`;
+    host.innerHTML = `<p class="legend num">${AR(res.length)} ${T("نتيجة", "sonuç")}</p>`;
     await cardGrid(host, res);
   };
   f.addEventListener("input", () => { clearTimeout(timer); if (live()) timer = setTimeout(run, 200); });
@@ -377,9 +445,9 @@ function bindSearch(f, host, live = () => true) {
   return run;
 }
 async function viewSearch(view) {
-  view.innerHTML = `<div class="pagehead"><h1>البحث المفصّل</h1></div>
+  view.innerHTML = `<div class="pagehead"><h1>${T("البحث المفصّل", "Detaylı arama")}</h1></div>
     <form class="sform" id="sf" autocomplete="off">
-      <label class="wide">الاسم أو جزء منه<input name="q" type="search" placeholder="مثل: أبو بكر البلخي، النسفي، شمس الأئمة"></label>
+      <label class="wide">${T("الاسم أو جزء منه", "Ad ya da adın bir kısmı (Türkçe ya da Arapça)")}<input name="q" type="search" placeholder="${T("مثل: أبو بكر البلخي، النسفي، شمس الأئمة", "ör. Ebû Bekr el-Belhî, Nesefî, Şemsüleimme")}"></label>
       ${await searchFields()}
     </form><div id="sres"></div>`;
   bindSearch($("#sf"), $("#sres"))();
@@ -391,66 +459,71 @@ function relItem(r, subjName) {
   const ev = r.ev.map(([cite, snip, t]) => {
     let s = esc(snip); const tt = esc(t);
     if (tt && s.includes(tt)) s = s.replace(tt, `<mark>${tt}</mark>`);
-    return `<p><b>${esc(cite)}</b>: …${s}…</p>`;
+    return `<p><b>${esc(LANG === "tr" ? citeTr(cite) : cite)}</b>: <span lang="ar" dir="rtl">…${s}…</span></p>`;
   }).join("");
   return `<li><div class="row">${plink(r.id)}<span class="d num">${deathTxt(p)}</span>
-      ${p.salaf ? `<span class="tag weak">من السلف</span>` : ""}${r.rels.map(x => `<span class="tag">${REL[x] || esc(x)}</span>`).join("")}
-      ${r.weak ? `<span class="tag weak" title="ربط بالنسبة أو الشهرة وحدها">ترجيح</span>` : ""}
-      ${r.n > 1 ? `<span class="d num">${AR(r.n)} مواضع</span>` : ""}</div>
-    <details class="ev"><summary>الشاهد</summary>${ev}</details></li>`;
+      ${p.salaf ? `<span class="tag weak">${T("من السلف", "selef")}</span>` : ""}${r.rels.map(x => `<span class="tag">${REL[x] || esc(x)}</span>`).join("")}
+      ${r.weak ? `<span class="tag weak" title="${T("ربط بالنسبة أو الشهرة وحدها", "Yalnız nisbe ya da şöhretle eşleştirildi")}">${T("ترجيح", "tercih")}</span>` : ""}
+      ${r.n > 1 ? `<span class="d num">${AR(r.n)} ${T("مواضع", "atıf")}</span>` : ""}</div>
+    <details class="ev"><summary>${T("الشاهد", "Kanıt")}</summary>${ev}</details></li>`;
 }
 
 async function viewPerson(view, id) {
   if (SALAF.has(id)) { location.replace(`#/net/${id}`); return; }
   const p = P.get(id), d = await person(id);
-  if (!p || !d) { view.innerHTML = `<p class="empty">لا يوجد هذا العلم.</p>`; return; }
+  if (!p || !d) { view.innerHTML = `<p class="empty">${T("لا يوجد هذا العلم.", "Böyle bir âlim yok.")}</p>`; return; }
   const extT = d.ext.filter(x => x[2] !== "student"), extS = d.ext.filter(x => x[2] === "student");
   const extList = xs => {
     const seen = new Map();
     xs.forEach(x => { if (!seen.has(x[0])) seen.set(x[0], x); });
-    return [...seen.values()].map(x => `<li class="ext">${esc(x[0])} <span class="d num">(ت ${AR(x[1])}هـ)</span> <span class="tag weak">${REL[x[3]] || ""}</span></li>`).join("");
+    return [...seen.values()].map(x => `<li class="ext">${esc(LANG === "tr" && x[5] || x[0])} ${x[1] ? `<span class="d num">(${yearTxt(x[1])})</span>` : ""} <span class="tag weak">${REL[x[3]] || ""}</span></li>`).join("");
   };
   const byKind = {};
   d.places.forEach(([pl, k, cite, t]) => (byKind[k] = byKind[k] || []).push([pl, cite, t]));
   view.innerHTML = `
     <div class="phead">${ORN.kose("tr")}${ORN.kose("tl")}${ORN.kose("br")}${ORN.kose("bl")}
-      <h1>${esc(d.name)}</h1>
-      <div class="death num">${d.death ? esc(d.death) : p.d ? `نحو ${AR(p.d)}هـ <span class="est">(تقدير من طبقة شيوخه وتلاميذه)</span>` : `<span class="est">لم تُذكر وفاته</span>`}</div>
-      <div class="facts num"><span><b>${AR(d.sources.length)}</b> ${d.sources.length > 1 ? "مصادر" : "مصدر"}</span>
-        <span><b>${AR(d.teachers.length)}</b> شيوخ</span><span><b>${AR(d.students.length)}</b> تلاميذ</span>
-        <span><b>${AR(new Set(d.places.map(x => x[0])).size)}</b> بلدان</span></div>
-      <div class="filters">${p.nt || p.ns ? `<a class="btn" href="#/net/${id}">سلسلة شيوخه وتلاميذه</a>` : ""}
-        <button type="button" class="btn" data-go="texts">نصوص الترجمة</button></div>
+      ${LANG === "tr" && d.trs && !(d.tr || "").includes(d.trs) ? `<div class="known">${esc(d.trs)}</div>` : ""}
+      <h1>${esc(LANG === "tr" ? d.tr || d.name : d.name)}</h1>
+      ${LANG === "tr" ? `<div class="arn big" lang="ar" dir="rtl">${esc(d.name)}</div>` : ""}
+      <div class="death num">${LANG === "tr"
+        ? (p.d ? `(${yearTxt(p.d, p.est)})${p.est ? ` <span class="est">vefatı hoca ve talebelerinin tabakasından tahmin edildi</span>` : ""}` : `<span class="est">vefatı zikredilmemiş</span>`)
+        : (d.death ? esc(d.death) : p.d ? `نحو ${AR(p.d)}هـ <span class="est">(تقدير من طبقة شيوخه وتلاميذه)</span>` : `<span class="est">لم تُذكر وفاته</span>`)}</div>
+      <div class="facts num"><span><b>${AR(d.sources.length)}</b> ${T(d.sources.length > 1 ? "مصادر" : "مصدر", "kaynak")}</span>
+        <span><b>${AR(d.teachers.length)}</b> ${T("شيوخ", "hoca")}</span><span><b>${AR(d.students.length)}</b> ${T("تلاميذ", "talebe")}</span>
+        <span><b>${AR(new Set(d.places.map(x => x[0])).size)}</b> ${T("بلدان", "şehir")}</span></div>
+      <div class="filters">${p.nt || p.ns ? `<a class="btn" href="#/net/${id}">${T("سلسلة شيوخه وتلاميذه", "Hoca–talebe silsilesi")}</a>` : ""}
+        <button type="button" class="btn" data-go="texts">${T("نصوص الترجمة", "Biyografi metinleri")}</button></div>
     </div>
-    <section><h2>مواضع الترجمة<span class="c num">${AR(d.sources.length)}</span></h2>
-      <ul class="srcs num">${d.sources.map(([b, cite, h]) => `<li>${esc(cite)}<span class="h">${esc(h)}</span></li>`).join("")}</ul></section>
+    <section><h2>${T("مواضع الترجمة", "Kaynaklardaki yerleri")}<span class="c num">${AR(d.sources.length)}</span></h2>
+      <ul class="srcs num">${d.sources.map(([b, cite, h]) => `<li>${LANG === "tr" && BOOKS[b] ? `<b class="bt">${esc(bookTitle(BOOKS[b]))}</b>, ${esc(citeTr(cite))}` : esc(cite)}<span class="h" lang="ar" dir="rtl">${esc(h)}</span></li>`).join("")}</ul></section>
     <div class="grid2">
-      <section><h2>شيوخه<span class="c num">${AR(d.teachers.length)}</span></h2>
-        ${d.teachers.length ? `<ul class="rel">${d.teachers.map(r => relItem(r)).join("")}</ul>` : `<p class="empty">لم يُذكر له شيخ من المترجمين.</p>`}
-        ${extT.length ? `<h3 style="margin-top:1rem;font-size:1.05rem">شيوخ من غير المترجمين في هذه الكتب</h3><ul class="rel">${extList(extT)}</ul>` : ""}
+      <section><h2>${T("شيوخه", "Hocaları")}<span class="c num">${AR(d.teachers.length)}</span></h2>
+        ${d.teachers.length ? `<ul class="rel">${d.teachers.map(r => relItem(r)).join("")}</ul>` : `<p class="empty">${T("لم يُذكر له شيخ من المترجمين.", "Biyografisi bulunanlardan bir hocası zikredilmemiş.")}</p>`}
+        ${extT.length ? `<h3 style="margin-top:1rem;font-size:1.05rem">${T("شيوخ من غير المترجمين في هذه الكتب", "Bu kitaplarda biyografisi olmayan hocaları")}</h3><ul class="rel">${extList(extT)}</ul>` : ""}
       </section>
-      <section><h2>تلاميذه<span class="c num">${AR(d.students.length)}</span></h2>
-        ${d.students.length ? `<ul class="rel">${d.students.map(r => relItem(r)).join("")}</ul>` : `<p class="empty">لم يُذكر له تلميذ من المترجمين.</p>`}
-        ${extS.length ? `<h3 style="margin-top:1rem;font-size:1.05rem">رواة عنه من غير المترجمين</h3><ul class="rel">${extList(extS)}</ul>` : ""}
+      <section><h2>${T("تلاميذه", "Talebeleri")}<span class="c num">${AR(d.students.length)}</span></h2>
+        ${d.students.length ? `<ul class="rel">${d.students.map(r => relItem(r)).join("")}</ul>` : `<p class="empty">${T("لم يُذكر له تلميذ من المترجمين.", "Biyografisi bulunanlardan bir talebesi zikredilmemiş.")}</p>`}
+        ${extS.length ? `<h3 style="margin-top:1rem;font-size:1.05rem">${T("رواة عنه من غير المترجمين", "Ondan rivayet eden diğerleri")}</h3><ul class="rel">${extList(extS)}</ul>` : ""}
       </section>
     </div>
-    <section id="psec"><h2>البلدان<span class="c num">${AR(new Set(d.places.map(x => x[0])).size)}</span></h2>
+    <section id="psec"><h2>${T("البلدان", "Şehirler")}<span class="c num">${AR(new Set(d.places.map(x => x[0])).size)}</span></h2>
       ${d.places.length ? `<div class="grid2"><ul class="places" id="plist"></ul><div class="mapwrap mini" id="pmap"></div></div>
-        <p class="legend">الخط المتقطع يصل البلدان على ترتيب ورودها في الترجمة (المولد والنسبة أولًا، والوفاة والمدفن آخرًا)، وهو تقريب لا تأريخ.</p>`
-        : `<p class="empty">لم يُستخرج له بلد.</p>`}
+        <p class="legend">${T("الخط المتقطع يصل البلدان على ترتيب ورودها في الترجمة (المولد والنسبة أولًا، والوفاة والمدفن آخرًا)، وهو تقريب لا تأريخ.",
+          "Kesikli çizgi şehirleri biyografideki sırasıyla birleştirir (önce doğum ve nisbe, sonra vefat ve defin); bir yaklaşımdır, kronoloji değildir.")}</p>`
+        : `<p class="empty">${T("لم يُستخرج له بلد.", "Şehir tespit edilemedi.")}</p>`}
     </section>
-    <section id="texts"><h2>نصوص الترجمة<span class="c num">${AR(d.sources.length)}</span>
-        ${d.sources.length > 1 ? `<button type="button" class="btn small" id="openall">فتح الكل</button>` : ""}</h2>
-      <p class="legend">نص الترجمة في كل كتاب كما هو في الطبعة المعتمدة، مع حواشي المحقق.</p>
-      ${d.sources.map(([b, cite, h], k) => `<details class="src" data-k="${k}"><summary><span class="bk num">${esc(cite)}</span>
-        <span class="ct">${esc(h)}</span></summary><div class="body"><p class="empty">جارٍ التحميل…</p></div></details>`).join("")}
+    <section id="texts"><h2>${T("نصوص الترجمة", "Biyografi metinleri")}<span class="c num">${AR(d.sources.length)}</span>
+        ${d.sources.length > 1 ? `<button type="button" class="btn small" id="openall">${T("فتح الكل", "Tümünü aç")}</button>` : ""}</h2>
+      <p class="legend">${T("نص الترجمة في كل كتاب كما هو في الطبعة المعتمدة، مع حواشي المحقق.", "Her kitaptaki biyografi metni, esas alınan neşirdeki hâliyle ve muhakkikin dipnotlarıyla (Arapça).")}</p>
+      ${d.sources.map(([b, cite, h], k) => `<details class="src" data-k="${k}"><summary><span class="bk num">${LANG === "tr" && BOOKS[b] ? `${esc(bookTitle(BOOKS[b]))}, ${esc(citeTr(cite))}` : esc(cite)}</span>
+        <span class="ct" lang="ar" dir="rtl">${esc(h)}</span></summary><div class="body" lang="ar" dir="rtl"><p class="empty">${T("جارٍ التحميل…", "Yükleniyor…")}</p></div></details>`).join("")}
     </section>`;
   setupTexts(id, d);
   if (!d.places.length) return;
   const PL = await placesById();
   $("#plist").innerHTML = KIND_ORDER.filter(k => byKind[k]).map(k => `<li><span class="k">${KIND[k]}</span>
     ${[...new Map(byKind[k].map(x => [x[0], x])).values()].map(([pl, cite]) =>
-      `<a href="#/map/${encodeURIComponent(pl)}" title="${esc(cite)}">${esc(PL.get(pl)?.name || pl)}</a>`).join("، ")}</li>`).join("");
+      `<a href="#/map/${encodeURIComponent(pl)}" title="${esc(cite)}">${esc(plName(PL.get(pl)) || pl)}</a>`).join(T("، ", ", "))}</li>`).join("");
   // مسار تقريبي: نسبة/أصل/مولد ← … ← وفاة/مدفن
   const seq = [];
   KIND_ORDER.forEach(k => (byKind[k] || []).forEach(([pl]) => { if (seq[seq.length - 1] !== pl) seq.push(pl); }));
@@ -473,14 +546,14 @@ function setupTexts(id, d) {
     el.dataset.done = 1;
     const all = await texts(id), k = +el.dataset.k, cite = d.sources[k][1];
     const t = all.find(x => x.cite === cite) || all[k];
-    $(".body", el).innerHTML = t ? renderEntry(t, `${k}`) : `<p class="empty">لا يوجد نص.</p>`;
+    $(".body", el).innerHTML = t ? renderEntry(t, `${k}`) : `<p class="empty">${T("لا يوجد نص.", "Metin yok.")}</p>`;
   };
   sec.querySelectorAll("details.src").forEach(el => el.addEventListener("toggle", () => { if (el.open) fill(el); }));
   const btn = $("#openall");
   if (btn) btn.addEventListener("click", () => {
     const els = [...sec.querySelectorAll("details.src")], open = !els.every(e => e.open);
     els.forEach(e => { e.open = open; });
-    btn.textContent = open ? "طي الكل" : "فتح الكل";
+    btn.textContent = open ? T("طي الكل", "Tümünü kapat") : T("فتح الكل", "Tümünü aç");
   });
 }
 const toArDigits = s => String(s).replace(/\d/g, c => "٠١٢٣٤٥٦٧٨٩"[c]);
@@ -505,7 +578,7 @@ function renderEntry(t, fid) {
   let html = `<div class="etitle">${esc(t.heading)}</div><div class="etext">${renderBlocks(main, fid, used)}</div>`;
   const notes = Object.entries(t.notes || {});
   if (notes.length || rest.length || (t.refs || []).length) {
-    html += `<div class="notes"><div class="label">حواشي المحقق</div>`;
+    html += `<div class="notes"><div class="label">${T("حواشي المحقق", "Muhakkik dipnotları")}</div>`;
     if ((t.refs || []).length) html += t.refs.map(r => `<p class="refs">${esc(r)}</p>`).join("");
     if (notes.length) html += `<ol>${notes.map(([n, v]) => `<li id="fn-${fid}-${esc(n)}" value="${parseInt(n) || ""}"><a href="#" class="back" data-fn="fr-${fid}-${esc(n)}" aria-label="ارجع إلى الموضع">${toArDigits(n)}</a> ${esc(v)}</li>`).join("")}</ol>`;
     if (rest.length) html += `<div class="extra">${renderBlocks(rest.join("\n\n"), fid, used)}</div>`;
@@ -537,11 +610,11 @@ const proj = (lon, lat) => [(lon - BB.lon0) * BB.c * BB.k, (BB.lat1 - lat) * BB.
 async function makeMap(host, opt = {}) {
   const base = await load("basemap.json");
   const W = base.width, H = base.height;
-  host.innerHTML = `<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMid meet" role="img" aria-label="خريطة">
+  host.innerHTML = `<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMid meet" role="img" aria-label="${T("خريطة", "Harita")}">
       <rect x="-5000" y="-5000" width="12000" height="12000" fill="var(--water)"/>
       <path class="land" d="${base.land}"/><path class="lake" d="${base.lakes}"/><path class="river" d="${base.rivers}"/>
       <g class="routes"></g><g class="pts"></g><g class="labs"></g></svg>
-    <div class="zoom"><button type="button" data-z="1.5" aria-label="تكبير">+</button><button type="button" data-z="0.667" aria-label="تصغير">−</button></div>`;
+    <div class="zoom"><button type="button" data-z="1.5" aria-label="${T("تكبير", "Yakınlaştır")}">+</button><button type="button" data-z="0.667" aria-label="${T("تصغير", "Uzaklaştır")}">−</button></div>`;
   const svg = $("svg", host);
   let vb = { x: 0, y: 0, w: W, h: H }, items = [], onPick = opt.onPick;
   const scale = () => vb.w / (svg.clientWidth || 800);
@@ -589,9 +662,9 @@ async function makeMap(host, opt = {}) {
       items = list;
       const pts = svg.querySelector(".pts"), labs = svg.querySelector(".labs"), routes = svg.querySelector(".routes");
       pts.innerHTML = list.map(({ pl, r, on }) => { const [x, y] = proj(pl.lon, pl.lat);
-        return `<circle class="pt${on ? " on" : ""}" data-id="${esc(pl.id)}" data-r="${r}" cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${r}"><title>${esc(pl.name)}</title></circle>`; }).join("");
+        return `<circle class="pt${on ? " on" : ""}" data-id="${esc(pl.id)}" data-r="${r}" cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${r}"><title>${esc(plName(pl))}</title></circle>`; }).join("");
       labs.innerHTML = list.filter(x => x.label).map(({ pl, r }) => { const [x, y] = proj(pl.lon, pl.lat);
-        return `<text class="plab" x="${x.toFixed(1)}" y="${y.toFixed(1)}" dy="-0.6em" text-anchor="middle">${esc(pl.name)}</text>`; }).join("");
+        return `<text class="plab" x="${x.toFixed(1)}" y="${y.toFixed(1)}" dy="-0.6em" text-anchor="middle">${esc(plName(pl))}</text>`; }).join("");
       routes.innerHTML = o.route && o.route.length > 1 ? `<path class="route" d="M${o.route.map(pl => proj(pl.lon, pl.lat).map(v => v.toFixed(1)).join(" ")).join("L")}"/>` : "";
       apply();
     },
@@ -611,12 +684,13 @@ async function viewMap(view, sel) {
   const places = await load("places.json");
   const PL = await placesById();
   const cents = new Set(), kinds = new Set(KIND_ORDER);
-  view.innerHTML = `<h1>خريطة البلدان</h1>
-    <p class="lede">كل دائرة بلد ورد في التراجم؛ حجمها على عدد الأعلام المرتبطين به بحسب القرن ونوع الصلة المختارين. اضغط على بلد لترى أعلامه.</p>
-    <div class="filters" id="fk"><span class="label">نوع الصلة</span>${KIND_ORDER.map(k => `<button type="button" class="btn on" data-k="${k}">${KIND[k]}</button>`).join("")}</div>
-    <div class="filters num" id="fc"><span class="label">قرن الوفاة</span>${[...Array(14)].map((_, i) => `<button type="button" class="btn" data-c="${i + 1}">${AR(i + 1)}</button>`).join("")}
-      <button type="button" class="btn" data-c="all">الكل</button></div>
-    <div class="mapgrid"><div class="mapwrap big" id="bigmap"></div><aside class="side" id="side"><p class="legend">اختر بلدًا من الخريطة.</p></aside></div>`;
+  view.innerHTML = `<h1>${T("خريطة البلدان", "Şehirler haritası")}</h1>
+    <p class="lede">${T("كل دائرة بلد ورد في التراجم؛ حجمها على عدد الأعلام المرتبطين به بحسب القرن ونوع الصلة المختارين. اضغط على بلد لترى أعلامه.",
+      "Her daire biyografilerde geçen bir şehirdir; büyüklüğü, seçilen yüzyıl ve bağ türüne göre o şehirle ilişkili âlim sayısını gösterir. Âlimlerini görmek için bir şehre tıklayın.")}</p>
+    <div class="filters" id="fk"><span class="label">${T("نوع الصلة", "Bağ türü")}</span>${KIND_ORDER.map(k => `<button type="button" class="btn on" data-k="${k}">${KIND[k]}</button>`).join("")}</div>
+    <div class="filters num" id="fc"><span class="label">${T("قرن الوفاة", "Vefat yüzyılı (hicrî)")}</span>${[...Array(14)].map((_, i) => `<button type="button" class="btn" data-c="${i + 1}">${LANG === "tr" ? ROM(i + 1) : AR(i + 1)}</button>`).join("")}
+      <button type="button" class="btn" data-c="all">${T("الكل", "Tümü")}</button></div>
+    <div class="mapgrid"><div class="mapwrap big" id="bigmap"></div><aside class="side" id="side"><p class="legend">${T("اختر بلدًا من الخريطة.", "Haritadan bir şehir seçin.")}</p></aside></div>`;
   const m = await makeMap($("#bigmap"));
   const match = (pid, k) => kinds.has(k) && (!cents.size || cents.has(century(P.get(pid)?.d)));
   let current = sel && PL.get(sel) ? sel : "";
@@ -627,8 +701,8 @@ async function viewMap(view, sel) {
     pl.people.forEach(([pid, k]) => { if (match(pid, k)) { const r = rows.get(pid) || []; r.push(k); rows.set(pid, r); } });
     const list = [...rows.entries()].sort((a, b) => (P.get(a[0])?.d || 9999) - (P.get(b[0])?.d || 9999));
     const byK = {}; pl.people.forEach(([pid, k]) => { if (match(pid, k)) byK[k] = (byK[k] || 0) + 1; });
-    $("#side").innerHTML = `<h3>${esc(pl.name)}</h3><p class="legend num">${AR(list.length)} عَلَمًا · ${KIND_ORDER.filter(k => byK[k]).map(k => `${KIND[k]} ${AR(byK[k])}`).join(" · ")}</p>
-      <ul class="num">${list.map(([pid, ks]) => `<li>${plink(pid)}<span class="k">${deathTxt(P.get(pid) || {})} · ${[...new Set(ks)].map(k => KIND[k]).join("، ")}</span></li>`).join("")}</ul>`;
+    $("#side").innerHTML = `<h3>${esc(plName(pl))}</h3><p class="legend num">${AR(list.length)} ${T("عَلَمًا", "âlim")} · ${KIND_ORDER.filter(k => byK[k]).map(k => `${KIND[k]} ${AR(byK[k])}`).join(" · ")}</p>
+      <ul class="num">${list.map(([pid, ks]) => `<li>${plink(pid)}<span class="k">${deathTxt(P.get(pid) || {})} · ${[...new Set(ks)].map(k => KIND[k]).join(T("، ", ", "))}</span></li>`).join("")}</ul>`;
   };
   const redraw = () => {
     const counts = places.map(pl => { const s = new Set(); pl.people.forEach(([pid, k]) => { if (match(pid, k)) s.add(pid); }); return [pl, s.size]; })
@@ -652,7 +726,8 @@ let G;
 async function graph() {
   if (G) return G;
   const g = await load("graph.json");
-  const nodes = g.nodes.map(n => ({ id: n[0], name: n[1], d: n[2], deg: n[3], x: n[4], y: n[5], guess: !!n[6], salaf: !!n[7] }));
+  const nodes = g.nodes.map(n => ({ id: n[0], ar: n[1], tr: n[8] || n[1], d: n[2], deg: n[3], x: n[4], y: n[5], guess: !!n[6], salaf: !!n[7],
+    get name() { return LANG === "tr" ? this.tr : this.ar; } }));
   const up = nodes.map(() => []), down = nodes.map(() => []);
   g.edges.forEach(([t, s, n, weak]) => { up[s].push([t, n, weak]); down[t].push([s, n, weak]); });
   G = { nodes, up, down, edges: g.edges, byId: new Map(nodes.map((n, i) => [n.id, i])) };
@@ -662,14 +737,14 @@ async function graph() {
 async function viewNet(view, id) {
   const g = await graph();
   const full = !id;
-  view.innerHTML = `<h1>سلسلة الشيوخ والتلاميذ</h1>
-    <div class="filters"><a class="btn ${full ? "" : "on"}" href="#/net/${esc(id || "jws1")}">سلسلة عَلَم</a>
-      <a class="btn ${full ? "on" : ""}" href="#/net">المشهد العام</a>
-      ${full ? "" : `<span class="label" style="margin-inline-start:1rem">الطبقات</span><button type="button" class="btn on" data-depth="1">طبقة واحدة</button><button type="button" class="btn" data-depth="2">طبقتان</button>`}</div>
+  view.innerHTML = `<h1>${T("سلسلة الشيوخ والتلاميذ", "Hoca–talebe silsilesi")}</h1>
+    <div class="filters"><a class="btn ${full ? "" : "on"}" href="#/net/${esc(id || "jws1")}">${T("سلسلة عَلَم", "Bir âlimin silsilesi")}</a>
+      <a class="btn ${full ? "on" : ""}" href="#/net">${T("المشهد العام", "Genel görünüm")}</a>
+      ${full ? "" : `<span class="label" style="margin-inline-start:1rem">${T("الطبقات", "Kuşak")}</span><button type="button" class="btn on" data-depth="1">${T("طبقة واحدة", "Bir kuşak")}</button><button type="button" class="btn" data-depth="2">${T("طبقتان", "İki kuşak")}</button>`}</div>
     <div id="netbody"></div>`;
   if (full) return fullNet($("#netbody"), g);
   const i = g.byId.get(id);
-  if (i === undefined) { $("#netbody").innerHTML = `<p class="empty">${plink(id)} ليس له شيوخ ولا تلاميذ من المترجمين.</p>`; return; }
+  if (i === undefined) { $("#netbody").innerHTML = `<p class="empty">${plink(id)} ${T("ليس له شيوخ ولا تلاميذ من المترجمين.", ": biyografisi bulunanlar arasında hocası ya da talebesi yok.")}</p>`; return; }
   let depth = 1;
   const draw = () => egoNet($("#netbody"), g, i, depth);
   view.querySelectorAll("[data-depth]").forEach(b => b.addEventListener("click", () => {
@@ -703,24 +778,26 @@ function egoNet(host, g, me, depth) {
     cols.get(c).sort((a, b) => bc(a) - bc(b) || byYear(a, b));
   });
   for (const [c, l] of cols) if (l.length > MAXC) { more[c] = l.length - MAXC; cols.set(c, l.slice(0, MAXC)); }
-  const head = { "-2": "شيوخ شيوخه", "-1": "شيوخه", "0": "صاحب السلسلة", "1": "تلاميذه", "2": "تلاميذ تلاميذه" };
+  const head = LANG === "tr" ? { "-2": "Hocalarının hocaları", "-1": "Hocaları", "0": "Silsile sahibi", "1": "Talebeleri", "2": "Talebelerinin talebeleri" }
+    : { "-2": "شيوخ شيوخه", "-1": "شيوخه", "0": "صاحب السلسلة", "1": "تلاميذه", "2": "تلاميذ تلاميذه" };
   const card = i => { const n = g.nodes[i], p = P.get(n.id) || {};
-    const yr = n.d ? `${n.guess || p.est ? "نحو " : "ت "}${AR(n.d)}هـ` : "";
-    const tr = n.salaf ? `<span class="tag weak" title="قبل أبي حنيفة؛ ليس له ترجمة في هذا الفهرس">من السلف</span>`
-      : `<a class="tr" href="#/p/${esc(n.id)}" title="ترجمته">ترجمة</a>`;
+    const yr = n.d ? (LANG === "tr" ? `(${yearTxt(n.d, n.guess || p.est)})` : yearTxt(n.d, n.guess || p.est)) : "";
+    const tr = n.salaf ? `<span class="tag weak" title="${T("قبل أبي حنيفة؛ ليس له ترجمة في هذا الفهرس", "Ebû Hanîfe öncesi; bu dizinde biyografisi yok")}">${T("من السلف", "selef")}</span>`
+      : `<a class="tr" href="#/p/${esc(n.id)}" title="${T("ترجمته", "Biyografisi")}">${T("ترجمة", "biyografi")}</a>`;
     return i === me
       ? `<div class="card me${n.salaf ? " salaf" : ""}" data-i="${i}">${n.salaf ? `<span class="nm">${esc(n.name)}</span>` : `<a class="nm" href="#/p/${esc(n.id)}">${esc(n.name)}</a>`}
           <span class="meta num"><span>${yr}</span>${n.salaf ? tr : ""}</span>
-          ${n.salaf ? "" : `<a class="tr" href="#/p/${esc(n.id)}">قراءة الترجمة ←</a>`}</div>`
-      : `<div class="card${n.salaf ? " salaf" : ""}" data-i="${i}"><a class="nm" href="#/net/${esc(n.id)}" title="سلسلته">${esc(n.name)}</a>
+          ${n.salaf ? "" : `<a class="tr" href="#/p/${esc(n.id)}">${T("قراءة الترجمة ←", "Biyografiyi oku →")}</a>`}</div>`
+      : `<div class="card${n.salaf ? " salaf" : ""}" data-i="${i}"><a class="nm" href="#/net/${esc(n.id)}" title="${T("سلسلته", "Silsilesi")}">${esc(n.name)}</a>
           <span class="meta num"><span>${yr}</span>${tr}</span></div>`; };
   host.innerHTML = `<div class="chainwrap"><div class="chain">
       <svg class="links" aria-hidden="true"></svg>
       ${keys.map(c => `<div class="col${c === 0 ? " mid" : ""}"><div class="colh">${head[c]}<span class="num"> ${c ? AR(cols.get(c).length + (more[c] || 0)) : ""}</span></div>
         ${cols.get(c).length ? cols.get(c).map(card).join("") : `<p class="none">—</p>`}
-        ${more[c] ? `<p class="none">و${AR(more[c])} غيرهم</p>` : ""}</div>`).join("")}
+        ${more[c] ? `<p class="none">${T(`و${AR(more[c])} غيرهم`, `ve ${more[c]} kişi daha`)}</p>` : ""}</div>`).join("")}
     </div></div>
-    <p class="legend">الأقدم يمينًا. اضغط على اسم لتنتقل إلى سلسلته، أو على «ترجمة» لتقرأ ترجمته. الخط المتقطع: ربط بترجيح النسبة أو الشهرة.</p>`;
+    <p class="legend">${T("الأقدم يمينًا. اضغط على اسم لتنتقل إلى سلسلته، أو على «ترجمة» لتقرأ ترجمته. الخط المتقطع: ربط بترجيح النسبة أو الشهرة.",
+      "En eskiler solda. Bir ada tıklayınca onun silsilesine, “biyografi”ye tıklayınca biyografisine gidilir. Kesikli çizgi: nisbe ya da şöhretle tercih edilen bağ.")}</p>`;
   const chain = $(".chain", host), svg = $(".links", host);
   const colOf = new Map(); keys.forEach(c => cols.get(c).forEach(i => colOf.set(i, c)));
   const drawLinks = () => {
@@ -730,8 +807,9 @@ function egoNet(host, g, me, depth) {
     const paths = [];
     for (const [i, r] of at) g.down[i].forEach(([j, n, weak]) => {
       if (!at.has(j) || colOf.get(j) !== colOf.get(i) + 1) return;
-      const r2 = at.get(j);   // الشيخ يمينًا، التلميذ يسارًا
-      const x1 = r.left - box.left, y1 = r.top + r.height / 2 - box.top, x2 = r2.right - box.left, y2 = r2.top + r2.height / 2 - box.top;
+      const r2 = at.get(j);   // الشيخ يمينًا، التلميذ يسارًا (tr: hoca solda, talebe sağda)
+      const rtl = LANG === "ar";
+      const x1 = (rtl ? r.left : r.right) - box.left, y1 = r.top + r.height / 2 - box.top, x2 = (rtl ? r2.right : r2.left) - box.left, y2 = r2.top + r2.height / 2 - box.top;
       const mx = (x1 + x2) / 2;
       paths.push(`<path class="lk${weak ? " weak" : ""}${i === me || j === me ? " hot" : ""}" stroke-width="${Math.min(3.5, 1 + Math.log2(n) / 2)}" d="M${x1} ${y1}C${mx} ${y1} ${mx} ${y2} ${x2} ${y2}"/>`);
     });
@@ -748,7 +826,8 @@ function egoNet(host, g, me, depth) {
 }
 
 function fullNet(host, g) {
-  host.innerHTML = `<p class="lede">كل نقطة عَلَم، مرتّبة أفقيًا بسنة الوفاة (الأقدم يمينًا)، والخيوط من الشيخ إلى التلميذ. اسحب للتنقل، ودوّر العجلة للتكبير، واضغط على نقطة لإبراز صلاتها.</p>
+  host.innerHTML = `<p class="lede">${T("كل نقطة عَلَم، مرتّبة أفقيًا بسنة الوفاة (الأقدم يمينًا)، والخيوط من الشيخ إلى التلميذ. اسحب للتنقل، ودوّر العجلة للتكبير، واضغط على نقطة لإبراز صلاتها.",
+    "Her nokta bir âlimdir; yatayda vefat yılına göre dizilidir (en eskiler solda), çizgiler hocadan talebeye uzanır. Sürükleyerek gezinin, tekerlekle yakınlaştırın, bağlarını görmek için bir noktaya tıklayın.")}</p>
     <div class="netwrap"><canvas id="cv"></canvas><div class="tip" hidden></div></div><p class="legend" id="nsel"></p>`;
   const cv = $("#cv"), tip = $(".tip", host), ctx = cv.getContext("2d");
   const css = getComputedStyle(document.documentElement);
@@ -757,7 +836,7 @@ function fullNet(host, g) {
   const ok = n => n.x > 0;   // vefatı ne bilinen ne tahmin edilebilen düğümler çizilmez
   const yr = Math.max(...N.map(n => Math.abs(n.y))) || 1;
   let SY = 9;
-  const X = n => (ymax - n.x) * SX, Y = n => n.y * SY;
+  const rtl = LANG === "ar", X = n => (rtl ? ymax - n.x : n.x) * SX, Y = n => n.y * SY;
   let tx = 0, ty = 0, sc = 1, sel = -1, hov = -1;
   const fit = () => { const w = cv.clientWidth, h = cv.clientHeight;
     SY = (ymax * SX) / (2 * yr) * (h / w) * 0.9;
@@ -768,9 +847,9 @@ function fullNet(host, g) {
     const dpr = devicePixelRatio || 1, w = cv.clientWidth, h = cv.clientHeight;
     if (cv.width !== w * dpr) { cv.width = w * dpr; cv.height = h * dpr; }
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.clearRect(0, 0, w, h);
-    ctx.fillStyle = col("--muted"); ctx.font = "12px 'Noto Naskh Arabic', serif"; ctx.textAlign = "center";
-    for (let yr = 100; yr <= ymax; yr += 100) { const x = tx + sc * (ymax - yr) * SX;
-      ctx.globalAlpha = .25; ctx.fillRect(x, 0, 1, h); ctx.globalAlpha = .9; ctx.fillText(AR(yr) + "هـ", x, 16); }
+    ctx.fillStyle = col("--muted"); ctx.font = rtl ? "12px 'Noto Naskh Arabic', serif" : "12px 'Noto Serif', serif"; ctx.textAlign = "center";
+    for (let yr = 100; yr <= ymax; yr += 100) { const x = tx + sc * (rtl ? ymax - yr : yr) * SX;
+      ctx.globalAlpha = .25; ctx.fillRect(x, 0, 1, h); ctx.globalAlpha = .9; ctx.fillText(rtl ? AR(yr) + "هـ" : `${yr}/${CE(yr)}`, x, 16); }
     ctx.globalAlpha = 1;
     const ink = col("--ink"), rub = col("--rubric"), teal = col("--teal");
     ctx.lineWidth = 1;
@@ -789,11 +868,11 @@ function fullNet(host, g) {
       ctx.beginPath(); ctx.arc(tx + sc * X(n), ty + sc * Y(n), r, 0, 7); ctx.fill();
     });
     ctx.globalAlpha = 1; ctx.fillStyle = ink; ctx.textAlign = "center";
-    if (sc > 2.5 || sel >= 0) N.forEach((n, i) => { if (ok(n) && ((sc > 2.5 && n.deg >= 12 / sc) || hl.has(i))) ctx.fillText(n.name.split("،")[0].slice(0, 30), tx + sc * X(n), ty + sc * Y(n) - 7); });
+    if (sc > 2.5 || sel >= 0) N.forEach((n, i) => { if (ok(n) && ((sc > 2.5 && n.deg >= 12 / sc) || hl.has(i))) ctx.fillText((rtl ? n.name.split("،")[0] : (who(n.id)?.trs || n.name)).slice(0, 30), tx + sc * X(n), ty + sc * Y(n) - 7); });
   };
   const near = (mx, my) => { let b = -1, bd = 100; N.forEach((n, i) => { if (!ok(n)) return; const d = (tx + sc * X(n) - mx) ** 2 + (ty + sc * Y(n) - my) ** 2; if (d < bd) { bd = d; b = i; } }); return b; };
   const select = i => { sel = i; hl.clear(); if (i >= 0) { hl.add(i); g.up[i].forEach(([j]) => hl.add(j)); g.down[i].forEach(([j]) => hl.add(j));
-      const n = N[i]; $("#nsel").innerHTML = `${plink(n.id)} · ${AR(g.up[i].length)} شيوخ · ${AR(g.down[i].length)} تلاميذ · <a href="#/net/${n.id}">سلسلته</a>`; }
+      const n = N[i]; $("#nsel").innerHTML = `${plink(n.id)} · ${AR(g.up[i].length)} ${T("شيوخ", "hoca")} · ${AR(g.down[i].length)} ${T("تلاميذ", "talebe")} · <a href="#/net/${n.id}">${T("سلسلته", "silsilesi")}</a>`; }
     else $("#nsel").innerHTML = ""; draw(); };
   let drag = null, moved = 0;
   cv.addEventListener("pointerdown", e => { cv.setPointerCapture(e.pointerId); drag = [e.clientX, e.clientY]; moved = 0; });
@@ -801,7 +880,7 @@ function fullNet(host, g) {
     const b = cv.getBoundingClientRect(), mx = e.clientX - b.left, my = e.clientY - b.top;
     if (drag) { tx += e.clientX - drag[0]; ty += e.clientY - drag[1]; moved += Math.abs(e.clientX - drag[0]) + Math.abs(e.clientY - drag[1]); drag = [e.clientX, e.clientY]; draw(); return; }
     const i = near(mx, my);
-    if (i !== hov) { hov = i; tip.hidden = i < 0; if (i >= 0) { tip.textContent = N[i].name + (N[i].d ? ` (${N[i].guess ? "~" : ""}${AR(N[i].d)}هـ)` : ""); } }
+    if (i !== hov) { hov = i; tip.hidden = i < 0; if (i >= 0) { tip.textContent = N[i].name + (N[i].d ? (rtl ? ` (${N[i].guess ? "~" : ""}${AR(N[i].d)}هـ)` : ` (${yearTxt(N[i].d, N[i].guess)})`) : ""); } }
     if (i >= 0) { tip.style.left = Math.min(mx + 12, b.width - tip.offsetWidth - 4) + "px"; tip.style.top = (my + 14) + "px"; }
   });
   cv.addEventListener("pointerup", e => { const b = cv.getBoundingClientRect(); if (moved < 5) select(near(e.clientX - b.left, e.clientY - b.top)); drag = null; });
@@ -814,8 +893,22 @@ function fullNet(host, g) {
 
 // ---------- about ----------
 function viewAbout(view) {
+  const books = `<div class="books">${Object.values(BOOKS).map(b => `<div class="book"><b>${esc(bookTitle(b))}</b><span>${esc(bookAuthor(b))}</span></div>`).join("")}</div>`;
+  if (LANG === "tr") {
+    view.innerHTML = `<h1>Proje hakkında</h1>
+    <section><h2>Kitaplar</h2>${books}</section>
+    <section><h2>Yöntem</h2>
+      <p class="lede" style="color:var(--ink)">Bir âlimin farklı kitaplardaki biyografileri; ad, nesep, künye, nisbe, vefat yılı ve kitapların birbirine yaptığı atıflar karşılaştırılarak tek başlık altında toplandı; şüpheli eşleştirmeler elle gözden geçirildi.
+      Hocalar ve talebeler biyografilerdeki ifadelerden («تفقّه على», «أخذ عن», «روى عنه», «من أصحاب»…) çıkarıldı; geçen ad nesep, künye ve nisbe uyumuna, vefat yıllarının yakınlığına ve biyografilerin birbirini doğrulamasına bakılarak sahibine bağlandı. Kesinleşmeyenler incelenmek üzere silsilenin dışında bırakıldı.
+      Şehirler doğum, vefat, defin, seyahat, ikamet ve görev ifadelerinden ve nisbelerden çıkarıldı.
+      Biyografi metinleri, her kitaptan ayrı ayrı ve muhakkik dipnotlarıyla, her âlimin sayfasının sonunda Arapça aslıyla yayımlanmaktadır.</p>
+      <p class="lede" style="color:var(--ink)">Şahıs, eser ve yer adları TDV İslâm Ansiklopedisi (DİA) yazım usulüyle verilmiştir: Ebû Hanîfe, Muhammed b. Hasan eş-Şeybânî, Şemsüleimme el-Halvânî, el-Cevâhirü’l-muziyye… Adlar künye, isim, nesep, nisbe ve lakap sözlüklerinden otomatik kurulur; unvan ve tavsifler atılır. Tarihler hicrî/milâdî olarak verilir: (ö. 150/767). Milâdî yıl, hicrî yılın ortasına göre hesaplanmıştır; ay ve gün bilinmediğinden bir yıl sapabilir.</p>
+      <p class="legend">“tercih” etiketli bağlar yalnız nisbe ya da şöhretle kurulmuştur. “[?]” işaretli vefat tarihleri kaynakta yoktur; hoca ve talebelerin vefatlarından tahmin edilmiştir. Hicrî yüzyıllar DİA’daki gibi yazılır: V. (XI.) yüzyıl.</p></section>
+    <section><h2>Açık kaynaklar</h2><p class="lede">Koordinatlar al-Thurayya Gazetteer’dan (CC BY 4.0), Osmanlı ve Hint şehirleri için elle yapılan eklemelerle; kara ve nehir sınırları Natural Earth’ten (kamu malı).</p></section>`;
+    return;
+  }
   view.innerHTML = `<h1>عن المشروع</h1>
-    <section><h2>الكتب</h2><div class="books">${Object.values(BOOKS).map(b => `<div class="book"><b>${esc(b.title)}</b><span>${esc(b.author)}${b.death ? ` (ت ${AR(b.death)}هـ)` : ""}</span></div>`).join("")}</div></section>
+    <section><h2>الكتب</h2>${books}</section>
     <section><h2>المنهج</h2>
       <p class="lede" style="color:var(--ink)">جُمعت تراجم العَلَم الواحد من الكتب المختلفة تحت عنوان واحد بمقارنة الاسم والنسب والكنية والنسبة وسنة الوفاة وإحالات الكتب بعضها على بعض، وراجع الإنسان ما التبس منها.
       واستُخرج الشيوخ والتلاميذ من عبارات التراجم («تفقّه على»، «أخذ عن»، «روى عنه»، «من أصحاب»…) ورُبط الاسم بصاحبه بموافقة النسب والكنية والنسبة، مع مراعاة تقارب الوفيات وتقاطع التراجم؛ وما لم يترجّح بقي خارج السلسلة للمراجعة.
@@ -825,4 +918,4 @@ function viewAbout(view) {
     <section><h2>المصادر المفتوحة</h2><p class="lede">الإحداثيات من مشروع الثريا (al-Thurayya Gazetteer، رخصة CC BY 4.0) مع إضافات يدوية لبلدان العهد العثماني والهند؛ وحدود اليابسة والأنهار من Natural Earth (ملك عام).</p></section>`;
 }
 
-init().catch(e => { $("#view").innerHTML = `<p class="empty">تعذّر تحميل البيانات: ${esc(e.message)}</p>`; });
+init().catch(e => { $("#view").innerHTML = `<p class="empty">${T("تعذّر تحميل البيانات", "Veriler yüklenemedi")}: ${esc(e.message)}</p>`; });

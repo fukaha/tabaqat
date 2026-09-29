@@ -16,6 +16,8 @@ from pathlib import Path
 
 import yaml
 
+from .tr.names import Namer, load_tsv
+
 SHARDS = 64
 
 
@@ -248,8 +250,15 @@ def export(root: Path) -> dict:
         b = yaml.safe_load(f.read_text(encoding="utf-8"))
         books[b["book_id"]] = {"title": b["title"], "author": b.get("author", ""),
                                "death": b.get("author_death_h")}
+    for bid, v in load_tsv(root / "review" / "tr" / "books.tsv").items():
+        if bid in books:
+            t, _, a = v.partition("|")
+            books[bid].update(title_tr=t.strip(), author_tr=a.strip())
     cite = {s["key"]: s["cite"] for p in persons for s in p["sources"]}
     info = {p["id"]: p for p in persons}
+    # Türkçe adlar (DİA yazımı): tam ad, kısa ad
+    namer = Namer(root)
+    TR = {p["id"]: namer.render(p["name"], p["id"]) for p in persons}
     salaf = pre_hanafi(root, persons)
     # ağdan tahmin edilen / düzeltilen vefatlar (kesin vefatı olmayanlar için)
     dest_path = data / "death_estimates.json"
@@ -269,7 +278,7 @@ def export(root: Path) -> dict:
     exts = defaultdict(list)
     for x in ext:
         exts[x["subject"]].append([x["name"], x["death"], x["role"], x["rel"],
-                                   cite.get(x["key"], "")])
+                                   cite.get(x["key"], ""), namer.render(x["name"])[1]])
 
     main_place = {}
     for pid, items in pp.items():
@@ -285,9 +294,10 @@ def export(root: Path) -> dict:
             d, est = p["death_est"], True
         index.append([pid, p["name"], d, int(est), len(p["sources"]), len(teachers[pid]),
                       len(students[pid]), main_place.get(pid, ""),
-                      sorted({s["book"] for s in p["sources"]})])
+                      sorted({s["book"] for s in p["sources"]}), TR[pid][0], TR[pid][1]])
         shards[shard(pid)][pid] = {
-            "name": p["name"], "heading": p.get("heading", ""), "death": p.get("death", ""),
+            "name": p["name"], "tr": TR[pid][0], "trs": TR[pid][1],
+            "heading": p.get("heading", ""), "death": p.get("death", ""),
             "death_h": d, "est": est,
             "sources": [[s["book"], s["cite"], s.get("heading", "")] for s in p["sources"]],
             "teachers": sorted(teachers[pid], key=lambda x: -x["n"]),
@@ -296,7 +306,8 @@ def export(root: Path) -> dict:
             "places": [[it["place"], it["kind"], cite.get(it["key"], ""), it["text"]]
                        for it in pp.get(pid, [])],
         }
-    salaf_info = {pid: [info[pid]["name"], info[pid].get("death_h") or info[pid].get("death_est")]
+    salaf_info = {pid: [info[pid]["name"], info[pid].get("death_h") or info[pid].get("death_est"),
+                        TR[pid][0], TR[pid][1]]
                   for pid in sorted(salaf)}
     _dump(out / "index.json", {"books": books, "persons": index, "salaf": salaf_info})
     for k, v in shards.items():
@@ -325,12 +336,13 @@ def export(root: Path) -> dict:
     nodes = []
     for i, pid in enumerate(in_net):
         nodes.append([pid, info[pid]["name"], years[i], deg[pid], xs[i], ys[i], int(guessed[i]),
-                      int(pid in salaf)])
+                      int(pid in salaf), TR[pid][0]])
     _dump(out / "graph.json", {"nodes": nodes, "edges": edges})
     chains = _chains(info, rel, salaf)
     _dump(out / "chains.json", {"chains": chains,
                                 "names": {pid: short_name(info[pid]["name"], pid)
-                                          for pid in sorted({x for c in chains for x in c})}})
+                                          for pid in sorted({x for c in chains for x in c})},
+                                "names_tr": {pid: TR[pid][1] for pid in sorted({x for c in chains for x in c})}})
 
     people_at = defaultdict(list)
     for pid, items in pp.items():
@@ -338,8 +350,16 @@ def export(root: Path) -> dict:
             continue
         for it in items:
             people_at[it["place"]].append([pid, it["kind"]])
-    places = [{**pl, "n": len({x[0] for x in people_at[pl["id"]]}), "people": people_at[pl["id"]]}
+    ptr = load_tsv(root / "review" / "tr" / "places.tsv")
+    places = [{**pl, "name_tr": ptr.get(pl["id"], ""), "n": len({x[0] for x in people_at[pl["id"]]}),
+               "people": people_at[pl["id"]]}
               for pl in places if people_at[pl["id"]]]
     _dump(out / "places.json", places)
+    # sözlükte bulunmayan kelimeler (Türkçe adları tamamlamak için)
+    rows = [f"{cat}\t{w}\t{c}" for cat, d in sorted(namer.unknown.items())
+            for w, c in sorted(d.items(), key=lambda t: -t[1])]
+    (root / "review" / "tr" / "bilinmeyen.tsv").write_text(
+        "# tür\tkelime\tsayı — ilgili sözlüğe (ism/nisba/laqab.tsv) eklenince adlarda görünür\n"
+        + "\n".join(rows) + "\n", encoding="utf-8")
     return {"persons": len(index), "salaf": len(salaf), "shards": len(shards), "nodes": len(nodes),
             "edges": len(edges), "places": len(places)}
