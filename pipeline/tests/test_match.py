@@ -16,6 +16,11 @@ def test_words_to_year():
     assert words_to_year("خمس وتسعين وخمسمايه".split()) == 595
     assert words_to_year("تسع وستين وثلاث ميه،".split()) == 369
     assert words_to_year("اثنتي عشره ومايتين".split()) == 212
+    # Fevâid imlası/dizgisi: "ثلثمائة", "خمسائة", "تسعين وثلاثة" (= ثلاثمائة)
+    assert death_year("مات سنة إحدى وعشرين وثلثمائة") == 321
+    assert death_year("مات بمرو سنة ثلاث وأربعين وخمسائة") == 543
+    assert death_year("مات سنة تسعين وثلاثة") == 390
+    assert death_year("مات سنة ست عشرة وست مائة") == 616
     assert words_to_year("ثمان وتسعين وسبعمايه».".split()) == 798
     assert death_year("وتوفي سنة ٥٩٥ هـ") == 595
     assert death_year("ثم توفي والده سنة خمسين، ومات هو سنة ستين ومائة") == 160
