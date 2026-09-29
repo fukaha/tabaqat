@@ -178,15 +178,13 @@ html[dir="ltr"] .hero .search input { padding: .65rem 1.1rem .65rem 2.6rem; back
 @keyframes pop { from { opacity: 0; transform: scale(.4); } to { opacity: 1; transform: scale(1); } }
 @keyframes fade { to { opacity: 1; } }
 @media (prefers-reduced-motion: reduce) { .thread path.gold, .thread .bead, #thread a.nm { animation: none; opacity: 1; stroke-dashoffset: 0; } }
-.tiles4 { position: relative; display: flex; flex-wrap: wrap; gap: 1.6rem 1.4rem; margin-top: 3.2rem; }
-.t4 { position: relative; display: block; width: 10rem; height: 10.5rem; border-radius: 10px; color: var(--ink); box-shadow: var(--shadow); transition: transform .18s; }
-.t4:hover { transform: translateY(-4px); text-decoration: none; }
-.t4 svg { position: absolute; inset: 1.2rem 1rem 1.6rem; width: calc(100% - 2rem); height: calc(100% - 2.8rem); color: var(--paper); }
-.t4 .n, .t4 .l { position: absolute; left: 50%; transform: translateX(-50%); background: var(--paper); border-radius: 999px; padding: 0 .9rem; font-size: .92rem; white-space: nowrap; box-shadow: 0 1px 3px rgba(0,0,0,.08); }
-.t4 .n { top: -.9rem; color: var(--indigo); font-weight: 600; }
-.t4 .l { bottom: -.9rem; color: var(--ink); }
-.t4.c1 { background: var(--peach); } .t4.c2 { background: var(--sage); } .t4.c3 { background: var(--butter); } .t4.c4 { background: var(--mint); }
-.t4.c1 svg, .t4.c3 svg, .t4.c4 svg { color: color-mix(in srgb, var(--ink) 55%, transparent); }
+.tiles4 { display: grid; width: 100%; align-self: stretch; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1rem; margin-top: 2.6rem; }
+@media (max-width: 640px) { .tiles4 { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.t4 { display: flex; flex-direction: column; align-items: center; gap: .3rem; padding: 1.3rem .8rem 1.1rem; background: var(--paper); border: 1px solid var(--line); border-radius: 10px; color: var(--ink); text-align: center; transition: border-color .18s, transform .18s; }
+.t4:hover { border-color: var(--gold); transform: translateY(-3px); text-decoration: none; }
+.t4 svg { width: 3.2rem; height: 3.2rem; color: var(--gold); margin-bottom: .2rem; }
+.t4 .n { font-family: var(--f-head); font-size: 1.75rem; line-height: 1.15; font-weight: 600; color: var(--indigo); font-variant-numeric: tabular-nums; }
+.t4 .l { color: var(--muted); font-size: .95rem; line-height: 1.35; }
 .divider { max-width: 76rem; margin: 0 auto; border: 0; border-top: 1px solid var(--line); }
 
 /* seçkiler (ortadaki büyür) */
@@ -423,7 +421,7 @@ details.src > summary .ct { color: var(--muted); font-size: .9rem; }
 details.src[open] > summary { border-bottom: 1px solid var(--line); }
 details.src .body { padding: .8rem 1.25rem 1.1rem; }
 .etitle { font-family: var(--f-head); font-size: 1.25rem; color: var(--gold); margin-bottom: .4rem; }
-.etext { max-width: 46rem; font-size: 1.08rem; line-height: 2.05; }
+.etext { font-size: 1.08rem; line-height: 2.05; }
 .etext p { margin: 0 0 .6rem; text-align: justify; }
 .etext h4 { font-family: var(--f-head); font-size: 1.15rem; margin: 1rem 0 .4rem; }
 .etext .q { color: var(--teal); }
@@ -447,7 +445,6 @@ sup.fn a { color: var(--rubric); padding: 0 .1em; }
 
 @media (max-width: 700px) {
   .bar { gap: .4rem .6rem; }
-  .t4 { width: calc(50% - .7rem); }
   .coll { padding-inline: 8vw; }
   .ccard { width: 84vw; }
   .top-search { order: 5; flex-basis: 100%; max-width: none; }

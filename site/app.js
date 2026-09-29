@@ -264,22 +264,18 @@ function silsile(host, data, pick) {
   host.style.height = `${H}px`;
   return chain;
 }
-// kategori çizimleri: sarık, pusula-gül, silsile, kitaplar
+// kategori simgeleri: divit, şehir silueti, zincir, kitap yığını
 const ILL = {
-  sarik: `<svg viewBox="0 0 100 100" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round">
-    <path d="M22 62c-4-16 6-34 26-38 20-4 34 8 33 26-1 10-6 16-12 18"/><path d="M26 66c10 6 30 8 44 2"/>
-    <path d="M30 46c10-6 28-8 40 0M28 54c12-6 30-6 44 2M34 38c8-4 20-5 30 0"/><path d="M48 24c-2-6 2-10 6-10s6 5 3 10"/>
-    <path d="M24 64c-6 4-6 12 0 16 10 6 42 6 52 0 6-4 6-12 0-16"/></g></svg>`,
-  gul: `<svg viewBox="0 0 100 100" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.8">
-    <circle cx="50" cy="52" r="34"/><circle cx="50" cy="52" r="15"/>
-    ${Array.from({ length: 16 }, (_, i) => `<path transform="rotate(${i * 22.5} 50 52)" d="M50 18 54 37 50 52 46 37Z"/>`).join("")}
-    <path d="M50 4v10M46 8l4-4 4 4"/></g></svg>`,
-  silsile: `<svg viewBox="0 0 100 100" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="2">
-    <circle cx="50" cy="16" r="8"/><circle cx="26" cy="50" r="8"/><circle cx="74" cy="50" r="8"/><circle cx="14" cy="84" r="7"/><circle cx="38" cy="84" r="7"/><circle cx="62" cy="84" r="7"/><circle cx="86" cy="84" r="7"/>
-    <path d="M45 23 30 43M55 23 70 43M22 57 16 77M30 57 36 77M70 57 64 77M78 57 84 77"/></g></svg>`,
-  kitap: `<svg viewBox="0 0 100 100" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round">
-    <path d="M12 58 50 46 88 58 50 70Z"/><path d="M12 58v8l38 12 38-12v-8"/><path d="M18 50 50 40 82 50"/><path d="M18 50v6M82 50v6"/>
-    <path d="M24 42 50 34 76 42"/><ellipse cx="50" cy="58" rx="9" ry="3.5"/><path d="M50 78v10"/></g></svg>`,
+  divit: `<svg viewBox="0 0 64 64" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M14 42h28l-3 14H17Z"/><path d="M20 42v-5h16v5"/><path d="M29 36 46 9l4 2-15 27"/><path d="M46 9l3-5 1 7"/></g></svg>`,
+  sehir: `<svg viewBox="0 0 64 64" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M4 56h56"/><path d="M20 56V42h24v14"/><path d="M20 42a12 12 0 0 1 24 0"/><path d="M32 30v-5"/><path d="M28 56v-7a4 4 0 0 1 8 0v7"/>
+    <path d="M9 56V24l3-5 3 5v32M8 30h8"/><path d="M49 56V20l3-5 3 5v36M48 26h8"/></g></svg>`,
+  zincir: `<svg viewBox="0 0 64 64" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="2.2">
+    <rect x="3" y="24" width="24" height="16" rx="8"/><rect x="20" y="28.5" width="24" height="7" rx="3.5"/><rect x="37" y="24" width="24" height="16" rx="8"/></g></svg>`,
+  kitaplar: `<svg viewBox="0 0 64 64" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M10 46h44v10H10Z"/><path d="M14 36h38v10H14Z"/><path d="M8 26h40v10H8Z"/><path d="M17 46v10M21 36v10M15 26v10"/>
+    <path d="M36 26V10l6 4 6-4v16"/></g></svg>`,
 };
 
 // ---------- kartlar ----------
@@ -349,10 +345,10 @@ async function viewHome(view) {
         <div class="sbar"><button type="button" class="btn ghost" id="snext">↻ ${T("سلسلة أخرى", "Başka bir silsile")}</button><a class="btn ghost" id="sopen" href="#/net/jws1">${T("افتحها في السلسلة ←", "Silsilede aç →")}</a></div>
       </figure>
       <div class="tiles4 num">
-        <a class="t4 c1" href="#/search"><span class="n">${AR(IDX.length)}</span>${ILL.sarik}<span class="l">${T("الأعلام", "Âlimler")}</span></a>
-        <a class="t4 c2" href="#/map"><span class="n">${AR(places.length)}</span>${ILL.gul}<span class="l">${T("البلدان", "Şehirler")}</span></a>
-        <a class="t4 c3" href="#/net/jws1"><span class="n">${AR(g.edges.length)}</span>${ILL.silsile}<span class="l">${T("صلات الشيوخ والتلاميذ", "Hoca–talebe bağları")}</span></a>
-        <a class="t4 c4" href="#books"><span class="n">${AR(bk)}</span>${ILL.kitap}<span class="l">${T("كتب الطبقات", "Tabakāt kitapları")}</span></a>
+        <a class="t4" href="#/search">${ILL.divit}<span class="n">${AR(IDX.length)}</span><span class="l">${T("الأعلام", "Âlimler")}</span></a>
+        <a class="t4" href="#/map">${ILL.sehir}<span class="n">${AR(places.length)}</span><span class="l">${T("البلدان", "Şehirler")}</span></a>
+        <a class="t4" href="#/net/jws1">${ILL.zincir}<span class="n">${AR(g.edges.length)}</span><span class="l">${T("صلات الشيوخ والتلاميذ", "Hoca–talebe bağları")}</span></a>
+        <a class="t4" href="#books">${ILL.kitaplar}<span class="n">${AR(bk)}</span><span class="l">${T("كتب الطبقات", "Tabakāt kitapları")}</span></a>
       </div></div></section>
     <div class="wrap" id="hres"></div>
     <hr class="divider">
