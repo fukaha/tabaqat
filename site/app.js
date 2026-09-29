@@ -611,6 +611,45 @@ document.addEventListener("click", e => {   // الحواشي: انتقال دا
   if (el) { el.scrollIntoView({ behavior: "smooth", block: "center" }); el.classList.add("flash"); setTimeout(() => el.classList.remove("flash"), 1400); }
 });
 
+// Harita ve ağ için yerel arama kutusu: find(q) → [{id, html}], pick(id)
+function localSearch(ph, find, pick) {
+  const box = document.createElement("div"); box.className = "search lsearch";
+  box.innerHTML = `<input type="search" placeholder="${esc(ph)}" aria-label="${esc(ph)}" autocomplete="off"><div class="results" hidden></div>`;
+  const q = $("input", box), res = $(".results", box); let cur = -1, list = [];
+  const show = () => { list = q.value.trim() ? find(q.value.trim()) : []; cur = list.length ? 0 : -1;
+    res.innerHTML = list.map((r, k) => `<a href="#" data-k="${k}"${k === cur ? ` class="sel"` : ""}>${r.html}</a>`).join("")
+      || (q.value.trim() ? `<p class="none">${T("لا نتائج", "Sonuç yok")}</p>` : "");
+    res.hidden = !q.value.trim(); };
+  const choose = k => { const r = list[k]; if (!r) return; res.hidden = true;
+    q.value = res.querySelector(`[data-k="${k}"] span`)?.textContent || q.value; q.blur(); pick(r.id); };
+  q.addEventListener("input", show);
+  q.addEventListener("keydown", e => {
+    if (e.key === "ArrowDown" || e.key === "ArrowUp") { e.preventDefault(); if (!list.length) return;
+      cur = (cur + (e.key === "ArrowDown" ? 1 : list.length - 1)) % list.length;
+      res.querySelectorAll("a").forEach((a, k) => a.classList.toggle("sel", k === cur)); }
+    else if (e.key === "Enter") { e.preventDefault(); choose(Math.max(0, cur)); }
+    else if (e.key === "Escape") res.hidden = true; });
+  res.addEventListener("pointerdown", e => e.preventDefault());
+  res.addEventListener("click", e => { const a = e.target.closest("[data-k]"); if (a) { e.preventDefault(); choose(+a.dataset.k); } });
+  q.addEventListener("blur", () => setTimeout(() => { res.hidden = true; }, 150));
+  q.addEventListener("focus", () => q.value.trim() && show());
+  return box;
+}
+// şehir penceresinde el-Süreyyâ künyesi ve Yâkût / Himyerî / Sem‘ânî'den kısa alıntı
+const INFO_SRC = { yaqut: ["ياقوت، معجم البلدان", "Yâkūt, Mu‘cemü’l-büldân"], himyari: ["الحميري، الروض المعطار", "Himyerî, er-Ravzü’l-mi‘târ"],
+  samani: ["السمعاني، الأنساب", "Sem‘ânî, el-Ensâb"] };
+function placeInfo(pl) {
+  const f = pl.info; if (!f) return "";
+  const meta = [T(f.type_ar, f.type_tr), T(f.region_ar, f.region_tr)].filter(Boolean).map(esc);
+  if (f.translit) meta.push(`<i>${esc(f.translit)}</i>`);
+  const src = f.src ? INFO_SRC[f.src] : null, pg = f.page ? (LANG === "tr" ? f.page : AR(f.page)) : "";
+  const cite = src ? (LANG === "tr" ? `${src[1].replace(/, (.*)$/, ", <i>$1</i>")}${pg ? `, ${pg}` : ""}.` : `${src[0]}${pg ? ` ${pg}` : ""}`) : "";
+  const thur = /^[A-Z]/.test(pl.id) ? `<a href="https://github.com/althurayya/althurayya.github.io/blob/master/places/${encodeURIComponent(pl.id)}.geojson" target="_blank" rel="noopener">${T("الثريا", "el-Süreyyâ")}</a>` : "";
+  return `<div class="pinfo">${meta.length ? `<p class="pmeta">${meta.join(" · ")}</p>` : ""}
+    ${f.text ? `<blockquote lang="ar" dir="rtl" title="${T("اضغط للمزيد", "Tamamı için tıklayın")}">${esc(f.text)}</blockquote>` : ""}
+    ${cite || thur ? `<p class="pcite">${cite}${cite && thur ? " · " : ""}${thur}</p>` : ""}</div>`;
+}
+
 // ---------- map ----------
 let PLACES_BY_ID;
 async function placesById() {
@@ -629,21 +668,36 @@ async function makeMap(host, opt = {}) {
       <g class="regs"></g><g class="routes"></g><g class="pts"></g><g class="labs"></g></svg>
     <div class="zoom"><button type="button" data-z="1.5" aria-label="${T("تكبير", "Yakınlaştır")}">+</button><button type="button" data-z="0.667" aria-label="${T("تصغير", "Uzaklaştır")}">−</button></div>`;
   const svg = $("svg", host);
-  let vb = { x: 0, y: 0, w: W, h: H }, items = [], onPick = opt.onPick;
+  let vb = { x: 0, y: 0, w: W, h: H }, items = [], onPick = opt.onPick, lastS = 0, dirty = true;
+  /* Şehir adları: hepsi yazılır, büyüklüğü kayıt sayısına göre. Çok kayıtlı olandan başlayarak her ad
+     noktanın üstüne, sağına, soluna ya da altına, önceki adlara değmeyen ilk yere konur; hiçbirine
+     sığmayan ad bu yakınlıkta gizlenir ve yakınlaştırınca açılır. Bölge adları en son, boş kalan yerlere. */
+  const layLabels = s => {
+    const kept = [], pad = 2 * s;
+    const free = b => !kept.some(k => b[0] < k[2] + pad && k[0] < b[2] + pad && b[1] < k[3] && k[1] < b[3]);
+    svg.querySelectorAll(".plab").forEach(t => {
+      const f = +t.dataset.f; t.setAttribute("font-size", f * s); t.style.strokeWidth = 3 * s;
+      if (!t.dataset.w) { t.style.display = ""; try { const b = t.getBBox(); t.dataset.w = b.width / f / s; t.dataset.h = b.height / f / s; } catch (e) { return; } }
+      const x = +t.dataset.x, y = +t.dataset.y, r = +t.dataset.r * s, w = t.dataset.w * f * s, h = t.dataset.h * f * s * .8, g = 2.5 * s;
+      const at = [[x, y - r - g - h / 2], [x + r + g + w / 2, y], [x - r - g - w / 2, y], [x, y + r + g + h / 2]]
+        .map(([cx, cy]) => [cx, cy, [cx - w / 2, cy - h / 2, cx + w / 2, cy + h / 2]]).find(c => free(c[2]));
+      if (!at) { t.style.display = "none"; return; }
+      t.style.display = ""; t.setAttribute("x", at[0].toFixed(2)); t.setAttribute("y", at[1].toFixed(2)); kept.push(at[2]);
+    });
+    svg.querySelectorAll(".rlab").forEach(t => {
+      t.setAttribute("font-size", 19 * s); t.setAttribute("letter-spacing", LANG === "tr" ? 3 * s : 0);
+      t.style.display = ""; let b; try { b = t.getBBox(); } catch (e) { return; }
+      const bb = [b.x, b.y, b.x + b.width, b.y + b.height];
+      if (free(bb)) kept.push(bb); else t.style.display = "none";
+    });
+  };
   const scale = () => vb.w / (svg.clientWidth || 800);
   const apply = () => {
     svg.setAttribute("viewBox", `${vb.x} ${vb.y} ${vb.w} ${vb.h}`);
     const s = scale();
-    svg.querySelectorAll(".pt").forEach(c => c.setAttribute("r", c.dataset.r * s));
-    svg.querySelectorAll(".plab").forEach(t => { t.setAttribute("font-size", (+t.dataset.f || 13) * s); t.style.strokeWidth = 3 * s; });
-    svg.querySelectorAll(".rlab").forEach(t => { t.setAttribute("font-size", 19 * s); t.setAttribute("letter-spacing", LANG === "tr" ? 3 * s : 0); });
-    // çakışan adları gizle: önce iri şehirler, sonra diğerleri, en son bölgeler
-    const kept = [];
-    [...svg.querySelectorAll(".plab.major"), ...svg.querySelectorAll(".plab:not(.major)"), ...svg.querySelectorAll(".rlab")].forEach(t => {
-      t.style.display = ""; let b; try { b = t.getBBox(); } catch (e) { return; }
-      const pad = 2 * s, hit = kept.some(k => b.x < k.x + k.width + pad && k.x < b.x + b.width + pad && b.y < k.y + k.height && k.y < b.y + b.height);
-      if (hit) t.style.display = "none"; else kept.push(b);
-    });
+    svg.querySelectorAll(".pt").forEach(c => { c.setAttribute("r", c.dataset.r * s); c.style.strokeWidth = .8 * s;
+      if (c.classList.contains("reg")) c.style.strokeDasharray = `${3 * s} ${2 * s}`; });
+    if (s !== lastS || dirty) { lastS = s; dirty = false; layLabels(s); }
     svg.querySelectorAll(".route").forEach(r => { r.style.strokeWidth = 2 * s; r.style.strokeDasharray = `${5 * s} ${4 * s}`; });
     svg.querySelector(".land").style.strokeWidth = .6 * s;
     svg.querySelector(".river").style.strokeWidth = 1 * s;
@@ -685,11 +739,15 @@ async function makeMap(host, opt = {}) {
       const pts = svg.querySelector(".pts"), labs = svg.querySelector(".labs"), routes = svg.querySelector(".routes");
       pts.innerHTML = list.map(({ pl, r, on }) => { const [x, y] = proj(pl.lon, pl.lat);
         return `<circle class="pt${on ? " on" : ""}${pl.type === "regions" ? " reg" : ""}" data-id="${esc(pl.id)}" data-r="${r}" cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${r}"><title>${esc(plName(pl))}</title></circle>`; }).join("");
-      labs.innerHTML = list.filter(x => x.label).map(({ pl, r, label }) => { const [x, y] = proj(pl.lon, pl.lat);
-        const f = label === true ? 13 : label;   // büyük merkezler daha iri
-        return `<text class="plab${f >= 15 ? " major" : ""}" data-f="${f}" x="${x.toFixed(1)}" y="${y.toFixed(1)}" dy="-0.7em" text-anchor="middle">${esc(plName(pl).replace(/ \(.*\)$/, ""))}</text>`; }).join("");
+      labs.innerHTML = list.filter(x => x.label).sort((a, b) => b.label - a.label).map(({ pl, r, label: f }) => { const [x, y] = proj(pl.lon, pl.lat);
+        return `<text class="plab${f >= 15 ? " major" : f < 11 ? " minor" : ""}${pl.id === o.hot ? " hot" : ""}" data-f="${f}" data-x="${x.toFixed(1)}" data-y="${y.toFixed(1)}" data-r="${r}" x="${x.toFixed(1)}" y="${y.toFixed(1)}" text-anchor="middle" dominant-baseline="central">${esc(plName(pl).replace(/ \(.*\)$/, ""))}</text>`; }).join("");
+      dirty = true;
       routes.innerHTML = o.route && o.route.length > 1 ? `<path class="route" d="M${o.route.map(pl => proj(pl.lon, pl.lat).map(v => v.toFixed(1)).join(" ")).join("L")}"/>` : "";
       apply();
+    },
+    focus(pl, w = 160) {   // bir şehre yakınlaş
+      const [x, y] = proj(pl.lon, pl.lat), ar = (svg.clientWidth || 400) / (svg.clientHeight || 300);
+      vb = { x: x - w / 2, y: y - w / ar / 2, w, h: w / ar }; apply();
     },
     fit(pls) {
       if (!pls.length) return;
@@ -725,7 +783,7 @@ async function viewMap(view, sel) {
       "Her daire biyografilerde geçen bir şehirdir; büyüklüğü, seçilen yüzyıl ve bağ türüne göre o şehirle ilişkili âlim sayısını gösterir. Fakihlerini görmek için bir şehre tıklayın.")}</p>
     <div class="stage" id="mstage">
     <div class="filters stagebar" id="fk"><span class="label">${T("نوع الصلة", "Bağ türü")}</span>${KIND_ORDER.map(k => `<button type="button" class="btn on" data-k="${k}">${KIND[k]}</button>`).join("")}
-      <span class="grow"></span>${full ? "" : expButtons()}${fsButton()}</div>
+      <span class="grow"></span><span id="msearch"></span>${fsButton()}</div>
     <div class="filters num" id="fc"><span class="label">${T("قرن الوفاة", "Vefat yüzyılı (hicrî)")}</span>${[...Array(14)].map((_, i) => `<button type="button" class="btn" data-c="${i + 1}">${LANG === "tr" ? ROM(i + 1) : AR(i + 1)}</button>`).join("")}
       <button type="button" class="btn" data-c="all">${T("الكل", "Tümü")}</button></div>
     <div class="mapwrap big" id="bigmap"></div></div>`;
@@ -752,20 +810,22 @@ async function viewMap(view, sel) {
     const list = [...rows.entries()].sort((a, b) => (P.get(a[0])?.d || 9999) - (P.get(b[0])?.d || 9999));
     const byK = {}; pl.people.forEach(([pid, k]) => { if (match(pid, k)) byK[k] = (byK[k] || 0) + 1; });
     pop.innerHTML = `<div class="mph"><h3>${esc(plName(pl))}</h3><button type="button" class="x" aria-label="${T("إغلاق", "Kapat")}">×</button></div>
+      ${placeInfo(pl)}
       <p class="legend num">${AR(list.length)} ${T("فقيهًا", "fakih")} · ${KIND_ORDER.filter(k => byK[k]).map(k => `${KIND[k]} ${AR(byK[k])}`).join(" · ")}</p>
       <ul class="num">${list.map(([pid, ks]) => `<li>${plink(pid)}<span class="k">${deathTxt(P.get(pid) || {})} · ${[...new Set(ks)].map(k => KIND[k]).join(T("، ", ", "))}</span></li>`).join("")
         || `<li class="none">${T("لا أحد بحسب الاختيار", "Seçime uyan kimse yok")}</li>`}</ul>`;
     pop.hidden = false; place();
+    const q = $(".pinfo blockquote", pop); if (q) q.addEventListener("click", () => { q.classList.toggle("open"); place(); });
     $(".x", pop).addEventListener("click", () => { current = ""; at = null; history.replaceState(null, "", "#/map"); redraw(); });
   };
   const redraw = () => {
     const counts = places.map(pl => { const s = new Set(); pl.people.forEach(([pid, k]) => { if (match(pid, k)) s.add(pid); }); return [pl, s.size]; })
       .filter(x => x[1] > 0).sort((a, b) => b[1] - a[1]);
-    // büyük merkezlerin adları her zaman; en kalabalık 8 şehir iri yazı
+    // her şehrin adı, kayıt sayısıyla orantılı büyüklükte (yerleşim: makeMap/layLabels);
     // bölge kayıtları (Horasan, Irak…) daire olarak kalır, adları bölge yazısıyla verilir
-    let rank = 0;
-    m.draw(counts.map(([pl, n]) => { const city = pl.type !== "regions", k = city ? rank++ : 99;
-      return { pl, r: 2.5 + Math.sqrt(n) * 1.5, label: k < 8 ? 17 : k < 40 ? 13 : false, on: pl.id === current }; }));
+    const nmax = counts.length ? counts[0][1] : 1;
+    m.draw(counts.map(([pl, n]) => { const city = pl.type !== "regions";
+      return { pl, r: 2.5 + Math.sqrt(n) * 1.5, label: city ? +(9.5 + 7.5 * Math.sqrt(n / nmax)).toFixed(1) : false, on: pl.id === current }; }), { hot: current });
     side();
   };
   m.pick((id, ev) => {
@@ -781,6 +841,13 @@ async function viewMap(view, sel) {
     else { const c = +b.dataset.c; cents.has(c) ? cents.delete(c) : cents.add(c); b.classList.toggle("on"); }
     redraw(); });
   stageToggle($("#mstage"), $("#mstage .fsbtn"), () => { at = null; if (current) m.fit([PL.get(current)]); place(); });
+  // haritada şehir arama: seçilen şehre yakınlaşır, işaretler ve penceresini açar
+  const pkey = pl => [fold(pl.name_tr), norm(pl.name), fold(pl.info && pl.info.translit)].join(" ");
+  $("#msearch").replaceWith(localSearch(T("ابحث عن بلد في الخريطة…", "Haritada şehir ara…"), q => {
+    const a = /[\u0600-\u06ff]/.test(q) ? norm(q) : fold(q);
+    return places.filter(pl => pkey(pl).includes(a)).sort((x, y) => y.n - x.n).slice(0, 12)
+      .map(pl => ({ id: pl.id, html: `<span>${esc(plName(pl))}</span><span class="d num">${AR(pl.n)} ${T("عَلَمًا", "âlim")}</span>` }));
+  }, id => { current = id; at = null; history.replaceState(null, "", `#/map/${encodeURIComponent(id)}`); redraw(); m.focus(PL.get(id)); place(); }));
   redraw();
   if (current) { m.fit([PL.get(current)]); at = null; place(); }
 }
@@ -944,10 +1011,20 @@ async function viewNet(view, id) {
       <a class="btn ${full ? "on" : ""}" href="#/net">${T("المشهد العام", "Genel görünüm")}</a>
       ${full ? "" : `<span class="label" style="margin-inline-start:1rem">${T("الطبقات", "Kuşak")}</span><button type="button" class="btn on" data-depth="1">${T("طبقة واحدة", "Bir kuşak")}</button><button type="button" class="btn" data-depth="2">${T("طبقتان", "İki kuşak")}</button>
         <button type="button" class="btn${LINEAGE ? " on" : ""}" id="lin" aria-pressed="${LINEAGE}">${T("الوصل بأبي حنيفة", "Ebû Hanîfe’ye bağla")}</button>`}
-      <span class="grow"></span>${full ? "" : expButtons()}${fsButton()}</div>
+      <span class="grow"></span>${full ? `<span id="nsearch"></span>` : expButtons()}${fsButton()}</div>
     <div id="netbody"></div></div>`;
   const stage = $("#nstage");
-  if (full) { const redraw = fullNet($("#netbody"), g); stageToggle(stage, $(".fsbtn", stage), () => redraw && redraw()); return; }
+  if (full) {
+    const net = fullNet($("#netbody"), g); stageToggle(stage, $(".fsbtn", stage), () => net.redraw());
+    // ağda âlim arama: seçilen âlime yakınlaşır, bağlarını vurgular
+    $("#nsearch").replaceWith(localSearch(T("ابحث عن عَلَم في الشبكة…", "Ağda âlim ara…"), q => {
+      const ar = /[\u0600-\u06ff]/.test(q), a = ar ? norm(q) : fold(q);
+      return g.nodes.map((n, i) => [n, i]).filter(([n]) => n.x > 0 && (ar ? norm(n.ar) : fold(n.tr)).includes(a))
+        .sort((x, y) => y[0].deg - x[0].deg).slice(0, 12)
+        .map(([n, i]) => ({ id: i, html: `<span>${esc(n.name)}</span><span class="d num">${n.d ? yearTxt(n.d, n.guess) : ""}</span>` }));
+    }, i => net.focus(+i)));
+    return;
+  }
   const i = g.byId.get(id);
   if (i === undefined) { $("#netbody").innerHTML = `<p class="empty">${plink(id)} ${T("ليس له شيوخ ولا تلاميذ من المترجمين.", ": biyografisi bulunanlar arasında hocası ya da talebesi yok.")}</p>`; return; }
   let depth = 1;
@@ -1157,6 +1234,8 @@ function fullNet(host, g) {
       ctx.fillStyle = i === sel ? teal : n.salaf ? col("--muted") : rub;
       ctx.beginPath(); ctx.arc(tx + sc * X(n), ty + sc * Y(n), r, 0, 7); ctx.fill();
     });
+    if (sel >= 0 && ok(N[sel])) { ctx.globalAlpha = 1; ctx.strokeStyle = col("--gold"); ctx.lineWidth = 2.5;
+      ctx.beginPath(); ctx.arc(tx + sc * X(N[sel]), ty + sc * Y(N[sel]), 13, 0, 7); ctx.stroke(); ctx.lineWidth = 1; }
     ctx.globalAlpha = 1; ctx.fillStyle = ink; ctx.textAlign = "center";
     if (sc > 2.5 || sel >= 0) N.forEach((n, i) => { if (ok(n) && ((sc > 2.5 && n.deg >= 12 / sc) || hl.has(i))) ctx.fillText((rtl ? n.name.split("،")[0] : (who(n.id)?.trs || n.name)).slice(0, 30), tx + sc * X(n), ty + sc * Y(n) - 7); });
   };
@@ -1179,7 +1258,13 @@ function fullNet(host, g) {
     tx = mx - (mx - tx) * f; ty = my - (my - ty) * f; sc *= f; draw(); }, { passive: false });
   new ResizeObserver(() => { draw(); }).observe(cv);
   fit(); draw();
-  return () => { fit(); draw(); };
+  // aramadan seçilen âlim: kendisi ve hoca/talebeleri ekrana sığacak biçimde yakınlaşılır
+  const focus = i => { const w = cv.clientWidth, h = cv.clientHeight; select(i);
+    const ns = [...hl].map(j => N[j]).filter(ok), xs = ns.map(X), ys = ns.map(Y);
+    const x0 = Math.min(...xs), x1 = Math.max(...xs), y0 = Math.min(...ys), y1 = Math.max(...ys);
+    sc = Math.max(1.5, Math.min(8, w / (x1 - x0 + 120), h / (y1 - y0 + 120)));
+    tx = w / 2 - sc * (x0 + x1) / 2; ty = h / 2 - sc * (y0 + y1) / 2; draw(); };
+  return { redraw: () => { fit(); draw(); }, focus };
 }
 
 // ---------- about ----------

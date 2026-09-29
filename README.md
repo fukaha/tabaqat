@@ -160,9 +160,17 @@ python -m tabaqat.geo.basemap <natural-earth-dizini>   # → site/data/basemap.j
   ekrana alınabilir. Âlim silsilesi "PNG" ya da "SVG" düğmesiyle dışa aktarılır: ekrandaki ağaç
   ölçülüp kutu, çizgi ve satır satır yazı olarak yeniden çizilir (PNG 2× çözünürlükte, SVG düzenlenebilir
   metinle); altına site adı ve silsile sahibi yazılır.
-- **Harita:** asır ve atıf türü süzgeçleri; bölge adları (Horasan, Mâverâünnehir…) ve büyük
-  merkezlerin adları (çakışanlar gizlenir); bir şehre tıklayınca yanında yüzen pencerede oradaki
-  fakihlerin listesi.
+- **Harita:** asır ve atıf türü süzgeçleri; bölge adları (Horasan, Mâverâünnehir…). Kaydı olan
+  her şehrin adı yazılır, büyüklüğü kayıt sayısıyla orantılıdır; çok kayıtlıdan başlayarak her ad
+  noktanın üstüne, sağına, soluna ya da altına, öncekilere değmeyen ilk yere konur (hiçbirine
+  sığmayan o yakınlıkta gizlenir, yakınlaştırınca açılır). Bir şehre tıklayınca yanında yüzen
+  pencere: el-Süreyyâ künyesi (tür · bölge · transliterasyon), Yâkūt'un *Mu‘cemü’l-büldân*'ından
+  (yoksa Himyerî'nin *er-Ravzü’l-mi‘târ*'ından, yoksa Sem‘ânî'nin *el-Ensâb*'ından) kısa alıntı ve
+  oradaki fakihlerin listesi. Haritada şehir, genel ağ görünümünde âlim arama kutusu seçilen
+  sonuca yakınlaşıp vurgular.
+- **el-Süreyyâ bilgisi:** `python -m tabaqat.geo.thurayya_info <althurayya.github.io kopyası>`
+  → `data/gazetteer/thurayya_info.json` (künye ve ≤240 harflik alıntı, CC BY 4.0); `site`
+  koşusu bunu `places.json`'a ekler.
 - **Biyografi metinleri:** kaynak düğmeleriyle seçilen kitapların metinleri yan yana çerçevelerde,
   iki yana yaslı; şiir ortalı. Yayın metni `tabaqat/textclean.py` ile temizlenir: dipnot işaretleri
   ve muhakkik notları atılır, OCR satır sonları ve çift boşluklar giderilir, sayfa sonunda cümle

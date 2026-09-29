@@ -315,6 +315,8 @@ details.ev p mark { background: var(--mark); color: var(--ink); }
 .pt.reg.on { fill: var(--gold); fill-opacity: .3; }
 .plab { font-family: var(--f-head); fill: var(--ink); paint-order: stroke; stroke: var(--land); stroke-width: 3px; pointer-events: none; }
 .plab.major { font-weight: 700; fill: var(--indigo); }
+.plab.minor { fill: var(--muted); }
+.plab.hot { fill: var(--gold); font-weight: 700; }
 .rlab { font-family: var(--f-head); font-style: italic; fill: var(--muted); fill-opacity: .55; pointer-events: none; }
 /* yüzen şehir penceresi */
 .mpop { position: absolute; z-index: 5; width: min(21rem, calc(100% - 16px)); max-height: min(60%, 26rem); overflow: auto; background: var(--paper);
@@ -401,6 +403,19 @@ footer.foot .brand { color: var(--on-navy); }
 .tree .none { color: var(--muted); text-align: center; margin: .2rem 0; font-size: .9rem; }
 .card.onpath { border-color: var(--gold); box-shadow: 0 0 0 2px color-mix(in srgb, var(--gold) 30%, transparent); }
 @media (max-width: 600px) { .tree { padding-inline: .6rem; } .tree .chainv .card { width: 14rem; } }
+/* harita/ağ içi arama */
+.lsearch { flex: 0 1 17rem; min-width: 11rem; }
+.lsearch input { padding-block: .28rem; box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--gold) 25%, transparent); }
+.lsearch input:focus { outline: 2px solid color-mix(in srgb, var(--gold) 55%, transparent); outline-offset: 1px; }
+.lsearch .results { z-index: 60; min-width: 16rem; }
+.lsearch .results .none { margin: 0; padding: .45rem .8rem; color: var(--muted); }
+/* şehir penceresi: el-Süreyyâ bilgisi */
+.mpop .pinfo { margin: .15rem 0 .5rem; padding-bottom: .5rem; border-bottom: 1px solid var(--line); }
+.mpop .pmeta { margin: 0 0 .3rem; color: var(--muted); font-size: .86rem; }
+.mpop .pinfo blockquote { margin: 0; padding: .1rem .7rem .2rem; border-inline-start: 3px solid color-mix(in srgb, var(--gold) 60%, transparent); background: var(--mark); border-radius: 4px;
+  font-family: "Amiri", "Noto Naskh Arabic", serif; font-size: 1.02rem; line-height: 1.75; text-align: justify; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; cursor: pointer; }
+.mpop .pinfo blockquote.open { -webkit-line-clamp: unset; display: block; }
+.mpop .pcite { margin: .25rem 0 0; color: var(--muted); font-size: .78rem; }
 /* dışa aktarma */
 .expgrp { display: inline-flex; align-items: center; gap: .3rem; margin-inline-end: .4rem; color: var(--muted); }
 .expgrp > svg { width: 1.05rem; height: 1.05rem; }

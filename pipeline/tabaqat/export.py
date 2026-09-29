@@ -357,7 +357,11 @@ def export(root: Path) -> dict:
         for it in items:
             people_at[it["place"]].append([pid, it["kind"]])
     ptr = load_tsv(root / "review" / "tr" / "places.tsv")
+    # el-Süreyyâ künyesi ve Yâkût/Himyerî/Sem‘ânî'den kısa alıntı (geo/thurayya_info.py)
+    tinfo_p = data / "gazetteer" / "thurayya_info.json"
+    tinfo = json.loads(tinfo_p.read_text(encoding="utf-8")) if tinfo_p.exists() else {}
     places = [{**pl, "name_tr": ptr.get(pl["id"], ""), "n": len({x[0] for x in people_at[pl["id"]]}),
+               **({"info": tinfo[pl["id"]]} if pl["id"] in tinfo else {}),
                "people": people_at[pl["id"]]}
               for pl in places if people_at[pl["id"]]]
     _dump(out / "places.json", places)

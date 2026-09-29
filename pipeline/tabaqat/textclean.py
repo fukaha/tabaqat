@@ -20,6 +20,7 @@ def _is_verse(block: str) -> bool:
     lines = [x for x in block.split("\n") if x.strip()]
     if not lines or any(len(x) > 110 for x in lines):
         return False
+
     letters = sum(1 for c in block if "ء" <= c <= "ي")
     return letters > 0 and len(_HARAKA.findall(block)) / letters > 0.3
 
@@ -41,8 +42,13 @@ def clean_text(text: str) -> str:
     text = _FN.sub(" ", text)                                      # dipnot işaretleri
     blocks = [b.strip() for b in re.split(r"\n{2,}", text) if b.strip()]
     out: list[str] = []
+    vflag: list[bool] = []
     for b in blocks:
         verse = _is_verse(b) or _is_bayt(b)
+        # tek satırlık harekeli blok ancak şiir bağlamında şiirdir (önceki ":" ile bitiyor ya da şiir);
+        # yoksa tam harekeli metnin sayfa sonunda bölünmüş bir düzyazı parçasıdır
+        if verse and "\n" not in b.strip() and not _is_bayt(b) and not (out and (vflag[-1] or out[-1].rstrip().endswith(":"))):
+            verse = False
         if not verse:
             b = re.sub(r"\s*\n\s*", " ", b)                         # OCR satır sonları
         b = "\n".join(_spaces(x) for x in b.split("\n")) if verse else _spaces(b)
@@ -50,8 +56,9 @@ def clean_text(text: str) -> str:
             continue
         prev = out[-1] if out else ""
         if (prev and not _HEAD.match(prev) and not _HEAD.match(b) and not verse
-                and "\n" not in prev and not _is_bayt(prev) and not _is_verse(prev) and not _END.search(prev)):
+                and "\n" not in prev and not vflag[-1] and not _END.search(prev)):
             out[-1] = f"{prev} {b}"                                 # sayfa sonunda bölünen paragraf
         else:
             out.append(b)
+            vflag.append(verse)
     return "\n\n".join(out)
