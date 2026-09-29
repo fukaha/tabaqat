@@ -1,5 +1,6 @@
 pyproject.toml
 tabaqat/__init__.py
+tabaqat/cli.py
 tabaqat/schema.py
 tabaqat.egg-info/PKG-INFO
 tabaqat.egg-info/SOURCES.txt
@@ -12,4 +13,5 @@ tabaqat/match/__init__.py
 tabaqat/normalize/__init__.py
 tabaqat/normalize/arabic.py
 tabaqat/parse/__init__.py
+tabaqat/parse/turath_epub.py
 tests/test_arabic.py

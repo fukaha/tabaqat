@@ -1,0 +1,9 @@
+book_id: kataib
+title: كتائب أعلام الأخيار من فقهاء مذهب النعمان المختار
+author: محمود بن سليمان الكفوي
+author_death_h: 990
+parser: turath_epub
+volumes: 4
+source: sources/kataib/raw/kataib.epub
+# Madde başlıkları bu başlıktan sonra aranır (mukaddime içindeki numaralı başlıklar hariç)
+start_after_heading: "^برهان كتائب أعلام الأخيار"

@@ -14,6 +14,11 @@ class Entry:
     vol: int | None = None
     page_start: int | None = None
     page_end: int | None = None
+    number: int | None = None  # kitaptaki madde numarası
+    section: str = ""  # bağlı olduğu bölüm/tabaka başlığı
+    footnotes: dict[str, str] = field(default_factory=dict)
+    references: list[str] = field(default_factory=list)  # başlığa bağlı çapraz atıflar
+    group: int | None = None  # ortak metni paylaşan maddelerin grup no'su
 
     @property
     def source_ref(self) -> str:
