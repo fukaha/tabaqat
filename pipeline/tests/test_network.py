@@ -60,7 +60,16 @@ def rel():
     ("jawahir:822", "kataib:313"),          # Halvânî → Bekir ez-Zerencerî
     ("jawahir:1462", "jawahir:719"),        # Kemmârî → Abdullah el-Hayzâhazî
     ("jawahir:719", "jawahir:121"),         # "أخذ عن والده": baba → oğul
+    ("jawahir:1271", "jawahir:626"),        # "من أصحاب محمد" (Süleymân b. Şuayb, v. 278)
+    ("jawahir:1271", "jawahir:1776"),       # "تفقه على أبي يوسف ومحمد" (Hişâm er-Râzî, vefatı yok)
 ])
 def test_known_edges(rel, teacher, student):
     edges, cid = rel
     assert (cid[teacher], cid[student]) in edges
+
+
+def test_bare_muhammad_needs_near_death(rel):
+    edges, cid = rel
+    sh = cid["jawahir:1271"]
+    assert (sh, cid["kataib:110"]) not in edges       # Züfer (v. 158) İmam Muhammed'in talebesi değil
+    assert (sh, cid["qand:192"]) not in edges         # "ابنه محمد": Şakîk'in oğlu

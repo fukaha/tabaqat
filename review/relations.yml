@@ -1,0 +1,7 @@
+# Hoca–talebe ağı insan kararları. choose: belirsiz atıf için seçilen şahıs;
+# reject: yanlış bağ [hoca, talebe]; ok: doğrulanmış bağ.
+choose: []
+reject:
+# Ketâib, Hasan b. Ziyâd maddesinde İbn Semâa'nın "من أصحاب محمد" olduğunu anlatıyor.
+- [jw1270, jw448]
+ok: []

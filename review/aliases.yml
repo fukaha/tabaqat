@@ -1,6 +1,9 @@
 # Metinde anılan ad (normalize edilmeden yazılabilir) → o şahsın bir madde anahtarı.
 # Yalnız atfın tamamı bu ada eşitse uygulanır. Hanefî metinlerinde tek başına geçen
 # "محمد" (Fevâid zincirlerinde "... عن محمد عن أبي يوسف") İmam Muhammed'dir.
+# Bayraklar: @zincir yalnız zincirlerde; @yakın zincir dışında, talebenin vefatı hocanınkinden
+# en çok 90 yıl sonraysa ya da vefat bilinmiyor ve cümlede Ebû Yûsuf / Züfer / Hasan b. Ziyâd da
+# anılıyorsa ("من أصحاب محمد", "أخذ عن أبي يوسف ومحمد").
 أبي حنيفة: jawahir:1
 أبو حنيفة: jawahir:1
 الإمام أبي حنيفة: jawahir:1
@@ -10,7 +13,7 @@
 أبو يوسف: jawahir:1826
 القاضي أبي يوسف: jawahir:1826
 يعقوب: jawahir:1826
-محمد: jawahir:1271@zincir
+محمد: jawahir:1271@zincir@yakın
 محمد بن الحسن: jawahir:1271
 زفر: jawahir:597
 الحسن بن زياد: jawahir:449

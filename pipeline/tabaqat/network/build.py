@@ -46,10 +46,15 @@ def build(root: Path) -> dict:
     by_pid = {p.pid: p for p in people}
     aliases_raw = _load_yaml(root / "review" / "aliases.yml")
     aliases = {}
-    for k, v in aliases_raw.items():  # "محمد": "jawahir:1271@zincir" yalnız zincirlerde geçerli
-        key, _, only = str(v).partition("@")
-        if key in cid:
-            aliases[("@zincir " if only == "zincir" else "") + k] = cid[key]
+    # "محمد": "jawahir:1271@zincir@yakın" → zincirlerde her zaman, başka yerde vefat yakınsa
+    for k, v in aliases_raw.items():
+        key, *flags = str(v).split("@")
+        if key not in cid:
+            continue
+        if not flags:
+            aliases[k] = cid[key]
+        for f in flags:
+            aliases[f"@{f} {k}"] = cid[key]
     decisions = _load_yaml(root / "review" / "relations.yml")
     rejected = {tuple(x) for x in decisions.get("reject") or []}
     res = Resolver(people, aliases)
@@ -128,7 +133,8 @@ def _pass(entries, recs, cid, by_pid, res, rejected, chosen):
             if (key, m.text) in chosen:  # onay sayfasında seçilen aday
                 r = Resolution(chosen[(key, m.text)], "resolved", 9, "insan")
             elif m.text:  # "أبيه أبي حفص الكبير": önce adla
-                r = res.resolve(m.text, role, ctx, chain=m.role == "chain" or m.via_chain)
+                r = res.resolve(m.text, role, ctx, chain=m.role == "chain" or m.via_chain,
+                                context=m.snippet, kin=bool(m.kin))
             if m.kin and (r is None or r.pid is None) and ctx is not None:
                 r = res.kin(m.kin, m.text, ctx)
             if m.role in ("teacher", "chain"):

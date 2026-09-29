@@ -17,6 +17,10 @@ from ..normalize.arabic import normalize
 TEACHER_AFTER = 25     # hoca, talebeden en çok bu kadar sonra ölmüş olabilir
 TEACHER_BEFORE = 110   # hoca, talebeden en çok bu kadar önce ölmüş olabilir
 _KUNYA_A = re.compile(r"(^| )ابا ")
+# "@yakın" eşlemesi (tek başına "محمد" → İmam Muhammed): vefatlar yakınsa ya da cümlede Ebû Hanîfe'nin
+# öteki ashabı da anılıyorsa ("تفقه على أبي يوسف ومحمد") uygulanır.
+NEAR_MAX = 90
+_PEERS = re.compile(r"(?:ابي|ابو) يوسف|زفر|الحسن بن زياد")
 
 
 @dataclass
@@ -141,12 +145,25 @@ class Resolver:
             return -TEACHER_BEFORE - slack <= d <= TEACHER_AFTER + slack
         return -TEACHER_AFTER - slack <= d <= TEACHER_BEFORE + slack
 
+    @staticmethod
+    def _near(cand: Person, subj: Person, role: str) -> bool:
+        """Hoca talebeden önce, en çok NEAR_MAX yıl önce ölmüş (birkaç yıl pay)."""
+        if not cand.death or not subj.death:
+            return False
+        d = subj.death - cand.death if role == "teacher" else cand.death - subj.death
+        return -5 <= d <= NEAR_MAX
+
     def resolve(self, text: str, role: str, subject: Person | None,
-                chain: bool = False) -> Resolution:
+                chain: bool = False, context: str = "", kin: bool = False) -> Resolution:
         s = prep(text)
         for key in (s, "@zincir " + s if chain else None):
             if key and key in self.aliases:
                 return Resolution(self.aliases[key], "resolved", 9, "elle")
+        pid = self.aliases.get("@yakın " + s)
+        if pid and subject is not None and not kin and (
+                pid == subject.pid or self._near(self.persons[pid], subject, role)
+                or (not subject.death and _PEERS.search(prep(context)))):
+            return Resolution(pid, "resolved", 7, "elle+yakın")
         r = self._exact(s, role, subject)
         if r:
             return r
