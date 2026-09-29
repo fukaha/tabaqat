@@ -1,0 +1,11 @@
+book_id: ghuraf_v1
+title: الغرف العلية في تراجم متأخري الحنفية — المجلد الأول
+author: شمس الدين ابن طولون محمد بن علي الصالحي
+author_death_h: 953
+parser: mistral_ocr
+vol: 1
+edition: تحقيق علي السيد عبد اللطيف، مراجعة محمد فالح قتيلا، نشريات وقف الديانة التركي (إسم)، ٢٠٢٠
+# Mistral OCR çıktısı (pages/page-N/page-metadata.json). Ön kısım (kapak, künye, fihrist) atlanır.
+source: sources/ghuraf/raw/pages
+first_pdf_page: 7
+page_offset: 2  # basılı sayfa = PDF sayfası + 2 (OCR'ın okuduğu numaralar ara sıra hatalı)
