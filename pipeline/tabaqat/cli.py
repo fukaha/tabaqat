@@ -22,13 +22,14 @@ def main() -> None:
     ap.add_argument("--out", default=str(ROOT / "data" / "entries"))
     a = ap.parse_args()
     cfg = load_book(a.book)
-    entries = PARSERS[cfg["parser"]](str(ROOT / cfg["source"]), cfg["book_id"], cfg.get("start_after_heading"))
+    entries = PARSERS[cfg["parser"]](str(ROOT / cfg["source"]), cfg["book_id"], cfg.get("start_after_heading"),
+                                     cfg.get("unnumbered_entry"), cfg.get("section_heading"))
     if a.cmd == "parse":
         out = Path(a.out)
         out.mkdir(parents=True, exist_ok=True)
         (out / f"{cfg['book_id']}.json").write_text(
             json.dumps([e.to_dict() for e in entries], ensure_ascii=False, indent=1), encoding="utf-8")
-    nums = [e.number for e in entries]
+    nums = [e.number for e in entries if e.number is not None]
     gaps = sorted(set(range(1, max(nums) + 1)) - set(nums))
     empty = [e.number for e in entries if len(e.text) < 30]
     print(f"{len(entries)} madde; no {min(nums)}–{max(nums)}; boşluk: {gaps[:20]}; kısa/boş: {empty[:20]}")
