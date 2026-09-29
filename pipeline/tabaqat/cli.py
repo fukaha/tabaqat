@@ -38,8 +38,11 @@ def main() -> None:
         (out / f"{cfg['book_id']}.json").write_text(
             json.dumps([e.to_dict() for e in entries], ensure_ascii=False, indent=1), encoding="utf-8")
     nums = [e.number for e in entries if e.number is not None and not e.series]
+    empty = [e.number or e.seq for e in entries if len(e.text) < 30]
+    if not nums:  # numarasız kitap
+        print(f"{len(entries)} madde (numarasız); kısa/boş (seq): {empty[:20]}")
+        return
     gaps = sorted(set(range(1, max(nums) + 1)) - set(nums))
-    empty = [e.number for e in entries if len(e.text) < 30]
     print(f"{len(entries)} madde; no {min(nums)}–{max(nums)}; boşluk: {gaps[:20]}; kısa/boş: {empty[:20]}")
 
 
