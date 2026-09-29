@@ -27,6 +27,7 @@ warnings.filterwarnings("ignore", category=XMLParsedAsHTMLWarning)
 _DIGITS = str.maketrans("٠١٢٣٤٥٦٧٨٩", "0123456789")
 _FOOTER = re.compile(r"(?:الجزء:\s*(\d+)\s*-\s*)?الصفحة:\s*(\d+)")
 _HEADING = re.compile(r"^و?\[?\s*([\d٠-٩]+)\s*-\s*(.+?)\s*\]?$")
+_INLINE_HEADING = re.compile(r"([\d٠-٩]+)\s*-\s*\[[^\]]+\]")
 _FN_LINE = re.compile(r"\(\^([\d٠-٩]+|\*+)\)")
 
 
@@ -60,8 +61,8 @@ def parse(path: str, book_id: str, start_after_heading: str | None = None,
           unnumbered_entry: str | None = None, section_heading: str | None = None) -> list[Entry]:
     """
     unnumbered_entry: numarasız ama madde sayılacak başlık (ör. Ebû Hanîfe tercümesi).
-    section_heading: verilirse yalnız buna uyan numarasız başlıklar bölüm açar; diğerleri
-        (ör. "فصل فى مولده") açık maddenin içine alt başlık olarak eklenir.
+    section_heading: numarasız madde açıkken yalnız buna uyan başlıklar onu kapatır; diğerleri
+        (ör. "فصل فى مولده") o maddenin içine alt başlık olarak eklenir.
     """
     start_re = re.compile(start_after_heading) if start_after_heading else None
     unnum_re = re.compile(unnumbered_entry) if unnumbered_entry else None
@@ -127,12 +128,27 @@ def parse(path: str, book_id: str, start_after_heading: str | None = None,
                 elif txt:
                     events.append(("p", txt))
 
-            for kind, raw in events:
+            queue = list(reversed(events))
+            while queue:
+                kind, raw = queue.pop()
                 if kind == "sep":  # madde ayracı: sonraki başlık yeni madde açar
                     sep_seen = True
                     continue
                 clean = _FN_LINE.sub("", raw).strip().rstrip("*").strip()
                 m = _HEADING.match(clean)
+                if kind == "p" and started and not m:
+                    # Paragraf ortasına gömülmüş sıradaki madde başlığı: "... ٢١٠٦ - [النجم الملطى] صاحبنا ..."
+                    for im in _INLINE_HEADING.finditer(raw):
+                        if int(im.group(1).translate(_DIGITS)) == last_no + 1:
+                            before, head, after = raw[:im.start()], im.group(0), raw[im.end():]
+                            queue.extend([("p", after), ("h", head)] if after.strip() else [("h", head)])
+                            if before.strip():
+                                queue.append(("p", before))
+                            break
+                    else:
+                        im = None
+                    if im is not None:
+                        continue
                 # Dönüştürücünün başlık etiketi vermediği maddeler: sıradaki numarayla başlayan paragraf
                 if kind == "p" and started and m and int(m.group(1).translate(_DIGITS)) == last_no + 1:
                     kind = "h"
@@ -150,7 +166,7 @@ def parse(path: str, book_id: str, start_after_heading: str | None = None,
                                            page_start=page, page_end=page, section=section))
                         continue
                     if not m:
-                        if group and section_re and not section_re.search(clean):
+                        if group and group[-1].number is None and section_re and not section_re.search(clean):
                             paras.append(f"### {clean}")
                             continue
                         close()

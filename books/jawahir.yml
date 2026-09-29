@@ -1,0 +1,12 @@
+book_id: jawahir
+title: الجواهر المضية في طبقات الحنفية
+author: عبد القادر بن محمد القرشي
+author_death_h: 775
+parser: turath_epub
+volumes: 5
+edition: تحقيق عبد الفتاح محمد الحلو، دار هجر، القاهرة، ط٢ ١٤١٣ هـ (الجزء الخامس فهارس)
+source: sources/jawahir/raw/jawahir.epub
+start_after_heading: "^الباب الثالث فى الملتقط"
+# Ebû Hanîfe tercümesi ("البستان"dan seçmeler) numarasız madde olarak alınır.
+unnumbered_entry: "^الباب الثالث فى الملتقط"
+section_heading: "^حرف "
