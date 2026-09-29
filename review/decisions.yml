@@ -1,0 +1,7 @@
+# İnsan kararları: aynı kişi (same) / farklı kişi (different) olan madde çiftleri.
+# Anahtar biçimi kitap:sıra (data/entries/<kitap>.json içindeki seq).
+same:
+- ['athmar:1', 'jawahir:1']
+- ['athmar:1', 'kataib:95']
+- ['athmar:1', 'tabaqat_saniyya:1']
+different: []

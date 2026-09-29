@@ -1,0 +1,13 @@
+# Elle düzeltmeler: başlığı şahıs adı olmayan maddeler ya da metinden yanlış okunan vefat yılı.
+# Anahtar: kitap:sıra (data/entries/<kitap>.json içindeki seq). Alanlar: ad, vefat (hicrî yıl).
+jawahir:1:
+  ad: النعمان بن ثابت بن زوطى، أبو حنيفة، الكوفي
+  vefat: 150
+tabaqat_saniyya:1:
+  ad: النعمان بن ثابت بن زوطى، أبو حنيفة، الكوفي
+  vefat: 150
+athmar:1:
+  vefat: 150
+kataib:95:
+  ad: أبو حنيفة النعمان بن ثابت الكوفي
+  vefat: 150
