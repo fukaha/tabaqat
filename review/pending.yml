@@ -3,1401 +3,655 @@
 # çalıştırın: kararlar review/decisions.yml'e taşınır, bu dosya yeniden üretilir.
 - 'no': 1
   karar: ''
-  a: ghuraf_v1:366
-  b: tabaqat_saniyya:1081
-  a_ad: عبد الله بن محمد بن إبراهيم بن محمد، الواني، الحنفي، المُحدِّث شَرف الدين ابن الشيخ أَمين الدين
-  a_yer: الغرف العلية 1/651-652 (رقم 367)
-  a_vefat: 740
-  b_ad: عبد الله بن محمد بن إبراهيم بن محمد، الشيخ الإمام، الفقيه الفاضل، المحدث، شرف الدين الوانى، أبو محمد
-  b_yer: الطبقات السنية 4/203 (رقم 1080)
-  b_vefat: 749
-  a_sahis: gh367
-  b_sahis: gh364
-  tur: isim
-  puan: 6.0
-  benzerlik: 1.0
-  gerekce:
-  - 'nisbe: الواني'
-  - lakap
-  - aynı kitapta birden çok aday
-- 'no': 2
-  karar: ''
-  a: ghuraf_v1:350
+  a: ghuraf_v1:348
   b: tabaqat_saniyya:1284
-  a_ad: عبد القادر بن محمد بن محمد بن نَصر، الحنفي، الإمام مُحيي الدين
-  a_yer: الغرف العلية 1/634-635 (رقم 351)
-  a_vefat: 770
+  a_ad: عبد القادر بن محمد بن محمد بن نَصر الله بن سالم بن أبي الوفاء، القُرَشي، الحنفي، الشيخ مُحيي الدين
+  a_yer: الغرف العلية 1/631-633 (رقم 349)
+  a_vefat: 775
   b_ad: عبد القادر بن محمد بن محمد بن نصر الله بن سالم بن أبى الوفاء، أبو محمد، محيى الدين القرشى
   b_yer: الطبقات السنية 4/366 (رقم 1283)
   b_vefat: 775
-  a_sahis: gh351
-  b_sahis: gh349
+  a_sahis: gh349
+  b_sahis: gh351
   tur: isim
-  puan: 4.0
+  puan: 10.0
   benzerlik: 1.0
   gerekce:
+  - 'nisbe: القرشي'
   - lakap
-  - aynı kitapta birden çok aday
+  - vefat 775
+  - 'çakışma: ghuraf kitabında zaten başka bir madde var'
+- 'no': 2
+  karar: ''
+  a: tabaqat_saniyya:352
+  b: jawahir:230
+  a_ad: أحمد بن محمد بن محمد بن أحمد بن محمد بن محمد ابن حمدان، أبو منصور، الحارثى القاضى، الرئيس
+  a_yer: الطبقات السنية 2/79 (رقم 351)
+  a_vefat: 512
+  b_ad: أحمد بن محمد بن محمد بن أحمد بن محمد بن محمد بن حمدان، أبو منصور، الحارثى، القاضى، الرئيس
+  b_yer: الجواهر المضية 1/307 (رقم 229)
+  b_vefat: null
+  a_sahis: ts351
+  b_sahis: jw229
+  tur: atıf
+  puan: 9.0
+  benzerlik: 1.0
+  gerekce:
+  - 'atıf: الجواهر المضية، برقم ٢٢٩، اللباب ١/ ٢٦٩.'
+  - künye
+  - 'nisbe: الحارثي'
+  - 'çakışma: tabaqat_saniyya kitabında zaten başka bir madde var'
 - 'no': 3
   karar: ''
-  a: qand:738
-  b: jawahir:1000
-  a_ad: أبو الحسن علي بن محمد بن علي
-  a_yer: القند 403 (رقم 738)
-  a_vefat: null
-  b_ad: على بن محمد بن على بن إسحاق بن إبراهيم، أبو الحسن الكندرانى، القاضى، الهروى
-  b_yer: الجواهر المضية 2/597 (رقم 999)
-  b_vefat: null
-  a_sahis: qd738
-  b_sahis: jw999
+  a: ghuraf_v1:348
+  b: fawaid:206
+  a_ad: عبد القادر بن محمد بن محمد بن نَصر الله بن سالم بن أبي الوفاء، القُرَشي، الحنفي، الشيخ مُحيي الدين
+  a_yer: الغرف العلية 1/631-633 (رقم 349)
+  a_vefat: 775
+  b_ad: عبد القادر بن محمد بن محمد بن نصر الله بن سالم أبو محمد القرشى
+  b_yer: الفوائد البهية 99
+  b_vefat: 775
+  a_sahis: gh349
+  b_sahis: gh351
   tur: isim
-  puan: 4.0
+  puan: 8.0
   benzerlik: 1.0
   gerekce:
-  - künye
-  - aynı kitapta birden çok aday
-  - aynı kitapta birden çok aday
+  - 'nisbe: القرشي'
+  - vefat 775
+  - 'çakışma: ghuraf kitabında zaten başka bir madde var'
 - 'no': 4
   karar: ''
-  a: jawahir:1540
-  b: kataib:486
-  a_ad: محمد بن محمود المكى الملقب برهان الدين
-  a_yer: الجواهر المضية 3/366 (رقم 1539)
-  a_vefat: null
-  b_ad: محمد بن محمود المكي
-  b_yer: كتائب أعلام الأخيار 3/208-210 (رقم 486)
-  b_vefat: 645
-  a_sahis: jw1539
-  b_sahis: jw2025_2027
-  tur: isim
-  puan: 4.0
+  a: kataib:421
+  b: taj_tarajim:304
+  a_ad: المطرزي
+  a_yer: كتائب أعلام الأخيار 3/54-55 (رقم 421)
+  a_vefat: 610
+  b_ad: ناصر بن عبد السيد، المطرزي
+  b_yer: تاج التراجم 309 (رقم 304)
+  b_vefat: 610
+  a_sahis: fws465
+  b_sahis: jw1726
+  tur: atıf
+  puan: 7.0
   benzerlik: 1.0
   gerekce:
-  - 'nisbe: المكي'
+  - 'atıf: تاج التراجم" لابن قطلوبغا (ص: ٣٠٩)، و"سير أعلام الن'
+  - 'nisbe: المطرزي'
   - lakap
-  - aynı kitapta birden çok aday
+  - vefat 610
+  - 'çakışma: kataib kitabında zaten başka bir madde var'
 - 'no': 5
   karar: ''
-  a: jawahir:2089
-  b: kataib:389
-  a_ad: محمد بن محمد بن محمد
-  a_yer: الجواهر المضية 4/407 (رقم 2085)
-  a_vefat: 542
-  b_ad: رضى الدين السرخسي
-  b_yer: كتائب أعلام الأخيار 2/498-504 (رقم 389)
-  b_vefat: 544
-  a_sahis: jw2085
-  b_sahis: jw1530
-  tur: isim
-  puan: 4.0
+  a: athmar:500
+  b: jawahir:1210
+  a_ad: محمد بن أحمد بن موسى بن يزداذ الرازي
+  a_yer: الأثمار الجنية 2/564 (رقم 489)
+  a_vefat: 361
+  b_ad: محمد بن أحمد بن موسى بن يزداذ الرازى، اليزداذى، الفقيه، القاضى، الخازن
+  b_yer: الجواهر المضية 3/70 (رقم 1209)
+  b_vefat: 361
+  a_sahis: jw1208
+  b_sahis: jw1209
+  tur: atıf
+  puan: 7.0
   benzerlik: 1.0
   gerekce:
-  - vefat 542/544
-  - aynı kitapta birden çok aday
+  - 'atıf: الجواهر المضية:٣/ ٧٠.'
+  - 'nisbe: الرازي'
+  - vefat 361
+  - 'çakışma: jawahir kitabında zaten başka bir madde var'
 - 'no': 6
   karar: ''
-  a: jawahir:2089
-  b: fawaid:393
-  a_ad: محمد بن محمد بن محمد
-  a_yer: الجواهر المضية 4/407 (رقم 2085)
-  a_vefat: 542
-  b_ad: محمد بن محمد بن محمد
-  b_yer: الفوائد البهية 188-190
-  b_vefat: 544
-  a_sahis: jw2085
-  b_sahis: jw1530
-  tur: isim
-  puan: 4.0
-  benzerlik: 1.0
-  gerekce:
-  - vefat 542/544
-  - aynı kitapta birden çok aday
-- 'no': 7
-  karar: ''
-  a: jawahir:1203
-  b: taj_tarajim:222
-  a_ad: محمد بن أحمد بن محمد السمرقندى، الإمام
-  a_yer: الجواهر المضية 3/64 (رقم 1202)
-  a_vefat: null
-  b_ad: محمد بن أحمد السمرقندي
-  b_yer: تاج التراجم 252 (رقم 222)
-  b_vefat: null
-  a_sahis: jw1202
-  b_sahis: jw1151
-  tur: isim
-  puan: 3.0
-  benzerlik: 1.0
-  gerekce:
-  - 'nisbe: السمرقندي'
-- 'no': 8
-  karar: ''
-  a: jawahir:1203
-  b: taj_tarajim:229
-  a_ad: محمد بن أحمد بن محمد السمرقندى، الإمام
-  a_yer: الجواهر المضية 3/64 (رقم 1202)
-  a_vefat: null
-  b_ad: محمد بن أحمد السمرقندي
-  b_yer: تاج التراجم 257 (رقم 229)
-  b_vefat: null
-  a_sahis: jw1202
-  b_sahis: jw1151
-  tur: isim
-  puan: 3.0
-  benzerlik: 1.0
-  gerekce:
-  - 'nisbe: السمرقندي'
-- 'no': 9
-  karar: ''
-  a: jawahir:1203
-  b: athmar:479
-  a_ad: محمد بن أحمد بن محمد السمرقندى، الإمام
-  a_yer: الجواهر المضية 3/64 (رقم 1202)
-  a_vefat: null
-  b_ad: محمد بن أحمد أبو منصور السمرقندي
-  b_yer: الأثمار الجنية 2/556 (رقم 468)
-  b_vefat: null
-  a_sahis: jw1202
-  b_sahis: jw1151
-  tur: isim
-  puan: 3.0
-  benzerlik: 1.0
-  gerekce:
-  - 'nisbe: السمرقندي'
-- 'no': 10
-  karar: ''
-  a: jawahir:1219
-  b: taj_tarajim:222
-  a_ad: محمد بن أحمد بن أبى حامد السمرقندى، أبو أحمد
-  a_yer: الجواهر المضية 3/77 (رقم 1218)
-  a_vefat: 539
-  b_ad: محمد بن أحمد السمرقندي
-  b_yer: تاج التراجم 252 (رقم 222)
-  b_vefat: null
-  a_sahis: jw1218
-  b_sahis: jw1151
-  tur: isim
-  puan: 3.0
-  benzerlik: 1.0
-  gerekce:
-  - 'nisbe: السمرقندي'
-- 'no': 11
-  karar: ''
-  a: jawahir:1219
-  b: taj_tarajim:229
-  a_ad: محمد بن أحمد بن أبى حامد السمرقندى، أبو أحمد
-  a_yer: الجواهر المضية 3/77 (رقم 1218)
-  a_vefat: 539
-  b_ad: محمد بن أحمد السمرقندي
-  b_yer: تاج التراجم 257 (رقم 229)
-  b_vefat: null
-  a_sahis: jw1218
-  b_sahis: jw1151
-  tur: isim
-  puan: 3.0
-  benzerlik: 1.0
-  gerekce:
-  - 'nisbe: السمرقندي'
-- 'no': 12
-  karar: ''
-  a: taj_tarajim:222
-  b: athmar:497
-  a_ad: محمد بن أحمد السمرقندي
-  a_yer: تاج التراجم 252 (رقم 222)
-  a_vefat: null
-  b_ad: محمد بن أحمد بن محمد السّمرقنّديّ
-  b_yer: الأثمار الجنية 2/563 (رقم 486)
-  b_vefat: null
-  a_sahis: jw1151
-  b_sahis: jw1202
-  tur: isim
-  puan: 3.0
-  benzerlik: 1.0
-  gerekce:
-  - 'nisbe: السمرقندي'
-- 'no': 13
-  karar: ''
-  a: taj_tarajim:229
-  b: athmar:497
-  a_ad: محمد بن أحمد السمرقندي
-  a_yer: تاج التراجم 257 (رقم 229)
-  a_vefat: null
-  b_ad: محمد بن أحمد بن محمد السّمرقنّديّ
-  b_yer: الأثمار الجنية 2/563 (رقم 486)
-  b_vefat: null
-  a_sahis: jw1151
-  b_sahis: jw1202
-  tur: isim
-  puan: 3.0
-  benzerlik: 1.0
-  gerekce:
-  - 'nisbe: السمرقندي'
-- 'no': 14
-  karar: ''
-  a: jawahir:1955
-  b: fawaid:274
-  a_ad: أبو على الرازى
-  a_yer: الجواهر المضية 4/69 (رقم 1954)
-  a_vefat: null
-  b_ad: أبو علي الرازى
-  b_yer: الفوائد البهية 146
-  b_vefat: null
-  a_sahis: jw1954
-  b_sahis: jw1953
-  tur: atıf
-  puan: 2.5
-  benzerlik: 1.0
-  gerekce:
-  - 'atıf: الفوائد البهية ١٤٦.'
-  - künye
-  - 'nisbe: الرازي'
-  - aynı kitapta birden çok aday
-- 'no': 15
-  karar: ''
-  a: jawahir:123
-  b: jawahir:1907
-  a_ad: أحمد بن عبد الله بن أبى القاسم البلخى، أبو جعفر، القاضى
-  a_yer: الجواهر المضية 1/184 (رقم 122)
-  a_vefat: null
-  b_ad: أبو جعفر البلخى
-  b_yer: الجواهر المضية 4/31 (رقم 1906)
-  b_vefat: null
-  a_sahis: jw122
-  b_sahis: jw1906
-  tur: isim
-  puan: 2.5
-  benzerlik: 1.0
-  gerekce:
-  - künye
-  - 'nisbe: البلخي'
-  - künye birden çok kişiye uyuyor
-- 'no': 16
-  karar: ''
-  a: jawahir:123
-  b: taj_tarajim:328
-  a_ad: أحمد بن عبد الله بن أبى القاسم البلخى، أبو جعفر، القاضى
-  a_yer: الجواهر المضية 1/184 (رقم 122)
-  a_vefat: null
-  b_ad: أبو جعفر البلخي
-  b_yer: تاج التراجم 329 (رقم 328)
-  b_vefat: null
-  a_sahis: jw122
-  b_sahis: jw1906
-  tur: isim
-  puan: 2.5
-  benzerlik: 1.0
-  gerekce:
-  - künye
-  - 'nisbe: البلخي'
-  - künye birden çok kişiye uyuyor
-- 'no': 17
-  karar: ''
-  a: jawahir:123
-  b: athmar:754
-  a_ad: أحمد بن عبد الله بن أبى القاسم البلخى، أبو جعفر، القاضى
-  a_yer: الجواهر المضية 1/184 (رقم 122)
-  a_vefat: null
-  b_ad: أبو جعفر البلخي
-  b_yer: الأثمار الجنية 2/709
-  b_vefat: null
-  a_sahis: jw122
-  b_sahis: jw1906
-  tur: isim
-  puan: 2.5
-  benzerlik: 1.0
-  gerekce:
-  - künye
-  - 'nisbe: البلخي'
-  - künye birden çok kişiye uyuyor
-- 'no': 18
-  karar: ''
-  a: jawahir:1907
-  b: taj_tarajim:240
-  a_ad: أبو جعفر البلخى
-  a_yer: الجواهر المضية 4/31 (رقم 1906)
-  a_vefat: null
-  b_ad: محمد بن عبد الله الهندواني، أبو حنيفة الصغير
-  b_yer: تاج التراجم 264 (رقم 240)
-  b_vefat: 362
-  a_sahis: jw1906
-  b_sahis: jw1345
-  tur: isim
-  puan: 2.5
-  benzerlik: 1.0
-  gerekce:
-  - künye
-  - 'nisbe: البلخي'
-  - künye birden çok kişiye uyuyor
-- 'no': 19
-  karar: ''
-  a: jawahir:1907
-  b: kataib:224
-  a_ad: أبو جعفر البلخى
-  a_yer: الجواهر المضية 4/31 (رقم 1906)
-  a_vefat: null
-  b_ad: أبو جعفر الهندواني
-  b_yer: كتائب أعلام الأخيار 2/90-92 (رقم 224)
-  b_vefat: 362
-  a_sahis: jw1906
-  b_sahis: jw1345
-  tur: isim
-  puan: 2.5
-  benzerlik: 1.0
-  gerekce:
-  - künye
-  - 'nisbe: البلخي'
-  - künye birden çok kişiye uyuyor
-- 'no': 20
-  karar: ''
-  a: jawahir:1907
-  b: fawaid:363
-  a_ad: أبو جعفر البلخى
-  a_yer: الجواهر المضية 4/31 (رقم 1906)
-  a_vefat: null
-  b_ad: محمد بن عبد الله بن محمد بن عمر أبو جعفر الفقيه البلخي الهندواني
-  b_yer: الفوائد البهية 179
-  b_vefat: 362
-  a_sahis: jw1906
-  b_sahis: jw1345
-  tur: isim
-  puan: 2.5
-  benzerlik: 1.0
-  gerekce:
-  - künye
-  - 'nisbe: البلخي'
-  - künye birden çok kişiye uyuyor
-- 'no': 21
-  karar: ''
-  a: taj_tarajim:240
-  b: taj_tarajim:328
-  a_ad: محمد بن عبد الله الهندواني، أبو حنيفة الصغير
-  a_yer: تاج التراجم 264 (رقم 240)
-  a_vefat: 362
-  b_ad: أبو جعفر البلخي
-  b_yer: تاج التراجم 329 (رقم 328)
-  b_vefat: null
-  a_sahis: jw1345
-  b_sahis: jw1906
-  tur: isim
-  puan: 2.5
-  benzerlik: 1.0
-  gerekce:
-  - künye
-  - 'nisbe: البلخي'
-  - künye birden çok kişiye uyuyor
-- 'no': 22
-  karar: ''
-  a: taj_tarajim:240
-  b: athmar:754
-  a_ad: محمد بن عبد الله الهندواني، أبو حنيفة الصغير
-  a_yer: تاج التراجم 264 (رقم 240)
-  a_vefat: 362
-  b_ad: أبو جعفر البلخي
-  b_yer: الأثمار الجنية 2/709
-  b_vefat: null
-  a_sahis: jw1345
-  b_sahis: jw1906
-  tur: isim
-  puan: 2.5
-  benzerlik: 1.0
-  gerekce:
-  - künye
-  - 'nisbe: البلخي'
-  - künye birden çok kişiye uyuyor
-- 'no': 23
-  karar: ''
-  a: taj_tarajim:328
-  b: kataib:224
-  a_ad: أبو جعفر البلخي
-  a_yer: تاج التراجم 329 (رقم 328)
-  a_vefat: null
-  b_ad: أبو جعفر الهندواني
-  b_yer: كتائب أعلام الأخيار 2/90-92 (رقم 224)
-  b_vefat: 362
-  a_sahis: jw1906
-  b_sahis: jw1345
-  tur: isim
-  puan: 2.5
-  benzerlik: 1.0
-  gerekce:
-  - künye
-  - 'nisbe: البلخي'
-  - künye birden çok kişiye uyuyor
-- 'no': 24
-  karar: ''
-  a: taj_tarajim:328
-  b: fawaid:363
-  a_ad: أبو جعفر البلخي
-  a_yer: تاج التراجم 329 (رقم 328)
-  a_vefat: null
-  b_ad: محمد بن عبد الله بن محمد بن عمر أبو جعفر الفقيه البلخي الهندواني
-  b_yer: الفوائد البهية 179
-  b_vefat: 362
-  a_sahis: jw1906
-  b_sahis: jw1345
-  tur: isim
-  puan: 2.5
-  benzerlik: 1.0
-  gerekce:
-  - künye
-  - 'nisbe: البلخي'
-  - künye birden çok kişiye uyuyor
-- 'no': 25
-  karar: ''
   a: kataib:224
-  b: athmar:754
+  b: athmar:544
   a_ad: أبو جعفر الهندواني
   a_yer: كتائب أعلام الأخيار 2/90-92 (رقم 224)
   a_vefat: 362
-  b_ad: أبو جعفر البلخي
-  b_yer: الأثمار الجنية 2/709
-  b_vefat: null
-  a_sahis: jw1345
-  b_sahis: jw1906
+  b_ad: محمد بن عبد الله أبو جعفر الهندوانيّ
+  b_yer: الأثمار الجنية 2/596-597 (رقم 533)
+  b_vefat: 362
+  a_sahis: jw122
+  b_sahis: at533
   tur: isim
-  puan: 2.5
+  puan: 7.0
   benzerlik: 1.0
   gerekce:
   - künye
-  - 'nisbe: البلخي'
-  - künye birden çok kişiye uyuyor
-- 'no': 26
+  - 'nisbe: الهندواني'
+  - vefat 362
+  - 'çakışma: ad uyuşmuyor: أحمد بن عبد الله بن أبى القاسم / محمد بن عبد الله أبو جعفر الهن'
+- 'no': 7
   karar: ''
-  a: athmar:754
+  a: athmar:544
   b: fawaid:363
-  a_ad: أبو جعفر البلخي
-  a_yer: الأثمار الجنية 2/709
-  a_vefat: null
+  a_ad: محمد بن عبد الله أبو جعفر الهندوانيّ
+  a_yer: الأثمار الجنية 2/596-597 (رقم 533)
+  a_vefat: 362
   b_ad: محمد بن عبد الله بن محمد بن عمر أبو جعفر الفقيه البلخي الهندواني
   b_yer: الفوائد البهية 179
   b_vefat: 362
-  a_sahis: jw1906
-  b_sahis: jw1345
+  a_sahis: at533
+  b_sahis: jw122
   tur: isim
-  puan: 2.5
+  puan: 7.0
   benzerlik: 1.0
   gerekce:
   - künye
-  - 'nisbe: البلخي'
-  - künye birden çok kişiye uyuyor
-- 'no': 27
+  - 'nisbe: الهندواني'
+  - vefat 362
+  - 'çakışma: ad uyuşmuyor: محمد بن عبد الله أبو جعفر الهن / أحمد بن عبد الله بن أبى القاسم'
+- 'no': 8
   karar: ''
-  a: jawahir:694
-  b: jawahir:1970
-  a_ad: عبد الله بن أحمد بن محمود أبو القاسم البلخى
-  a_yer: الجواهر المضية 2/296 (رقم 693)
-  a_vefat: 1
-  b_ad: أبو القاسم البلخى الإمام
-  b_yer: الجواهر المضية 4/78 (رقم 1969)
+  a: taj_tarajim:240
+  b: athmar:544
+  a_ad: محمد بن عبد الله الهندواني، أبو حنيفة الصغير
+  a_yer: تاج التراجم 264 (رقم 240)
+  a_vefat: 362
+  b_ad: محمد بن عبد الله أبو جعفر الهندوانيّ
+  b_yer: الأثمار الجنية 2/596-597 (رقم 533)
+  b_vefat: 362
+  a_sahis: jw122
+  b_sahis: at533
+  tur: isim
+  puan: 5.5
+  benzerlik: 1.0
+  gerekce:
+  - 'nisbe: الهندواني'
+  - vefat 362
+  - 'çakışma: ad uyuşmuyor: أحمد بن عبد الله بن أبى القاسم / محمد بن عبد الله أبو جعفر الهن'
+- 'no': 9
+  karar: ''
+  a: ghuraf_v1:348
+  b: kataib:642
+  a_ad: عبد القادر بن محمد بن محمد بن نَصر الله بن سالم بن أبي الوفاء، القُرَشي، الحنفي، الشيخ مُحيي الدين
+  a_yer: الغرف العلية 1/631-633 (رقم 349)
+  a_vefat: 775
+  b_ad: عبد القادر بن أبي الوفاء القرشي
+  b_yer: كتائب أعلام الأخيار 4/29 (رقم 642)
+  b_vefat: 775
+  a_sahis: gh349
+  b_sahis: gh351
+  tur: isim
+  puan: 5.0
+  benzerlik: 1.0
+  gerekce:
+  - zincir 6. halkada ayrılıyor
+  - 'nisbe: القرشي'
+  - vefat 775
+- 'no': 10
+  karar: ''
+  a: jawahir:1531
+  b: taj_tarajim:216
+  a_ad: محمد بن محمد بن محمد العلامة، الملقب رضى الدين وبرهان الإسلام، السرخسى
+  a_yer: الجواهر المضية 3/357-358 (رقم 1530)
+  a_vefat: null
+  b_ad: محمد بن محمد السرخسي
+  b_yer: تاج التراجم 248 (رقم 216)
   b_vefat: null
-  a_sahis: qd351
-  b_sahis: jw1969
+  a_sahis: jw1530
+  b_sahis: jw2085
   tur: isim
-  puan: 2.5
+  puan: 5.0
   benzerlik: 1.0
   gerekce:
-  - künye
-  - 'nisbe: البلخي'
-  - künye birden çok kişiye uyuyor
-- 'no': 28
+  - 'nisbe: السرخسي'
+  - lakap
+- 'no': 11
   karar: ''
-  a: jawahir:1970
-  b: tabaqat_saniyya:1039
-  a_ad: أبو القاسم البلخى الإمام
-  a_yer: الجواهر المضية 4/78 (رقم 1969)
+  a: tabaqat_saniyya:211
+  b: jawahir:123
+  a_ad: أحمد بن عبد الله ابن أبى القاسم البلخى، أبو جعفر، القاضى
+  a_yer: الطبقات السنية 1/365 (رقم 210)
   a_vefat: null
-  b_ad: عبد الله بن أحمد بن محمود الكعبى أبو القاسم البلخى
-  b_yer: الطبقات السنية 4/155 (رقم 1038)
-  b_vefat: 319
-  a_sahis: jw1969
-  b_sahis: qd351
-  tur: isim
-  puan: 2.5
-  benzerlik: 1.0
-  gerekce:
-  - künye
-  - 'nisbe: البلخي'
-  - künye birden çok kişiye uyuyor
-- 'no': 29
-  karar: ''
-  a: jawahir:1970
-  b: taj_tarajim:125
-  a_ad: أبو القاسم البلخى الإمام
-  a_yer: الجواهر المضية 4/78 (رقم 1969)
-  a_vefat: null
-  b_ad: عبد الله بن أحمد الكعبي
-  b_yer: تاج التراجم 177 (رقم 125)
-  b_vefat: 319
-  a_sahis: jw1969
-  b_sahis: qd351
-  tur: isim
-  puan: 2.5
-  benzerlik: 1.0
-  gerekce:
-  - künye
-  - 'nisbe: البلخي'
-  - künye birden çok kişiye uyuyor
-- 'no': 30
-  karar: ''
-  a: jawahir:698
-  b: jawahir:1955
-  a_ad: عبد الله بن جعفر الرازى أبو على، الإمام
-  a_yer: الجواهر المضية 2/300 (رقم 697)
-  a_vefat: null
-  b_ad: أبو على الرازى
-  b_yer: الجواهر المضية 4/69 (رقم 1954)
+  b_ad: أحمد بن عبد الله بن أبى القاسم البلخى، أبو جعفر، القاضى
+  b_yer: الجواهر المضية 1/184 (رقم 122)
   b_vefat: null
-  a_sahis: jw697
-  b_sahis: jw1954
-  tur: isim
-  puan: 2.5
-  benzerlik: 1.0
-  gerekce:
-  - künye
-  - 'nisbe: الرازي'
-  - aynı kitapta birden çok aday
-- 'no': 31
-  karar: ''
-  a: jawahir:698
-  b: jawahir:1956
-  a_ad: عبد الله بن جعفر الرازى أبو على، الإمام
-  a_yer: الجواهر المضية 2/300 (رقم 697)
-  a_vefat: null
-  b_ad: أبو على الرازى
-  b_yer: الجواهر المضية 4/69 (رقم 1955)
-  b_vefat: null
-  a_sahis: jw697
-  b_sahis: jw1953
-  tur: isim
-  puan: 2.5
-  benzerlik: 1.0
-  gerekce:
-  - künye
-  - 'nisbe: الرازي'
-  - aynı kitapta birden çok aday
-- 'no': 32
-  karar: ''
-  a: jawahir:698
-  b: kataib:141
-  a_ad: عبد الله بن جعفر الرازى أبو على، الإمام
-  a_yer: الجواهر المضية 2/300 (رقم 697)
-  a_vefat: null
-  b_ad: أبو علي الرازي
-  b_yer: كتائب أعلام الأخيار 1/497 (رقم 141)
-  b_vefat: null
-  a_sahis: jw697
-  b_sahis: jw1953
-  tur: isim
-  puan: 2.5
-  benzerlik: 1.0
-  gerekce:
-  - künye
-  - 'nisbe: الرازي'
-  - aynı kitapta birden çok aday
-  - aynı kitapta birden çok aday
-- 'no': 33
-  karar: ''
-  a: jawahir:698
-  b: fawaid:274
-  a_ad: عبد الله بن جعفر الرازى أبو على، الإمام
-  a_yer: الجواهر المضية 2/300 (رقم 697)
-  a_vefat: null
-  b_ad: أبو علي الرازى
-  b_yer: الفوائد البهية 146
-  b_vefat: null
-  a_sahis: jw697
-  b_sahis: jw1953
-  tur: isim
-  puan: 2.5
-  benzerlik: 1.0
-  gerekce:
-  - künye
-  - 'nisbe: الرازي'
-  - aynı kitapta birden çok aday
-  - aynı kitapta birden çok aday
-- 'no': 34
-  karar: ''
-  a: jawahir:1954
-  b: kataib:169
-  a_ad: أبو على الدقاق الرازى
-  a_yer: الجواهر المضية 4/69 (رقم 1953)
-  a_vefat: null
-  b_ad: أبو علي الرازي
-  b_yer: كتائب أعلام الأخيار 1/554 (رقم 169)
-  b_vefat: null
-  a_sahis: jw1953
-  b_sahis: jw697
-  tur: isim
-  puan: 2.5
-  benzerlik: 1.0
-  gerekce:
-  - künye
-  - 'nisbe: الرازي'
-  - aynı kitapta birden çok aday
-  - aynı kitapta birden çok aday
-- 'no': 35
-  karar: ''
-  a: jawahir:1955
-  b: tabaqat_saniyya:1044
-  a_ad: أبو على الرازى
-  a_yer: الجواهر المضية 4/69 (رقم 1954)
-  a_vefat: null
-  b_ad: عبد الله بن جعفر الرازى، أبو على، الإمام
-  b_yer: الطبقات السنية 4/159-161 (رقم 1043)
-  b_vefat: null
-  a_sahis: jw1954
-  b_sahis: jw697
-  tur: isim
-  puan: 2.5
-  benzerlik: 1.0
-  gerekce:
-  - künye
-  - 'nisbe: الرازي'
-  - aynı kitapta birden çok aday
-- 'no': 36
-  karar: ''
-  a: jawahir:1955
-  b: kataib:141
-  a_ad: أبو على الرازى
-  a_yer: الجواهر المضية 4/69 (رقم 1954)
-  a_vefat: null
-  b_ad: أبو علي الرازي
-  b_yer: كتائب أعلام الأخيار 1/497 (رقم 141)
-  b_vefat: null
-  a_sahis: jw1954
-  b_sahis: jw1953
-  tur: isim
-  puan: 2.5
-  benzerlik: 1.0
-  gerekce:
-  - künye
-  - 'nisbe: الرازي'
-  - aynı kitapta birden çok aday
-  - aynı kitapta birden çok aday
-- 'no': 37
-  karar: ''
-  a: jawahir:1955
-  b: kataib:169
-  a_ad: أبو على الرازى
-  a_yer: الجواهر المضية 4/69 (رقم 1954)
-  a_vefat: null
-  b_ad: أبو علي الرازي
-  b_yer: كتائب أعلام الأخيار 1/554 (رقم 169)
-  b_vefat: null
-  a_sahis: jw1954
-  b_sahis: jw697
-  tur: isim
-  puan: 2.5
-  benzerlik: 1.0
-  gerekce:
-  - künye
-  - 'nisbe: الرازي'
-  - aynı kitapta birden çok aday
-  - aynı kitapta birden çok aday
-- 'no': 38
-  karar: ''
-  a: jawahir:1955
-  b: athmar:780
-  a_ad: أبو على الرازى
-  a_yer: الجواهر المضية 4/69 (رقم 1954)
-  a_vefat: null
-  b_ad: أبو علي الدقاق الرازي
-  b_yer: الأثمار الجنية 2/717
-  b_vefat: null
-  a_sahis: jw1954
-  b_sahis: jw1953
-  tur: isim
-  puan: 2.5
-  benzerlik: 1.0
-  gerekce:
-  - künye
-  - 'nisbe: الرازي'
-  - aynı kitapta birden çok aday
-- 'no': 39
-  karar: ''
-  a: jawahir:1955
-  b: fawaid:211
-  a_ad: أبو على الرازى
-  a_yer: الجواهر المضية 4/69 (رقم 1954)
-  a_vefat: null
-  b_ad: عبد الله بن جعفر أبو على الرازى
-  b_yer: الفوائد البهية 102
-  b_vefat: null
-  a_sahis: jw1954
-  b_sahis: jw697
-  tur: isim
-  puan: 2.5
-  benzerlik: 1.0
-  gerekce:
-  - künye
-  - 'nisbe: الرازي'
-  - aynı kitapta birden çok aday
-  - aynı kitapta birden çok aday
-- 'no': 40
-  karar: ''
-  a: jawahir:1956
-  b: tabaqat_saniyya:1044
-  a_ad: أبو على الرازى
-  a_yer: الجواهر المضية 4/69 (رقم 1955)
-  a_vefat: null
-  b_ad: عبد الله بن جعفر الرازى، أبو على، الإمام
-  b_yer: الطبقات السنية 4/159-161 (رقم 1043)
-  b_vefat: null
-  a_sahis: jw1953
-  b_sahis: jw697
-  tur: isim
-  puan: 2.5
-  benzerlik: 1.0
-  gerekce:
-  - künye
-  - 'nisbe: الرازي'
-  - aynı kitapta birden çok aday
-- 'no': 41
-  karar: ''
-  a: jawahir:1956
-  b: kataib:169
-  a_ad: أبو على الرازى
-  a_yer: الجواهر المضية 4/69 (رقم 1955)
-  a_vefat: null
-  b_ad: أبو علي الرازي
-  b_yer: كتائب أعلام الأخيار 1/554 (رقم 169)
-  b_vefat: null
-  a_sahis: jw1953
-  b_sahis: jw697
-  tur: isim
-  puan: 2.5
-  benzerlik: 1.0
-  gerekce:
-  - künye
-  - 'nisbe: الرازي'
-  - aynı kitapta birden çok aday
-  - aynı kitapta birden çok aday
-- 'no': 42
-  karar: ''
-  a: jawahir:1956
-  b: fawaid:211
-  a_ad: أبو على الرازى
-  a_yer: الجواهر المضية 4/69 (رقم 1955)
-  a_vefat: null
-  b_ad: عبد الله بن جعفر أبو على الرازى
-  b_yer: الفوائد البهية 102
-  b_vefat: null
-  a_sahis: jw1953
-  b_sahis: jw697
-  tur: isim
-  puan: 2.5
-  benzerlik: 1.0
-  gerekce:
-  - künye
-  - 'nisbe: الرازي'
-  - aynı kitapta birden çok aday
-  - aynı kitapta birden çok aday
-- 'no': 43
-  karar: ''
-  a: tabaqat_saniyya:1044
-  b: kataib:141
-  a_ad: عبد الله بن جعفر الرازى، أبو على، الإمام
-  a_yer: الطبقات السنية 4/159-161 (رقم 1043)
-  a_vefat: null
-  b_ad: أبو علي الرازي
-  b_yer: كتائب أعلام الأخيار 1/497 (رقم 141)
-  b_vefat: null
-  a_sahis: jw697
-  b_sahis: jw1953
-  tur: isim
-  puan: 2.5
-  benzerlik: 1.0
-  gerekce:
-  - künye
-  - 'nisbe: الرازي'
-  - aynı kitapta birden çok aday
-- 'no': 44
-  karar: ''
-  a: tabaqat_saniyya:1044
-  b: fawaid:274
-  a_ad: عبد الله بن جعفر الرازى، أبو على، الإمام
-  a_yer: الطبقات السنية 4/159-161 (رقم 1043)
-  a_vefat: null
-  b_ad: أبو علي الرازى
-  b_yer: الفوائد البهية 146
-  b_vefat: null
-  a_sahis: jw697
-  b_sahis: jw1953
-  tur: isim
-  puan: 2.5
-  benzerlik: 1.0
-  gerekce:
-  - künye
-  - 'nisbe: الرازي'
-  - aynı kitapta birden çok aday
-- 'no': 45
-  karar: ''
-  a: kataib:141
-  b: fawaid:211
-  a_ad: أبو علي الرازي
-  a_yer: كتائب أعلام الأخيار 1/497 (رقم 141)
-  a_vefat: null
-  b_ad: عبد الله بن جعفر أبو على الرازى
-  b_yer: الفوائد البهية 102
-  b_vefat: null
-  a_sahis: jw1953
-  b_sahis: jw697
-  tur: isim
-  puan: 2.5
-  benzerlik: 1.0
-  gerekce:
-  - künye
-  - 'nisbe: الرازي'
-  - aynı kitapta birden çok aday
-  - aynı kitapta birden çok aday
-- 'no': 46
-  karar: ''
-  a: kataib:169
-  b: athmar:780
-  a_ad: أبو علي الرازي
-  a_yer: كتائب أعلام الأخيار 1/554 (رقم 169)
-  a_vefat: null
-  b_ad: أبو علي الدقاق الرازي
-  b_yer: الأثمار الجنية 2/717
-  b_vefat: null
-  a_sahis: jw697
-  b_sahis: jw1953
-  tur: isim
-  puan: 2.5
-  benzerlik: 1.0
-  gerekce:
-  - künye
-  - 'nisbe: الرازي'
-  - aynı kitapta birden çok aday
-- 'no': 47
-  karar: ''
-  a: kataib:169
-  b: fawaid:274
-  a_ad: أبو علي الرازي
-  a_yer: كتائب أعلام الأخيار 1/554 (رقم 169)
-  a_vefat: null
-  b_ad: أبو علي الرازى
-  b_yer: الفوائد البهية 146
-  b_vefat: null
-  a_sahis: jw697
-  b_sahis: jw1953
-  tur: isim
-  puan: 2.5
-  benzerlik: 1.0
-  gerekce:
-  - künye
-  - 'nisbe: الرازي'
-  - aynı kitapta birden çok aday
-  - aynı kitapta birden çok aday
-- 'no': 48
-  karar: ''
-  a: jawahir:710
-  b: jawahir:1881
-  a_ad: عبد الله بن على بن يحيى أبو بكر، الفقيه، البلخى
-  a_yer: الجواهر المضية 2/313 (رقم 709)
-  a_vefat: null
-  b_ad: أبو بكر البلخى
-  b_yer: الجواهر المضية 4/16 (رقم 1880)
-  b_vefat: null
-  a_sahis: jw709
-  b_sahis: jw1880
-  tur: isim
-  puan: 2.5
-  benzerlik: 1.0
-  gerekce:
-  - künye
-  - 'nisbe: البلخي'
-  - künye birden çok kişiye uyuyor
-- 'no': 49
-  karar: ''
-  a: jawahir:1881
-  b: tabaqat_saniyya:1063
-  a_ad: أبو بكر البلخى
-  a_yer: الجواهر المضية 4/16 (رقم 1880)
-  a_vefat: null
-  b_ad: عبد الله بن على بن يحيى، أبو بكر الفقيه البلخى
-  b_yer: الطبقات السنية 4/172 (رقم 1062)
-  b_vefat: null
-  a_sahis: jw1880
-  b_sahis: jw709
-  tur: isim
-  puan: 2.5
-  benzerlik: 1.0
-  gerekce:
-  - künye
-  - 'nisbe: البلخي'
-  - künye birden çok kişiye uyuyor
-- 'no': 50
-  karar: ''
-  a: jawahir:1881
-  b: kataib:187
-  a_ad: أبو بكر البلخى
-  a_yer: الجواهر المضية 4/16 (رقم 1880)
-  a_vefat: null
-  b_ad: أبو بكر الإسكاف
-  b_yer: كتائب أعلام الأخيار 2/30-31 (رقم 187)
-  b_vefat: 336
-  a_sahis: jw1880
-  b_sahis: jw1879
-  tur: isim
-  puan: 2.5
-  benzerlik: 1.0
-  gerekce:
-  - künye
-  - 'nisbe: البلخي'
-  - künye birden çok kişiye uyuyor
-- 'no': 51
-  karar: ''
-  a: jawahir:1881
-  b: kataib:214
-  a_ad: أبو بكر البلخى
-  a_yer: الجواهر المضية 4/16 (رقم 1880)
-  a_vefat: null
-  b_ad: أبو بكر الأعمش
-  b_yer: كتائب أعلام الأخيار 2/67-69 (رقم 214)
-  b_vefat: 328
-  a_sahis: jw1880
-  b_sahis: jw1314
-  tur: isim
-  puan: 2.5
-  benzerlik: 1.0
-  gerekce:
-  - künye
-  - 'nisbe: البلخي'
-  - künye birden çok kişiye uyuyor
-- 'no': 52
-  karar: ''
-  a: jawahir:1881
-  b: kataib:359
-  a_ad: أبو بكر البلخى
-  a_yer: الجواهر المضية 4/16 (رقم 1880)
-  a_vefat: null
-  b_ad: أبو بكر القزاز البلخي
-  b_yer: كتائب أعلام الأخيار 2/426 (رقم 359)
-  b_vefat: null
-  a_sahis: jw1880
-  b_sahis: jw1185
-  tur: isim
-  puan: 2.5
-  benzerlik: 1.0
-  gerekce:
-  - künye
-  - 'nisbe: البلخي'
-  - künye birden çok kişiye uyuyor
-- 'no': 53
-  karar: ''
-  a: jawahir:1881
-  b: kataib:390
-  a_ad: أبو بكر البلخى
-  a_yer: الجواهر المضية 4/16 (رقم 1880)
-  a_vefat: null
-  b_ad: الظهير أبو بكر البلخي
-  b_yer: كتائب أعلام الأخيار 2/505-506 (رقم 390)
-  b_vefat: null
-  a_sahis: jw1880
-  b_sahis: gh899
-  tur: isim
-  puan: 2.5
-  benzerlik: 1.0
-  gerekce:
-  - künye
-  - 'nisbe: البلخي'
-  - künye birden çok kişiye uyuyor
-- 'no': 54
-  karar: ''
-  a: jawahir:1881
-  b: fawaid:37
-  a_ad: أبو بكر البلخى
-  a_yer: الجواهر المضية 4/16 (رقم 1880)
-  a_vefat: null
-  b_ad: أحمد بن علي بن عبد العزيز أبو بكر المعروف بالظهير البلخى
-  b_yer: الفوائد البهية 27
-  b_vefat: 553
-  a_sahis: jw1880
-  b_sahis: gh899
-  tur: isim
-  puan: 2.5
-  benzerlik: 1.0
-  gerekce:
-  - künye
-  - 'nisbe: البلخي'
-  - künye birden çok kişiye uyuyor
-- 'no': 55
-  karar: ''
-  a: jawahir:1881
-  b: fawaid:308
-  a_ad: أبو بكر البلخى
-  a_yer: الجواهر المضية 4/16 (رقم 1880)
-  a_vefat: null
-  b_ad: محمد بن أحمد بن علي أبو بكر القذار البلخي
-  b_yer: الفوائد البهية 156
-  b_vefat: null
-  a_sahis: jw1880
-  b_sahis: jw1185
-  tur: isim
-  puan: 2.5
-  benzerlik: 1.0
-  gerekce:
-  - künye
-  - 'nisbe: البلخي'
-  - künye birden çok kişiye uyuyor
-- 'no': 56
-  karar: ''
-  a: jawahir:1881
-  b: fawaid:321
-  a_ad: أبو بكر البلخى
-  a_yer: الجواهر المضية 4/16 (رقم 1880)
-  a_vefat: null
-  b_ad: محمد بن أحمد أبو بكر الاسكاف البلخي
-  b_yer: الفوائد البهية 160
-  b_vefat: 333
-  a_sahis: jw1880
-  b_sahis: jw1879
-  tur: isim
-  puan: 2.5
-  benzerlik: 1.0
-  gerekce:
-  - künye
-  - 'nisbe: البلخي'
-  - künye birden çok kişiye uyuyor
-- 'no': 57
-  karar: ''
-  a: athmar:34
-  b: jawahir:69
-  a_ad: أحمد بن إبراهيم الفقيه
-  a_yer: الأثمار الجنية 1/309 (رقم 23)
-  a_vefat: null
-  b_ad: أحمد بن إبراهيم الميدانى
-  b_yer: الجواهر المضية 1/130 (رقم 68)
-  b_vefat: null
-  a_sahis: at23
-  b_sahis: jw68
+  a_sahis: ts210
+  b_sahis: jw122
   tur: atıf
-  puan: 2.0
+  puan: 5.0
   benzerlik: 1.0
   gerekce:
-  - 'atıf: الجواهر المضية:١٣١،١/ ١٣٠؛ التميمي، الطبقات السنية:١/'
-  - aynı kitapta birden çok aday
-- 'no': 58
+  - 'atıf: الجواهر المضية برقم ١٢٢. وانظر الترجمة الآتية برقم ٢١٥'
+  - künye
+  - 'nisbe: البلخي'
+  - 'çakışma: insan kararı: farklı kişiler'
+- 'no': 12
   karar: ''
-  a: athmar:34
-  b: tabaqat_saniyya:129
-  a_ad: أحمد بن إبراهيم الفقيه
-  a_yer: الأثمار الجنية 1/309 (رقم 23)
-  a_vefat: null
-  b_ad: أحمد بن إبراهيم الميدانى
-  b_yer: الطبقات السنية 1/268 (رقم 128)
+  a: kataib:389
+  b: jawahir:1531
+  a_ad: رضى الدين السرخسي
+  a_yer: كتائب أعلام الأخيار 2/498-504 (رقم 389)
+  a_vefat: 544
+  b_ad: محمد بن محمد بن محمد العلامة، الملقب رضى الدين وبرهان الإسلام، السرخسى
+  b_yer: الجواهر المضية 3/357-358 (رقم 1530)
   b_vefat: null
-  a_sahis: at23
-  b_sahis: jw68
+  a_sahis: jw2085
+  b_sahis: jw1530
   tur: atıf
-  puan: 2.0
+  puan: 5.0
   benzerlik: 1.0
   gerekce:
-  - 'atıf: الطبقات السنية:١/ ٢٦٨.'
-  - aynı kitapta birden çok aday
-- 'no': 59
+  - 'atıf: الجواهر المضية" للقرشي (٣/ ٣٥٧ - ٣٥٩)، و"تاج التراجم"'
+  - 'nisbe: السرخسي'
+  - lakap
+  - 'çakışma: jawahir kitabında zaten başka bir madde var'
+- 'no': 13
   karar: ''
-  a: athmar:113
+  a: taj_tarajim:304
+  b: athmar:681
+  a_ad: ناصر بن عبد السيد، المطرزي
+  a_yer: تاج التراجم 309 (رقم 304)
+  a_vefat: 610
+  b_ad: ناصر بن أبي المكارم المطرّزيّ
+  b_yer: الأثمار الجنية 2/667 (رقم 670)
+  b_vefat: 610
+  a_sahis: jw1726
+  b_sahis: fws465
+  tur: isim
+  puan: 5.0
+  benzerlik: 1.0
+  gerekce:
+  - 'nisbe: المطرزي'
+  - vefat 610
+  - 'çakışma: ad uyuşmuyor: علي المطرزي / ناصر بن عبد السيد أبي المكارم '
+- 'no': 14
+  karar: ''
+  a: kataib:405
+  b: jawahir:1540
+  a_ad: شرف الأئمة المكي
+  a_yer: كتائب أعلام الأخيار 2/537 (رقم 405)
+  a_vefat: null
+  b_ad: محمد بن محمود المكى الملقب برهان الدين
+  b_yer: الجواهر المضية 3/366 (رقم 1539)
+  b_vefat: null
+  a_sahis: kt405
+  b_sahis: jw1539
+  tur: atıf
+  puan: 4.0
+  benzerlik: 1.0
+  gerekce:
+  - 'atıf: الجواهر المضية" (٣/ ٣٦٦).'
+  - 'nisbe: المكي'
+  - lakap
+  - 'çakışma: kataib kitabında zaten başka bir madde var'
+- 'no': 15
+  karar: ''
+  a: jawahir:123
+  b: athmar:59
+  a_ad: أحمد بن عبد الله بن أبى القاسم البلخى، أبو جعفر، القاضى
+  a_yer: الجواهر المضية 1/184 (رقم 122)
+  a_vefat: null
+  b_ad: أحمد بن عبد الله بن أبي القاسم البلخي
+  b_yer: الأثمار الجنية 1/323 (رقم 48)
+  b_vefat: null
+  a_sahis: jw122
+  b_sahis: ts210
+  tur: isim
+  puan: 4.0
+  benzerlik: 1.0
+  gerekce:
+  - 'nisbe: البلخي'
+  - 'çakışma: ad uyuşmuyor: محمد بن عبد الله بن محمد بن عم / أحمد بن عبد الله بن أبي القاسم'
+- 'no': 16
+  karar: ''
+  a: athmar:112
   b: tabaqat_saniyya:395
-  a_ad: أحمد بن منصور
-  a_yer: الأثمار الجنية 1/351 (رقم 102)
+  a_ad: أحمد بن منصور الأسبيجابيّ
+  a_yer: الأثمار الجنية 1/350 (رقم 101)
   a_vefat: null
   b_ad: أحمد بن منصور، أبو نصر الإسبيجابى، القاضى
   b_yer: الطبقات السنية 2/111 (رقم 394)
   b_vefat: null
-  a_sahis: jw261
+  a_sahis: at101
   b_sahis: jw260
+  tur: atıf
+  puan: 3.0
+  benzerlik: 1.0
+  gerekce:
+  - 'atıf: الطبقات السنية:٢/ ١١١؛ اللكنوي، الفوائد البهية:٤٢؛ حاج'
+  - 'nisbe: الاسبيجابي'
+  - aynı kitapta birden çok aday
+- 'no': 17
+  karar: ''
+  a: taj_tarajim:58
+  b: athmar:112
+  a_ad: أحمد بن منصور الإسبيجابي
+  a_yer: تاج التراجم 126 (رقم 58)
+  a_vefat: null
+  b_ad: أحمد بن منصور الأسبيجابيّ
+  b_yer: الأثمار الجنية 1/350 (رقم 101)
+  b_vefat: null
+  a_sahis: jw260
+  b_sahis: at101
+  tur: isim
+  puan: 3.0
+  benzerlik: 1.0
+  gerekce:
+  - 'nisbe: الاسبيجابي'
+- 'no': 18
+  karar: ''
+  a: kataib:328
+  b: athmar:645
+  a_ad: محمود الأوزجندي
+  a_yer: كتائب أعلام الأخيار 2/337-339 (رقم 328)
+  a_vefat: null
+  b_ad: محمود بن عبد العزيز الأوزجنديّ
+  b_yer: الأثمار الجنية 2/648 (رقم 634)
+  b_vefat: null
+  a_sahis: jw1626
+  b_sahis: jw1625
+  tur: isim
+  puan: 3.0
+  benzerlik: 1.0
+  gerekce:
+  - 'nisbe: الاوزجندي'
+- 'no': 19
+  karar: ''
+  a: jawahir:1346
+  b: fawaid:363
+  a_ad: محمد بن عبد الله بن محمد بن عمر أبو جعفر، الهندوانى
+  a_yer: الجواهر المضية 3/192-193 (رقم 1345)
+  a_vefat: 392
+  b_ad: محمد بن عبد الله بن محمد بن عمر أبو جعفر الفقيه البلخي الهندواني
+  b_yer: الفوائد البهية 179
+  b_vefat: 362
+  a_sahis: jw1345
+  b_sahis: jw122
+  tur: atıf
+  puan: 3.0
+  benzerlik: 1.0
+  gerekce:
+  - 'atıf: الفوائد البهية ١٧٩، هدية العارفين ٢/ ٤٧.'
+  - künye
+  - 'nisbe: الهندواني'
+  - vefat farklı 392/362
+  - 'çakışma: jawahir kitabında zaten başka bir madde var'
+- 'no': 20
+  karar: ''
+  a: jawahir:1531
+  b: fawaid:393
+  a_ad: محمد بن محمد بن محمد العلامة، الملقب رضى الدين وبرهان الإسلام، السرخسى
+  a_yer: الجواهر المضية 3/357-358 (رقم 1530)
+  a_vefat: null
+  b_ad: محمد بن محمد بن محمد
+  b_yer: الفوائد البهية 188-190
+  b_vefat: 544
+  a_sahis: jw1530
+  b_sahis: jw2085
+  tur: atıf
+  puan: 3.0
+  benzerlik: 1.0
+  gerekce:
+  - 'atıf: الفوائد البهية ١٨٨ - ١٩١، إيضاح المكنون ٢/ ٥١٤، هدية ا'
+  - 'çakışma: jawahir kitabında zaten başka bir madde var'
+- 'no': 21
+  karar: ''
+  a: tabaqat_saniyya:375
+  b: jawahir:249
+  a_ad: أحمد بن محمد، أبو منصور بن أبى الحارث
+  a_yer: الطبقات السنية 2/98 (رقم 374)
+  a_vefat: null
+  b_ad: أحمد بن محمد أبو منصور بن أبى الحارث
+  b_yer: الجواهر المضية 1/324 (رقم 248)
+  b_vefat: null
+  a_sahis: jw229
+  b_sahis: jw248
+  tur: atıf
+  puan: 3.0
+  benzerlik: 1.0
+  gerekce:
+  - 'atıf: الجواهر المضية، برقم ٢٤٨.'
+  - künye
+  - 'çakışma: jawahir kitabında zaten başka bir madde var'
+- 'no': 22
+  karar: ''
+  a: kataib:224
+  b: jawahir:1346
+  a_ad: أبو جعفر الهندواني
+  a_yer: كتائب أعلام الأخيار 2/90-92 (رقم 224)
+  a_vefat: 362
+  b_ad: محمد بن عبد الله بن محمد بن عمر أبو جعفر، الهندوانى
+  b_yer: الجواهر المضية 3/192-193 (رقم 1345)
+  b_vefat: 392
+  a_sahis: jw122
+  b_sahis: jw1345
+  tur: atıf
+  puan: 3.0
+  benzerlik: 1.0
+  gerekce:
+  - 'atıf: الجواهر المضية" للقرشي (٣/ ١٩٢ - ١٩٤)، و"تاج التراجم"'
+  - künye
+  - 'nisbe: الهندواني'
+  - vefat farklı 362/392
+  - 'çakışma: jawahir kitabında zaten başka bir madde var'
+- 'no': 23
+  karar: ''
+  a: athmar:112
+  b: jawahir:261
+  a_ad: أحمد بن منصور الأسبيجابيّ
+  a_yer: الأثمار الجنية 1/350 (رقم 101)
+  a_vefat: null
+  b_ad: أحمد بن منصور، أبو نصر، الإسبيجابى، القاضى
+  b_yer: الجواهر المضية 1/335 (رقم 260)
+  b_vefat: null
+  a_sahis: at101
+  b_sahis: jw260
+  tur: atıf
+  puan: 3.0
+  benzerlik: 1.0
+  gerekce:
+  - 'atıf: الجواهر المضية:١/ ٣٣٥؛ التميمي، الطبقات السنية:٢/ ١١١؛'
+  - 'nisbe: الاسبيجابي'
+  - 'çakışma: athmar kitabında zaten başka bir madde var'
+- 'no': 24
+  karar: ''
+  a: athmar:112
+  b: fawaid:65
+  a_ad: أحمد بن منصور الأسبيجابيّ
+  a_yer: الأثمار الجنية 1/350 (رقم 101)
+  a_vefat: null
+  b_ad: أحمد بن منصور القاضي أبو نصر الاسبيجابي
+  b_yer: الفوائد البهية 42
+  b_vefat: null
+  a_sahis: at101
+  b_sahis: jw260
+  tur: atıf
+  puan: 3.0
+  benzerlik: 1.0
+  gerekce:
+  - 'atıf: الفوائد البهية:٤٢؛ حاجي خليفة، كشف الظنون:١/ ٥٦٣. وفيه'
+  - 'nisbe: الاسبيجابي'
+  - 'çakışma: athmar kitabında zaten başka bir madde var'
+- 'no': 25
+  karar: ''
+  a: athmar:597
+  b: fawaid:393
+  a_ad: محمد بن محمد بن محمد
+  a_yer: الأثمار الجنية 2/624 (رقم 586)
+  a_vefat: null
+  b_ad: محمد بن محمد بن محمد
+  b_yer: الفوائد البهية 188-190
+  b_vefat: 544
+  a_sahis: jw1530
+  b_sahis: jw2085
+  tur: atıf
+  puan: 3.0
+  benzerlik: 1.0
+  gerekce:
+  - 'atıf: الفوائد البهية:١٨٨ - ١٩١؛ البغدادي، إيضاح المكنون:٢/ ٥'
+  - 'çakışma: jawahir kitabında zaten başka bir madde var'
+- 'no': 26
+  karar: ''
+  a: athmar:113
+  b: jawahir:262
+  a_ad: أحمد بن منصور
+  a_yer: الأثمار الجنية 1/351 (رقم 102)
+  a_vefat: null
+  b_ad: أحمد بن منصور، الفقيه، الحافظ، المظفرى
+  b_yer: الجواهر المضية 1/336 (رقم 261)
+  b_vefat: null
+  a_sahis: jw260
+  b_sahis: jw261
   tur: atıf
   puan: 2.0
   benzerlik: 1.0
   gerekce:
-  - 'atıf: الطبقات السنية:٢/ ١١١، ١١٢.'
-  - aynı kitapta birden çok aday
-- 'no': 60
+  - 'atıf: الجواهر المضية:٣٣٧،١/ ٣٣٦؛ التميمي، الطبقات السنية:٢/'
+  - 'çakışma: jawahir kitabında zaten başka bir madde var'
+- 'no': 27
   karar: ''
-  a: athmar:574
-  b: jawahir:1443
-  a_ad: محمد بن عمر، أبو جعفر بن مازة
-  a_yer: الأثمار الجنية 2/612 (رقم 563)
-  a_vefat: 566
-  b_ad: محمد بن عمر بن عبد العزيز بن عمر، ابن مازه شمس الدين، أبو جعفر
-  b_yer: الجواهر المضية 3/284 (رقم 1442)
-  b_vefat: 511
-  a_sahis: fws373
-  b_sahis: jw1442
+  a: athmar:544
+  b: jawahir:1346
+  a_ad: محمد بن عبد الله أبو جعفر الهندوانيّ
+  a_yer: الأثمار الجنية 2/596-597 (رقم 533)
+  a_vefat: 362
+  b_ad: محمد بن عبد الله بن محمد بن عمر أبو جعفر، الهندوانى
+  b_yer: الجواهر المضية 3/192-193 (رقم 1345)
+  b_vefat: 392
+  a_sahis: at533
+  b_sahis: jw1345
+  tur: atıf
+  puan: 1.0
+  benzerlik: 1.0
+  gerekce:
+  - 'atıf: الجواهر المضية:٣/ ١٩٢ - ١٩٤؛ ابن قطلوبغا، تاج التراجم:'
+  - künye
+  - 'nisbe: الهندواني'
+  - vefat farklı 362/392
+- 'no': 28
+  karar: ''
+  a: kataib:421
+  b: jawahir:1727
+  a_ad: المطرزي
+  a_yer: كتائب أعلام الأخيار 3/54-55 (رقم 421)
+  a_vefat: 610
+  b_ad: ناصر ابن أبى المكارم عبد السّيّد بن علىّ المطرّزىّ الملقّب برهان الدين
+  b_yer: الجواهر المضية 3/528-529 (رقم 1726)
+  b_vefat: 536
+  a_sahis: fws465
+  b_sahis: jw1726
+  tur: atıf
+  puan: 1.0
+  benzerlik: 1.0
+  gerekce:
+  - 'atıf: الجواهر المضية" للقرشي (٣/ ٥٢٨ - ٥٢٩)، و"تاج التراجم"'
+  - 'nisbe: المطرزي'
+  - lakap
+  - vefat farklı 610/536
+  - 'çakışma: kataib kitabında zaten başka bir madde var'
+- 'no': 29
+  karar: ''
+  a: athmar:681
+  b: jawahir:1727
+  a_ad: ناصر بن أبي المكارم المطرّزيّ
+  a_yer: الأثمار الجنية 2/667 (رقم 670)
+  a_vefat: 610
+  b_ad: ناصر ابن أبى المكارم عبد السّيّد بن علىّ المطرّزىّ الملقّب برهان الدين
+  b_yer: الجواهر المضية 3/528-529 (رقم 1726)
+  b_vefat: 536
+  a_sahis: fws465
+  b_sahis: jw1726
   tur: atıf
   puan: -1.0
   benzerlik: 1.0
   gerekce:
-  - 'atıf: الجواهر المضية:٣/ ٢٨٤، ٢٨٥؛ اللكنوي، الفوائد البهية:١٨'
-  - künye
-  - vefat farklı 566/511
-- 'no': 61
+  - 'atıf: الجواهر المضية:٣/ ٥٢٨ - ٥٢٩؛ ابن قطلوبغا، تاج التراجم:'
+  - 'nisbe: المطرزي'
+  - vefat farklı 610/536
+- 'no': 30
   karar: ''
-  a: athmar:571
-  b: fawaid:368
-  a_ad: محمد بن علي بن أبي بكر
-  a_yer: الأثمار الجنية 2/612 (رقم 560)
+  a: athmar:504
+  b: fawaid:321
+  a_ad: محمد بن أحمد أبو بكر الأسكاف، إمام كبير، أستاذ أبي جعفر الفقيه الهنداوي
+  a_yer: الأثمار الجنية 2/565 (رقم 493)
   a_vefat: null
-  b_ad: محمد بن صاحب الهداية برهان الدين علي بن أبي بكر بن عبد الجليل
-  b_yer: الفوائد البهية 182
-  b_vefat: null
-  a_sahis: jw1432
-  b_sahis: fws368
+  b_ad: محمد بن أحمد أبو بكر الاسكاف البلخي
+  b_yer: الفوائد البهية 160
+  b_vefat: 333
+  a_sahis: at493
+  b_sahis: gh899
   tur: atıf
-  puan: -2.0
-  benzerlik: 1.0
+  puan: 2.0
+  benzerlik: 0.8
   gerekce:
-  - 'atıf: الفوائد البهية:١٨٢.'
-  - zincir 2. halkada ayrılıyor
-- 'no': 62
+  - 'atıf: الفوائد البهية:١٦٠؛ كحالة، معجم المؤلفين: ٨/ ٢٣٢ - ٢٣٣'
+  - künye
+  - 'çakışma: insan kararı: farklı kişiler'
+- 'no': 31
   karar: ''
-  a: kataib:603
-  b: jawahir:1453
-  a_ad: ابن السراج
-  a_yer: كتائب أعلام الأخيار 3/501 (رقم 603)
-  a_vefat: 706
-  b_ad: محمد بن عمر بن محمود بن أبى بكر ١٨٣ و بن عبد القادر بن أبى بكر الرازى، الإمام، زين الدين، عرف بابن السراج
-  b_yer: الجواهر المضية 3/292 (رقم 1452)
-  b_vefat: 766
-  a_sahis: kt603
-  b_sahis: jw1452
+  a: jawahir:1727
+  b: fawaid:465
+  a_ad: ناصر ابن أبى المكارم عبد السّيّد بن علىّ المطرّزىّ الملقّب برهان الدين
+  a_yer: الجواهر المضية 3/528-529 (رقم 1726)
+  a_vefat: 536
+  b_ad: ناصر بن عبد السيد أبي المكارم بن علي أبو المظفر وأبو الفتح المطرزي
+  b_yer: الفوائد البهية 218
+  b_vefat: 38
+  a_sahis: jw1726
+  b_sahis: fws465
   tur: atıf
   puan: -5.0
-  benzerlik: 1.0
-  gerekce:
-  - 'atıf: الجواهر المضية" للقرشي (٣/ ٢٩٢ - ٢٩٣)، و"الطبقات السني'
-  - vefat farklı 706/766
-- 'no': 63
-  karar: ''
-  a: kataib:382
-  b: jawahir:1727
-  a_ad: علي المطرزي
-  a_yer: كتائب أعلام الأخيار 2/484 (رقم 382)
-  a_vefat: null
-  b_ad: ناصر ابن أبى المكارم عبد السّيّد بن علىّ المطرّزىّ الملقّب برهان الدين
-  b_yer: الجواهر المضية 3/528-529 (رقم 1726)
-  b_vefat: 536
-  a_sahis: kt382
-  b_sahis: jw1726
-  tur: atıf
-  puan: -8.0
-  benzerlik: 1.0
-  gerekce:
-  - 'atıf: الجواهر المضية" للقرشي (٣/ ٥٢٨ - ٥٢٩)، و"تاج التراجم"'
-  - zincir 1. halkada ayrılıyor
-  - 'nisbe: المطرزي'
-  - lakap
-- 'no': 64
-  karar: ''
-  a: kataib:382
-  b: taj_tarajim:304
-  a_ad: علي المطرزي
-  a_yer: كتائب أعلام الأخيار 2/484 (رقم 382)
-  a_vefat: null
-  b_ad: ناصر بن عبد السيد، المطرزي
-  b_yer: تاج التراجم 309 (رقم 304)
-  b_vefat: 610
-  a_sahis: kt382
-  b_sahis: jw1726
-  tur: atıf
-  puan: -8.0
-  benzerlik: 1.0
-  gerekce:
-  - 'atıf: تاج التراجم" لابن قطلوبغا (ص: ٣٠٩)، و"الطبقات السني'
-  - zincir 1. halkada ayrılıyor
-  - 'nisbe: المطرزي'
-  - lakap
-- 'no': 65
-  karar: ''
-  a: jawahir:1211
-  b: athmar:500
-  a_ad: محمد بن أحمد بن موسى الخازن، الرازى، القاضى
-  a_yer: الجواهر المضية 3/71 (رقم 1210)
-  a_vefat: 360
-  b_ad: محمد بن أحمد بن موسى بن يزداذ الرازي
-  b_yer: الأثمار الجنية 2/564 (رقم 489)
-  b_vefat: 361
-  a_sahis: jw1210
-  b_sahis: jw1209
-  tur: isim
-  puan: 6.0
   benzerlik: 0.8
   gerekce:
-  - 'nisbe: الرازي'
-  - vefat 360
-  - aynı kitapta birden çok aday
-- 'no': 66
-  karar: ''
-  a: jawahir:1209
-  b: athmar:500
-  a_ad: محمد بن أحمد بن موسى أبو الطيب، الرازى
-  a_yer: الجواهر المضية 3/70 (رقم 1208)
-  a_vefat: null
-  b_ad: محمد بن أحمد بن موسى بن يزداذ الرازي
-  b_yer: الأثمار الجنية 2/564 (رقم 489)
-  b_vefat: 361
-  a_sahis: jw1208
-  b_sahis: jw1209
-  tur: isim
-  puan: 4.0
-  benzerlik: 0.8
-  gerekce:
-  - 'nisbe: الرازي'
-  - aynı kitapta birden çok aday
-- 'no': 67
-  karar: ''
-  a: jawahir:230
-  b: tabaqat_saniyya:375
-  a_ad: أحمد بن محمد بن محمد بن أحمد بن محمد بن محمد بن حمدان، أبو منصور، الحارثى، القاضى، الرئيس
-  a_yer: الجواهر المضية 1/307 (رقم 229)
-  a_vefat: null
-  b_ad: أحمد بن محمد، أبو منصور بن أبى الحارث
-  b_yer: الطبقات السنية 2/98 (رقم 374)
-  b_vefat: null
-  a_sahis: jw229
-  b_sahis: jw248
-  tur: isim
-  puan: 3.0
-  benzerlik: 0.75
-  gerekce:
-  - künye
-- 'no': 68
-  karar: ''
-  a: jawahir:549
-  b: taj_tarajim:103
-  a_ad: حيدرة بن عمر بن الحسن بن الخطاب، أبو الحسن الصغانى
-  a_yer: الجواهر المضية 2/159 (رقم 548)
-  a_vefat: null
-  b_ad: حيدرة بن عمر الصفار
-  b_yer: تاج التراجم 165 (رقم 103)
-  b_vefat: null
-  a_sahis: jw548
-  b_sahis: tj103
-  tur: isim
-  puan: 3.0
-  benzerlik: 0.75
-  gerekce:
-  - künye
-- 'no': 69
-  karar: ''
-  a: tabaqat_saniyya:810
-  b: taj_tarajim:103
-  a_ad: حيدرة بن عمر بن الحسن بن الخطاب أبو الحسن الصغانى
-  a_yer: الطبقات السنية 3/194 (رقم 809)
-  a_vefat: 358
-  b_ad: حيدرة بن عمر الصفار
-  b_yer: تاج التراجم 165 (رقم 103)
-  b_vefat: null
-  a_sahis: jw548
-  b_sahis: tj103
-  tur: isim
-  puan: 3.0
-  benzerlik: 0.75
-  gerekce:
-  - künye
-- 'no': 70
-  karar: ''
-  a: jawahir:1433
-  b: fawaid:368
-  a_ad: محمد بن على بن أبى بكر الإمام، الملقب عماد الدين
-  a_yer: الجواهر المضية 3/277 (رقم 1432)
-  a_vefat: null
-  b_ad: محمد بن صاحب الهداية برهان الدين علي بن أبي بكر بن عبد الجليل
-  b_yer: الفوائد البهية 182
-  b_vefat: null
-  a_sahis: jw1432
-  b_sahis: fws368
-  tur: atıf
-  puan: -2.5
-  benzerlik: 0.75
-  gerekce:
-  - 'atıf: الفوائد البهية ١٨٢.'
+  - 'atıf: الفوائد البهية ٢١٨، ٢١٩، هدية العارفين ٢/ ٤٨٨.'
   - zincir 2. halkada ayrılıyor
-- 'no': 71
+  - 'nisbe: المطرزي'
+  - vefat farklı 536/38
+- 'no': 32
   karar: ''
-  a: jawahir:1626
-  b: fawaid:436
-  a_ad: محمود بن عبد العزيز الأزجندى، القاضى الملقب شيخ الإسلام
-  a_yer: الجواهر المضية 3/446 (رقم 1625)
+  a: athmar:574
+  b: fawaid:373
+  a_ad: محمد بن عمر، أبو جعفر بن مازة
+  a_yer: الأثمار الجنية 2/612 (رقم 563)
+  a_vefat: 566
+  b_ad: محمد بن عمر حسام الدين الصدر
+  b_yer: الفوائد البهية 183
+  b_vefat: 566
+  a_sahis: jw1442
+  b_sahis: fws373
+  tur: atıf
+  puan: 4.0
+  benzerlik: 0.67
+  gerekce:
+  - 'atıf: الفوائد البهية:١٨٣.'
+  - vefat 566
+  - 'çakışma: insan kararı: farklı kişiler'
+- 'no': 33
+  karar: ''
+  a: athmar:645
+  b: jawahir:1627
+  a_ad: محمود بن عبد العزيز الأوزجنديّ
+  a_yer: الأثمار الجنية 2/648 (رقم 634)
   a_vefat: null
-  b_ad: محمود بن عبد العزيز شمس الأئمة الاوزجندي
-  b_yer: الفوائد البهية 209
+  b_ad: محمود بن عبد العزيز بن عبد الرزاق
+  b_yer: الجواهر المضية 3/446 (رقم 1626)
   b_vefat: null
   a_sahis: jw1625
   b_sahis: jw1626
   tur: atıf
-  puan: 0.5
+  puan: 2.0
   benzerlik: 0.67
   gerekce:
-  - 'atıf: الفوائد البهية ٢٠٩.'
+  - 'atıf: الجواهر المضية:٣/ ٤٤٦، اللكنوي، الفوائد البهية:٢٠٩.'
   - 'çakışma: jawahir kitabında zaten başka bir madde var'
-- 'no': 72
+- 'no': 34
   karar: ''
-  a: tabaqat_saniyya:634
-  b: kataib:377
-  a_ad: حامد بن محمد، الإمام جمال الدين صاحب المحاضر
-  a_yer: الطبقات السنية 3/26 (رقم 633)
-  a_vefat: null
-  b_ad: جمال الدين الريغذموني
-  b_yer: كتائب أعلام الأخيار 2/467-469 (رقم 377)
-  b_vefat: 473
+  a: kataib:377
+  b: jawahir:183
+  a_ad: جمال الدين الريغذموني
+  a_yer: كتائب أعلام الأخيار 2/467-469 (رقم 377)
+  a_vefat: 473
+  b_ad: أحمد بن محمد بن أحمد بن عبد الرحمن ابن إسحاق، الريغذمونى، أبو نصر
+  b_yer: الجواهر المضية 1/253 (رقم 182)
+  b_vefat: null
   a_sahis: ts633
   b_sahis: jw182
-  tur: isim
-  puan: 3.0
-  benzerlik: 0.6
-  gerekce:
-  - lakap
-- 'no': 73
-  karar: ''
-  a: jawahir:1180
-  b: taj_tarajim:224
-  a_ad: محمد بن أحمد بن عبيد البخارى
-  a_yer: الجواهر المضية 3/44-46 (رقم 1179)
-  a_vefat: 482
-  b_ad: محمد بن أحمد البيكندي، قاضي حلب
-  b_yer: تاج التراجم 254 (رقم 224)
-  b_vefat: 482
-  a_sahis: jw1179
-  b_sahis: jw1158
-  tur: isim
-  puan: 3.0
-  benzerlik: 0.5
-  gerekce:
-  - vefat 482
-- 'no': 74
-  karar: ''
-  a: tabaqat_saniyya:219
-  b: fawaid:32
-  a_ad: أحمد بن عبد الله الفريمى
-  a_yer: الطبقات السنية 1/372-373 (رقم 218)
-  a_vefat: null
-  b_ad: أحمد بن عبد الله القريمى
-  b_yer: الفوائد البهية 25
-  b_vefat: 4
-  a_sahis: ts218
-  b_sahis: fws32
   tur: atıf
   puan: 1.0
-  benzerlik: 0.5
+  benzerlik: 0.67
   gerekce:
-  - 'atıf: الفوائد البهية ٢٥، كشف الظنون ٢/ ١٥٤٥،١/ ١٩٢.'
-- 'no': 75
-  karar: ''
-  a: jawahir:1383
-  b: fawaid:356
-  a_ad: محمد بن عبد العزيز بن محمد بن عمر ابن عبد العزيز بن عمر البخارى
-  a_yer: الجواهر المضية 3/233-234 (رقم 1382)
-  a_vefat: null
-  b_ad: محمد بن أحمد
-  b_yer: الفوائد البهية 177
-  b_vefat: null
-  a_sahis: jw1382
-  b_sahis: fws356
-  tur: atıf
-  puan: -2.0
-  benzerlik: 0.5
-  gerekce:
-  - 'atıf: الفوائد البهية ١٧٧، ١٧٨، هدية العارفين ٢/ ١٠٧.'
-  - zincir 2. halkada ayrılıyor
+  - 'atıf: الجواهر المضية" للقرشي (١/ ٢٥٣)، و"الطبقات السنية" للت'
+  - 'nisbe: الريغذموني'
+  - 'çakışma: ad uyuşmuyor: حامد بن محمد، الإمام جمال الدي / أحمد بن محمد بن أحمد بن عبد ال'
