@@ -35,7 +35,13 @@ const century = d => d ? Math.floor((d - 1) / 100) + 1 : 0;
 
 // ---------- data ----------
 const cache = {};
-const load = p => cache[p] || (cache[p] = fetch("data/" + p).then(r => { if (!r.ok) throw new Error(p); return r.json(); }));
+// başarısız istek önbellekte kalmaz (sonraki denemede yeniden yüklenir); geçici ağ hatasında bir kez yeniden dener
+const load = p => cache[p] || (cache[p] = (async () => {
+  for (let i = 0; ; i++) {
+    try { const r = await fetch("data/" + p); if (!r.ok) throw new Error(`${p} (${r.status})`); return await r.json(); }
+    catch (e) { if (i >= 1 || /\(4\d\d\)/.test(e.message)) { delete cache[p]; throw e; } await new Promise(res => setTimeout(res, 800)); }
+  }
+})());
 let IDX, BOOKS, SALAF = new Map(), P = new Map();
 
 async function init() {
@@ -566,9 +572,14 @@ function setupTexts(id, d) {
   const fill = async el => {
     if (el.dataset.done) return;
     el.dataset.done = 1;
-    const all = await texts(id), k = +el.dataset.k, cite = d.sources[k][1];
-    const t = all.find(x => x.cite === cite) || all[k];
-    $(".body", el).innerHTML = t ? renderEntry(t) : `<p class="empty">${T("لا يوجد نص.", "Metin yok.")}</p>`;
+    try {
+      const all = await texts(id), k = +el.dataset.k, cite = d.sources[k][1];
+      const t = all.find(x => x.cite === cite) || all[k];
+      $(".body", el).innerHTML = t ? renderEntry(t) : `<p class="empty">${T("لا يوجد نص.", "Metin yok.")}</p>`;
+    } catch (e) {   // yükleme hatası: bir sonraki açılışta yeniden denenir
+      delete el.dataset.done;
+      $(".body", el).innerHTML = `<p class="empty">${T("تعذّر تحميل النص، أعد المحاولة.", "Metin yüklenemedi; yeniden deneyin.")}</p>`;
+    }
   };
   const btn = $("#openall");
   const sync = () => {
@@ -685,6 +696,7 @@ async function makeMap(host, opt = {}) {
       const f = +t.dataset.f; t.setAttribute("font-size", f * s); t.style.strokeWidth = 3 * s;
       if (!t.dataset.w) { t.style.display = ""; try { const b = t.getBBox(); t.dataset.w = b.width / f / s; t.dataset.h = b.height / f / s; } catch (e) { return; } }
       const x = +t.dataset.x, y = +t.dataset.y, r = +t.dataset.r * s, w = t.dataset.w * f * s, h = t.dataset.h * f * s * .8, g = 2.5 * s;
+      if (![x, y, r, w, h].every(Number.isFinite)) return;   // gizli/ölçülemeyen etiket
       const at = [[x, y - r - g - h / 2], [x + r + g + w / 2, y], [x - r - g - w / 2, y], [x, y + r + g + h / 2]]
         .map(([cx, cy]) => [cx, cy, [cx - w / 2, cy - h / 2, cx + w / 2, cy + h / 2]]).find(c => free(c[2]));
       if (!at) { t.style.display = "none"; return; }
@@ -745,7 +757,7 @@ async function makeMap(host, opt = {}) {
       const pts = svg.querySelector(".pts"), labs = svg.querySelector(".labs"), routes = svg.querySelector(".routes");
       pts.innerHTML = list.map(({ pl, r, on }) => { const [x, y] = proj(pl.lon, pl.lat);
         return `<circle class="pt${on ? " on" : ""}${pl.type === "regions" ? " reg" : ""}" data-id="${esc(pl.id)}" data-r="${r}" cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${r}"><title>${esc(plName(pl))}</title></circle>`; }).join("");
-      labs.innerHTML = list.filter(x => x.label).sort((a, b) => b.label - a.label).map(({ pl, r, label: f }) => { const [x, y] = proj(pl.lon, pl.lat);
+      labs.innerHTML = list.filter(x => x.label).sort((a, b) => b.label - a.label).map(({ pl, r, label }) => { const [x, y] = proj(pl.lon, pl.lat), f = label === true ? 13 : +label || 13;   // true: sabit boy (kişi sayfası)
         return `<text class="plab${f >= 15 ? " major" : f < 11 ? " minor" : ""}${pl.id === o.hot ? " hot" : ""}" data-f="${f}" data-x="${x.toFixed(1)}" data-y="${y.toFixed(1)}" data-r="${r}" x="${x.toFixed(1)}" y="${y.toFixed(1)}" text-anchor="middle" dominant-baseline="central">${esc(plName(pl).replace(/ \(.*\)$/, ""))}</text>`; }).join("");
       dirty = true;
       routes.innerHTML = o.route && o.route.length > 1 ? `<path class="route" d="M${o.route.map(pl => proj(pl.lon, pl.lat).map(v => v.toFixed(1)).join(" ")).join("L")}"/>` : "";
@@ -1032,7 +1044,9 @@ async function viewNet(view, id) {
     return;
   }
   const i = g.byId.get(id);
-  if (i === undefined) { $("#netbody").innerHTML = `<p class="empty">${plink(id)} ${T("ليس له شيوخ ولا تلاميذ من المترجمين.", ": biyografisi bulunanlar arasında hocası ya da talebesi yok.")}</p>`; return; }
+  if (i === undefined) { $("#netbody").innerHTML = P.has(id) || SALAF.has(id)
+    ? `<p class="empty">${plink(id)} ${T("ليس له شيوخ ولا تلاميذ من المترجمين.", ": biyografisi bulunanlar arasında hocası ya da talebesi yok.")}</p>`
+    : `<p class="empty">${T("لا يوجد هذا العلم.", "Böyle bir âlim yok.")} <a href="#/net">${T("المشهد العام", "Genel görünüm")}</a></p>`; return; }
   let depth = 1;
   const draw = () => egoNet($("#netbody"), g, i, depth, LINEAGE);
   view.querySelectorAll("[data-depth]").forEach(b => b.addEventListener("click", () => {
