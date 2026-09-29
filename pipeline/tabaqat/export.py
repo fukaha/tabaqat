@@ -16,6 +16,8 @@ from pathlib import Path
 
 import yaml
 
+from .extract.names import birth_year
+from .geo.roads import DETOUR, Roads, km
 from .textclean import clean_text
 from .tr.names import Namer, load_tsv
 
@@ -124,11 +126,15 @@ def _nisba_notes(root: Path) -> dict[str, list[dict]]:
     return out
 
 
-def _texts(root: Path, persons: list[dict]) -> dict[int, dict]:
+def _entries(root: Path) -> dict[str, dict]:
     entries = {}
     for f in sorted((root / "data" / "entries").glob("*.json")):
         for e in json.loads(f.read_text(encoding="utf-8")):
             entries[f"{e['book_id']}:{e['seq']}"] = e
+    return entries
+
+
+def _texts(root: Path, persons: list[dict], entries: dict[str, dict]) -> dict[int, dict]:
     out: dict[int, dict] = defaultdict(dict)
     for p in persons:
         items = []
@@ -259,6 +265,55 @@ def _chains(info: dict, rel: list[dict], salaf: set[str], want: int = 30) -> lis
     return chosen[:want]
 
 
+# şahıs sayfasındaki güzergâhla aynı sıra: önce nisbe/asıl/doğum, en sonda vefat/defin
+KIND_ORDER = ["nisba", "origin", "birth", "residence", "travel", "activity", "office", "death", "burial"]
+
+
+def place_seq(items: list[dict], places: dict) -> list[str]:
+    """Şahsın şehirleri biyografideki sırayla (bölge kayıtları hariç), ardışık tekrarlar atılır."""
+    seq: list[str] = []
+    for k in KIND_ORDER:
+        for it in items:
+            pl = places.get(it["place"])
+            if it["kind"] == k and pl and pl.get("type") != "regions" and (not seq or seq[-1] != it["place"]):
+                seq.append(it["place"])
+    return seq
+
+
+def _roads(root: Path, pp: dict, places: dict, salaf: set) -> dict | None:
+    """el-Süreyyâ yol ağı ve şahısların şehirleri arasındaki güzergâhlar (Dijkstra).
+
+    e: her güzergâhın noktaları, düz dizi hâlinde yüzde bir dereceyle [boylam×100, enlem×100, ...]
+    r: "A|B" → işaretli kenar numaraları (+i kayıttaki yönde, -i ters yönde; 1'den başlar).
+       Yol ağına bağlanamayan ya da yolu çok dolambaçlı olan çiftler listede yoktur (düz çizilir).
+    """
+    path = root / "data" / "gazetteer" / "roads.json"
+    if not path.exists():
+        return None
+    net = Roads(json.loads(path.read_text(encoding="utf-8")))
+    snap = {pid: net.snap(pid, pl["lon"], pl["lat"]) for pid, pl in places.items() if pl.get("type") != "regions"}
+    pairs = set()
+    for pid, items in pp.items():
+        if pid in salaf:
+            continue
+        seq = place_seq(items, places)
+        pairs.update((a, b) for a, b in zip(seq, seq[1:]))
+    r = {}
+    for a, b in sorted(pairs):
+        na, nb = snap.get(a), snap.get(b)
+        if not na or not nb or na == nb:
+            continue
+        got = net.route(na, nb)
+        if not got:
+            continue
+        sids, dist = got
+        direct = km((places[a]["lon"], places[a]["lat"]), (places[b]["lon"], places[b]["lat"]))
+        if dist <= DETOUR * direct + 30:
+            r[f"{a}|{b}"] = sids
+    edges = [[round(v * 100) for pt in e[3] for v in pt] for e in net.edges]
+    return {"e": edges, "r": r}
+
+
 def export(root: Path) -> dict:
     data, out = root / "data", root / "site" / "data"
     persons = json.loads((data / "persons.json").read_text(encoding="utf-8"))
@@ -318,15 +373,19 @@ def export(root: Path) -> dict:
         best = sorted(items, key=lambda it: order.get(it["kind"], 9))
         main_place[pid] = best[0]["place"]
 
+    entries = _entries(root)
     index, shards = [], defaultdict(dict)
     for p in listed:
         pid = p["id"]
         d, est = p.get("death_h"), False
         if not d and p.get("death_est"):
             d, est = p["death_est"], True
+        # doğum yılı: ilk kaynaktaki "ولد/مولده سنة …" ya da ölüm yaşından (zaman haritasında ömür çizgisi)
+        born = next((b for s in p["sources"] if s["key"] in entries
+                     for b in [birth_year(entries[s["key"]].get("text") or "", d)] if b), 0)
         index.append([pid, p["name"], d, int(est), len(p["sources"]), len(teachers[pid]),
                       len(students[pid]), main_place.get(pid, ""),
-                      sorted({s["book"] for s in p["sources"]}), TR[pid][0], TR[pid][1]])
+                      sorted({s["book"] for s in p["sources"]}), TR[pid][0], TR[pid][1], born])
         shards[shard(pid)][pid] = {
             "name": p["name"], "tr": TR[pid][0], "trs": TR[pid][1],
             "heading": p.get("heading", ""), "death": p.get("death", ""),
@@ -344,7 +403,7 @@ def export(root: Path) -> dict:
     _dump(out / "index.json", {"books": books, "persons": index, "salaf": salaf_info})
     for k, v in shards.items():
         _dump(out / "p" / f"{k:02d}.json", v)
-    texts = _texts(root, listed)
+    texts = _texts(root, listed, entries)
     for k, v in texts.items():
         _dump(out / "t" / f"{k:02d}.json", v)
     # kartlar için kısa özet (ilk kaynağın metninin başı) ve öne çıkan âlimler
@@ -393,6 +452,9 @@ def export(root: Path) -> dict:
                "people": people_at[pl["id"]]}
               for pl in places if people_at[pl["id"]]]
     _dump(out / "places.json", places)
+    roads = _roads(root, pp, {pl["id"]: pl for pl in places}, salaf)
+    if roads:
+        _dump(out / "roads.json", roads)
     # sözlükte bulunmayan kelimeler (Türkçe adları tamamlamak için)
     rows = [f"{cat}\t{w}\t{c}" for cat, d in sorted(namer.unknown.items())
             for w, c in sorted(d.items(), key=lambda t: -t[1])]
@@ -400,4 +462,5 @@ def export(root: Path) -> dict:
         "# tür\tkelime\tsayı — ilgili sözlüğe (ism/nisba/laqab.tsv) eklenince adlarda görünür\n"
         + "\n".join(rows) + "\n", encoding="utf-8")
     return {"persons": len(index), "salaf": len(salaf), "shards": len(shards), "nodes": len(nodes),
-            "edges": len(edges), "places": len(places)}
+            "edges": len(edges), "places": len(places), "born": sum(1 for r in index if r[11]),
+            "road_pairs": len(roads["r"]) if roads else 0}

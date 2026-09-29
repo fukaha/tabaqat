@@ -100,3 +100,12 @@ def test_repeated_chain_and_page_xref(res):
     # Fevâid'de başlık etiketi almamış Cessâs maddesi Cessâs'a, Verrâk Verrâk'a
     assert res.cid["fawaid:39"] == res.cid["jawahir:156"]
     assert res.cid["fawaid:38"] == res.cid["jawahir:155"]
+
+
+def test_birth_year():
+    from tabaqat.extract.names import birth_year
+    assert birth_year("مولده ببلخ، في سادس جمادى الآخرة، سنة ست وثلاثين وخمسمائة. سمع وحدّث", 616) == 536
+    assert birth_year("وُلد سنة ثمانٍ عشرة ومائة. ومات سنة ست ومائتين", 206) == 118
+    assert birth_year("وولد له سنة خمسين وأربعمائة ابنه محمد", 500) is None     # başkasının doğumu
+    assert birth_year("مولده سنة عشر وسبعمائة", 650) is None                    # vefattan sonra: atılır
+    assert birth_year("وتوفي سنة ثلاث وثمانين ومائة، عن ثمانين سنة", 183) == 103  # yaştan

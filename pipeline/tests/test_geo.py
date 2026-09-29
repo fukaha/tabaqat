@@ -50,3 +50,14 @@ def test_short_names():
     assert short_name("عبد العزيز بن أحمد بن نصر بن صالح الحلواني، الملقب شمس الأئمة") == "شمس الأئمة الحلواني"
     assert short_name("الحسين بن علي بن حجاج بن علي الإمام، الملقب حسام الدين الصغناقي") == "حسام الدين الصغناقي"
     assert short_name("خطيب زاده") == "خطيب زاده"
+
+
+def test_roads_shortest_path():
+    from tabaqat.geo.roads import Roads
+    net = Roads([["A", "B", 1000, [[0, 0], [0.01, 0]]], ["B", "C", 1000, [[0.01, 0], [0.02, 0]]],
+                 ["A", "C", 5000, [[0, 0], [0.01, 0.02], [0.02, 0]]]])
+    sids, d = net.route("A", "C")
+    assert sids == [1, 2] and d == 2.0
+    assert net.route("C", "A")[0] == [-2, -1]          # ters yön işaretli
+    assert net.snap("X", 0.011, 0.0) == "B"             # ağda olmayan yer en yakın menzile
+    assert net.snap("Y", 5, 5) is None                  # çok uzaksa bağlanmaz

@@ -129,6 +129,45 @@ def death_year(text: str, window: int = 90) -> int | None:
     return None
 
 
+_BIRTH = re.compile(r"(?<![ء-ي])(ولد|مولده|ولادته|ولدت)(?![ء-ي])")
+_AGE = re.compile(r"(?:عن|وله|وعمره|عاش|وقد جاوز|وقد بلغ)\s+((?:\S+\s+){0,3}?)سنه")
+
+
+def _year_after_sana(seg: str) -> int | None:
+    s = re.search(r"سنه\s+", seg)
+    if not s:
+        return None
+    rest = seg[s.end():]
+    d = re.match(r"([\d٠-٩]{2,4})", rest)
+    if d:
+        y = int(d.group(1).translate(_DIGITS))
+        return y if 0 < y < 1400 else None
+    return words_to_year(rest.split()[:8])
+
+
+def birth_year(text: str, death: int | None = None, window: int = 70) -> int | None:
+    """"ولد/مولده ... سنة ..." kalıbından hicrî doğum yılı; bulunamazsa ve vefat biliniyorsa
+    ölüm cümlesindeki yaştan ("عن ثمانين سنة") geri hesap. Vefatla tutarsız yıllar atılır."""
+    n = normalize(re.sub(r"\[\^\d+\]", "", text.split("<hr>")[0]))
+    ok = lambda y: y and (not death or 0 < death - y <= 120)
+    for m in _BIRTH.finditer(n):
+        seg = n[m.end(): m.end() + window]
+        if re.match(r"\s*(له|لي|والده|ابوه|ابنه|اخوه|ولده|شيخه|جده|عمه)", seg):
+            continue  # başkasının doğumu ya da "ولد له"
+        seg = re.split(r"(توفي|مات|وفاته)", seg)[0]
+        y = _year_after_sana(seg)
+        if ok(y):
+            return y
+    if death:
+        for m in _DEATH_VERB.finditer(n):
+            a = _AGE.search(n[m.end(): m.end() + 120])
+            if a:
+                age = words_to_year(a.group(1).split())
+                if age and 15 <= age <= 120:
+                    return death - age
+    return None
+
+
 def year_from_note(note: str) -> int | None:
     """Fihrist vefat notu "٨١٦هـ/١٤١٣م", "بعد ٦٥٦هـ" → 816 / 656."""
     m = re.search(r"([\d٠-٩]{2,4})\s*هـ", note)

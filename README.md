@@ -173,6 +173,16 @@ python -m tabaqat.geo.basemap <natural-earth-dizini>   # → site/data/basemap.j
 - **el-Süreyyâ bilgisi:** `python -m tabaqat.geo.thurayya_info <althurayya.github.io kopyası>`
   → `data/gazetteer/thurayya_info.json` (künye ve ≤240 harflik alıntı, CC BY 4.0); `site`
   koşusu bunu `places.json`'a ekler.
+- **Yol ağı ve güzergâhlar:** `python -m tabaqat.geo.roads <althurayya.github.io kopyası>` →
+  `data/gazetteer/roads.json` (Mukaddesî yol ağı, sadeleştirilmiş; CC BY 4.0). `site` koşusu her
+  âlimin şehir sırasındaki ardışık çiftler için ağda en kısa yolu Dijkstra ile bulur (ağda olmayan
+  şehir ≤60 km'deki menzile bağlanır, yol kuş uçuşunun 2,6 katından uzunsa düz çizilir) →
+  `site/data/roads.json`. Haritada âlim aranınca şehirleri ve bu güzergâh gösterilir.
+- **Zaman haritası** (`#/zaman/<id>`): bölge satırları (el-Süreyyâ bölgesi, âlimin başlıca şehrine
+  göre), hicrî/milâdî cetvel, vefat noktaları ve doğumu bilinenlerde ömür çizgisi. Doğum yılı
+  `extract/names.py: birth_year` ile «ولد/مولده سنة…» ya da vefattaki yaştan çıkarılır.
+- **Silsile görünümleri:** âlimin silsilesi (`#/net/<id>`), asır sütunları (`#/asir/<id>`), genel
+  görünüm (`#/net`); hepsinde âlim arama. Klavye: `/` arama, `?` kısayollar, `g h/s/z/m` gezinme.
 - **Biyografi metinleri:** kaynak düğmeleriyle seçilen kitapların metinleri yan yana çerçevelerde,
   iki yana yaslı; şiir ortalı. Yayın metni `tabaqat/textclean.py` ile temizlenir: dipnot işaretleri
   ve muhakkik notları atılır, OCR satır sonları ve çift boşluklar giderilir, sayfa sonunda cümle

@@ -91,13 +91,14 @@ header.top .zencirek { background-color: transparent; border: 0; height: 8px; op
 .brand { display: inline-flex; align-items: center; gap: .5rem; font-family: var(--f-head); font-size: 1.5rem; font-weight: 700; color: var(--indigo); white-space: nowrap; }
 .brand:hover { text-decoration: none; }
 .brand .emblem { width: 2rem; height: 2rem; color: var(--gold); }
-nav.tabs { display: flex; gap: .15rem; flex-wrap: wrap; }
-nav.tabs a { padding: .1rem .7rem; color: var(--ink); }
+/* sekmeler: küçük, sona (TR'de sağa) yaslı; arama ve dil/tema düğmelerinin hemen önünde */
+nav.tabs { display: flex; gap: .1rem; flex-wrap: wrap; margin-inline-start: auto; font-size: .9rem; }
+nav.tabs a { padding: .05rem .55rem; color: var(--ink); }
 nav.tabs a:hover { color: var(--indigo); text-decoration: none; }
 nav.tabs a.on { color: var(--indigo); box-shadow: inset 0 -2px 0 var(--gold); }
 .search { position: relative; min-width: 0; }
-.top-search { flex: 1 1 12rem; max-width: 20rem; margin-inline-start: auto; }
-.home .top-search { visibility: hidden; }
+.top-search { flex: 0 1 15rem; }
+.home .top-search { display: none; }
 .search input {
   width: 100%; font: inherit; padding: .3rem 2.2rem .3rem .9rem; border-radius: 999px; color: var(--ink);
   border: 1px solid var(--line); background: var(--paper) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 18 18'%3E%3Ccircle cx='7.5' cy='7.5' r='5.5' fill='none' stroke='%23888' stroke-width='1.6'/%3E%3Cpath d='M11.5 11.5 16 16' stroke='%23888' stroke-width='1.6'/%3E%3C/svg%3E") no-repeat right .75rem center;
@@ -497,7 +498,10 @@ sup.fn a { color: var(--rubric); padding: 0 .1em; }
   .ccard { width: 84vw; }
   .top-search { order: 5; flex-basis: 100%; max-width: none; }
   .home .top-search { display: none; }
-  nav.tabs a { padding: .05rem .45rem; font-size: .95rem; }
+  nav.tabs { margin-inline-start: 0; font-size: .88rem; flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; max-width: 100%; order: 3; flex-basis: 100%; }
+  nav.tabs::-webkit-scrollbar { display: none; }
+  nav.tabs a { white-space: nowrap; }
+  nav.tabs a { padding: .05rem .4rem; }
 }
 
 /* biyografi metinleri: yan yana çerçeveler */
@@ -571,3 +575,78 @@ sup.fn a { color: var(--rubric); padding: 0 .1em; }
   .lead-card { grid-template-columns: 1fr; }
   .lead-card .lc-ic svg { width: 3rem; height: 3rem; }
 }
+
+/* kenar tezyinatı: örgü ve lale-rûmî; yalnız geniş ekranda, sayfanın iki yan boşluğunda, soluk */
+.kenar { display: none; position: fixed; top: 0; bottom: 0; width: 60px; z-index: -1; pointer-events: none; opacity: .2;
+  -webkit-mask-image: linear-gradient(transparent, #000 12%, #000 88%, transparent); mask-image: linear-gradient(transparent, #000 12%, #000 88%, transparent); }
+.kenar svg { display: block; height: 100%; }
+.kenar.s { inset-inline-start: calc((100vw - 76rem) / 4 - 30px); }
+.kenar.e { inset-inline-end: calc((100vw - 76rem) / 4 - 30px); }
+@media (min-width: 84rem) { .kenar { display: block; } }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .kenar { opacity: .16; } }
+:root[data-theme="dark"] .kenar { opacity: .16; }
+
+/* erişilebilirlik */
+.skip { position: fixed; top: -3rem; inset-inline-start: 1rem; z-index: 500; font: inherit; background: var(--indigo); color: var(--paper); border: 0; border-radius: 6px; padding: .4rem .9rem; }
+.skip:focus { top: calc(env(safe-area-inset-top, 0px) + .5rem); }
+:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+#view:focus { outline: none; }
+#toast { position: fixed; bottom: calc(env(safe-area-inset-bottom, 0px) + 1.2rem); inset-inline-start: 50%; transform: translate(-50%, 1rem); z-index: 450;
+  background: var(--ink); color: var(--paper); border-radius: 999px; padding: .35rem 1rem; font-size: .9rem; opacity: 0; pointer-events: none; transition: opacity .2s, transform .2s; }
+[dir="rtl"] #toast { transform: translate(50%, 1rem); }
+#toast.on { opacity: 1; transform: translate(-50%, 0); }
+[dir="rtl"] #toast.on { transform: translate(50%, 0); }
+.keyhelp .in { width: min(30rem, 100%); }
+.keyhelp dl { margin: .3rem 0 0; display: grid; gap: .45rem; }
+.keyhelp dl div { display: grid; grid-template-columns: 9.5rem minmax(0, 1fr); gap: .8rem; align-items: baseline; }
+.keyhelp dd { margin: 0; color: var(--muted); }
+kbd { font: 600 .8rem/1 "Noto Serif", serif; border: 1px solid var(--line); border-bottom-width: 2px; border-radius: 4px; padding: .12rem .35rem; background: var(--bg); margin-inline-end: .2rem; }
+
+/* küçük, simgeli seçenekler */
+.btn.icon { display: inline-grid; place-items: center; width: 2rem; height: 2rem; padding: 0; font-size: 1.05rem; line-height: 1; }
+.btn.icon svg { width: 1.05rem; height: 1.05rem; }
+.segs { display: inline-flex; gap: 0; }
+.segs > .btn { border-radius: 0; margin-inline-start: -1px; }
+.segs > .btn:first-child { border-start-start-radius: 6px; border-end-start-radius: 6px; margin-inline-start: 0; }
+.segs > .btn:last-child { border-start-end-radius: 6px; border-end-end-radius: 6px; }
+.segs > .btn.on { position: relative; z-index: 1; }
+.btn.seg { display: inline-flex; align-items: center; gap: .35rem; height: 2rem; padding: 0 .6rem; font-size: .82rem; }
+.btn.seg svg { width: 1.05rem; height: 1.05rem; flex: none; }
+@media (max-width: 760px) { .btn.seg .lbl { display: none; } }
+.stagebar { gap: .35rem; }
+.stagebar .lsearch { flex: 0 1 15rem; min-width: 9rem; }
+.stagebar .lsearch input { font-size: .9rem; }
+.filters.mini { gap: .25rem; margin: .35rem 0; }
+.filters.mini .label { font-size: .78rem; color: var(--muted); margin-inline-end: .1rem; }
+.filters.mini .btn { font-size: .76rem; padding: .02rem .45rem; border-radius: 999px; }
+
+/* tek indirme simgesi, PNG / SVG seçimi */
+.dlmenu { position: relative; display: inline-block; }
+.dlpop { display: none; position: absolute; top: 100%; inset-inline-end: 0; z-index: 70; padding-top: 4px; }
+.dlpop::before { content: ""; position: absolute; inset: 4px 0 0; background: var(--paper); border: 1px solid var(--line); border-radius: 8px; box-shadow: var(--shadow); }
+.dlmenu:hover .dlpop, .dlmenu.open .dlpop, .dlmenu:focus-within .dlpop { display: flex; flex-direction: column; }
+.dlpop button { position: relative; font: inherit; font-size: .85rem; font-weight: 600; background: none; border: 0; color: var(--ink); padding: .35rem .9rem; text-align: start; white-space: nowrap; cursor: pointer; }
+.dlpop button small { font-weight: 400; color: var(--muted); margin-inline-start: .3rem; }
+.dlpop button:hover, .dlpop button:focus-visible { background: var(--mark); }
+
+/* asır sütunları ve zaman haritası: bilgi kartı, ipucu */
+.netwrap .tip { font-size: .85rem; line-height: 1.5; white-space: normal; max-width: 18rem; z-index: 5; }
+.netwrap .tip .arn { color: var(--muted); font-family: "Amiri", "Noto Naskh Arabic", serif; }
+.icard { position: absolute; top: 3.2rem; inset-inline-end: .7rem; z-index: 6; width: min(17rem, calc(100% - 1.4rem)); background: var(--paper); border: 1px solid var(--line);
+  border-top: 3px solid var(--gold); border-radius: 8px; box-shadow: var(--shadow); padding: .55rem .8rem .6rem; display: flex; flex-direction: column; gap: .15rem; font-size: .88rem; }
+.icard b { font-family: var(--f-head); font-size: 1.05rem; color: var(--indigo); padding-inline-end: 1.4rem; }
+.icard .arn { font-family: "Amiri", "Noto Naskh Arabic", serif; font-size: 1rem; color: var(--muted); }
+.icard .num, .icard > span { color: var(--muted); }
+.icard .lk { display: flex; flex-wrap: wrap; gap: .2rem .8rem; margin-top: .2rem; }
+.icard .x { position: absolute; top: .3rem; inset-inline-end: .4rem; border: 0; background: none; font-size: 1.2rem; color: var(--muted); cursor: pointer; }
+.netwrap.tl canvas { height: min(74vh, 720px); }
+.stage.full .netwrap.tl canvas { height: 100%; }
+@media (max-width: 600px) { .icard { top: auto; bottom: .6rem; } }
+
+/* harita: âlim güzergâhı */
+.route.road { stroke: var(--rubric); stroke-linecap: round; stroke-linejoin: round; opacity: .85; }
+.roadnet path { fill: none; stroke: var(--gold); opacity: .45; stroke-linejoin: round; }
+.mpop .proute { font-size: .88rem; line-height: 1.7; margin: .3rem 0; }
+.mpop .proute span { color: var(--gold); }
+.mpop .arn { margin: 0; font-family: "Amiri", "Noto Naskh Arabic", serif; color: var(--muted); }
+.mpop .plinks { margin: .4rem 0 0; font-size: .9rem; }
