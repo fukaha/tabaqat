@@ -53,14 +53,15 @@ _ONES = {
 }
 _TENS = {"عشرين": 20, "ثلاثين": 30, "اربعين": 40, "خمسين": 50, "ستين": 60, "سبعين": 70,
          "ثمانين": 80, "تسعين": 90}
-# normalize: ئ→ي; OCR: "ماته", "مانه", "مات"
-_HUNDRED = ("مايه", "ميه", "ماه", "مائه", "مئه", "ماته", "مانه", "مات")
+# normalize: ئ→ي; OCR: "ماته", "مانه", "مات"; eski imla/dizgi: "ثلثمائة", "خمسائة"
+_HUNDRED = ("مايه", "ميه", "ماه", "مائه", "مئه", "ماته", "مانه", "مات", "ايه")
+_HUNDRED_ONES = {**_ONES, "ثلث": 3}
 _DIGITS = str.maketrans("٠١٢٣٤٥٦٧٨٩", "0123456789")
 
 
 def words_to_year(words: list[str]) -> int | None:
     """"خمس وتسعين وخمسمائه" → 595. Sayı olmayan ilk kelimede durur."""
-    total, ones, used, skip = 0, 0, False, None
+    total, ones, used, skip, tens = 0, 0, False, None, False
     for w in words:
         w = re.sub(r"[^\u0621-\u064a]", "", w)
         if w.startswith("و") and w[1:] and not w.startswith(("واحد",)):
@@ -78,25 +79,27 @@ def words_to_year(words: list[str]) -> int | None:
             ones = _ONES[w]
         elif w in ("عشر", "عشره"):
             total += 10 + ones
-            ones = 0
+            ones, tens = 0, True
         elif w in _TENS:
             total += _TENS[w] + ones
-            ones = 0
-        elif w in _HUNDRED and w != "مات":
+            ones, tens = 0, True
+        elif w in _HUNDRED and w not in ("مات", "ايه"):
             total += 100 * (ones or 1)
             ones = 0
         elif w in ("مايتين", "ميتين", "مايتي", "ميتي", "ماتين"):
             total += 200
-        elif any(w.endswith(h) and w[: -len(h)] in _ONES for h in _HUNDRED):
-            h = next(h for h in _HUNDRED if w.endswith(h) and w[: -len(h)] in _ONES)
-            total += 100 * _ONES[w[: -len(h)]]
+        elif any(w.endswith(h) and w[: -len(h)] in _HUNDRED_ONES for h in _HUNDRED):
+            h = next(h for h in _HUNDRED if w.endswith(h) and w[: -len(h)] in _HUNDRED_ONES)
+            total += 100 * _HUNDRED_ONES[w[: -len(h)]]
+            tens = False
         elif w in ("الف", "ألف"):
             total += 1000 * (ones or 1)
             ones = 0
         else:
             break
         used = True
-    total += ones
+    # onlardan sonra kalan birler yüzlerdir: "تسعين وثلاثة" = ...وثلاثمائة (dizgi hatası)
+    total += 100 * ones if tens else ones
     return total if used and 0 < total < 1400 else None
 
 
