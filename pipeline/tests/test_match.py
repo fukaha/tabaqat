@@ -90,3 +90,13 @@ def test_ghuraf_names_from_index(res):
     assert p["name"].startswith("عمر بن محمد بن أحمد بن إسماعيل") and "٥٣٧هـ" in p["death"]
     # İbnü'l-Adîm (عمر بن أحمد بن هبة الله، ت. ٦٦٠) ile karışmamalı
     assert all("هبة الله" not in s["heading"] for s in p["sources"])
+
+
+def test_repeated_chain_and_page_xref(res):
+    # Esmâr'ın "الجواهر ٣/ ٣٤٨-٣٤٩" atfı o sayfada başlayan Hutenî maddesine gider
+    assert res.cid["athmar:593"] == res.cid["jawahir:1522"]
+    # "محمد بن محمد بن محمد" + البخاري tek başına aynı kişi saymaya yetmez
+    assert res.cid["ghuraf_v2:208"] != res.cid["jawahir:1523"]
+    # Fevâid'de başlık etiketi almamış Cessâs maddesi Cessâs'a, Verrâk Verrâk'a
+    assert res.cid["fawaid:39"] == res.cid["jawahir:156"]
+    assert res.cid["fawaid:38"] == res.cid["jawahir:155"]

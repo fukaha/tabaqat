@@ -57,7 +57,9 @@ def xref_links(recs: list[Rec]) -> list[Link]:
                 cands = res.candidates(ref)
                 if not cands:
                     continue
-                best = max(cands, key=lambda x: (token_sim(r, x), compare(r, x).total))
+                # eşit ad benzerliğinde atıfın ilk sayfasında başlayan madde öne alınır
+                best = max(cands, key=lambda x: (token_sim(r, x), x.page_start == ref.page,
+                                                 compare(r, x).total))
                 ts, sc = token_sim(r, best), compare(r, best)
                 late = any("müellifinden" in n for n in sc.notes)
                 # metinden çıkan vefat yılı hatalı olabilir: ad tam örtüşüyorsa atıf yeter
@@ -132,10 +134,22 @@ def name_links(recs: list[Rec], max_block: int = 400) -> list[Link]:
                 if (chainless and ("künye" in sc.notes or "lakap" in sc.notes)
                         and any(n.startswith("nisbe") for n in sc.notes) and ts >= 0.99 and sc.total >= 2.5):
                     status = "auto"  # "ابو الحسن الكرخي" ↔ tam ad; aşağıda tekliği denetlenir
+                if status == "auto" and _degenerate(a, b) and not any(
+                        n.startswith("vefat ") and "farklı" not in n for n in sc.notes):
+                    status = "pending"  # "محمد بن محمد بن محمد" + yaygın nisbe: vefatla doğrulanmalı
                 if status:
                     out.append(Link(a.key, b.key, "name", status, sc.total, ts, sc.notes))
     _chainless_unique(out, {r.key: r for r in recs})
     return out
+
+
+def _degenerate(a: Rec, b: Rec) -> bool:
+    """İki maddeden birinin nesebi tek bir adın tekrarından ibaretse ("محمد بن محمد بن محمد")."""
+    for r in (a, b):
+        chains = [p.chain for p in r.names if p.chain]
+        if chains and all(len(set(c)) == 1 for c in chains):
+            return True
+    return False
 
 
 def _chainless_unique(links: list[Link], recs: dict[str, Rec]) -> None:
