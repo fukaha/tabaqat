@@ -121,6 +121,121 @@ def _texts(root: Path, persons: list[dict]) -> dict[int, dict]:
     return out
 
 
+_HARAKAT = re.compile("[\u064b-\u0652\u0670]")
+_KNOWN_AS = re.compile(r"(?:المعروف|الشهير|المشهور|عرف)\s*(?:ب|بـ)\s*(ابن \S+|[^\s،,(.]+(?:\s(?:زاده|باشا|بك|جلبي|أفندي|حلبي|خان|القضاة|الأئمة|الإسلام|الشهيد))?)")
+_LQ1 = {"شمس", "فخر", "برهان", "ظهير", "حسام", "ركن", "نجم", "صدر", "تاج", "علاء", "جلال",
+        "حافظ", "حميد", "نور", "سراج", "قوام", "زين", "بدر", "شرف", "كمال", "أكمل", "عز", "عماد",
+        "نصير", "رضي", "مجد", "سيف", "جمال", "محيي", "قطب", "صفي", "شهاب", "تقي", "سعد", "نظام",
+        "مجير", "عون", "بهاء", "معين", "ضياء", "رشيد", "أمين", "عفيف", "ولي", "حسن", "خير"}
+
+
+def _laqab(name: str) -> str:
+    """"الملقب ب…" ya da "X الدين / X الأئمة" lakabı (bitişik bâ harfi ayıklanır)."""
+    for pat in (r"الملقب\s*(\S+ (?:الدين|الأئمة))", r"(\S+ الدين)", r"(\S+ الأئمة)"):
+        for m in re.finditer(pat, name):
+            w = m.group(1)
+            if w[0] == "ب" and w.split()[0][1:] in _LQ1:
+                w = w[1:]
+            if w.split()[0] in _LQ1:
+                return w
+    return ""
+
+
+_KUNYA = re.compile(r"(?:أبو|ابو) (?:عبد )?[^\s،,.]+")
+_TITLES = {"الحنفي", "القاضي", "الصوفي", "الشافعي", "الحنبلي", "المالكي", "الأصولي", "النحوي"}
+_SHORT = {"jws1": "أبو حنيفة", "jw1270": "محمد بن الحسن الشيباني", "jw1825": "أبو يوسف",
+          "jw1061": "عمر بن صاحب الهداية", "jw891": "عبيد الله المحبوبي",
+          "qd597": "أبو زيد الدبوسي", "kt168": "أبو حفص الصغير", "qd538": "عبد العزيز بن عمر",
+          "jw104": "أبو حفص الكبير"}
+
+
+def short_name(name: str, pid: str = "") -> str:
+    """Silsile rozetleri için kısa ad: şöhret; yoksa lakap/künye + son nisbe."""
+    if pid in _SHORT:
+        return _SHORT[pid]
+    name = _HARAKAT.sub("", name).replace("ـ", "").strip()
+    m = _KNOWN_AS.search(name)
+    if m:
+        return m.group(1).strip()
+    words = re.sub("[،,.]", " ", name).split()
+    if words[0].startswith("ال") and (len(words) < 2 or words[1] != "بن"):
+        return words[0]
+    nisba = ""
+    for i in range(len(words) - 1, 1, -1):
+        w = words[i]
+        if w.startswith("ال") and w.endswith("ي") and len(w) > 4 and w not in _TITLES \
+                and words[i - 1] not in {"بن", "ابن", "عبد", "أبو", "أبي", "ابو"}:
+            nisba = w
+            break
+    k = _KUNYA.search(name)
+    lead = _laqab(name) or (k and k.group(0))
+    if lead and nisba:
+        return f"{lead} {nisba}"
+    i = words.index("بن") if "بن" in words else len(words)
+    ism = " ".join(words[:max(1, min(i, 2))])
+    if nisba:
+        return f"{ism} {nisba}"
+    if i == 1 and len(words) > 2:
+        return " ".join(words[:4] if words[2] in {"أبي", "ابن"} and len(words) > 3 else words[:3])
+    return ism
+
+
+def _chains(info: dict, rel: list[dict], salaf: set[str], want: int = 30) -> list[list[str]]:
+    """Ebû Hanîfe'den geç dönem âlimlere, kesin vefatlarla tutarlı en kısa silsileler."""
+    death = {pid: p.get("death_h") or p.get("death_est") for pid, p in info.items()}
+    up = defaultdict(list)
+    for e in rel:
+        t, s = e["teacher"], e["student"]
+        if all("zayıf" in x["how"] or "meşhur" in x["how"] for x in e["evidence"]):
+            continue
+        dt, ds = death.get(t), death.get(s)
+        if dt and ds and 0 < ds - dt <= 90 and s not in salaf:
+            up[s].append((e["n"], t))
+    deg = defaultdict(int)
+    for e in rel:
+        deg[e["teacher"]] += 1
+        deg[e["student"]] += 1
+    src = "jws1"
+
+    def path(pid):
+        prev, q = {pid: None}, [pid]
+        while q and src not in prev:
+            nq = []
+            for x in q:
+                for _, t in sorted(up[x], key=lambda it: (-deg[it[1]], -it[0])):
+                    if t not in prev:
+                        prev[t] = x
+                        nq.append(t)
+            q = nq
+        if src not in prev:
+            return None
+        out = [src]
+        while prev[out[-1]] is not None:
+            out.append(prev[out[-1]])
+        return out
+
+    # asırlara göre sıra sıra seç: her asırdan en çok anılan uç, aynı şeyhten ikinci uç yok
+    by_c = defaultdict(list)
+    for pid in info:
+        if pid in salaf or not death.get(pid) or death[pid] < 400:
+            continue
+        p = path(pid)
+        if p and 6 <= len(p) <= 14:
+            by_c[_century(death[pid])].append((-(len(info[pid]["sources"]) * 3 + deg[pid]), pid, p))
+    for v in by_c.values():
+        v.sort()
+    chosen, seen = [], set()
+    while len(chosen) < want and any(by_c.values()):
+        for c in sorted(by_c):
+            while by_c[c]:
+                _, pid, p = by_c[c].pop(0)
+                if p[-2] not in seen:
+                    seen.add(p[-2])
+                    chosen.append(p)
+                    break
+    return chosen[:want]
+
+
 def export(root: Path) -> dict:
     data, out = root / "data", root / "site" / "data"
     persons = json.loads((data / "persons.json").read_text(encoding="utf-8"))
@@ -212,6 +327,10 @@ def export(root: Path) -> dict:
         nodes.append([pid, info[pid]["name"], years[i], deg[pid], xs[i], ys[i], int(guessed[i]),
                       int(pid in salaf)])
     _dump(out / "graph.json", {"nodes": nodes, "edges": edges})
+    chains = _chains(info, rel, salaf)
+    _dump(out / "chains.json", {"chains": chains,
+                                "names": {pid: short_name(info[pid]["name"], pid)
+                                          for pid in sorted({x for c in chains for x in c})}})
 
     people_at = defaultdict(list)
     for pid, items in pp.items():

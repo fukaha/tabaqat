@@ -119,6 +119,11 @@ python -m tabaqat.geo.basemap <natural-earth-dizini>   # → site/data/basemap.j
 
 `site/` dizinindeki statik site Arapça ve RTL'dir; dış kütüphane kullanmaz. Bölümleri:
 
+- **Ana sayfa:** ebru zemin üzerinde arama ve "سلسلة التفقّه": Ebû Hanîfe'den geç dönem bir
+  âlime uzanan, her halkası ağdaki zayıf olmayan ve vefat yıllarıyla tutarlı (0 < fark ≤ 90)
+  bir hoca–talebe bağından oluşan zincir, hicrî asır cetveli üzerinde. Zincirler
+  `site/data/chains.json`'da (asırlara dağıtılmış 30 zincir, kısa adlarıyla); her ziyarette
+  biri seçilir.
 - **Arama.**
 - **Şahıs sayfası:** atıflar, hocalar ve talebeler (kanıt cümleleriyle), dış hocalar, yerler ve
   mini harita.

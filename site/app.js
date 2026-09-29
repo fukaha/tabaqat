@@ -133,20 +133,55 @@ const ORN = {
     <circle cx="50" cy="50" r="8" fill="currentColor" fill-opacity=".3"/></g></svg>`,
   arrow: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h16M8 8l-4 4 4 4M16 8l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
 };
-// hero yıldızı: iç içe on iki ve sekiz köşeli yıldızlar, dağınık pastel parçalar
-function heroStar() {
-  const pts = (n, R, r, rot = 0, cx = 260, cy = 260) => Array.from({ length: n * 2 }, (_, i) => {
-    const a = (Math.PI / n) * i + rot, rr = i % 2 ? r : R; return `${(cx + rr * Math.sin(a)).toFixed(1)},${(cy - rr * Math.cos(a)).toFixed(1)}`; }).join(" ");
-  const shard = (x, y, s, rot, c, o) => `<polygon points="0,-${s} ${s * .9},${s * .5} -${s * .9},${s * .5}" transform="translate(${x} ${y}) rotate(${rot})" fill="var(--${c})" opacity="${o}"/>`;
-  return `<svg class="star" viewBox="0 0 520 520" aria-hidden="true">
-    <polygon points="${pts(12, 200, 120)}" fill="var(--peach)" opacity=".75"/>
-    <polygon points="${pts(12, 190, 128, Math.PI / 12)}" fill="var(--butter)" opacity=".55"/>
-    <polygon points="${pts(8, 150, 105, Math.PI / 8)}" fill="var(--mint)" opacity=".9"/>
-    <polygon points="${pts(8, 120, 88)}" fill="var(--sage)" opacity=".55"/>
-    <polygon points="${pts(8, 64, 44, Math.PI / 8)}" fill="none" stroke="var(--gold)" stroke-width="1.2" opacity=".6"/>
-    ${shard(60, 70, 34, 20, "sage", .45)}${shard(470, 90, 30, -25, "butter", .8)}${shard(40, 300, 28, 90, "butter", .7)}
-    ${shard(490, 300, 26, 200, "mint", .9)}${shard(250, 490, 30, 180, "sage", .45)}${shard(430, 470, 22, 40, "peach", .8)}
-  </svg>`;
+// ebru zemin: taraklı ebru şeritleri, türbülansla dalgalandırılmış
+function ebru() {
+  const cols = ["peach", "bg", "butter", "mint", "bg", "sage", "peach", "bg", "mint", "butter", "bg", "sage"];
+  const stripes = Array.from({ length: 34 }, (_, i) => `<rect x="${i * 40 - 60}" y="-80" width="${22 + (i * 7) % 18}" height="700" fill="var(--${cols[i % cols.length]})"/>`
+    + (i % 3 ? "" : `<rect x="${i * 40 - 64}" y="-80" width="2" height="700" fill="var(--gold)" opacity=".5"/>`)).join("");
+  const drops = [[180, 120, 70, "sage"], [520, 60, 50, "peach"], [860, 150, 80, "butter"], [1080, 90, 45, "mint"], [340, 330, 60, "butter"], [760, 380, 55, "sage"]]
+    .map(([x, y, r, c]) => `<circle cx="${x}" cy="${y}" r="${r}" fill="var(--${c})"/><circle cx="${x}" cy="${y}" r="${r * .55}" fill="var(--bg)"/><circle cx="${x}" cy="${y}" r="${r * .22}" fill="var(--${c})"/>`).join("");
+  return `<svg class="ebru" viewBox="0 0 1200 520" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+    <defs><filter id="ebf" x="-10%" y="-10%" width="120%" height="120%">
+      <feTurbulence type="fractalNoise" baseFrequency=".0035 .011" numOctaves="3" seed="11" result="n"/>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="190" xChannelSelector="R" yChannelSelector="G"/>
+      <feGaussianBlur stdDeviation="1.1"/></filter></defs>
+    <g filter="url(#ebf)">${stripes}${drops}</g></svg>`;
+}
+
+// altın silsile: Ebû Hanîfe'den geç dönem bir âlime, asırlar cetveli üzerinde
+const STAR8 = (x, y, r) => { const p = []; for (let i = 0; i < 16; i++) { const a = Math.PI / 8 * i, rr = i % 2 ? r * .72 : r; p.push(`${(x + rr * Math.sin(a)).toFixed(1)},${(y - rr * Math.cos(a)).toFixed(1)}`); } return p.join(" "); };
+function silsile(host, data, pick) {
+  const chain = data.chains[pick].map(id => ({ id, name: data.names[id] || who(id).name, d: who(id)?.d }))
+    .filter(n => n.d);
+  const W = Math.max(host.clientWidth, 720), H = 200, mid = 88, pad = 60;
+  const y0 = 100 * Math.floor((chain[0].d - 20) / 100), y1 = Math.max(y0 + 300, 100 * Math.ceil((chain[chain.length - 1].d + 30) / 100));
+  const X = d => W - pad - (d - y0) / (y1 - y0) * (W - 2 * pad);   // sağdan sola: eskiden yeniye
+  const pts = chain.map((n, i) => ({ ...n, x: X(n.d), y: mid + Math.sin(i * 1.3) * 10 }));
+  // iplik: noktalardan geçen yumuşak eğri
+  let path = `M${pts[0].x + 40},${mid} L${pts[0].x},${pts[0].y}`;
+  for (let i = 1; i < pts.length; i++) { const a = pts[i - 1], b = pts[i], cx = (a.x + b.x) / 2;
+    path += ` C${cx},${a.y + (i % 2 ? 26 : -26)} ${cx},${b.y + (i % 2 ? -26 : 26)} ${b.x},${b.y}`; }
+  const ticks = []; for (let t = y0; t <= y1; t += 50) { const x = X(t);
+    ticks.push(`<line x1="${x}" x2="${x}" y1="${H - 26}" y2="${H - (t % 100 ? 30 : 36)}" />${t % 100 ? "" : `<text x="${x}" y="${H - 8}">${AR(t)}هـ</text>`}`); }
+  host.innerHTML = `<svg class="thread" viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" aria-hidden="true">
+      <g class="ruler"><line x1="${pad - 20}" x2="${W - pad + 20}" y1="${H - 26}" y2="${H - 26}"/>${ticks.join("")}</g>
+      <path class="gold" d="${path}" pathLength="1"/><path class="gold thin" d="${path}" transform="translate(0 3)" pathLength="1"/>
+      ${pts.map((p, i) => `<g class="bead${i === 0 || i === pts.length - 1 ? " end" : ""}" style="--i:${i}">
+        <polygon points="${STAR8(p.x, p.y, i === 0 || i === pts.length - 1 ? 12 : 8)}"/><circle cx="${p.x}" cy="${p.y}" r="${i === 0 || i === pts.length - 1 ? 3.2 : 2.2}"/></g>`).join("")}
+      <g class="leads"></g></svg>
+    ${pts.map((p, i) => `<a class="nm${i === 0 || i === pts.length - 1 ? " end" : ""}" href="#/p/${p.id}" style="--i:${i}"><b>${esc(p.name)}</b><span class="num">${AR(p.d)}</span></a>`).join("")}`;
+  // adları çakışmayacak şekilde üst/alt kulvarlara yerleştir
+  const lanes = [-30, 26, -62, 58], edge = lanes.map(() => Infinity), leads = [];
+  host.querySelectorAll("a.nm").forEach((a, i) => { const p = pts[i], w = a.offsetWidth, h = a.offsetHeight;
+    let L = lanes.findIndex((_, k) => p.x + w / 2 + 6 < edge[k]); if (L < 0) L = edge.indexOf(Math.max(...edge));
+    if (i === 0 || i === pts.length - 1) L = L % 2 ? 1 : 0;
+    edge[L] = p.x - w / 2;
+    const top = lanes[L] < 0 ? p.y + lanes[L] - h / 2 : p.y + lanes[L] - h / 2 + 4;
+    a.style.left = `${p.x - w / 2}px`; a.style.top = `${Math.max(0, top)}px`;
+    if (L > 1) leads.push(`<line x1="${p.x}" x2="${p.x}" y1="${p.y + (lanes[L] < 0 ? -10 : 10)}" y2="${lanes[L] < 0 ? top + h : top}"/>`); });
+  host.querySelector(".leads").innerHTML = leads.join("");
+  host.style.height = `${H}px`;
+  return chain;
 }
 // kategori çizimleri: sarık, pusula-gül, silsile, kitaplar
 const ILL = {
@@ -195,7 +230,7 @@ const secHead = (t, sub) => `<div class="sechead"><h2>${t}</h2>${sub ? `<p>${sub
 
 // ---------- home ----------
 async function viewHome(view) {
-  const [featured, PL, g, places] = await Promise.all([load("featured.json"), placesById(), graph(), load("places.json")]);
+  const [featured, PL, g, places, CH] = await Promise.all([load("featured.json"), placesById(), graph(), load("places.json"), load("chains.json")]);
   const byC = {};
   IDX.forEach(p => { const k = century(p.d); if (k) byC[k] = (byC[k] || 0) + 1; });
   const studentsOf = id => { const i = g.byId.get(id); return i === undefined ? [] : g.down[i].map(([j, n]) => [g.nodes[j].id, n]).sort((a, b) => b[1] - a[1]).map(x => x[0]); };
@@ -213,13 +248,17 @@ async function viewHome(view) {
   ].filter(c => c[1].length);
   const bk = Object.keys(BOOKS).length;
   view.innerHTML = `
-    <section class="hero" style="margin:0"><div class="inner">${heroStar()}
+    <section class="hero" style="margin:0">${ebru()}<div class="inner">
       <div class="txt">
-        <div class="kicker">الطبقات الرقمية</div>
+        <p class="kicker">تراجم الحنفية من كتب الطبقات، في فهرسٍ واحد</p>
         <h1>طبقات الحنفية</h1>
         <div class="search"><input id="hq" type="search" placeholder="ابحث عن عَلَم… (مثل: السرخسي، أبو حفص الكبير)" autocomplete="off" aria-label="بحث"><div class="results" hidden></div></div>
-        <p class="sub">فهرسٌ موحَّد موثَّق: كل ترجمة بمواضعها في الكتب، وكل عَلَم بشيوخه وتلاميذه وبلدانه.</p>
       </div>
+      <figure class="silsile">
+        <figcaption><span class="lbl">سلسلة التفقّه</span> <span id="scap"></span></figcaption>
+        <div class="scroll"><div id="thread"></div></div>
+        <div class="sbar"><button type="button" class="btn ghost" id="snext">↻ سلسلة أخرى</button><a class="btn ghost" id="sopen" href="#/net/jws1">افتحها في السلسلة ←</a></div>
+      </figure>
       <div class="tiles4 num">
         <a class="t4 c1" href="#/search"><span class="n">${AR(IDX.length)}</span>${ILL.sarik}<span class="l">الأعلام</span></a>
         <a class="t4 c2" href="#/map"><span class="n">${AR(places.length)}</span>${ILL.gul}<span class="l">البلدان</span></a>
@@ -248,6 +287,14 @@ async function viewHome(view) {
       </div>
     </div>`;
   setupSearch($("#hq"));
+  // silsile: her ziyarette başka bir halka dizisi
+  let sp = Math.floor(Math.random() * CH.chains.length);
+  const drawChain = () => { const c = silsile($("#thread"), CH, sp), a = c[0], z = c[c.length - 1];
+    $("#scap").innerHTML = `من ${esc(a.name)} (ت ${AR(a.d)}هـ) إلى ${esc(z.name)} (ت ${AR(z.d)}هـ): ${AR(c.length)} ${c.length <= 10 ? "حلقات" : "حلقةً"}، كلّ صلةٍ منها موثّقة في التراجم`;
+    $("#sopen").href = `#/net/${z.id}`; };
+  drawChain();
+  $("#snext").addEventListener("click", () => { sp = (sp + 1 + Math.floor(Math.random() * (CH.chains.length - 1))) % CH.chains.length; drawChain(); });
+  let rw; addEventListener("resize", () => { clearTimeout(rw); rw = setTimeout(() => $("#thread") && drawChain(), 200); });
   view.querySelector('a[href="#books"]').addEventListener("click", e => { e.preventDefault(); $("#books").scrollIntoView({ behavior: "smooth" }); });
   // seçkiler: ortadaki kart büyür
   const coll = $(".coll", view), cards = [...coll.querySelectorAll(".ccard")];

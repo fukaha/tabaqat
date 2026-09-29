@@ -41,3 +41,12 @@ def test_shaybani_places():
     kinds = {(x["kind"], x["place"]) for x in pp["jw1270"]}
     assert ("birth", "WASIT_463E321N_S") in kinds
     assert ("death", "RAYY_515E356N_S") in kinds
+
+
+def test_short_names():
+    from tabaqat.export import short_name
+    assert short_name("الحسن بن منصور بن أبي القاسم الأوزجندي، الفرغاني الإمام الكبير، المعروف بقاضي خان") == "قاضي خان"
+    assert short_name("عبيد الله بن الحسين بن دلال بن دلهم أبو الحسن، الكرخي") == "أبو الحسن الكرخي"
+    assert short_name("عبد العزيز بن أحمد بن نصر بن صالح الحلواني، الملقب شمس الأئمة") == "شمس الأئمة الحلواني"
+    assert short_name("الحسين بن علي بن حجاج بن علي الإمام، الملقب حسام الدين الصغناقي") == "حسام الدين الصغناقي"
+    assert short_name("خطيب زاده") == "خطيب زاده"
