@@ -23,6 +23,7 @@ def test_pick_entry_prefers_plausible_number():
     assert _pick_entry([364], 263) == 264         # OCR ٢↔٣ hatası
     assert _pick_entry([35, 36], 25) == 26        # "[٣٥] [٣٦]": varak + yanlış okunmuş ٢٦
     assert _pick_entry([372], 290) is None        # varak numarası
+    assert _pick_entry([159], 657, head_like=False) is None  # metin devamında varak
 
 
 def test_footnote_marks_removed():
@@ -58,3 +59,16 @@ def test_entry_numbers_monotonic():
     assert len(nums) >= 485 and nums[-1] == 496
     (e,) = [e for e in entries if e.number == 26]
     assert "إبراهيم بن محمد بن سليمان بن عَوْن" in e.heading_raw and e.page_start == 102
+
+
+CFG2 = load_book("ghuraf_v2")
+
+
+@pytest.mark.skipif(not (ROOT / CFG2["source"]).exists(), reason="OCR kaynağı yok")
+def test_volume2_continues_numbering():
+    entries = parse_book(CFG2)
+    nums = [e.number for e in entries]
+    assert nums[0] == 497 and nums[-1] == 942
+    assert nums == sorted(nums) and len(set(nums)) == len(nums) and len(nums) >= 440
+    # Hâtime (ص ٦٣١-) maddeye eklenmez; son madde yalnız başlıktan ibarettir
+    assert entries[-1].page_end == 630

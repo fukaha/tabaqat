@@ -28,12 +28,18 @@ _STRAY_MARK = re.compile(r"^[٠-٩]+\s+(?=\[)")  # gövde başında kalmış dip
 _SUP = re.compile(r"\$\^\{[^}]*\}\$|[¹²³⁴⁵⁶⁷⁸⁹⁰]+")
 # Üst simge olarak okunmamış dipnot işareti: kelimeye/noktalamaya yapışık rakam ("الدين٧", "،٨")
 _GLUED_MARK = re.compile(r"(?<=[\u0621-\u064A\u064B-\u0652»)،.:؛])[٠-٩]{1,2}(?=[\s،.:؛»)\]]|$)")
+# Harekeli metinde boşlukla ayrılmış dipnot işareti ("جِنَانِيٍّ ١ بْنِ"); metindeki gerçek sayılar
+# ya tarihtir (٨١٦هـ) ya da yazıyla yazılır, bir-iki haneli çıplak rakam işarettir
+_SPACED_MARK = re.compile(r"(?<=[\u0621-\u064A\u064B-\u0652»)،.:؛\]\"]) [٠-٩]{1,2}(?=[ \n،.:؛]|$)")
+# Yüzlü varak işareti: "[١٧١ظ]", "[٩و]", "[١٠ ظ]", "[١ط]"
+_FOLIO_SIDE = re.compile(r"\s*\[[٠-٩]+\s*[ظوط]\]")
 _LEAD_BRACKETS = re.compile(r"^((?:\s*\[[٠-٩]+\])+)\s*(/)?\s*")
 _NUM_BRACKET = re.compile(r"\s*\[[٠-٩]+\]\s*/?")
 _SLASH = re.compile(r"(^|\s)/(?=\s|$)")
 _MAX_ENTRY_STEP = 6
 _PENDING = object()
 _PENDING_MARK = "\x00"
+_NAME_START = re.compile(r"^(\S+ ){1,3}(بن|ابن|بنت) ")
 _ENTRY_HEAD = re.compile(r"^\S+ (بن|ابن) .*\[ت\.", re.S)
 _NOT_ENTRY = re.compile(r"^(ذكر|حرف|قال|وقال|بسم)")
 _HARAKAT = re.compile(r"[\u064B-\u0652\u0670\u0640]")
@@ -92,7 +98,7 @@ def _one_digit_off(a: int, b: int) -> bool:
     return len(x) == len(y) and sum(i != j for i, j in zip(x, y)) == 1
 
 
-def _pick_entry(nums: list[int], last: int) -> int | None:
+def _pick_entry(nums: list[int], last: int, head_like: bool = True) -> int | None:
     """Blok başındaki köşeli numaralardan madde numarasını seçer (yoksa hepsi varaktır).
 
     Madde numarası bir öncekini birkaç adım içinde izler (OCR bazı numaraları düşürür).
@@ -102,6 +108,8 @@ def _pick_entry(nums: list[int], last: int) -> int | None:
     steps = [n for n in nums if 0 < n - last <= _MAX_ENTRY_STEP]
     if steps:  # makul bir numara asla değiştirilmez
         return min(steps)
+    if not head_like:  # "[١٥٩] / سنة سبع ...": metin devamındaki varak numarası
+        return None
     for n in reversed(nums):  # ancak aralık dışındaysa OCR hanesi düzeltilir (٣٦٤ → ٢٦٤)
         for exp in range(last + 1, last + 4):
             if _one_digit_off(n, exp):
@@ -109,10 +117,12 @@ def _pick_entry(nums: list[int], last: int) -> int | None:
     return None
 
 
-def clean_pages(root: str | Path, first_pdf_page: int, page_offset: int) -> list[Page]:
+def clean_pages(root: str | Path, first_pdf_page: int, page_offset: int,
+                first_entry: int = 1) -> list[Page]:
+    """first_entry: ciltteki ilk madde numarası (numaralama ciltler boyunca sürer)."""
     root = Path(root)
     pages: list[Page] = []
-    last_entry = 0
+    last_entry = first_entry - 1
     for pdf, d in _page_dirs(root):
         if pdf < first_pdf_page:
             continue
@@ -134,17 +144,20 @@ def clean_pages(root: str | Path, first_pdf_page: int, page_offset: int) -> list
                 nums = [int(x.translate(_DIGITS)) for x in re.findall(r"[٠-٩]+", m.group(1))]
                 # "ذكر إسرائيل" gibi bölüm başlıkları ve alıntı devamları madde değildir
                 if rest.strip() and not _NOT_ENTRY.match(_strip_harakat(rest)):
-                    entry = _pick_entry(nums, last_entry)
+                    plain = _strip_harakat(rest[:250])
+                    head_like = bool(_NAME_START.match(plain) or "[ت." in plain)
+                    entry = _pick_entry(nums, last_entry, head_like)
                     # Numarası okunamamış madde başı: "[٣٦٩] صالح بن إبراهيم ... [ت. ...]";
                     # numarası sonradan, iki komşu madde numarası arasında tam bir boşluk varsa verilir
                     if entry is None and _ENTRY_HEAD.match(_strip_harakat(rest[:250])):
                         entry = _PENDING
                 c = rest
             c = _NUM_BRACKET.sub(" ", c)  # metin içi varak numaraları
+            c = _SPACED_MARK.sub("", _FOLIO_SIDE.sub("", c))
             c = _SLASH.sub(r"\1", c)
             c = re.sub(r"[ \t]+", " ", c)
             c = "\n".join(line.strip() for line in c.split("\n")).strip()
-            if not c:
+            if not c or c in ("ظ", "و"):  # tek başına kalmış varak yüzü
                 continue
             if entry is _PENDING:
                 c = _PENDING_MARK + c
@@ -155,15 +168,15 @@ def clean_pages(root: str | Path, first_pdf_page: int, page_offset: int) -> list
                 c = f"## {c}"
             page.blocks.append(c)
         pages.append(page)
-    _resolve_pending(pages)
+    _resolve_pending(pages, first_entry)
     return pages
 
 
-def _resolve_pending(pages: list[Page]) -> None:
+def _resolve_pending(pages: list[Page], first_entry: int = 1) -> None:
     """İki okunmuş madde numarası arasındaki numarasız madde başlarını, sayıları boşluğa
     tam uyuyorsa sırayla numaralar; uymuyorsa numarasız bırakır."""
     flat = [(p, i) for p in pages for i in range(len(p.blocks))]
-    prev, pending = 0, []
+    prev, pending = first_entry - 1, []
 
     def num(b: str) -> int | None:
         m = re.match(r"^(?:## )?\[([٠-٩]+)\]", b)
@@ -194,7 +207,7 @@ def to_markdown(pages: list[Page], title: str) -> str:
     return "\n".join(parts)
 
 
-_SECTION = re.compile(r"^(?:## )?(حرف|ذكر)\s")
+_SECTION = re.compile(r"^(?:## )?(حرف|ذكر|باب|خاتمة)(\s|$)")
 
 
 def to_entries(pages: list[Page], book_id: str, vol: int = 1) -> list[Entry]:

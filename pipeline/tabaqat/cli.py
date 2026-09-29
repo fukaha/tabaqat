@@ -20,7 +20,8 @@ PARSE_OPTS = ("start_after_heading", "unnumbered_entry", "section_heading", "sto
 
 
 def clean_ocr(cfg: dict) -> list[mistral_ocr.Page]:
-    return mistral_ocr.clean_pages(ROOT / cfg["source"], cfg["first_pdf_page"], cfg["page_offset"])
+    return mistral_ocr.clean_pages(ROOT / cfg["source"], cfg["first_pdf_page"], cfg["page_offset"],
+                                   cfg.get("first_entry", 1))
 
 
 def parse_book(cfg: dict):
@@ -59,7 +60,7 @@ def main() -> None:
     if not nums:  # numarasız kitap
         print(f"{len(entries)} madde (numarasız); kısa/boş (seq): {empty[:20]}")
         return
-    gaps = sorted(set(range(1, max(nums) + 1)) - set(nums))
+    gaps = sorted(set(range(min(nums), max(nums) + 1)) - set(nums))
     print(f"{len(entries)} madde; no {min(nums)}–{max(nums)}; boşluk: {gaps[:20]}; kısa/boş: {empty[:20]}")
 
 
