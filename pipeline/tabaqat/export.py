@@ -380,9 +380,9 @@ def _roads(root: Path, pp: dict, places: dict, salaf: set) -> dict | None:
     return {"e": edges, "r": r}
 
 
-def export(root: Path, full_text: bool = False) -> dict:
-    """full_text=True: t/ parçalarına maddelerin tam metni yazılır (yalnız yerel kullanım içindir; telifli
-    neşir metni olduğundan yayımlanmaz, pages iş akışı bunu denetler). Varsayılan: kısa alıntı."""
+def export(root: Path, full_out: Path | None = None) -> dict:
+    """site/data/t/ parçalarına yalnız kısa alıntı yazılır. Tam metin parçaları full_out/t/ altına yazılır:
+    bu, gizli kaynak deposudur (fukaha/tabaqat-kaynak); site onu yalnız yönetici jetonuyla okur."""
     data, out = root / "data", root / "site" / "data"
     persons = json.loads((data / "persons.json").read_text(encoding="utf-8"))
     rel = json.loads((data / "relations.json").read_text(encoding="utf-8"))
@@ -478,7 +478,10 @@ def export(root: Path, full_text: bool = False) -> dict:
     for k, v in shards.items():
         _dump(out / "p" / f"{k:02d}.json", v)
     full = _texts(root, listed, entries, full_text=True)
-    texts = full if full_text else _texts(root, listed, entries)
+    texts = _texts(root, listed, entries)
+    if full_out:
+        for k, v in full.items():
+            _dump(Path(full_out) / "t" / f"{k:02d}.json", v)
     for k, v in texts.items():
         _dump(out / "t" / f"{k:02d}.json", v)
     # kartlar için kısa özet (ilk kaynağın metninin başı) ve öne çıkan âlimler

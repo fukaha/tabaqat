@@ -6,3 +6,4 @@ node_modules/
 site/dist/
 sources/*/raw/
 *.egg-info/
+kaynak/

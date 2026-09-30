@@ -21,15 +21,21 @@ export default {
     let o; try { o = await req.json(); } catch { return out(400, { error: "json" }); }
     if (o.web) return out(200, { ok: true });   // bal küpü alanı doldurulmuş: sessizce yok say
     const x = { op: str(o.op, 5), t: str(o.t, 12), s: str(o.s, 12), rel: str(o.rel, 12), p: str(o.p, 12),
-      src: str(o.src, 300), q: str(o.q, 1200), note: str(o.note, 1500), by: str(o.by, 80) };
-    const bad = !["add", "del", "note"].includes(x.op)
-      || (x.op === "note" ? !x.note || (x.p && !ID.test(x.p)) : !ID.test(x.t) || !ID.test(x.s) || x.t === x.s)
+      src: str(o.src, 300), q: str(o.q, 1200), note: str(o.note, 1500), by: str(o.by, 80),
+      tr: str(o.tr, 200), trs: str(o.trs, 120), ar: str(o.ar, 300), d: str(o.d, 4) };
+    const bad = !["add", "del", "note", "fix"].includes(x.op)
+      || (x.op === "note" ? !x.note || (x.p && !ID.test(x.p))
+        : x.op === "fix" ? !ID.test(x.p) || !x.src || !(x.tr || x.trs || x.ar || x.d) || (x.d && !/^\d{1,4}$/.test(x.d))
+        : !ID.test(x.t) || !ID.test(x.s) || x.t === x.s)
       || (x.op === "add" && (!RELS[x.rel] || !x.src));
     if (bad) return out(400, { error: "fields" });
     for (const k in x) if (!x[k]) delete x[k];
-    const pg = x.op === "note" ? x.p : x.s;
-    const title = x.op === "add" ? `[katkı] ${x.t} → ${x.s} (hoca–talebe)` : x.op === "del" ? `[katkı] Hatalı bağ: ${x.t} → ${x.s}` : `[katkı] Düzeltme: ${x.p || "genel"}`;
-    const L = [x.op === "add" ? `**Önerilen bağ:** ${x.t} → ${x.s} (${RELS[x.rel]})` : x.op === "del" ? `**Hatalı olduğu bildirilen bağ:** ${x.t} → ${x.s}` : "**Düzeltme bildirimi**"];
+    const pg = x.op === "note" || x.op === "fix" ? x.p : x.s;
+    const title = x.op === "add" ? `[katkı] ${x.t} → ${x.s} (hoca–talebe)` : x.op === "del" ? `[katkı] Hatalı bağ: ${x.t} → ${x.s}`
+      : x.op === "fix" ? `[katkı] Ad / vefat: ${x.p}` : `[katkı] Düzeltme: ${x.p || "genel"}`;
+    const L = [x.op === "add" ? `**Önerilen bağ:** ${x.t} → ${x.s} (${RELS[x.rel]})` : x.op === "del" ? `**Hatalı olduğu bildirilen bağ:** ${x.t} → ${x.s}`
+      : x.op === "fix" ? `**Ad / vefat düzeltmesi:** ${[x.tr && `tam ad: ${x.tr}`, x.trs && `kısa ad: ${x.trs}`, x.ar && `Arapça ad: ${x.ar}`, x.d && `vefat: ${x.d}`].filter(Boolean).join("; ")}`
+      : "**Düzeltme bildirimi**"];
     if (pg) L.push(`Sayfa: https://fukaha.github.io/tabaqat/#/p/${pg}`);
     if (x.src) L.push(`**Kaynak:** ${x.src}`);
     if (x.q) L.push(`**Kanıt metni:**\n> ${x.q}`);

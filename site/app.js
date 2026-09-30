@@ -56,7 +56,7 @@ async function init() {
   // Ebû Hanîfe öncesi (peygamberler, sahâbe, tâbiûn): sayfası yok, yalnız silsilede
   SALAF = new Map(Object.entries(d.salaf || {}).map(([id, [ar, dd, tr, trs]]) => [id, { id, ar, tr: tr || ar, trs: trs || tr || ar, d: dd, salaf: true,
     get name() { return LANG === "tr" ? this.tr : this.ar; } }]));
-  KATKI = kt.items || []; ktCounts(KATKI);
+  KATKI = kt.items || []; ktCounts(KATKI); ktFix(KATKI);
   window.addEventListener("hashchange", route);
   kenarlar();
   setupA11y();
@@ -602,6 +602,7 @@ async function viewPerson(view, id) {
       <div class="death num">${LANG === "tr"
         ? (p.d ? `(${yearTxt(p.d, p.est)})${p.est ? ` <span class="est">vefatı hoca ve talebelerinin tabakasından tahmin edildi</span>` : ""}` : `<span class="est">vefatı zikredilmemiş</span>`)
         : (d.death ? esc(d.death) : p.d ? `نحو ${AR(p.d)}هـ <span class="est">(تقدير من طبقة شيوخه وتلاميذه)</span>` : `<span class="est">لم تُذكر وفاته</span>`)}</div>
+      ${d.fixed ? `<p class="legend fixnote">${T("صُحّح الاسم أو الوفاة بإضافة", "Ad ya da vefat katkıyla düzeltildi")}: ${d.fixed.map(x => esc(x.src)).join("; ")}</p>` : ""}
       <div class="facts num"><span><b>${AR(d.sources.length)}</b> ${T(d.sources.length > 1 ? "مصادر" : "مصدر", "kaynak")}</span>
         <span><b>${AR(d.teachers.length)}</b> ${T("شيوخ", "hoca")}</span><span><b>${AR(d.students.length)}</b> ${T("تلاميذ", "talebe")}</span>
         <span><b>${AR(new Set(d.places.map(x => x[0])).size)}</b> ${T("بلدان", "şehir")}</span></div>
@@ -640,6 +641,7 @@ async function viewPerson(view, id) {
     </section>`;
   setupTexts(id, d);
   $("#ktbtn").onclick = () => katkiBox(id, d);
+  if (KT_OPEN === id) { KT_OPEN = ""; katkiBox(id, d); }   // yönetim panelinden "düzelt" ile gelindi
   bookNet().then(N => { const sec = $("#works"); if (!sec || !location.hash.startsWith(`#/p/${id}`)) return;
     const ws = N.works.filter(w => w.a === id).sort((a, b) => WK_ORDER.indexOf(wkind(a.k)) - WK_ORDER.indexOf(wkind(b.k)));
     if (!ws.length) return;
@@ -664,8 +666,27 @@ async function viewPerson(view, id) {
 
 // ---------- texts ----------
 async function texts(id) {
-  const s = await load(`t/${String(shardOf(id)).padStart(2, "0")}.json`);
+  const n = String(shardOf(id)).padStart(2, "0");
+  const f = await fullShard(n);   // yönetici girişliyse gizli depodan tam metin
+  if (f && f[id]) return f[id].map(x => ({ ...x, full: 1 }));
+  const s = await load(`t/${n}.json`);
   return s[id] || [];
+}
+// Tam metinler telifli neşirlerden geldiği için gizli depodadır (KAYNAK); yalnız o depoya okuma izni olan
+// yönetici jetonuyla, GitHub API'den okunur. Erişim yoksa sessizce kısa alıntıya düşülür.
+const KAYNAK = "fukaha/tabaqat-kaynak";
+let FULL_OK = null;
+function fullShard(n) {
+  if (!ktTok() || FULL_OK === false) return Promise.resolve(null);
+  const k = "full/" + n;
+  return cache[k] || (cache[k] = (async () => {
+    try {
+      const r = await fetch(`https://api.github.com/repos/${KAYNAK}/contents/t/${n}.json`, { headers: {
+        Accept: "application/vnd.github.raw+json", Authorization: `Bearer ${ktTok()}`, "X-GitHub-Api-Version": "2022-11-28" } });
+      if (!r.ok) { if ([401, 403, 404].includes(r.status)) FULL_OK = false; delete cache[k]; return null; }
+      FULL_OK = true; return await r.json();
+    } catch (e) { delete cache[k]; return null; }
+  })());
 }
 function setupTexts(id, d) {
   const sec = $("#texts");
@@ -714,7 +735,7 @@ function renderBlocks(text) {
 }
 // kısa alıntı (t.short): tam metin telifli neşirdedir; okur cilt ve sayfasına yönlendirilir
 function renderEntry(t) {
-  return `<div class="etitle">${esc(t.heading)}</div><div class="etext">${renderBlocks(t.text)}</div>${t.short ? `<p class="tnote"${LANG === "tr" ? ` lang="tr" dir="ltr"` : ""}>${T("مقتطف من أول الترجمة. النص الكامل في", "Maddenin başından kısa alıntıdır. Tam metin için:")} ${evCite(t.cite)}</p>` : ""}`;
+  return `<div class="etitle">${esc(t.heading)}</div><div class="etext">${renderBlocks(t.text)}</div>${t.full ? `<p class="tnote full"${LANG === "tr" ? ` lang="tr" dir="ltr"` : ""}>${T("النص الكامل من المستودع الخاص؛ لا يراه إلا المدير.", "Tam metin (gizli depodan); yalnız yönetici girişiyle görünür.")} ${evCite(t.cite)}</p>` : ""}${t.short ? `<p class="tnote"${LANG === "tr" ? ` lang="tr" dir="ltr"` : ""}>${T("مقتطف من أول الترجمة. النص الكامل في", "Maddenin başından kısa alıntıdır. Tam metin için:")} ${evCite(t.cite)}</p>` : ""}`;
 }
 document.addEventListener("click", e => {   // sayfa içi kaydırma (adres değişmeden)
   const b = e.target.closest("[data-go]");
@@ -2065,19 +2086,36 @@ const REPO = "fukaha/tabaqat";
 const KATKI_URL = "";   // öneri sunucusu (worker/README.md); boşsa GitHub konu formu kullanılır
 const KT_FILE = "site/data/katki.json", KT_MARK = "<!-- katki";
 const KT_REL = ["fiqh", "took", "hadith", "read", "companion"];
-let KATKI = [];
+let KATKI = [], KT_OPEN = "";
 const ktKey = x => `${x.t}>${x.s}`;
 // yükleme sonrası: hoca/talebe sayıları (silsile bağlantısı ve arama süzgeci bunlara bakar)
 function ktCounts(items, sign = 1) {
-  items.forEach(x => { const t = P.get(x.t), s = P.get(x.s), k = x.op === "del" ? -sign : sign;
+  items.filter(x => x.op !== "fix").forEach(x => { const t = P.get(x.t), s = P.get(x.s), k = x.op === "del" ? -sign : sign;
     if (t) t.ns = Math.max(0, t.ns + k); if (s) s.nt = Math.max(0, s.nt + k); });
+}
+// ad / vefat düzeltmeleri (op "fix"): dizindeki kayda uygulanır; asıl değerler saklanır, geri alınınca döner
+function ktFix(items) {
+  P.forEach(p => { if (p._orig) { Object.assign(p, p._orig); delete p._orig; } });
+  items.filter(x => x.op === "fix" && P.has(x.p)).forEach(x => {
+    const p = P.get(x.p); p._orig = p._orig || { ar: p.ar, tr: p.tr, trs: p.trs, d: p.d, est: p.est, key: p.key, tkey: p.tkey };
+    if (x.ar) { p.ar = x.ar; p.key = norm(x.ar); }
+    if (x.tr) { p.tr = x.tr; p.tkey = fold(x.tr); }
+    if (x.trs) p.trs = x.trs;
+    if (x.d) { p.d = +x.d; p.est = false; }
+  });
 }
 // şahıs kaydına katkıları uygular (kopyası üzerinde; önbellekteki asıl kayıt değişmez)
 function ktPerson(id, d0) {
-  const mine = KATKI.filter(x => x.t === id || x.s === id);
+  const mine = KATKI.filter(x => x.t === id || x.s === id || x.p === id);
   if (!mine.length) return d0;
   const d = { ...d0, teachers: d0.teachers.slice(), students: d0.students.slice() };
   mine.forEach(x => {
+    if (x.op === "note") return;
+    if (x.op === "fix") {
+      if (x.ar) d.name = x.ar; if (x.tr) d.tr = x.tr; if (x.trs) d.trs = x.trs;
+      if (x.d) { d.death_h = +x.d; d.est = false; d.death = `ت ${AR(x.d)}هـ`; }
+      d.fixed = [...(d.fixed || []), x]; return;
+    }
     const side = x.s === id ? "teachers" : "students", other = x.s === id ? x.t : x.s;
     if (x.op === "del") { d[side] = d[side].filter(r => r.id !== other); return; }
     const ev = [x.src, x.q || x.note || "", ""], i = d[side].findIndex(r => r.id === other);
@@ -2092,6 +2130,8 @@ function ktGraph(G) {
     const i = G.nodes.length; G.nodes.push({ id, ar: p.ar, tr: p.tr, d: p.d, deg: 0, x: p.d || 0, y: 0, guess: !!p.est, salaf: !!p.salaf,
       get name() { return LANG === "tr" ? this.tr : this.ar; } }); G.up.push([]); G.down.push([]); G.byId.set(id, i); return i; };
   KATKI.forEach(x => {
+    if (x.op === "fix") { const i = G.byId.get(x.p); if (i === undefined) return; const n = G.nodes[i];
+      if (x.ar) n.ar = x.ar; if (x.tr) n.tr = x.trs || x.tr; else if (x.trs) n.tr = x.trs; if (x.d) { n.d = +x.d; n.guess = false; } return; }
     if (x.op === "del") { const t = G.byId.get(x.t), s = G.byId.get(x.s); if (t === undefined || s === undefined) return;
       G.up[s] = G.up[s].filter(e => e[0] !== t); G.down[t] = G.down[t].filter(e => e[0] !== s);
       G.edges = G.edges.filter(e => !(e[0] === t && e[1] === s)); return; }
@@ -2104,9 +2144,15 @@ function ktClean(o) {
   if (!o || typeof o !== "object") return null;
   const str = (v, n) => String(v ?? "").replace(/\s+/g, " ").trim().slice(0, n);
   const x = { op: str(o.op, 5), t: str(o.t, 12), s: str(o.s, 12), rel: str(o.rel, 12), p: str(o.p, 12),
-    src: str(o.src, 300), q: str(o.q, 1200), note: str(o.note, 1500), by: str(o.by, 80) };
+    src: str(o.src, 300), q: str(o.q, 1200), note: str(o.note, 1500), by: str(o.by, 80),
+    tr: str(o.tr, 200), trs: str(o.trs, 120), ar: str(o.ar, 300), d: str(o.d, 4) };
   Object.keys(x).forEach(k => { if (!x[k]) delete x[k]; });
-  if (!["add", "del", "note"].includes(x.op)) return null;
+  if (!["add", "del", "note", "fix"].includes(x.op)) return null;
+  if (x.op !== "add") delete x.rel;
+  if (x.op === "fix") {
+    if (x.d && !(/^\d{1,4}$/.test(x.d) && +x.d >= 1 && +x.d <= 1500)) return null;
+    return P.has(x.p) && x.src && (x.tr || x.trs || x.ar || x.d) ? x : null;
+  }
   if (x.op === "note") return P.has(x.p) || !x.p ? (x.note ? x : null) : null;
   if (!who(x.t) || !who(x.s) || x.t === x.s) return null;
   if (x.op === "add" && (!KT_REL.includes(x.rel) || !x.src)) return null;
@@ -2114,11 +2160,14 @@ function ktClean(o) {
 }
 const ktName = id => { const p = who(id); return p ? `${p.tr || p.ar}${p.d ? ` (ö. ${p.d})` : ""}` : id; };
 function ktIssue(x) {
-  const pg = x.op === "note" ? x.p : x.s;
+  const pg = x.op === "note" || x.op === "fix" ? x.p : x.s;
   const title = x.op === "add" ? `[katkı] ${ktName(x.t)} → ${ktName(x.s)} (hoca–talebe)`
-    : x.op === "del" ? `[katkı] Hatalı bağ: ${ktName(x.t)} → ${ktName(x.s)}` : `[katkı] Düzeltme: ${x.p ? ktName(x.p) : "genel"}`;
+    : x.op === "del" ? `[katkı] Hatalı bağ: ${ktName(x.t)} → ${ktName(x.s)}` : x.op === "fix" ? `[katkı] Ad / vefat: ${ktName(x.p)}`
+    : `[katkı] Düzeltme: ${x.p ? ktName(x.p) : "genel"}`;
   const L = [x.op === "add" ? `**Önerilen bağ:** ${ktName(x.t)} → ${ktName(x.s)} (${REL_L.tr[x.rel] || x.rel})`
-    : x.op === "del" ? `**Hatalı olduğu bildirilen bağ:** ${ktName(x.t)} → ${ktName(x.s)}` : `**Düzeltme bildirimi**`];
+    : x.op === "del" ? `**Hatalı olduğu bildirilen bağ:** ${ktName(x.t)} → ${ktName(x.s)}`
+    : x.op === "fix" ? `**Ad / vefat düzeltmesi:** ${[x.tr && `tam ad: ${x.tr}`, x.trs && `kısa ad: ${x.trs}`, x.ar && `Arapça ad: ${x.ar}`, x.d && `vefat: ${x.d}`].filter(Boolean).join("; ")}`
+    : `**Düzeltme bildirimi**`];
   if (pg) L.push(`Sayfa: https://fukaha.github.io/tabaqat/#/p/${pg}`);
   if (x.src) L.push(`**Kaynak:** ${x.src}`);
   if (x.q) L.push(`**Kanıt metni:**\n> ${x.q}`);
@@ -2158,9 +2207,11 @@ async function ktWrite(mutate, message) {
   }
 }
 // yayındaki kopyayı hemen günceller (site birkaç dakika içinde yeniden yayımlanır)
-function ktApply(items) { ktCounts(KATKI, -1); KATKI = items; ktCounts(KATKI); G = null; }
+function ktApply(items) { ktCounts(KATKI, -1); KATKI = items; ktCounts(KATKI); ktFix(KATKI); G = null; }
 const ktToday = () => new Date().toISOString().slice(0, 10);
-const ktMsg = x => x.op === "add" ? `Katkı: ${ktName(x.t)} → ${ktName(x.s)} hoca–talebe bağı` : `Katkı: ${ktName(x.t)} → ${ktName(x.s)} bağı kaldırıldı`;
+const ktMsg = x => x.op === "add" ? `Katkı: ${ktName(x.t)} → ${ktName(x.s)} hoca–talebe bağı` : x.op === "fix" ? `Katkı: ${ktName(x.p)} ad / vefat düzeltmesi`
+  : `Katkı: ${ktName(x.t)} → ${ktName(x.s)} bağı kaldırıldı`;
+const ktWhat = x => x.op === "fix" || x.op === "note" ? ktName(x.p) : `${ktName(x.t)} → ${ktName(x.s)}`;
 
 // şahıs sayfasındaki "Katkı / düzeltme" penceresi
 function katkiBox(id, d) {
@@ -2171,25 +2222,34 @@ function katkiBox(id, d) {
   const rels = [...d.teachers.map(r => ["t", r.id]), ...d.students.map(r => ["s", r.id])];
   box.innerHTML = `<form class="in ktform" novalidate><div class="hd"><b>${T("اقتراح إضافة أو تصحيح", "Katkı ya da düzeltme öner")}</b><span class="grow"></span>
       <button type="button" class="btn" data-x>${T("إغلاق", "Kapat")}</button></div>
-    <p class="hint">${esc(me.name)} ${deathTxt(me)} — ${admin ? T("أنت مسجَّل مديرًا: ما تضيفه يُنشر مباشرة.", "Yönetici olarak girdiniz: eklediğiniz bağ doğrudan yayımlanır.")
+    <p class="hint">${esc(me.name)} ${deathTxt(me)} — ${admin ? T("أنت مسجَّل مديرًا: ما تضيفه يُنشر مباشرة.", "Yönetici olarak girdiniz: yaptığınız düzeltme doğrudan yayımlanır.")
       : T("يُراجَع اقتراحك قبل النشر.", "Öneriniz incelendikten sonra yayımlanır.")}</p>
     <fieldset class="ktop"><legend class="label">${T("نوع الاقتراح", "Ne önermek istiyorsunuz?")}</legend>
       <label><input type="radio" name="op" value="t" checked> ${T("شيخ لم يُذكر", "Eksik hoca")}</label>
       <label><input type="radio" name="op" value="s"> ${T("تلميذ لم يُذكر", "Eksik talebe")}</label>
       ${rels.length ? `<label><input type="radio" name="op" value="del"> ${T("صلة خاطئة", "Hatalı bağ")}</label>` : ""}
+      <label><input type="radio" name="op" value="fix"> ${T("الاسم / الوفاة", "Ad / vefat")}</label>
       <label><input type="radio" name="op" value="note"> ${T("خطأ آخر", "Başka bir hata")}</label></fieldset>
+    <label class="ktf" data-for="fix"><span class="label">${T("الاسم الكامل بالتركية", "Türkçe tam ad")}</span>
+      <input name="tr" maxlength="200" value="${esc(me.tr)}"></label>
+    <label class="ktf" data-for="fix"><span class="label">${T("الاسم المختصر بالتركية", "Kısa ad (bilinen adı)")}</span>
+      <input name="trs" maxlength="120" value="${esc(me.trs)}"></label>
+    <label class="ktf" data-for="fix"><span class="label">${T("الاسم بالعربية", "Arapça ad")}</span>
+      <input name="ar" maxlength="300" dir="rtl" lang="ar" value="${esc(me.ar)}"></label>
+    <label class="ktf" data-for="fix"><span class="label">${T("سنة الوفاة (هجري)", "Vefat yılı (hicrî)")}</span>
+      <input name="d" type="number" min="1" max="1500" inputmode="numeric" value="${me.d || ""}"></label>
     <div class="ktf" data-for="t s"><span class="label" id="ktwho">${T("العَلَم", "Âlim")}</span><div class="ktpick"></div><p class="ktsel" hidden></p></div>
     <label class="ktf" data-for="t s"><span class="label">${T("نوع الصلة", "Bağ türü")}</span>
       <select name="rel">${KT_REL.map(k => `<option value="${k}">${REL[k]}</option>`).join("")}</select></label>
     <label class="ktf" data-for="del"><span class="label">${T("الصلة", "Hangi bağ?")}</span>
       <select name="del">${rels.map(([k, o], i) => `<option value="${i}">${k === "t" ? T("شيخه: ", "Hocası: ") : T("تلميذه: ", "Talebesi: ")}${esc(who(o)?.name || o)}</option>`).join("")}</select></label>
-    <label class="ktf" data-for="t s"><span class="label">${T("المصدر والموضع (لازم)", "Kaynak ve sayfa (zorunlu)")}</span>
+    <label class="ktf" data-for="t s fix"><span class="label">${T("المصدر والموضع (لازم)", "Kaynak ve sayfa (zorunlu)")}</span>
       <input name="src" maxlength="300" placeholder="${T("مثلًا: الجواهر المضية ٢/٤٥", "ör. el-Cevâhirü’l-mudıyye, II, 45")}"></label>
     <label class="ktf" data-for="t s"><span class="label">${T("نص الشاهد (اختياري)", "Kanıt metni (isteğe bağlı)")}</span>
       <textarea name="q" rows="2" maxlength="1200"></textarea></label>
-    <label class="ktf" data-for="t s del note"><span class="label" data-l>${T("التوضيح", "Açıklama")}</span>
+    <label class="ktf" data-for="t s del fix note"><span class="label" data-l>${T("التوضيح", "Açıklama")}</span>
       <textarea name="note" rows="3" maxlength="1500"></textarea></label>
-    ${admin ? "" : `<label class="ktf" data-for="t s del note"><span class="label">${T("اسمك (اختياري، يظهر للعموم)", "Adınız (isteğe bağlı, herkese açık görünür)")}</span>
+    ${admin ? "" : `<label class="ktf" data-for="t s del fix note"><span class="label">${T("اسمك (اختياري، يظهر للعموم)", "Adınız (isteğe bağlı, herkese açık görünür)")}</span>
       <input name="by" maxlength="80" autocomplete="name"></label>`}
     <input name="web" class="kthp" tabindex="-1" autocomplete="off" aria-hidden="true">
     <p class="kterr" role="alert" hidden></p>
@@ -2212,15 +2272,21 @@ function katkiBox(id, d) {
   f.addEventListener("submit", async e => {
     e.preventDefault(); err.hidden = true;
     const op = f.op.value, v = n => f[n] ? f[n].value : "";
-    let x = { op: op === "del" ? "del" : op === "note" ? "note" : "add", rel: v("rel"), src: v("src"), q: v("q"), note: v("note"), by: v("by") };
+    let x = { op: op === "del" ? "del" : op === "note" ? "note" : op === "fix" ? "fix" : "add", rel: v("rel"), src: v("src"), q: v("q"), note: v("note"), by: v("by") };
+    if (op === "fix") {   // yalnız değişen alanlar gönderilir
+      const ch = (n, cur) => { const val = v(n).trim(); return val && val !== String(cur ?? "") ? val : ""; };
+      Object.assign(x, { p: id, tr: ch("tr", me.tr), trs: ch("trs", me.trs), ar: ch("ar", me.ar), d: ch("d", me.d) });
+    }
     if (op === "t") Object.assign(x, { t: pick, s: id });
     else if (op === "s") Object.assign(x, { t: id, s: pick });
     else if (op === "del") { const [k, o] = rels[+v("del")] || []; Object.assign(x, k === "t" ? { t: o, s: id } : { t: id, s: o }); }
-    else x.p = id;
+    else if (op === "note") x.p = id;
     const fail = m => { err.textContent = m; err.hidden = false; };
     if ((op === "t" || op === "s") && !pick) return fail(T("اختر العَلَم من القائمة.", "Listeden bir âlim seçin."));
     if ((op === "t" || op === "s") && !x.src.trim()) return fail(T("اذكر المصدر والموضع.", "Kaynağı ve sayfasını yazın."));
     if (op === "note" && !x.note.trim()) return fail(T("اكتب الخطأ.", "Hatayı kısaca yazın."));
+    if (op === "fix" && !(x.tr || x.trs || x.ar || x.d)) return fail(T("لم يتغير شيء.", "Hiçbir alanı değiştirmediniz."));
+    if (op === "fix" && !x.src.trim()) return fail(T("اذكر المصدر والموضع.", "Düzeltmenin kaynağını ve sayfasını yazın."));
     x = ktClean(x); if (!x) return fail(T("تعذّر قبول الاقتراح.", "Öneri kabul edilemedi."));
     const done = html => { f.querySelectorAll(".ktop, .ktf, .ktsub").forEach(el => { el.hidden = true; }); const dn = $(".ktdone", box); dn.innerHTML = html; dn.hidden = false; };
     const btn = $("[type=submit]", box); btn.disabled = true;
@@ -2252,7 +2318,7 @@ async function viewAdmin(view) {
     view.innerHTML = `<div class="about ktadmin"><h1>${T("لوحة الإدارة", "Yönetim paneli")}</h1>
       <p class="lede">Buradan okur önerilerini onaylar ya da reddedersiniz; kendi eklediğiniz bağlar da doğrudan yayımlanır. Bunun için GitHub’da bir kez <b>ince ayarlı erişim jetonu</b> (fine-grained personal access token) oluşturun:</p>
       <ol class="ktsteps"><li><a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">github.com/settings/personal-access-tokens/new ↗</a> sayfasını açın.</li>
-        <li><i>Repository access</i> → <i>Only select repositories</i> → <code>${REPO}</code>.</li>
+        <li><i>Repository access</i> → <i>Only select repositories</i> → <code>${REPO}</code> ve <code>${KAYNAK}</code> (tam metinleri görmek için).</li>
         <li><i>Permissions</i> → <i>Contents</i>: <b>Read and write</b>, <i>Issues</i>: <b>Read and write</b>.</li>
         <li>Jetonu oluşturup aşağıya yapıştırın.</li></ol>
       <form class="ktlogin"><input name="tok" type="password" autocomplete="off" placeholder="github_pat_…" aria-label="Jeton"><button class="btn gold">Giriş</button></form>
@@ -2268,13 +2334,31 @@ async function viewAdmin(view) {
     return;
   }
   view.innerHTML = `<div class="about ktadmin"><h1>${T("لوحة الإدارة", "Yönetim paneli")}<button type="button" class="btn small" id="ktout">${T("خروج", "Çıkış")}</button></h1>
+    <section class="ktedit"><h2>${T("تصحيح", "Düzeltme yap")}</h2>
+      <p class="lede">${T("ابحث عن العَلَم، فتُفتح صفحته ونافذة التصحيح معًا.", "Düzeltmek istediğiniz âlimi arayın; sayfası düzeltme penceresiyle birlikte açılır.")}</p>
+      <div id="ktfind"></div>
+      <ol class="ktsteps">
+        <li>${"<b>Eksik hoca / Eksik talebe:</b> kişiyi listeden seçin, bağ türünü ve kaynağı (kitap, cilt, sayfa) yazın."}</li>
+        <li>${"<b>Hatalı bağ:</b> yanlış hoca ya da talebeyi seçin; bağ sayfadan ve ağdan kalkar."}</li>
+        <li>${"<b>Ad / vefat:</b> alanlar mevcut değerlerle dolu gelir; yalnız yanlış olanı değiştirip kaynağı yazın."}</li>
+        <li>${"<b>Yayımla</b> dediğinizde düzeltme doğrudan depoya yazılır, birkaç dakika içinde herkes görür; aşağıdaki listeden geri alabilirsiniz."}</li></ol>
+      <p class="legend" id="ktfull"></p></section>
     <section><h2>${T("اقتراحات تنتظر المراجعة", "Bekleyen öneriler")}<span class="c num" id="ktn"></span></h2><div id="ktq"><p class="empty">${T("جارٍ التحميل…", "Yükleniyor…")}</p></div></section>
     <section><h2>${T("الإضافات المنشورة", "Yayındaki katkılar")}<span class="c num" id="ktm"></span></h2><div id="ktl"></div>
-      <p class="legend">${T("", "Kendi katkınızı eklemek için ilgili âlimin sayfasındaki “Katkı / düzeltme” düğmesini kullanın. Değişiklik birkaç dakika içinde sitede görünür.")}</p></section></div>`;
-  $("#ktout").onclick = () => { try { localStorage.removeItem("gh_token"); } catch (e) {} route(); };
+      <p class="legend">${"Kendi katkınızı eklemek için ilgili âlimin sayfasındaki “Katkı / düzeltme” düğmesini kullanın. Değişiklik birkaç dakika içinde sitede görünür."}</p></section></div>`;
+  $("#ktout").onclick = () => { try { localStorage.removeItem("gh_token"); } catch (e) {} FULL_OK = null; route(); };
+  $("#ktfind").append(localSearch(T("ابحث عن عَلَم…", "Âlim ara…"), q => findPersons(q, 12)
+    .map(p => ({ id: p.id, html: `<span>${esc(p.name)}</span><span class="d">${deathTxt(p)}</span>` })), pid => { KT_OPEN = pid; location.hash = `#/p/${pid}`; }));
+  // tam metin erişimi: gizli depo bu jetonla okunabiliyor mu?
+  gh(`/repos/${KAYNAK}`).then(() => { FULL_OK = null; $("#ktfull").innerHTML = `✓ ${"Tam metinler açık: âlim sayfalarındaki biyografi metinleri, siz girişliyken gizli depodan tam hâliyle gelir."}`; })
+    .catch(e => { $("#ktfull").innerHTML = e.status === 404
+      ? `Tam metinler kapalı: <code>${KAYNAK}</code> deposu yok ya da jetonunuzun erişim listesinde değil. Jetonu <a href="https://github.com/settings/personal-access-tokens" target="_blank" rel="noopener">GitHub ayarlarından</a> düzenleyip bu depoyu ekleyin, sonra çıkış yapıp yeniden girin.`
+      : esc(e.message); });
   const pair = x => `${plink(x.t)} <span class="d num">${deathTxt(who(x.t) || {})}</span> → ${plink(x.s)} <span class="d num">${deathTxt(who(x.s) || {})}</span>`;
-  const desc = x => `<div class="ktrow-h"><span class="tag${x.op === "del" ? " del" : ""}">${x.op === "add" ? T("إضافة", "Ekleme") : x.op === "del" ? T("حذف", "Kaldırma") : T("تصحيح", "Düzeltme")}</span>
-      ${x.op === "note" ? (x.p ? plink(x.p) : "") : pair(x)}${x.rel && x.op === "add" ? ` <span class="tag">${REL[x.rel]}</span>` : ""}</div>
+  const desc = x => `<div class="ktrow-h"><span class="tag${x.op === "del" ? " del" : ""}">${x.op === "add" ? T("إضافة", "Ekleme") : x.op === "del" ? T("حذف", "Kaldırma") : x.op === "fix" ? T("الاسم / الوفاة", "Ad / vefat") : T("تصحيح", "Düzeltme")}</span>
+      ${x.op === "note" || x.op === "fix" ? (x.p ? plink(x.p) : "") : pair(x)}${x.rel && x.op === "add" ? ` <span class="tag">${REL[x.rel]}</span>` : ""}</div>
+    ${x.op === "fix" ? `<ul class="ktfix">${[["tr", "Tam ad"], ["trs", "Kısa ad"], ["ar", "Arapça ad"], ["d", "Vefat (hicrî)"]].filter(([k]) => x[k])
+      .map(([k, l]) => `<li><span class="label">${l}</span> <span dir="auto">${esc(x[k])}</span>${P.get(x.p)?._orig && String(P.get(x.p)._orig[k] ?? "") !== x[k] ? ` <span class="d">(önce: <span dir="auto">${esc(P.get(x.p)._orig[k] ?? "—")}</span>)</span>` : ""}</li>`).join("")}</ul>` : ""}
     ${x.src ? `<p><span class="label">${T("المصدر", "Kaynak")}</span> ${esc(x.src)}</p>` : ""}
     ${x.q ? `<blockquote dir="auto">${esc(x.q)}</blockquote>` : ""}${x.note ? `<p dir="auto">${esc(x.note)}</p>` : ""}`;
   const fail = (el, e) => { el.insertAdjacentHTML("beforeend", `<p class="kterr" role="alert">${esc(e.message)}</p>`); };
@@ -2311,7 +2395,7 @@ async function viewAdmin(view) {
       : `<p class="empty">${T("لا شيء بعد.", "Henüz katkı yok.")}</p>`;
     $("#ktl").querySelectorAll("[data-a=undo]").forEach(b => b.addEventListener("click", async () => {
       const el = b.closest(".ktrow"), id = el.dataset.id, x = items.find(y => y.id === id); b.disabled = true;
-      try { await ktWrite(its => { const k = its.findIndex(y => y.id === id); if (k >= 0) its.splice(k, 1); }, `Katkı geri alındı: ${ktName(x.t)} → ${ktName(x.s)}`);
+      try { await ktWrite(its => { const k = its.findIndex(y => y.id === id); if (k >= 0) its.splice(k, 1); }, `Katkı geri alındı: ${ktWhat(x)}`);
         toast(T("أُلغي", "Geri alındı")); await loadAll(); }
       catch (e) { b.disabled = false; fail(el, e); }
     }));

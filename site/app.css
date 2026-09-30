@@ -865,3 +865,10 @@ html[lang="ar"] .rnode .yr { font-family: var(--f-body); }
 .ktact { display: flex; flex-wrap: wrap; gap: .5rem; align-items: center; }
 .ktact input { flex: 1 1 12rem; }
 .tnote { margin: .4rem 0 0; padding-top: .45rem; border-top: 1px dashed var(--line); color: var(--muted); font-size: .88rem; line-height: 1.6; }
+.ktedit #ktfind { max-width: 34rem; }
+.ktedit #ktfind .lsearch { position: relative; }
+.ktedit #ktfind input { width: 100%; font: inherit; padding: .5rem .8rem; border: 1px solid var(--line); border-radius: 999px; background: var(--paper); color: var(--ink); }
+.ktfix { margin: 0; padding-inline-start: 1.1rem; }
+.ktfix .label { display: inline; margin-inline-end: .3rem; }
+.tnote.full { color: var(--ink); }
+.fixnote { margin: .2rem 0 .4rem; }

@@ -22,7 +22,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       # telifli neşirlerin tam metni yayımlanmaz: t/ parçalarında yalnız kısa alıntı olmalı
-      # ("python -m tabaqat.cli site --full-text" çıktısı yalnız yerel kullanım içindir)
+      # (tam metin parçaları gizli fukaha/tabaqat-kaynak deposundadır; site onları yalnız yönetici girişiyle okur)
       - name: Biyografi metinleri kısa alıntı mı?
         run: |
           python3 - <<'EOF'
@@ -31,7 +31,7 @@ jobs:
                   for pid, items in json.load(open(f, encoding="utf-8")).items()
                   for it in items if len(it["text"]) > 400]
           if long:
-              sys.exit(f"{len(long)} madde tam metin görünüyor (ör. {long[:3]}); 'tabaqat.cli site' --full-text olmadan çalıştırılmalı.")
+              sys.exit(f"{len(long)} madde tam metin görünüyor (ör. {long[:3]}); 'tabaqat.cli site' ile yeniden üretilmeli.")
           EOF
       - name: Siteyi topla (onay sayfaları hariç)
         run: |
