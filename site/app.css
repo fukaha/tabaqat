@@ -754,6 +754,83 @@ kbd { font: 600 .8rem/1 "Noto Serif", serif; border: 1px solid var(--line); bord
   .top-search .results { inset-inline-end: 0; inset-inline-start: auto; width: 20rem; top: calc(50% + 1.2rem); }
 }
 /* şahıs sayfası: eserler (Hanefî Fıkıh Âlimleri'nden) */
-.works { columns: 2 18rem; column-gap: 2rem; margin: 0; padding-inline-start: 1.4rem; font-family: "Noto Serif", Georgia, serif; font-size: .95rem; }
-.works li { break-inside: avoid; padding: .15rem 0; font-style: italic; }
-.works li::marker { color: var(--gold); font-style: normal; font-size: .85em; }
+.works { list-style: none; columns: 2 20rem; column-gap: 2rem; margin: 0; padding: 0; font-size: .95rem; }
+.works li { break-inside: avoid; padding: .2rem 0; }
+.works li a { color: var(--ink); }
+.works .d { color: var(--muted); font-size: .85rem; }
+#works h2 { display: flex; align-items: baseline; gap: .5rem; }
+#works h2 .btn.small { margin-inline-start: auto; font-family: var(--f-body); font-size: .8rem; }
+
+/* kitap ağı: tür renkleri (doğrulanmış palet; koyu temada ayrı basamaklar) */
+:root { --k-asl: #4655a8; --k-sharh: #b07a22; --k-hashiya: #11927a; --k-ikhtisar: #c04a2e; --k-nazm: #9057b3; --k-other: #8a8577; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --k-asl: #7f8ce0; --k-sharh: #b98b36; --k-hashiya: #2fa98f; --k-ikhtisar: #dd7253; --k-nazm: #a672c4; --k-other: #8f8a80; } }
+:root[data-theme="dark"] { --k-asl: #7f8ce0; --k-sharh: #b98b36; --k-hashiya: #2fa98f; --k-ikhtisar: #dd7253; --k-nazm: #a672c4; --k-other: #8f8a80; }
+.k-asl { --k: var(--k-asl); } .k-sharh { --k: var(--k-sharh); } .k-hashiya { --k: var(--k-hashiya); }
+.k-ikhtisar { --k: var(--k-ikhtisar); } .k-nazm { --k: var(--k-nazm); } .k-other { --k: var(--k-other); }
+.bsec { position: relative; }
+.wlegend { display: flex; flex-wrap: wrap; gap: .3rem 1.1rem; font-size: .85rem; color: var(--muted); margin: .4rem 0 .6rem; }
+.wlegend i, .wkids i { display: inline-block; width: .7rem; height: .7rem; border-radius: 2px; background: var(--k); margin-inline-end: .35rem; vertical-align: -.05rem; }
+.bchart { width: 100%; }
+.bchart svg { display: block; overflow: visible; }
+.bchart rect { fill: var(--k); }
+.bchart rect:hover { opacity: .8; }
+.bchart .grid { stroke: var(--line); stroke-width: 1; }
+.bchart .ax { fill: var(--muted); font-size: 11px; font-family: "Noto Sans", system-ui, sans-serif; }
+.bchart .tot { fill: var(--ink); font-size: 11px; font-weight: 600; font-family: "Noto Sans", system-ui, sans-serif; }
+.bsec > .tip { position: absolute; z-index: 5; pointer-events: none; background: var(--paper); border: 1px solid var(--line); border-radius: 6px; padding: .35rem .6rem; font-size: .85rem; box-shadow: var(--shadow); }
+.wk { display: inline-block; font-size: .72rem; padding: 0 .45rem; border-radius: 999px; color: var(--paper); background: var(--k); white-space: nowrap; font-family: "Noto Sans", system-ui, sans-serif; }
+.bnbox { height: min(72vh, 760px); }
+.bncurves { position: absolute; inset: 0; pointer-events: none; overflow: visible; }
+.bncurves path { fill: none; stroke: var(--k); stroke-width: 1.4; opacity: .45; }
+.bngrid.focus .bncurves path { opacity: .12; }
+.bngrid.focus .bncurves path.on, .bngrid.focus .bncurves path.rel { opacity: .9; stroke-width: 2; }
+.bn { position: absolute; z-index: 2; display: flex; align-items: center; gap: 6px; height: 24px; color: var(--ink); text-decoration: none; white-space: nowrap; font-size: 12px; }
+.bn i { flex: 0 0 10px; width: 10px; height: 10px; border-radius: 50%; background: var(--k); box-shadow: 0 0 0 2px var(--bg); }
+.bn.root i { width: 12px; height: 12px; flex-basis: 12px; border-radius: 2px; transform: rotate(45deg); margin-inline-start: -1px; }
+.bn.root span { font-weight: 600; }
+.bn span { max-width: 200px; overflow: hidden; text-overflow: ellipsis; }
+.bn:hover span { text-decoration: underline; text-decoration-color: var(--k); }
+.bngrid.focus .bn { opacity: .35; }
+.bngrid.focus .bn.on, .bngrid.focus .bn.rel { opacity: 1; }
+.bn.on span { color: var(--k); font-weight: 700; background: var(--bg); }
+.bngrid .tlreg a { color: inherit; text-decoration: none; }
+.bngrid .tlreg b { font-family: inherit; color: var(--ink); font-weight: 600; font-size: .95rem; }
+.bngrid .tlreg span { font-weight: 400; color: var(--muted); font-size: .8rem; }
+.wcard .wk { align-self: flex-start; }
+.wcard .wkids { display: flex; flex-direction: column; gap: .1rem; font-size: .88rem; }
+.wcard .wkids a { color: var(--ink); }
+.wcard .wsrc { font-size: .78rem; }
+.wfil { gap: .5rem; align-items: center; margin-bottom: .6rem; }
+.wfil select { font: inherit; font-size: .9rem; padding: .3rem .5rem; border: 1px solid var(--line); border-radius: 8px; background: var(--paper); color: var(--ink); }
+.wlist { list-style: none; padding: 0; margin: 0; columns: 2 26rem; column-gap: 2rem; }
+.wlist li { break-inside: avoid; display: flex; flex-wrap: wrap; align-items: baseline; gap: .15rem .5rem; padding: .3rem 0; border-bottom: 1px dotted var(--line); }
+.wlist a { color: var(--indigo); font-weight: 600; }
+.wlist .d { color: var(--muted); font-size: .85rem; }
+.wlist .more { color: var(--muted); border: 0; }
+
+/* zaman şeridi: asırların önde gelen âlimleri (altın dalga, sekiz köşeli yıldızlar) */
+.ribbon { margin-bottom: 1.2rem; }
+.ribbon .rhead { display: flex; align-items: baseline; gap: .8rem; flex-wrap: wrap; }
+.ribbon .rhead h2 { font-size: 1.3rem; margin: 0; border: 0; padding: 0; }
+.ribbon .rhead .btn { margin-inline-start: auto; }
+.rbox { overflow-x: auto; overflow-y: hidden; scrollbar-width: thin; margin-top: .4rem; border-radius: 10px;
+  background: linear-gradient(180deg, transparent, color-mix(in srgb, var(--gold) 5%, transparent)); }
+.rsvg { display: block; }
+.rwave { fill: none; stroke: var(--gold); stroke-width: 3; stroke-linecap: round; }
+.rwave2 { fill: none; stroke: var(--gold2); stroke-width: 1; opacity: .7; }
+.raxis { stroke: var(--line); }
+.rcent line { stroke: var(--muted); opacity: .6; }
+.rcent text { fill: var(--muted); font-size: 12px; font-family: "Noto Sans", system-ui, sans-serif; letter-spacing: .03em; }
+.rnode { cursor: pointer; opacity: 0; transform-box: fill-box; transition: opacity .6s ease; outline: none; }
+.rnode polygon { fill: var(--butter); stroke: var(--gold); stroke-width: 1.5; transform: scale(.2); transform-origin: 0 0; transition: transform .55s cubic-bezier(.3, 1.6, .5, 1); }
+.rnode circle { fill: var(--gold); }
+.rnode.on { opacity: 1; }
+.rnode.on polygon { transform: scale(1); }
+.rnode .nm { font-family: var(--f-head); font-size: 17px; font-weight: 700; fill: var(--ink); }
+html[lang="ar"] .rnode .nm { font-size: 18px; }
+.rnode.big .nm { fill: var(--indigo); font-size: 20px; }
+.rnode .yr { font-size: 12px; fill: var(--muted); font-family: "Noto Sans", system-ui, sans-serif; }
+html[lang="ar"] .rnode .yr { font-family: var(--f-body); }
+.rnode:hover polygon, .rnode:focus-visible polygon { fill: var(--gold2); transform: scale(1.25); }
+.rnode:hover .nm, .rnode:focus-visible .nm { fill: var(--rubric); }
+@media (prefers-reduced-motion: reduce) { .rnode, .rnode polygon { transition: none; } }

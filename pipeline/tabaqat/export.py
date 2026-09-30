@@ -20,6 +20,7 @@ from .extract.names import birth_year
 from .geo.roads import DETOUR, Roads, km
 from .textclean import clean_text
 from .tr.names import Namer, load_tsv
+from .works import build as build_works
 
 SHARDS = 64
 
@@ -446,7 +447,6 @@ def export(root: Path) -> dict:
             "teachers": sorted(teachers[pid], key=lambda x: -x["n"]),
             "students": sorted(students[pid], key=lambda x: -x["n"]),
             "ext": exts.get(pid, []),
-            **({"works": hfa[pid]["works"], "works_src": hfa[pid]["src"]} if hfa.get(pid, {}).get("works") else {}),
             "places": [[it["place"], it["kind"], cite.get(it["key"], ""), it["text"]]
                        for it in pp.get(pid, [])],
         }
@@ -482,6 +482,11 @@ def export(root: Path) -> dict:
         nodes.append([pid, info[pid]["name"], years[i], deg[pid], xs[i], ys[i], int(guessed[i]),
                       int(pid in salaf), TR[pid][0]])
     _dump(out / "graph.json", {"nodes": nodes, "edges": edges})
+    # kitap ağı: eserler ve şerh/hâşiye/ihtisar ilişkileri
+    owner = {s["key"]: p["id"] for p in persons for s in p["sources"]}
+    deaths = {pid: p.get("death_h") or p.get("death_est") for pid, p in info.items()}
+    books_data = build_works(root, info, entries, owner, cite, TR, deaths)
+    _dump(out / "books.json", books_data)
     chains = _chains(info, rel, salaf)
     _dump(out / "chains.json", {"chains": chains,
                                 "names": {pid: short_name(info[pid]["name"], pid)

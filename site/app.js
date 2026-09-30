@@ -117,6 +117,7 @@ async function route() {
     else if (v === "net") await viewNet(view, decodeURIComponent(arg));
     else if (v === "asir") await viewNet(view, decodeURIComponent(arg), "cols");
     else if (v === "zaman") await viewTime(view, decodeURIComponent(arg));
+    else if (v === "kitap") await viewBooks(view, decodeURIComponent(arg));
     else if (v === "map") await viewMap(view, decodeURIComponent(arg));
     else if (v === "about") viewAbout(view);
     else if (v === "c") await viewList(view, "c", +arg);
@@ -139,7 +140,7 @@ function setupTheme() {
     if (t === "system") delete root.dataset.theme; else root.dataset.theme = t;
     try { t === "system" ? localStorage.removeItem("theme") : localStorage.setItem("theme", t); } catch (e) {}
     mark();
-    if (/^#\/(net|asir|zaman)(\/|$)/.test(location.hash) && !/^#\/net\/./.test(location.hash)) route();   // tuval renkleri yeniden çizilsin
+    if (/^#\/(net|asir|zaman|kitap)(\/|$)/.test(location.hash) && !/^#\/net\/./.test(location.hash)) route();   // tuval renkleri yeniden çizilsin
   }));
   mark();
 }
@@ -147,7 +148,7 @@ function setupTheme() {
 // ---------- dil ----------
 const UI = {   // index.html'deki sabit metinler (data-i18n)
   brand: ["طبقات الحنفية", "Hanefî Tabakātı"], home: ["الرئيسة", "Ana sayfa"], net: ["السلسلة", "Silsile"], map: ["الخريطة", "Harita"],
-  time: ["الزمن", "Zaman"], search: ["البحث المفصّل", "Detaylı arama"], about: ["عن المشروع", "Proje hakkında"], q: ["ابحث عن عَلَم…", "Âlim ara…"],
+  time: ["الزمن", "Zaman"], books: ["الكتب", "Kitaplar"], search: ["البحث المفصّل", "Detaylı arama"], about: ["عن المشروع", "Proje hakkında"], q: ["ابحث عن عَلَم…", "Âlim ara…"],
   fabout: ["فهرس موحّد لتراجم الحنفية من ثمانية من كتب الطبقات، بمواضعها في الكتب، وشيوخ كل عَلَم وتلاميذه، والبلدان التي ارتبط بها.",
     "Sekiz tabakāt kitabındaki Hanefî biyografilerinin birleşik dizini: her âlimin kitaplardaki yerleri, hocaları, talebeleri ve bağlı olduğu şehirler."],
   links: ["روابط", "Bağlantılar"], fnet: ["سلسلة الشيوخ والتلاميذ", "Hoca–talebe silsilesi"], fmap: ["خريطة البلدان", "Şehirler haritası"],
@@ -623,9 +624,7 @@ async function viewPerson(view, id) {
           : `<p class="empty">${T("لم يُستخرج له بلد.", "Şehir tespit edilemedi.")}</p>`}
       </section>
     </div>
-    ${d.works && d.works.length ? `<section id="works"><h2>${T("مؤلفاته", "Eserleri")}<span class="c num">${AR(d.works.length)}</span></h2>
-      <ol class="works">${d.works.map(w => `<li lang="tr">${esc(w)}</li>`).join("")}</ol>
-      <p class="legend">${esc(d.works_src)}.</p></section>` : ""}
+    <section id="works" hidden></section>
     ${p.nt || p.ns ? `<section id="pnetsec"><h2>${T("شبكة صلاته", "İlişki ağı")}<a class="btn small" href="#/net/${id}">${T("في السلسلة", "Silsilede aç")}</a></h2><div id="pnet"></div></section>` : ""}
     <section id="texts"><h2>${T("نصوص الترجمة", "Biyografi metinleri")}<span class="c num">${AR(d.sources.length)}</span>
         ${d.sources.length > 1 ? `<button type="button" class="btn small" id="openall">${T("فتح الكل", "Tümünü aç")}</button>` : ""}</h2>
@@ -636,6 +635,15 @@ async function viewPerson(view, id) {
         <div class="body" lang="ar" dir="rtl"><p class="empty">${T("جارٍ التحميل…", "Yükleniyor…")}</p></div></article>`).join("")}</div>
     </section>`;
   setupTexts(id, d);
+  bookNet().then(N => { const sec = $("#works"); if (!sec || !location.hash.startsWith(`#/p/${id}`)) return;
+    const ws = N.works.filter(w => w.a === id).sort((a, b) => WK_ORDER.indexOf(wkind(a.k)) - WK_ORDER.indexOf(wkind(b.k)));
+    if (!ws.length) return;
+    const srcs = [...new Set(ws.flatMap(w => w.s || []))].map(i => N.cites[i]);
+    sec.innerHTML = `<h2>${T("مؤلفاته", "Eserleri")}<span class="c num">${AR(ws.length)}</span><a class="btn small" href="#/kitap">${T("شبكة الكتب", "Kitap ağı")}</a></h2>
+      <ul class="works">${ws.map(w => { const base = w.b && N.byId.get(w.b), kids = (N.kids.get(w.id) || []).length;
+        return `<li><span class="wk k-${wkind(w.k)}">${wkName(w.k)}</span> <a href="#/kitap/${esc(w.id)}">${esc(wTitle(w))}</a>${base && base.a !== id ? ` <span class="d">← ${esc(wTitle(base))}</span>` : ""}${kids ? ` <span class="d num">(${AR(kids)} ${T("عمل عليه", "şerh/hâşiye")})</span>` : ""}</li>`; }).join("")}</ul>
+      <p class="legend">${T("المصادر", "Kaynak")}: ${srcs.slice(0, 6).map(esc).join(" · ")}${srcs.length > 6 ? " …" : ""}</p>`;
+    sec.hidden = false; }).catch(() => {});
   if (p.nt || p.ns) graph().then(g => { const i = g.byId.get(id), host = $("#pnet");
     if (i !== undefined && host && location.hash.startsWith(`#/p/${id}`)) egoNet(host, g, i, 1, false); }).catch(() => {});
   if (!d.places.length) return;
@@ -1637,6 +1645,76 @@ const TI = {   // zaman haritası düğmeleri
   np: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11 5l7 7-7 7M4 12h13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
   fit: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h18M6 9l-3 3 3 3M18 9l3 3-3 3" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
 };
+// Zaman sekmesinin başında: asırların önde gelen Hanefî âlimleri, soldan sağa yavaşça çizilen altın bir dalga üzerinde
+const RIBBON = [["jws1", "Ebû Hanîfe", "أبو حنيفة"], ["jw1825", "Ebû Yûsuf", "أبو يوسف"], ["jw1270", "İmam Muhammed", "محمد بن الحسن"],
+  ["jw1086", "Îsâ b. Ebân", "عيسى بن أبان"], ["jw160", "Hassâf", "الخصاف"], ["jw204", "Tahâvî", "الطحاوي"], ["jw1532", "Mâtürîdî", "الماتريدي"],
+  ["jw894", "Kerhî", "الكرخي"], ["jw155", "Cessâs", "الجصاص"], ["jw179", "Kudûrî", "القدوري"], ["jw1219", "Serahsî", "السرخسي"],
+  ["qd765", "Fahrülislâm Pezdevî", "فخر الإسلام البزدوي"], ["gh479", "Necmeddin en-Nesefî", "نجم الدين النسفي"], ["jw1900", "Kâsânî", "الكاساني"],
+  ["jw485", "Kādîhân", "قاضي خان"], ["jw1030", "Merginânî", "المرغيناني"], ["jw738", "Mevsılî", "الموصلي"], ["jw692", "Ebü’l-Berekât en-Nesefî", "حافظ الدين النسفي"],
+  ["jw925", "Zeylaî", "الزيلعي"], ["gh389", "Sadrüşşerîa", "صدر الشريعة"], ["gh749", "İbnü’l-Hümâm", "ابن الهمام"], ["gh802", "Aynî", "العيني"],
+  ["kt712", "Molla Hüsrev", "ملا خسرو"], ["fws22", "Kemalpaşazâde", "ابن كمال باشا"], ["ts894", "İbn Nüceym", "ابن نجيم"], ["fws170", "Ebüssuûd Efendi", "أبو السعود"]];
+const STAR = r => { const pts = []; for (let i = 0; i < 16; i++) { const a = Math.PI / 8 * i - Math.PI / 2, rr = i % 2 ? r * .55 : r;
+  pts.push(`${(Math.cos(a) * rr).toFixed(1)},${(Math.sin(a) * rr).toFixed(1)}`); } return pts.join(" "); };
+function ribbon(host, onPick) {
+  const lab = new Map(RIBBON.map(([id, tr, ar]) => [id, LANG === "tr" ? tr : ar]));
+  const people = RIBBON.map(([id]) => P.get(id)).filter(p => p && p.d).sort((a, b) => a.d - b.d);
+  const rtl = LANG === "ar", GAP = 150, PADX = 90, H = 230, MID = 118;
+  const W = PADX * 2 + GAP * (people.length - 1);
+  const pts = people.map((p, i) => ({ p, x: PADX + i * GAP, y: MID + (i % 2 ? -14 : 14) }));
+  const sx = x => rtl ? W - x : x;
+  // dalga: düğümler arasında ters yönde tepe noktaları; Catmull-Rom → Bezier
+  const wave = [{ x: 20, y: MID }];
+  pts.forEach((q, i) => { wave.push(q); if (i < pts.length - 1) wave.push({ x: q.x + GAP / 2, y: MID + (i % 2 ? 22 : -22) }); });
+  wave.push({ x: W - 20, y: MID });
+  let d = `M${sx(wave[0].x)},${wave[0].y}`;
+  for (let i = 0; i < wave.length - 1; i++) {
+    const p0 = wave[i - 1] || wave[i], p1 = wave[i], p2 = wave[i + 1], p3 = wave[i + 2] || p2;
+    const c1 = { x: p1.x + (p2.x - p0.x) / 6, y: p1.y + (p2.y - p0.y) / 6 }, c2 = { x: p2.x - (p3.x - p1.x) / 6, y: p2.y - (p3.y - p1.y) / 6 };
+    d += ` C${sx(c1.x).toFixed(1)},${c1.y.toFixed(1)} ${sx(c2.x).toFixed(1)},${c2.y.toFixed(1)} ${sx(p2.x).toFixed(1)},${p2.y}`;
+  }
+  let cents = "", lastC = 0;
+  pts.forEach((q, i) => { const c = century(q.p.d); if (c !== lastC) { const x = i ? q.x - GAP / 2 : 30;
+    cents += `<line x1="${sx(x)}" x2="${sx(x)}" y1="${H - 26}" y2="${H - 16}"/><text x="${sx(x + 6)}" y="${H - 6}" text-anchor="${rtl ? "end" : "start"}">${LANG === "tr" ? `${ROM(c)}. asır` : `القرن ${CENT[c]}`}</text>`; lastC = c; } });
+  const nodes = pts.map((q, i) => { const up = i % 2 === 0, big = i === 0, ty = up ? q.y - (big ? 50 : 42) : q.y + (big ? 44 : 38);
+    return `<g class="rnode${big ? " big" : ""}" data-i="${i}" data-id="${esc(q.p.id)}" tabindex="0" role="button" aria-label="${esc(q.p.name)}" transform="translate(${sx(q.x)},${q.y})">
+      <polygon points="${STAR(big ? 15 : 11)}"/><circle r="${big ? 3.4 : 2.6}"/>
+      <text class="nm" y="${ty - q.y}" text-anchor="middle">${esc(lab.get(q.p.id))}</text>
+      <text class="yr" y="${ty - q.y + 18}" text-anchor="middle">${esc(yearTxt(q.p.d))}</text></g>`; }).join("");
+  host.innerHTML = `<div class="rhead"><h2>${T("أعلام المذهب عبر القرون", "Asırların önde gelen Hanefî âlimleri")}</h2>
+      <button type="button" class="btn small" data-replay>${T("أعد العرض", "Yeniden oynat")}</button></div>
+    <div class="rbox"><svg class="rsvg" viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img" aria-label="${T("أعلام المذهب عبر القرون", "Asırların önde gelen Hanefî âlimleri")}">
+      <line class="raxis" x1="0" x2="${W}" y1="${H - 26}" y2="${H - 26}"/><g class="rcent">${cents}</g>
+      <path class="rwave2" d="${d}" transform="translate(0,3)"/><path class="rwave" d="${d}"/>${nodes}</svg></div>`;
+  const box = $(".rbox", host), wave1 = $(".rwave", host), wave2 = $(".rwave2", host), gs = [...host.querySelectorAll(".rnode")];
+  const len = wave1.getTotalLength();
+  let raf = 0, userScroll = false;
+  box.addEventListener("pointerdown", () => { userScroll = true; });
+  box.addEventListener("wheel", () => { userScroll = true; }, { passive: true });
+  const play = () => {
+    cancelAnimationFrame(raf); userScroll = false;
+    const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches, dur = reduce ? 0 : people.length * 700;
+    [wave1, wave2].forEach(w => { w.style.strokeDasharray = `${len}`; w.style.strokeDashoffset = `${len}`; });
+    gs.forEach(g => g.classList.remove("on"));
+    box.scrollLeft = rtl ? 0 : 0;
+    const t0 = performance.now();
+    const step = now => {
+      if (!document.body.contains(box)) return;
+      const t = dur ? Math.min(1, (now - t0) / dur) : 1, L = len * t;
+      [wave1, wave2].forEach(w => { w.style.strokeDashoffset = `${len - L}`; });
+      const head = wave1.getPointAtLength(L), hx = rtl ? W - head.x : head.x;
+      gs.forEach((g, i) => { if (pts[i].x <= hx + 4) g.classList.add("on"); });
+      if (!userScroll && box.scrollWidth > box.clientWidth) { const x = hx - box.clientWidth * .65; box.scrollLeft = rtl ? -Math.max(0, x) : Math.max(0, x); }
+      if (t < 1) raf = requestAnimationFrame(step);
+    };
+    raf = requestAnimationFrame(step);
+  };
+  $("[data-replay]", host).addEventListener("click", play);
+  const choose = g => onPick(g.dataset.id);
+  gs.forEach(g => { g.addEventListener("click", () => choose(g)); g.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); choose(g); } }); });
+  // görünür olunca oynat
+  const io = new IntersectionObserver(es => { if (es.some(e => e.isIntersecting)) { io.disconnect(); play(); } }, { threshold: .3 });
+  io.observe(box);
+}
 /* Zaman haritası: her bölge bir satır; âlimler vefat yılına yerleştirilir, adları hep görünür.
    Ad etiketleri üst üste binmesin diye her satırda şeritlere (lane) dizilir; yakınlaştırınca yeniden dizilir.
    Kutu yerel olarak iki yönde kaydırılır; cetvel üstte, bölge adları başta sabit kalır. */
@@ -1655,7 +1733,7 @@ async function viewTime(view, sel) {
   const Y0 = Math.floor((Math.min(...items.map(i => i.s)) - 10) / 10) * 10, Y1 = Math.max(...items.map(i => i.p.d)) + 60;
   const order = [...items].sort((a, b) => a.p.d - b.p.d || ord(a.reg) - ord(b.reg)), byId = new Map(items.map(it => [it.p.id, it]));
   items.forEach((it, k) => it.k = k);
-  view.innerHTML = `<div class="stage tlstage" id="tstage">
+  view.innerHTML = `<section class="ribbon" id="ribbon"></section><div class="stage tlstage" id="tstage">
     <div class="stagebar tlbar"><h1>${T("خريطة الزمن", "Zaman haritası")}</h1><span id="tsearch"></span>
       <span class="tlhint">${T("تنقّل بين الأعلام بالسهمين ← →، ويظهر العمر خطًّا لمن عُرف مولده ووفاته.", "←→ tuşlarıyla önceki ve sonraki âlime geçebilirsiniz. Doğum ve vefatı bilinenlerde ömür çizgi hâlinde gösterilir.")}</span>
       <span class="grow"></span>
@@ -1760,11 +1838,195 @@ async function viewTime(view, sel) {
   stageToggle($("#tstage"), $("#tstage .fsbtn"), () => {});
   new ResizeObserver(refit).observe(box);
   measure(); lastW = narrow(); render();
+  ribbon($("#ribbon"), id => { const it = byId.get(id); if (it) { pick(it, true); $("#tstage").scrollIntoView({ behavior: "smooth", block: "start" }); } });
   const it0 = sel && byId.get(sel);
   if (it0) pick(it0, true); else center(300, null);
   if (sel && !it0) toast(T("لا يُعرف لهذا العَلَم سنة وفاة", "Bu âlimin vefat yılı bilinmiyor"));
   (document.fonts ? document.fonts.ready : Promise.resolve()).then(() => { if (!document.body.contains(box)) return;
     const y = cur ? cur.p.d : yearAtCenter(), t = box.scrollTop; measure(); render(); if (cur) center(y, RH + cur.row.top + PAD + cur.lane * LH); else { center(y); box.scrollTop = t; } });
+}
+
+// ---------- kitap ağı ----------
+/* Eserler (books.json): âlimlerin eserleri ve şerh / hâşiye / ihtisar / nazım ilişkileri.
+   Üç bölüm: asırlara göre tür yoğunluğu (yığılmış sütun), eser aileleri (her satır bir ana metin ve ondan
+   doğan şerh-hâşiye zinciri, yatayda müellifin vefat yılı) ve aranabilir liste. */
+let BOOKS_NET;
+const bookNet = async () => {
+  if (BOOKS_NET) return BOOKS_NET;
+  const d = await load("books.json");
+  const byId = new Map(d.works.map(w => [w.id, w])), kids = new Map();
+  d.works.forEach(w => { if (w.b && byId.has(w.b)) { if (!kids.has(w.b)) kids.set(w.b, []); kids.get(w.b).push(w); } });
+  const root = w => { let x = w, n = 0; while (x.b && byId.has(x.b) && n++ < 20) x = byId.get(x.b); return x; };
+  return (BOOKS_NET = { ...d, byId, kids, root });
+};
+const WK_ORDER = ["asl", "sharh", "hashiya", "ikhtisar", "nazm", "other"];
+const WK = { asl: ["متن", "Ana metin"], sharh: ["شرح", "Şerh"], hashiya: ["حاشية وتعليق", "Hâşiye / ta‘lîk"], ikhtisar: ["اختصار", "İhtisar"],
+  nazm: ["نظم", "Nazım"], other: ["أخرى", "Diğer (tahrîc, tekmile, fetâvâ)"], tahric: ["تخريج", "Tahrîc"], tekmile: ["تكملة", "Tekmile"], fetava: ["فتاوى", "Fetâvâ"] };
+const wkind = k => WK_ORDER.includes(k) ? k : "other";
+const wkName = k => T(...(WK[k] || WK.other));
+const WK_SUF = { sharh: ["شرح", "şerhi"], hashiya: ["حاشية على", "hâşiyesi"], ikhtisar: ["مختصر", "muhtasarı"], nazm: ["نظم", "nazmı"],
+  tahric: ["تخريج أحاديث", "tahrîci"], tekmile: ["تكملة", "tekmilesi"] };
+// Türkçe adı olmayan (Arapça metinden gelen) türetilmiş eser: "el-Hidâye şerhi"; tersi Arapçada "شرح الهداية"
+const wTitle = (w, d = 0) => {
+  const own = LANG === "tr" ? w.tr : w.ar, base = BOOKS_NET && w.b && BOOKS_NET.byId.get(w.b), suf = WK_SUF[w.k];
+  if (own) return own;
+  if (base && suf && d < 3) return LANG === "tr" ? `${wTitle(base, d + 1)} ${suf[1]}` : `${suf[0]} ${wTitle(base, d + 1)}`;
+  return w.ar || w.tr;
+};
+const wAuthor = w => w.a ? shortName(w.a) : w.an || "";
+const wAuthorLink = w => w.a ? `<a href="#/p/${esc(w.a)}">${esc(shortName(w.a))}</a>` : esc(w.an || T("مجهول", "bilinmiyor"));
+const wYear = w => w.y ? (LANG === "tr" ? `ö. ${w.y}/${CE(w.y)}` : `ت ${AR(w.y)}هـ`) : "";
+
+function workCard(el, N, w) {
+  const base = w.b && N.byId.get(w.b), kids = (N.kids.get(w.id) || []).slice().sort((a, b) => (a.y || 9999) - (b.y || 9999));
+  const other = LANG === "tr" ? w.ar : w.tr;
+  el.innerHTML = `<button type="button" class="x" aria-label="${T("إغلاق", "Kapat")}">×</button>
+    <span class="wk k-${wkind(w.k)}">${wkName(w.k)}</span>
+    <b>${esc(wTitle(w))}</b>${other ? `<span class="${LANG === "tr" ? "arn" : ""}" ${LANG === "tr" ? 'lang="ar" dir="rtl"' : 'lang="tr"'}>${esc(other)}</span>` : ""}
+    <span>${wAuthorLink(w)}${w.y ? ` <span class="num">(${wYear(w)})</span>` : ""}</span>
+    ${base ? `<span>${T("على", "Dayandığı eser:")} <a href="#/kitap/${esc(base.id)}">${esc(wTitle(base))}</a> — ${esc(wAuthor(base))}</span>` : w.bt ? `<span>${T("على", "Dayandığı eser:")} ${esc(w.bt)}</span>` : ""}
+    ${kids.length ? `<span>${AR(kids.length)} ${T("عمل عليه", "eser buna dayanıyor")}:</span><span class="wkids">${kids.slice(0, 12).map(k => `<a href="#/kitap/${esc(k.id)}"><i class="k-${wkind(k.k)}"></i>${esc(wTitle(k))}</a>`).join("")}${kids.length > 12 ? `<em>+${AR(kids.length - 12)}</em>` : ""}</span>` : ""}
+    ${w.s && w.s.length ? `<span class="wsrc">${w.s.map(i => esc(N.cites[i])).join(" · ")}</span>` : w.c ? `<span class="wsrc">${T("من قائمة المتون المشهورة", "Temel metinler listesinden")}</span>` : ""}`;
+  el.hidden = false;
+}
+
+async function viewBooks(view, sel) {
+  const N = await bookNet();
+  const W = N.works.filter(w => w.y);
+  const cent = y => Math.floor((y - 1) / 100) + 1;
+  const C0 = 2, C1 = Math.max(...W.map(w => cent(w.y)));
+  const counts = {}; for (let c = C0; c <= C1; c++) counts[c] = Object.fromEntries(WK_ORDER.map(k => [k, 0]));
+  W.forEach(w => { const c = cent(w.y); if (counts[c]) counts[c][wkind(w.k)]++; });
+  const derivedPeak = Object.entries(counts).map(([c, o]) => [c, o.sharh + o.hashiya]).sort((a, b) => b[1] - a[1])[0];
+  // aileler: en az üç eserli kökler
+  const fam = new Map();
+  N.works.forEach(w => { const r = N.root(w); if (!fam.has(r.id)) fam.set(r.id, []); fam.get(r.id).push(w); });
+  const fams = [...fam.entries()].map(([id, ws]) => ({ r: N.byId.get(id), ws: ws.filter(w => w.y) })).filter(f => f.ws.length >= 3 && f.r.y)
+    .sort((a, b) => b.ws.length - a.ws.length).slice(0, 22).sort((a, b) => a.r.y - b.r.y);
+  view.innerHTML = `<div class="pagehead"><h1>${T("شبكة الكتب", "Kitap ağı")}</h1><span class="c num">${AR(N.works.length)} ${T("كتابًا", "eser")}</span></div>
+    <p class="lede">${T("مؤلفات الأعلام كما وردت في كتب الطبقات (بعد صيغ «صنّف» و«له» و«شرح» ونحوها) وفي «فقهاء الحنفية» لأحمد أوزل، وصلاتها: الشرح والحاشية والاختصار والنظم.",
+      "Âlimlerin eserleri — tabakat maddelerinde telif ifadesiyle (صنّف، له، شرح…) anılanlar ve Ahmet Özel’in Hanefî Fıkıh Âlimleri’ndeki listeler — ve aralarındaki şerh, hâşiye, ihtisar ve nazım ilişkileri.")}</p>
+    <section class="bsec"><h2>${T("أنواع التأليف في كل قرن", "Asırlara göre telif türleri")}</h2>
+      <p class="legend">${T(`بحسب قرن وفاة المؤلف. أكثر القرون شروحًا وحواشي: القرن ${CENT[derivedPeak[0]] || AR(derivedPeak[0])}، ولقوائم أوزل المفصّلة للقرنين التاسع والعاشر أثر في هذا الارتفاع.`,
+        `Müellifin vefat asrına göre (hicrî). Şerh ve hâşiyenin en yoğun olduğu asır: ${centName(+derivedPeak[0])}. IX–X. asırlardaki yükselişte Hanefî Fıkıh Âlimleri’nin bu dönem için verdiği ayrıntılı eser listelerinin de payı vardır.`)}</p>
+      <div class="wlegend">${WK_ORDER.map(k => `<span><i class="k-${k}"></i>${wkName(k)}</span>`).join("")}</div>
+      <div class="bchart" id="bchart"></div><div class="tip" hidden></div></section>
+    <section class="bsec"><h2>${T("أسر الكتب", "Eser aileleri")}</h2>
+      <p class="legend">${T("كل صف متن وما تفرّع عنه من شروح وحواشٍ ومختصرات، على محور سنة وفاة المؤلف. اضغط على كتاب لبطاقته.",
+        "Her satır bir ana metin ve ondan doğan şerh, hâşiye ve ihtisarlardır; yatay eksen müellifin vefat yılıdır. Bir esere tıklayınca kartı açılır; eğriler eseri dayandığı esere bağlar.")}</p>
+      <div class="netwrap bnwrap"><div class="tlbox bnbox"><div class="tlgrid bngrid"></div></div><div class="icard wcard" hidden></div></div></section>
+    <section class="bsec"><h2>${T("كل الكتب", "Bütün eserler")}</h2>
+      <div class="filters wfil"><span id="wsearch"></span>
+        <select id="wkind" aria-label="${T("النوع", "Tür")}"><option value="">${T("كل الأنواع", "Bütün türler")}</option>${WK_ORDER.map(k => `<option value="${k}">${wkName(k)}</option>`).join("")}</select>
+        <select id="wcent" aria-label="${T("القرن", "Asır")}"><option value="">${T("كل القرون", "Bütün asırlar")}</option>${Object.keys(counts).map(c => `<option value="${c}">${LANG === "tr" ? centName(+c) : CENT[c]}</option>`).join("")}</select></div>
+      <ul class="wlist" id="wlist"></ul></section>`;
+  // ---- yığılmış sütun ----
+  const chart = $("#bchart"), tip = $(".bsec .tip", view);
+  const drawChart = () => {
+    const w = chart.clientWidth, h = 260, L = 34, B = 26, Tp = 18, cs = Object.keys(counts).map(Number);
+    const max = Math.max(...cs.map(c => WK_ORDER.reduce((s, k) => s + counts[c][k], 0)));
+    const step = [10, 20, 25, 50, 100].find(s => max / s <= 5) || 100, top = Math.ceil(max / step) * step;
+    const bw = (w - L - 8) / cs.length, bar = Math.min(38, bw * .62), Y = v => Tp + (h - Tp - B) * (1 - v / top);
+    let g = "";
+    for (let v = 0; v <= top; v += step) g += `<line x1="${L}" x2="${w - 4}" y1="${Y(v)}" y2="${Y(v)}" class="grid"/><text x="${L - 6}" y="${Y(v) + 4}" class="ax" text-anchor="end">${AR(v)}</text>`;
+    cs.forEach((c, i) => {
+      const cx = L + bw * i + bw / 2; let acc = 0, segs = "";
+      WK_ORDER.forEach(k => { const n = counts[c][k]; if (!n) return;
+        const y1 = Y(acc + n), y0 = Y(acc); acc += n;
+        segs += `<rect class="k-${k}" x="${cx - bar / 2}" y="${y1}" width="${bar}" height="${Math.max(0, y0 - y1 - 2)}" rx="2" data-c="${c}" data-k="${k}" data-n="${n}"/>`; });
+      g += segs + (acc ? `<text x="${cx}" y="${Y(acc) - 5}" class="tot" text-anchor="middle">${AR(acc)}</text>` : "")
+        + `<text x="${cx}" y="${h - 8}" class="ax" text-anchor="middle">${LANG === "tr" ? ROM(c) : AR(c)}</text>`;
+    });
+    chart.innerHTML = `<svg viewBox="0 0 ${w} ${h}" width="${w}" height="${h}" role="img" aria-label="${T("أنواع التأليف في كل قرن", "Asırlara göre telif türleri")}">${g}</svg>`;
+  };
+  chart.addEventListener("pointermove", e => { const r = e.target.closest("rect"); if (!r) { tip.hidden = true; return; }
+    const c = +r.dataset.c, tot = WK_ORDER.reduce((s, k) => s + counts[c][k], 0);
+    tip.innerHTML = `<b>${LANG === "tr" ? centName(c) : `القرن ${CENT[c]}`}</b><br>${wkName(r.dataset.k)}: ${AR(r.dataset.n)} / ${AR(tot)}`;
+    const b = chart.parentElement.getBoundingClientRect(); tip.hidden = false;
+    tip.style.left = `${Math.min(e.clientX - b.left + 12, b.width - 200)}px`; tip.style.top = `${e.clientY - b.top + 12}px`; });
+  chart.addEventListener("pointerleave", () => { tip.hidden = true; });
+  // ---- aileler ----
+  const box = $(".bnbox", view), grid = $(".bngrid", view), card = $(".wcard", view), rtl = LANG === "ar";
+  const narrow = () => box.clientWidth < 600, LW = () => narrow() ? 110 : 200, LH = 24, PAD = 10, RH = 34;
+  const ys = fams.flatMap(f => f.ws.map(w => w.y)), Y0 = Math.floor((Math.min(...ys) - 20) / 50) * 50, Y1 = Math.max(...ys) + 80;
+  let kx = 3.2;
+  const mctx = document.createElement("canvas").getContext("2d");
+  const X = y => LW() + 16 + (y - Y0) * kx;
+  let nodes = [];
+  const drawNet = () => {
+    mctx.font = `${narrow() ? 11 : 12}px ${getComputedStyle(grid).fontFamily}`;
+    let top = 0; nodes = [];
+    const rows = fams.map(f => {
+      const ends = [], ws = f.ws.slice().sort((a, b) => a.y - b.y || (a === f.r ? -1 : 1));
+      ws.forEach(w => { const lw = Math.min(200, mctx.measureText(wTitle(w)).width), x0 = X(w.y) - 6, x1 = X(w.y) + 14 + lw;
+        let L = ends.findIndex(e => e + 8 <= x0); if (L < 0) { L = ends.length; ends.push(0); } ends[L] = x1;
+        nodes.push({ w, row: f, lane: L, top }); });
+      const h = Math.max(ends.length * LH + PAD * 2, 60); const r = { f, top, h }; top += h; return r;
+    });
+    nodes.forEach(n => { n.y = n.top + PAD + n.lane * LH + LH / 2; });
+    const pos = new Map(nodes.map(n => [n.w.id, n])), H = top, Wd = X(Y1);
+    let ruler = "", lines = "";
+    for (let y = Math.ceil(Y0 / 50) * 50; y <= Y1; y += 50) { const x = X(y);
+      lines += `<i class="tlg${y % 100 ? " m" : " c"}" style="inset-inline-start:${x}px"></i>`;
+      ruler += `<span class="h num" style="inset-inline-start:${x}px">${LANG === "tr" ? y : AR(y)}</span><span class="m num" style="inset-inline-start:${x}px">${LANG === "tr" ? CE(y) : AR(CE(y))}</span>`; }
+    const rowsHtml = rows.map((r, k) => `<div class="tlrow${k % 2 ? " odd" : ""}" style="top:${r.top}px;height:${r.h}px"><div class="tlreg"><div>
+      <a href="#/kitap/${esc(r.f.r.id)}"><b>${esc(wTitle(r.f.r))}</b></a><span>${esc(wAuthor(r.f.r))}</span><small class="num">${AR(r.f.ws.length)} ${T("كتب", "eser")}</small></div></div></div>`).join("");
+    // eğriler: SVG'de sol/sağ çevirmesi elle (RTL'de x = genişlik − x)
+    const sx = x => rtl ? Wd - x : x;
+    const curves = nodes.filter(n => n.w.b && pos.has(n.w.b)).map(n => { const p = pos.get(n.w.b), x1 = sx(X(p.w.y)), x2 = sx(X(n.w.y)), mx = (x1 + x2) / 2;
+      return `<path class="k-${wkind(n.w.k)}" data-id="${esc(n.w.id)}" d="M${x1},${p.y} C${mx},${p.y} ${mx},${n.y} ${x2},${n.y}"/>`; }).join("");
+    const dots = nodes.map(n => `<a class="bn k-${wkind(n.w.k)}${n.w === n.row.r ? " root" : ""}" data-id="${esc(n.w.id)}" href="#/kitap/${esc(n.w.id)}" style="inset-inline-start:${X(n.w.y) - 5}px;top:${n.y - LH / 2}px" title="${esc(wTitle(n.w))} — ${esc(wAuthor(n.w))} (${esc(wYear(n.w))})"><i></i><span>${esc(wTitle(n.w))}</span></a>`).join("");
+    grid.style.width = `${Wd}px`; grid.style.setProperty("--lw", `${LW()}px`);
+    grid.innerHTML = `<div class="tlruler" style="width:${Wd}px"><div class="tlcorner"><b>${T("هجري", "Hicrî")}</b><span>${T("ميلادي", "Milâdî")}</span></div>${ruler}</div>
+      <div class="tlbody" style="height:${H}px">${rowsHtml}${lines}<svg class="bncurves" width="${Wd}" height="${H}" viewBox="0 0 ${Wd} ${H}" aria-hidden="true">${curves}</svg>${dots}</div>`;
+    markSel();
+  };
+  let cur = null;
+  const markSel = () => {
+    grid.querySelectorAll(".on,.rel").forEach(e => e.classList.remove("on", "rel"));
+    if (!cur) return;
+    const rel = new Set([cur.id, ...(N.kids.get(cur.id) || []).map(k => k.id)]); let b = cur; while (b.b && N.byId.has(b.b)) { rel.add(b.b); b = N.byId.get(b.b); }
+    grid.querySelectorAll("[data-id]").forEach(e => { if (e.dataset.id === cur.id) e.classList.add("on"); else if (rel.has(e.dataset.id)) e.classList.add("rel"); });
+    grid.classList.add("focus");
+  };
+  const pick = (w, go) => { cur = w || null; grid.classList.toggle("focus", !!w);
+    if (!w) { card.hidden = true; history.replaceState(null, "", "#/kitap"); markSel(); return; }
+    workCard(card, N, w); history.replaceState(null, "", `#/kitap/${w.id}`); markSel();
+    document.title = `${wTitle(w)} — ${UI.brand[LANG === "ar" ? 0 : 1]}`;
+    const n = nodes.find(n => n.w === w);
+    if (go && n) { const x = X(w.y) - box.clientWidth / 2; box.scrollLeft = rtl ? -x : x; box.scrollTop = n.y + RH - box.clientHeight / 2;
+      box.closest(".bsec").scrollIntoView({ behavior: "smooth", block: "start" }); } };
+  grid.addEventListener("click", e => { const a = e.target.closest("a.bn"); if (!a) return; e.preventDefault(); pick(N.byId.get(a.dataset.id)); });
+  card.addEventListener("click", e => { if (e.target.closest(".x")) pick(null);
+    const a = e.target.closest('a[href^="#/kitap/"]'); if (a) { e.preventDefault(); pick(N.byId.get(decodeURIComponent(a.getAttribute("href").slice(8))), true); } });
+  // ---- liste ----
+  const list = $("#wlist"); let q = "", lim = 60;
+  const ar = s => /[؀-ۿ]/.test(s);
+  const drawList = () => {
+    const k = $("#wkind").value, c = +$("#wcent").value, qa = ar(q) ? norm(q) : fold(q);
+    const rows = N.works.filter(w => (!k || wkind(w.k) === k) && (!c || (w.y && cent(w.y) === c))
+      && (!q || (ar(q) ? norm(w.ar || "") : fold((w.tr || "") + " " + wAuthor(w))).includes(qa)))
+      .sort((a, b) => (a.y || 9999) - (b.y || 9999));
+    list.innerHTML = rows.slice(0, lim).map(w => `<li><span class="wk k-${wkind(w.k)}">${wkName(w.k)}</span>
+      <a href="#/kitap/${esc(w.id)}" data-id="${esc(w.id)}">${esc(wTitle(w))}</a>
+      <span class="d">${esc(wAuthor(w))}${w.y ? ` <span class="num">(${wYear(w)})</span>` : ""}</span>
+      ${w.b && N.byId.has(w.b) ? `<span class="d">← ${esc(wTitle(N.byId.get(w.b)))}</span>` : ""}</li>`).join("")
+      + (rows.length > lim ? `<li class="more"><button type="button" class="btn small" id="wmore">${T(`عرض المزيد (${AR(rows.length - lim)})`, `Daha fazla göster (${rows.length - lim})`)}</button></li>` : "")
+      || `<li class="empty">${T("لا نتائج", "Sonuç yok")}</li>`;
+  };
+  list.addEventListener("click", e => { if (e.target.id === "wmore") { lim += 120; drawList(); return; }
+    const a = e.target.closest("a[data-id]"); if (!a) return; e.preventDefault(); pick(N.byId.get(a.dataset.id), true); });
+  $("#wkind").addEventListener("change", () => { lim = 60; drawList(); }); $("#wcent").addEventListener("change", () => { lim = 60; drawList(); });
+  $("#wsearch").replaceWith(localSearch(T("ابحث عن كتاب أو مؤلف…", "Eser ya da müellif ara…"), s => { q = s; drawList();
+    return []; }, () => {}));
+  $(".wfil input").addEventListener("input", e => { q = e.target.value.trim(); drawList(); });
+  let lastW = 0;
+  new ResizeObserver(() => { if (!document.body.contains(chart) || chart.clientWidth === lastW) return; lastW = chart.clientWidth; drawChart(); drawNet(); }).observe(chart);
+  drawChart(); drawNet(); drawList();
+  (document.fonts ? document.fonts.ready : Promise.resolve()).then(() => document.body.contains(grid) && drawNet());
+  const w0 = sel && N.byId.get(sel);
+  if (w0) pick(w0, true); else if (sel) toast(T("لا يوجد هذا الكتاب", "Böyle bir eser yok"));
+  else document.title = `${T("شبكة الكتب", "Kitap ağı")} — ${UI.brand[LANG === "ar" ? 0 : 1]}`;
 }
 
 // ---------- about ----------
@@ -1834,16 +2096,18 @@ function viewAbout(view) {
     ["Detaylı arama", "Ad ile birlikte vefat yüzyılı aralığı (hicrî), kitap, şehir ve “silsilede hocası ya da talebesi olanlar” süzgeçleri birlikte kullanılabilir. Örneğin yalnız el-Kand’da geçen ve Buhara ile ilişkili V. yüzyıl âlimleri tek sorguyla listelenir."],
     ["Âlim sayfası", "Başta DİA yazımıyla tam ad, Arapça asıl ad ve vefat tarihi (hicrî/milâdî) yer alır. “Kaynaklar” bölümünde âlimin geçtiği her kitap cilt, sayfa ve madde numarasıyla verilir; atıflar İSNAD 2. edisyon dipnot biçimindedir. Ardından solda bir bilgi kartında hocalar ve talebeler bağ türüyle (fıkıh, hadis/rivayet, kıraat, sohbet…) sıralanır; her bağın “Kanıt” düğmesi bağın çıkarıldığı cümleyi kaynağıyla gösterir, “silsilesi” o kişinin silsilesini açar. Sağdaki harita âlimin doğduğu, yaşadığı, gittiği ve vefat ettiği yerleri gösterir. Haritadaki çizgi şehirleri biyografideki sırasıyla birleştirir (önce doğum ve nisbe, sonra vefat ve defin); bir yaklaşımdır, kronoloji değildir. Düz çizgi el-Süreyyâ’daki Mukaddesî yol ağını izler; kesikli çizgi, bilinen bir yol bulunmayan yerde kuş uçuşudur. Altında yalnız bu âlimin hoca–talebe ağı, en sonda da her kitaptaki biyografi metni yer alır: metinler esas alınan neşirdeki hâliyledir (Arapça; dipnotsuz, tarama kaynaklı boşluk ve satır kaymaları giderilmiş); kitaplar seçilince metinler yan yana açılır."],
     ["Silsile", "Üstteki üç simge görünümü seçer. “Âlimin silsilesi” seçilen âlimi ortaya alır; hocaları üstte, talebeleri altta kartlar hâlinde dizilir ve çizgiler kartların üzerinden geçmez. “1 / 2” düğmeleri kuşak sayısıdır: iki kuşakta her kartın içinde hocanın hocaları ya da talebenin talebeleri görünür. Zincir simgesi (Ebû Hanîfe’ye bağla), hadisçilerin isnadı gibi âlimden Ebû Hanîfe’ye uzanan en kısa ve vefat tarihleriyle tutarlı hoca zincirini altın çizgiyle çizer. İndirme simgesinin üzerine gelince PNG ya da SVG seçilir. “Asırlar” görünümü bütün âlimleri hicrî asır sütunlarına dizer; bir âlim seçilince hocaları altın, talebeleri çivit eğrilerle bağlanır, üzerine gelince adı, vefatı ve bağ sayısı görünür. “Genel görünüm” bütün ağı zaman ekseninde gösterir. Her görünümdeki arama kutusu âlimi bulur: silsile görünümünde onun silsilesine geçer, diğerlerinde ona yakınlaşır."],
-    ["Zaman haritası", "Her satır bir bölgedir (Mâverâünnehir, Horasan, Irak, Şam, Mısır, Rûm…); âlim, başlıca şehrinin bölgesine yerleşir. Üstte hicrî ve altında milâdî yıl cetveli vardır. Her nokta bir vefattır ve adı yanında yazılıdır; doğumu biliniyorsa önündeki çizgi ömrünü gösterir, içi boş nokta tahminî vefattır. Bir ada tıklayınca âlim kırmızıyla işaretlenir, vefat yılında dikey bir çizgi çekilir, hocaları ve talebeleri de kırmızı noktayla gösterilir; bilgi kartı açılır. “Âlim bul” kutusu âlimi bulup ortalar; ←/→ tuşları ya da ‹ › düğmeleri vefat sırasına göre önceki ve sonraki âlime geçer. Harita sürükleyerek ya da kaydırarak gezilir; − + (ya da Ctrl + tekerlek) yakınlaştırır."],
+    ["Zaman haritası", "Sayfanın başındaki altın şerit, her asrın önde gelen Hanefî âlimlerini Ebû Hanîfe’den Ebüssuûd Efendi’ye kadar sırayla açar; bir yıldıza tıklayınca aşağıdaki haritada o âlime gidilir, “Yeniden oynat” şeridi baştan çizer. Haritada her satır bir bölgedir (Mâverâünnehir, Horasan, Irak, Şam, Mısır, Rûm…); âlim, başlıca şehrinin bölgesine yerleşir. Üstte hicrî ve altında milâdî yıl cetveli vardır. Her nokta bir vefattır ve adı yanında yazılıdır; doğumu biliniyorsa önündeki çizgi ömrünü gösterir, içi boş nokta tahminî vefattır. Bir ada tıklayınca âlim kırmızıyla işaretlenir, vefat yılında dikey bir çizgi çekilir, hocaları ve talebeleri de kırmızı noktayla gösterilir; bilgi kartı açılır. “Âlim bul” kutusu âlimi bulup ortalar; ←/→ tuşları ya da ‹ › düğmeleri vefat sırasına göre önceki ve sonraki âlime geçer. Harita sürükleyerek ya da kaydırarak gezilir; − + (ya da Ctrl + tekerlek) yakınlaştırır."],
     ["Harita", "Her daire biyografilerde geçen bir şehirdir. Dairenin ve adın büyüklüğü o şehirle ilişkili âlim sayısını gösterir. Alttaki küçük düğmelerle bağ türü (doğum, vefat, ikamet, seyahat, görev…) ve vefat yüzyılı süzülür. Bir şehre tıklanınca açılan pencerede el-Süreyyâ’dan şehrin bölgesi ve türü, Yâkût’un Mu‘cemü’l-büldân’ından kısa bir alıntı, varsa el-Esmârü’l-ceniyye’nin nisbe notu ve o şehirle ilişkili âlimler yer alır. Arama kutusu şehir yanında âlim de bulur: bir âlim seçilince yalnız onun şehirleri ve biyografideki sırayla güzergâhı gösterilir. Güzergâh, el-Süreyyâ’daki Mukaddesî yol ağı üzerinden en kısa yolla çizilir; yol bulunmayan yerde kesikli düz çizgi kullanılır. Yol simgesi bütün yol ağını soluk olarak gösterir."],
+    ["Kitap ağı", "Âlimlerin eserleri iki kaynaktan derlenir: tabakat maddelerinde telif ifadesiyle (صنّف، له من التصانيف، وله، شرح، اختصر، نظم…) anılan «…» adlar ve Ahmet Özel’in Hanefî Fıkıh Âlimleri’ndeki eser listeleri. Okuma, atıf ya da nakil bildiren bağlamlar (قرأ، ذكر، في كتاب…) alınmaz. “Şerhu X”, “Hâşiye alâ X”, “Muhtasaru X” ve “شرح «X»” gibi adlar X’e bağlanır; Hidâye, Kenz, Vikâye, Kudûrî, Menâr gibi temel metinler ve meşhur şerhleri elle hazırlanmış bir listeyle eşleştirilir. Sayfada asırlara göre telif türleri (ana metin, şerh, hâşiye, ihtisar, nazım), her ana metinden doğan şerh–hâşiye zincirini zaman ekseninde gösteren “eser aileleri” ve aranabilir bir liste vardır. Âlim sayfasındaki “Eserleri” bölümü de buradan beslenir. Otomatik çıkarım olduğu için bazı adlar eksik ya da hatalı olabilir; her eserin kartında kaynağı görünür."],
     ["Dil, tema, bağlantılar ve kısayollar", "Sağ üstteki düğmelerle arayüz Arapça ile Türkçe, açık ile koyu tema arasında değiştirilir; seçim tarayıcıda hatırlanır. Her sayfanın, seçili âlim ya da şehir dahil, kendi adresi vardır (ör. #/p/jw821, #/zaman/jw821, #/map/@jw821); bağlantı simgesi bu adresi kopyalar. Klavyede “/” arama kutusuna gider, “?” kısayol listesini açar, “g” ardından h/s/z/m ana sayfa, silsile, zaman ve haritaya geçer."],
   ] : [
     ["البحث", "اكتب في مربع البحث في الصفحة الرئيسة اسم العَلَم أو كنيته أو نسبته أو لقبه بالعربية أو التركية: «السرخسي»، «أبو حفص الكبير»، «Serahsî». والبحث لا يتأثر بالحركات والتطويل وصور الهمزة. وتتنقل بين النتائج بالسهمين وتفتحها بمفتاح الإدخال."],
     ["البحث المفصّل", "يُجمع فيه بين الاسم وحدود قرن الوفاة والكتاب والبلد وقيد «من له شيوخ أو تلاميذ في السلسلة»؛ فيمكن مثلًا أن تُعرض أعلام القرن الخامس المرتبطون ببخارى ممن لم يُترجموا إلا في القند باستعلام واحد."],
     ["صفحة العَلَم", "في أعلاها الاسم الكامل وسنة الوفاة، ثم «المصادر» بمواضع الترجمة في كل كتاب بالجزء والصفحة ورقم الترجمة، بصيغة الإحالة العلمية. ثم بطاقة فيها الشيوخ والتلاميذ مع نوع الصلة (تفقّه، رواية، صحبة…)، وزر «الشاهد» يعرض العبارة التي استُخرجت منها الصلة مع موضعها، و«سلسلته» يفتح سلسلة ذلك العَلَم. وبجانبها خريطة بلدان المولد والإقامة والرحلة والوفاة؛ ويصل الخطّ البلدانَ على ترتيب ورودها في الترجمة (المولد والنسبة أولًا، والوفاة والمدفن آخرًا)، وهو تقريب لا تأريخ، والخط المتصل يسير على طرق المقدسي من مشروع الثريا، والمتقطع خط مستقيم حيث لا طريق معروف. وتحتهما شبكة صلات العَلَم وحده، وفي آخر الصفحة نص الترجمة في كل كتاب كما هو في الطبعة المعتمدة دون الحواشي، وتُفتح النصوص متجاورة باختيار الكتب."],
     ["السلسلة", "تختار الأيقونات الثلاث في الأعلى طريقة العرض. «سلسلة عَلَم» تضع العَلَم في الوسط، وشيوخه فوقه وتلاميذه تحته في بطاقات لا تتقاطع خطوطها معها. وزرّا «١ / ٢» عدد الطبقات. وأيقونة السلسلة (الوصل بأبي حنيفة) ترسم بخط ذهبي أقصر سلسلة شيوخ متسقة مع الوفيات من العَلَم إلى الإمام، على طريقة الإسناد. وعند المرور على أيقونة التنزيل يُختار PNG أو SVG. و«القرون» تضع الأعلام في أعمدة القرون الهجرية، فإذا اختير عَلَم وُصل بشيوخه بمنحنيات ذهبية وبتلاميذه بمنحنيات نيلية. و«المشهد العام» يعرض الشبكة كلها على محور الزمن. ومربع البحث في كل عرض يجد العَلَم."],
-    ["خريطة الزمن", "كل صف إقليم (ما وراء النهر، خراسان، العراق، الشام، مصر، الروم…) بحسب البلد الأشهر للعَلَم، وفي الأعلى مسطرة بالسنين الهجرية والميلادية. وكل نقطة وفاة عَلَم، واسمه مكتوب بجانبها، والخط قبلها عمره إن عُرف مولده، والنقطة المفرغة وفاة مقدّرة. وبالضغط على اسم يُعلَّم العَلَم بالأحمر مع خط عمودي عند سنة وفاته، وتُعلَّم نقاط شيوخه وتلاميذه بالأحمر، وتظهر بطاقة تعريفه. ومربع البحث يجد العَلَم ويضعه في الوسط، وسهما لوحة المفاتيح ينقلان إلى العَلَم السابق واللاحق في الوفاة."],
+    ["خريطة الزمن", "في أعلى الصفحة شريط ذهبي يعرض أعلام المذهب في كل قرن من أبي حنيفة إلى أبي السعود، يُرسم تدريجًا، وبالضغط على نجمة يُنتقل إلى العلم في الخريطة أسفله. وفي الخريطة كل صف إقليم (ما وراء النهر، خراسان، العراق، الشام، مصر، الروم…) بحسب البلد الأشهر للعَلَم، وفي الأعلى مسطرة بالسنين الهجرية والميلادية. وكل نقطة وفاة عَلَم، واسمه مكتوب بجانبها، والخط قبلها عمره إن عُرف مولده، والنقطة المفرغة وفاة مقدّرة. وبالضغط على اسم يُعلَّم العَلَم بالأحمر مع خط عمودي عند سنة وفاته، وتُعلَّم نقاط شيوخه وتلاميذه بالأحمر، وتظهر بطاقة تعريفه. ومربع البحث يجد العَلَم ويضعه في الوسط، وسهما لوحة المفاتيح ينقلان إلى العَلَم السابق واللاحق في الوفاة."],
     ["الخريطة", "كل دائرة بلد ورد في التراجم، وحجمها وحجم اسمها على عدد الأعلام المرتبطين به. وتُصفّى بنوع الصلة (المولد، الوفاة، الإقامة، الرحلة، الولاية…) وبقرن الوفاة. وعند الضغط على بلد تظهر نافذة فيها إقليمه ونوعه من مشروع الثريا، ومقتطف من معجم البلدان لياقوت، وتعليق النسبة من الأثمار الجنية إن وُجد، وأسماء الأعلام المرتبطين به. ويُكبَّر بعجلة الفأرة أو بإصبعين، ويُحرَّك بالسحب. ومربع البحث يجد البلد أو العَلَم: فإذا اختير عَلَم ظهرت بلدانه وطريقه على ترتيب ورودها في الترجمة، مرسومًا على طرق المقدسي من مشروع الثريا بأقصر طريق، وحيث لا طريق معروف فبخط مستقيم متقطع. وأيقونة الطرق تُظهر شبكة الطرق كلها باهتة."],
+    ["شبكة الكتب", "تُجمع مؤلفات الأعلام من مصدرين: ما ذُكر في مواد الطبقات بين «» بعد صيغ التأليف (صنّف، له من التصانيف، وله، شرح، اختصر، نظم…) دون سياقات القراءة والنقل (قرأ، ذكر، في كتاب…)، وقوائم المؤلفات في «فقهاء الحنفية» لأحمد أوزل. وتُربط الشروح والحواشي والمختصرات بأصولها، وتُطابق المتون المشهورة (الهداية، الكنز، الوقاية، القدوري، المنار…) وشروحها بقائمة معدّة يدويًا. وفي الصفحة أنواع التأليف في كل قرن، و«أسر الكتب» على محور الزمن، وقائمة قابلة للبحث، ومنها يُغذّى قسم «مؤلفاته» في صفحة العلم. ولأن الاستخراج آلي فقد يقع فيه نقص أو خطأ، ومصدر كل كتاب مذكور في بطاقته."],
     ["اللغة والمظهر والروابط", "تغيّر الأزرار في أعلى الصفحة لغة الواجهة بين العربية والتركية، والمظهر بين الفاتح والداكن، ويُحفظ الاختيار في المتصفح. ولكل صفحة رابطها الخاص (مثل ‎#/p/jw821‎ و‎#/zaman/jw821‎)، وأيقونة الرابط تنسخه. وفي لوحة المفاتيح: «/» للبحث، و«؟» لقائمة الاختصارات."],
   ];
   const useHtml = `<div class="howto">${use.map(([h, p]) => `<section><h3>${h}</h3><p>${p}</p></section>`).join("")}</div>`;

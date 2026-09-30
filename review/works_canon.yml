@@ -1,0 +1,106 @@
+# Kitap ağının omurgası: Hanefî literatürünün temel metinleri ve bunların meşhur şerh/hâşiye/ihtisarları.
+# Tabakat metinlerinden ve Hanefî Fıkıh Âlimleri'nden çıkarılan eser adları bu kayıtlara (ad ya da takma adlarıyla)
+# bağlanır; "Şerhu X" / "شرح X" biçimindeki adlar X'e şerh olarak eklenir.
+#   id        kısa kimlik (site adresinde #/kitap/<id>)
+#   ar, tr    Arapça ve Türkçe ad; ar_alt / tr_alt: metinlerde geçen öteki adlar
+#   author    sitedeki müellif kimliği; müellif sitede yoksa author_tr ve year (müellifin hicrî vefatı)
+#   kind      asl (ana metin), sharh, hashiya, ikhtisar, nazm, tekmile, tahric, fetava
+#   base      şerh / hâşiye / ihtisar ise dayandığı eserin kimliği
+# Fıkıh: zâhirü'r-rivâye
+asl:       {ar: الأصل, tr: el-Asl, ar_alt: [المبسوط لمحمد], author: jw1270, kind: asl}
+jamisaghir: {ar: الجامع الصغير, tr: el-Câmiu’s-sagīr, author: jw1270, kind: asl}
+jamikabir: {ar: الجامع الكبير, tr: el-Câmiu’l-kebîr, author: jw1270, kind: asl}
+ziyadat:   {ar: الزيادات, tr: ez-Ziyâdât, author: jw1270, kind: asl}
+siyarkabir: {ar: السير الكبير, tr: es-Siyerü’l-kebîr, author: jw1270, kind: asl}
+kafi:      {ar: الكافي, tr: el-Kâfî, ar_alt: [الكافى في فروع الحنفية], author: jw1477, kind: ikhtisar, base: asl}
+mabsut:    {ar: المبسوط, tr: el-Mebsût, ar_alt: [مبسوط السرخسي], author: jw1219, kind: sharh, base: kafi}
+# Muhtasarlar
+mtahawi:   {ar: مختصر الطحاوي, tr: Muhtasaru’t-Tahâvî, author: jw204, kind: asl}
+mkarkhi:   {ar: مختصر الكرخي, tr: Muhtasaru’l-Kerhî, author: jw894, kind: asl}
+quduri:    {ar: مختصر القدوري, tr: Muhtasaru’l-Kudûrî, ar_alt: [القدوري, الكتاب], tr_alt: [el-Muhtasar (Kudûrî), Kudûrî], author: jw179, kind: asl}
+tuhfa:     {ar: تحفة الفقهاء, tr: Tuhfetü’l-fukahâ, author: jw1898, kind: sharh, base: quduri}
+badai:     {ar: بدائع الصنائع, tr: Bedâiu’s-sanâi‘, ar_alt: [البدائع, بدائع الصنائع في ترتيب الشرائع], author: jw1900, kind: sharh, base: tuhfa}
+bidaya:    {ar: بداية المبتدي, tr: Bidâyetü’l-mübtedî, author: jw1030, kind: asl}
+hidaya:    {ar: الهداية, tr: el-Hidâye, ar_alt: [الهداية شرح البداية], author: jw1030, kind: sharh, base: bidaya}
+nihaya:    {ar: النهاية, tr: en-Nihâye, author: jw507, kind: sharh, base: hidaya}
+miraj:     {ar: معراج الدراية, tr: Mi‘râcü’d-dirâye, author: gh722, kind: sharh, base: hidaya}
+ghayatbayan: {ar: غاية البيان, tr: Gāyetü’l-beyân, author: jw2013, kind: sharh, base: hidaya}
+kifaya:    {ar: الكفاية, tr: el-Kifâye, author: fws105, kind: sharh, base: hidaya}
+inaya:     {ar: العناية, tr: el-İnâye, ar_alt: [العناية شرح الهداية], author: gh705, kind: sharh, base: hidaya}
+binaya:    {ar: البناية, tr: el-Binâye, author: gh802, kind: sharh, base: hidaya}
+fathqadir: {ar: فتح القدير, tr: Fethu’l-Kadîr, author: gh749, kind: sharh, base: hidaya}
+nasbraya:  {ar: نصب الراية, tr: Nasbü’r-râye, author: gh370, kind: tahric, base: hidaya}
+wiqaya:    {ar: الوقاية, tr: el-Vikâye, ar_alt: [وقاية الرواية], author: gh807, kind: ikhtisar, base: hidaya}
+sharhwiqaya: {ar: شرح الوقاية, tr: Şerhu’l-Vikâye, author: gh389, kind: sharh, base: wiqaya, tr_alt: [Şerhu’l-Vikâye li-Sadrişşerîa, Sadrişşerîa ale’l-Vikâye]}
+nuqaya:    {ar: النقاية, tr: en-Nukāye, author: gh389, kind: ikhtisar, base: wiqaya}
+wafi:      {ar: الوافي, tr: el-Vâfî, author: jw692, kind: asl}
+kafinasafi: {ar: الكافي شرح الوافي, tr: el-Kâfî (Nesefî), author: jw692, kind: sharh, base: wafi}
+kanz:      {ar: كنز الدقائق, tr: Kenzü’d-dekāik, ar_alt: [الكنز], tr_alt: [Kenz, Kenzü’d-dekâik], author: jw692, kind: ikhtisar, base: wafi}
+tabyin:    {ar: تبيين الحقائق, tr: Tebyînü’l-hakāik, author: jw925, kind: sharh, base: kanz}
+ramz:      {ar: رمز الحقائق, tr: Remzü’l-hakāik, author: gh802, kind: sharh, base: kanz}
+bahr:      {ar: البحر الرائق, tr: el-Bahru’r-râik, author: ts894, kind: sharh, base: kanz}
+nahr:      {ar: النهر الفائق, tr: en-Nehrü’l-fâik, author_tr: Ömer b. Nüceym, year: 1005, kind: sharh, base: kanz}
+mukhtar:   {ar: المختار, tr: el-Muhtâr, ar_alt: [المختار للفتوى], author: jw738, kind: asl}
+ikhtiyar:  {ar: الاختيار لتعليل المختار, tr: el-İhtiyâr, ar_alt: [الاختيار], author: jw738, kind: sharh, base: mukhtar}
+manzuma:   {ar: المنظومة, tr: el-Manzûme (Nesefiyye), ar_alt: [منظومة النسفي, المنظومة النسفية], tr_alt: [el-Manzûmetü’n-Nesefiyye fî’l-hilâf], author: gh479, kind: nazm}
+mustasfa:  {ar: المستصفى, tr: el-Müstasfâ, author: jw692, kind: sharh, base: manzuma}
+majma:     {ar: مجمع البحرين, tr: Mecmau’l-bahreyn, tr_alt: [Mecmaul-bahreyn ve mültekân-neyyireyn, el-Mecma‘], author: jw147, kind: ikhtisar, base: quduri}
+multaqa:   {ar: ملتقى الأبحر, tr: Mültekā’l-ebhur, author: ts68, kind: ikhtisar, base: quduri}
+ghurar:    {ar: غرر الأحكام, tr: Gureru’l-ahkâm, author: kt712, kind: asl}
+durar:     {ar: درر الحكام, tr: Düreru’l-hukkâm, author: kt712, kind: sharh, base: ghurar}
+tanwir:    {ar: تنوير الأبصار, tr: Tenvîrü’l-ebsâr, author_tr: Muhammed b. Abdullah et-Timurtâşî, year: 1004, kind: ikhtisar}
+durrmukhtar: {ar: الدر المختار, tr: ed-Dürrü’l-muhtâr, author_tr: Alâüddin el-Haskefî, year: 1088, kind: sharh, base: tanwir}
+raddmuhtar: {ar: رد المحتار, tr: Reddü’l-muhtâr, author_tr: İbn Âbidîn, year: 1252, kind: hashiya, base: durrmukhtar}
+sirajiyya: {ar: السراجية, tr: es-Sirâciyye, ar_alt: [الفرائض السراجية], tr_alt: [Ferâiz-i Sirâciyye, Ferâizu’s-Sirâciyye, Ferâizi’s-Secâvendî, el-Ferâizü’s-Sirâciyye], author: jw1500, kind: asl}
+adabqadi:  {ar: أدب القاضي, tr: Edebü’l-kādî, author: jw160, kind: asl}
+fatawaqadikhan: {ar: فتاوى قاضي خان, tr: Fetâvâ Kādîhân, ar_alt: [الفتاوى الخانية], author: jw485, kind: fetava}
+bazzaziyya: {ar: الفتاوى البزازية, tr: el-Fetâva’l-Bezzâziyye, author: gh725, kind: fetava}
+# Usûl
+usulshashi: {ar: أصول الشاشي, tr: Usûlü’ş-Şâşî, kind: asl, author_tr: Nizâmüddin eş-Şâşî, year: 344}
+usulbazdawi: {ar: أصول البزدوي, tr: Usûlü’l-Pezdevî, ar_alt: [أصول فخر الإسلام, كنز الوصول], author: qd765, kind: asl}
+kashfasrar: {ar: كشف الأسرار, tr: Keşfü’l-esrâr, author: jw820, kind: sharh, base: usulbazdawi}
+usulsarakhsi: {ar: أصول السرخسي, tr: Usûlü’s-Serahsî, author: jw1219, kind: asl}
+manar:     {ar: المنار, tr: el-Menâr, ar_alt: [منار الأنوار], tr_alt: [Menâru’l-envâr], author: jw692, kind: asl}
+muntakhab: {ar: المنتخب في أصول المذهب, tr: el-Müntehab, ar_alt: [المنتخب الحسامي, الحسامي], author: jw1505, kind: asl}
+tanqih:    {ar: التنقيح, tr: et-Tenkîh, ar_alt: [تنقيح الأصول], author: gh389, kind: asl}
+tawdih:    {ar: التوضيح, tr: et-Tavzîh, author: gh389, kind: sharh, base: tanqih}
+talwih:    {ar: التلويح, tr: et-Telvîh, author: gh825, kind: hashiya, base: tawdih}
+tahrir:    {ar: التحرير, tr: et-Tahrîr, ar_alt: [التحرير في أصول الفقه], author: gh749, kind: asl}
+taqrir:    {ar: التقرير والتحبير, tr: et-Takrîr ve’t-tahbîr, author: gh716, kind: sharh, base: tahrir}
+mirqat:    {ar: مرقاة الوصول, tr: Mirkātü’l-vusûl, author: kt712, kind: asl}
+mirat:     {ar: مرآة الأصول, tr: Mir’âtü’l-usûl, author: kt712, kind: sharh, base: mirqat}
+mughni:    {ar: المغني في أصول الفقه, tr: el-Muğnî fî usûli’l-fıkh, author: jw1072, kind: asl}
+talkhis:   {ar: تلخيص الجامع الكبير, tr: Telhîsu’l-Câmii’l-kebîr, ar_alt: [التلخيص], author: jw1334, kind: ikhtisar, base: jamikabir, tr_alt: [Telhîs, Telhîsu’l-Câmi‘i’l-kebîr]}
+# Akaid
+fiqhakbar: {ar: الفقه الأكبر, tr: el-Fıkhu’l-ekber, author: jws1, kind: asl}
+aqidatahawi: {ar: العقيدة الطحاوية, tr: el-Akīdetü’t-Tahâviyye, ar_alt: [عقيدة الطحاوي], author: jw204, kind: asl, tr_alt: [Akîdetü’t-Tahâvî, Akîde-i Tahâvî]}
+aqaidnasafi: {ar: العقائد النسفية, tr: el-Akāidü’n-Nesefiyye, ar_alt: [العقائد], author: gh479, kind: asl}
+sharhaqaid: {ar: شرح العقائد, tr: Şerhu’l-Akāid, author: gh825, kind: sharh, base: aqaidnasafi}
+tawhid:    {ar: كتاب التوحيد, tr: Kitâbü’t-Tevhîd, author: jw1532, kind: asl}
+tabsira:   {ar: تبصرة الأدلة, tr: Tebsıratü’l-edille, author: jw1725, kind: asl}
+# Dil, tefsir ve kelâm (Hanefîlerin çok şerh ettiği metinler)
+kashshaf:  {ar: الكشاف, tr: el-Keşşâf, author: jw1628, kind: asl}
+miftah:    {ar: مفتاح العلوم, tr: Miftâhu’l-ulûm, ar_alt: [المفتاح], author: jw1838, kind: asl}
+mutawwal:  {ar: المطول, tr: el-Mutavvel, author: gh825, kind: sharh, base: miftah, tr_alt: [el-Mutavvel fi’l-meânî ve’l-beyân]}
+mawaqif:   {ar: المواقف, tr: el-Mevâkıf, author_tr: Adudüddin el-Îcî, year: 756, kind: asl}
+sharhmawaqif: {ar: شرح المواقف, tr: Şerhu’l-Mevâkıf, author: gh455, kind: sharh, base: mawaqif}
+# Hanefî olmayan ama Hanefî âlimlerin çok şerh ve hâşiye yazdığı metinler
+beydawi:   {ar: أنوار التنزيل, tr: Envârü’t-tenzîl, ar_alt: [تفسير البيضاوي], tr_alt: [Envârü’t-tenzîl ve esrârü’t-te’vîl, Tefsîru’l-Beyzâvî], author_tr: Kādî Beyzâvî, year: 685, kind: asl}
+tawali:    {ar: طوالع الأنوار, tr: Tavâliu’l-envâr, tr_alt: [Tavâli‘], author_tr: Kādî Beyzâvî, year: 685, kind: asl}
+ibnhajib:  {ar: مختصر ابن الحاجب, tr: Muhtasaru İbni’l-Hâcib, ar_alt: [مختصر المنتهى], tr_alt: [Muhtasaru’l-Müntehâ, Muhtasaru Müntehe’s-sûl ve’l-emel], author_tr: İbnü’l-Hâcib, year: 646, kind: ikhtisar}
+sharhibnhajib: {ar: شرح مختصر ابن الحاجب, tr: Şerhu Muhtasari’l-Müntehâ, tr_alt: [Şerhu’l-Muhtasar (Îcî), Şerhu’l-Adud], author_tr: Adudüddin el-Îcî, year: 756, kind: sharh, base: ibnhajib}
+kafiya:    {ar: الكافية, tr: el-Kâfiye, author_tr: İbnü’l-Hâcib, year: 646, kind: asl}
+shafiya:   {ar: الشافية, tr: eş-Şâfiye, author_tr: İbnü’l-Hâcib, year: 646, kind: asl}
+tajrid:    {ar: تجريد العقائد, tr: Tecrîdü’l-akāid, ar_alt: [التجريد], tr_alt: [Tecrîd, Tecrîdü’l-kelâm], author_tr: Nasîrüddin et-Tûsî, year: 672, kind: asl}
+sharhtajrid: {ar: الشرح الجديد للتجريد, tr: Şerhu’t-Tecrîd, tr_alt: [eş-Şerhu’l-cedîd li’t-Tecrîd, Şerhu Tecrîdi’l-akāid], author_tr: Alâüddin el-Kuşçu, year: 879, kind: sharh, base: tajrid}
+hashiyasayyid: {ar: حاشية السيد على شرح التجريد, tr: Hâşiyetü’s-Seyyid ale’t-Tecrîd, tr_alt: [Hâşiyetü’t-Tecrîd], author: gh455, kind: hashiya, base: tajrid}
+talkhismiftah: {ar: تلخيص المفتاح, tr: Telhîsü’l-Miftâh, author_tr: Hatîb el-Kazvînî, year: 739, kind: ikhtisar, base: miftah}
+mukhtasarmaani: {ar: المختصر, tr: el-Muhtasar fi’l-meânî, tr_alt: [Muhtasaru’l-meânî], author: gh825, kind: sharh, base: talkhismiftah}
+shamsiyya: {ar: الشمسية, tr: eş-Şemsiyye, ar_alt: [الرسالة الشمسية], author_tr: Necmüddin el-Kâtibî, year: 675, kind: asl}
+matali:    {ar: مطالع الأنوار, tr: Metâliu’l-envâr, author_tr: Sirâcüddin el-Urmevî, year: 682, kind: asl}
+mulakhkhas: {ar: الملخص في الهيئة, tr: el-Mülahhas, author_tr: Mahmûd el-Çağmînî, year: 745, kind: asl}
+izzi:      {ar: العزي, tr: el-İzzî, tr_alt: [el-İzzî fi’t-tasrîf], author_tr: İzzeddin ez-Zencânî, year: 655, kind: asl}
+mashariq:  {ar: مشارق الأنوار, tr: Meşâriku’l-envâri’n-nebeviyye, tr_alt: [Meşâriku’l-envâr], author: jw475, kind: asl}
+fusulbadai: {ar: فصول البدائع, tr: Fusûlü’l-bedâyi‘, tr_alt: [Fusûlü’l-bedâyi’ fî usûli’ş-şerâi’], author: gh592, kind: asl}
+wasiyya:   {ar: وصية الإمام أبي حنيفة, tr: Vasıyyetü’l-İmâm, tr_alt: [Vasıyyetü’l-İmâmi’l-A‘zam], author: jws1, kind: asl}
+sharhsirajiyya: {ar: شرح السراجية, tr: Şerhu’s-Sirâciyye, author: gh455, kind: sharh, base: sirajiyya}
