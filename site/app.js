@@ -612,8 +612,12 @@ async function viewPerson(view, id) {
         <button type="button" class="btn" data-go="texts">${T("نصوص الترجمة", "Biyografi metinleri")}</button>
         <button type="button" class="btn" id="ktbtn">${T("اقتراح أو تصحيح", "Katkı / düzeltme")}</button>${shareBtn()}</div>
     </div>
-    <div class="pgrid">
-      <div class="relcard">
+    <section id="psec" class="pmapband"><h2>${T("البلدان", "Şehirler")}<span class="c num">${AR(new Set(d.places.map(x => x[0])).size)}</span>
+          ${d.places.length ? `<a class="btn small" href="#/map/@${id}">${T("الخريطة الكبيرة", "Büyük harita")}</a>` : ""}</h2>
+        ${d.places.length ? `<div class="pmapbody"><div class="mapwrap" id="pmap"></div><ul class="places" id="plist"></ul></div>`
+          : `<p class="empty">${T("لم يُستخرج له بلد.", "Şehir tespit edilemedi.")}</p>`}
+    </section>
+    <div class="relcard">
         <section><h2>${T("شيوخه", "Hocaları")}<span class="c num">${AR(d.teachers.length)}</span></h2>
           ${d.teachers.length ? `<ul class="rlist">${d.teachers.map(r => relItem(r)).join("")}</ul>` : `<p class="empty">${T("لم يُذكر له شيخ من المترجمين.", "Biyografisi bulunanlardan bir hocası zikredilmemiş.")}</p>`}
           ${extT.length ? `<h3>${T("شيوخ من غير المترجمين في هذه الكتب", "Bu kitaplarda biyografisi olmayan hocaları")}</h3><ul class="rel">${extList(extT)}</ul>` : ""}
@@ -622,12 +626,6 @@ async function viewPerson(view, id) {
           ${d.students.length ? `<ul class="rlist">${d.students.map(r => relItem(r)).join("")}</ul>` : `<p class="empty">${T("لم يُذكر له تلميذ من المترجمين.", "Biyografisi bulunanlardan bir talebesi zikredilmemiş.")}</p>`}
           ${extS.length ? `<h3>${T("رواة عنه من غير المترجمين", "Ondan rivayet eden diğerleri")}</h3><ul class="rel">${extList(extS)}</ul>` : ""}
         </section>
-      </div>
-      <section id="psec" class="pmapcol"><h2>${T("البلدان", "Şehirler")}<span class="c num">${AR(new Set(d.places.map(x => x[0])).size)}</span>
-          ${d.places.length ? `<a class="btn small" href="#/map/@${id}">${T("الخريطة الكبيرة", "Büyük harita")}</a>` : ""}</h2>
-        ${d.places.length ? `<div class="mapwrap" id="pmap"></div><ul class="places" id="plist"></ul>`
-          : `<p class="empty">${T("لم يُستخرج له بلد.", "Şehir tespit edilemedi.")}</p>`}
-      </section>
     </div>
     <section id="works" hidden></section>
     ${p.nt || p.ns ? `<section id="pnetsec"><h2>${T("شبكة صلاته", "İlişki ağı")}<a class="btn small" href="#/net/${id}">${T("في السلسلة", "Silsilede aç")}</a></h2><div id="pnet"></div></section>` : ""}
@@ -655,9 +653,8 @@ async function viewPerson(view, id) {
     if (i !== undefined && host && location.hash.startsWith(`#/p/${id}`)) egoNet(host, g, i, 1, false); }).catch(() => {});
   if (!d.places.length) return;
   const PL = await placesById();
-  $("#plist").innerHTML = KIND_ORDER.filter(k => byKind[k]).map(k => `<li><span class="k">${KIND[k]}</span>
-    ${[...new Map(byKind[k].map(x => [x[0], x])).values()].map(([pl, cite]) =>
-      `<a href="#/map/${encodeURIComponent(pl)}" title="${esc(cite)}">${esc(plName(PL.get(pl)) || pl)}</a>`).join(T("، ", ", "))}</li>`).join("");
+  $("#plist").innerHTML = KIND_ORDER.filter(k => byKind[k]).map(k => `<li><span class="k">${KIND[k]}</span><span class="v">${[...new Map(byKind[k].map(x => [x[0], x])).values()].map(([pl, cite]) =>
+      `<a href="#/map/${encodeURIComponent(pl)}" title="${esc(cite)}">${esc(plName(PL.get(pl)) || pl)}</a>`).join(T("، ", ", "))}</span></li>`).join("");
   const uniq = [...new Set(d.places.map(x => x[0]))].map(id => PL.get(id)).filter(Boolean);
   const m = await makeMap($("#pmap"), { mini: true });
   m.draw(uniq.map(pl => ({ pl, r: 5, label: true })), { route: placeSeq(d.places, PL) });
@@ -916,8 +913,9 @@ async function makeMap(host, opt = {}) {
       if (!pls.length) return;
       const xy = pls.map(pl => proj(pl.lon, pl.lat));
       let [x0, y0, x1, y1] = [Math.min(...xy.map(v => v[0])), Math.min(...xy.map(v => v[1])), Math.max(...xy.map(v => v[0])), Math.max(...xy.map(v => v[1]))];
-      const pad = 60, w = Math.max(160, x1 - x0 + 2 * pad), h = Math.max(120, y1 - y0 + 2 * pad);
-      const ar = (svg.clientWidth || 400) / (svg.clientHeight || 300), ww = Math.max(w, h * ar), hh = ww / ar;
+      const ar = (svg.clientWidth || 400) / (svg.clientHeight || 300), wide = ar > 2;   // yatay şerit haritada dikey pay az
+      const pad = 60, py = wide ? 25 : pad, w = Math.max(160, x1 - x0 + 2 * pad), h = Math.max(wide ? 50 : 120, y1 - y0 + 2 * py);
+      const ww = Math.max(w, h * ar), hh = ww / ar;
       vb = { x: (x0 + x1) / 2 - ww / 2, y: (y0 + y1) / 2 - hh / 2, w: ww, h: hh }; apply();
     },
     pick(f) { onPick = f; },

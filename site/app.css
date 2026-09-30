@@ -650,11 +650,10 @@ kbd { font: 600 .8rem/1 "Noto Serif", serif; border: 1px solid var(--line); bord
 .mpop .plinks { margin: .4rem 0 0; font-size: .9rem; }
 
 /* şahıs sayfası: solda hoca–talebe bilgi kartı, sağda harita; altında ilişki ağı, en altta metinler */
-.pgrid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr); gap: 1.5rem; align-items: start; margin-top: 1.5rem; }
-@media (max-width: 860px) { .pgrid { grid-template-columns: minmax(0, 1fr); } }
-.pgrid h2, #pnetsec h2 { display: flex; align-items: baseline; gap: .5rem; flex-wrap: wrap; }
-.pgrid h2 .btn.small, #pnetsec h2 .btn.small { margin-inline-start: auto; font-family: var(--f-body); font-size: .8rem; }
-.relcard { background: var(--paper); border: 1px solid var(--line); border-top: 3px solid var(--gold); border-radius: 12px; box-shadow: var(--shadow); padding: .8rem; min-width: 0; display: flex; flex-direction: column; gap: .8rem; }
+#pnetsec h2 { display: flex; align-items: baseline; gap: .5rem; flex-wrap: wrap; }
+#pnetsec h2 .btn.small { margin-inline-start: auto; font-family: var(--f-body); font-size: .8rem; }
+.relcard { background: var(--paper); border: 1px solid var(--line); border-top: 3px solid var(--gold); border-radius: 12px; box-shadow: var(--shadow); padding: .8rem; min-width: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .8rem; align-items: start; margin-top: 1.5rem; }
+@media (max-width: 760px) { .relcard { grid-template-columns: minmax(0, 1fr); } }
 /* kart içinde her bölüm soluk bir pencere: başlık şeridi + içerik */
 .relcard > section { margin: 0; border: 1px solid color-mix(in srgb, var(--line) 80%, transparent); border-radius: 9px; background: color-mix(in srgb, var(--bg) 55%, var(--paper)); overflow: hidden; }
 .relcard > section > :not(h2) { margin-inline: .9rem; }
@@ -679,11 +678,17 @@ kbd { font: 600 .8rem/1 "Noto Serif", serif; border: 1px solid var(--line); bord
 .rrow details.ev cite { display: block; font-style: normal; color: var(--muted); font-size: .76rem; }
 .rrow.weak .nm { font-weight: 500; }
 .rrow.salaf .nm { color: var(--muted); }
-.pmapcol { position: sticky; top: 1rem; min-width: 0; }
-.pmapcol h2 { margin-top: .2rem; }
-.pmapcol .mapwrap { height: clamp(300px, 55vh, 520px); }
-.pmapcol .places { margin-top: .7rem; font-size: .92rem; }
-@media (max-width: 860px) { .pmapcol { position: static; } .pmapcol .mapwrap { height: 320px; } }
+/* şehirler: silsile şeridi boyunda yatay harita + yanında yer listesi */
+.pmapband { margin-top: 1.5rem; }
+.pmapband h2 { display: flex; align-items: baseline; gap: .5rem; flex-wrap: wrap; }
+.pmapband h2 .btn.small { margin-inline-start: auto; font-family: var(--f-body); font-size: .8rem; }
+.pmapbody { display: grid; grid-template-columns: minmax(0, 1fr) minmax(12rem, 17rem); gap: 1rem; align-items: start; }
+.pmapband .mapwrap { height: clamp(220px, 30vw, 300px); }
+.pmapband .places { font-size: .92rem; }
+.pmapband .places li { flex-wrap: nowrap; padding: .2rem 0; }
+.pmapband .places .k { flex: 0 0 6.5rem; min-width: 0; }
+.pmapband .places .v { flex: 1; min-width: 0; }
+@media (max-width: 860px) { .pmapbody { grid-template-columns: minmax(0, 1fr); } .pmapband .mapwrap { height: 240px; } }
 #pnetsec { margin-top: 2rem; }
 #pnet .treewrap { max-height: 80vh; }
 
