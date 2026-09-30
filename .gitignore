@@ -7,3 +7,5 @@ site/dist/
 sources/*/raw/
 *.egg-info/
 kaynak/
+data/entries
+data/clean
