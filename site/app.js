@@ -47,7 +47,7 @@ const load = p => cache[p] || (cache[p] = (async () => {
 let IDX, BOOKS, SALAF = new Map(), P = new Map();
 
 async function init() {
-  const d = await load("index.json");
+  const [d, kt] = await Promise.all([load("index.json"), load("katki.json").catch(() => ({ items: [] }))]);
   BOOKS = d.books;
   IDX = d.persons.map(r => ({ id: r[0], ar: r[1], d: r[2], est: !!r[3], n: r[4], nt: r[5], ns: r[6], place: r[7], books: r[8] || [],
     tr: r[9] || r[1], trs: r[10] || r[9] || r[1], b: r[11] || 0, key: norm(r[1]), tkey: fold(r[9]) }));
@@ -56,6 +56,7 @@ async function init() {
   // Ebû Hanîfe öncesi (peygamberler, sahâbe, tâbiûn): sayfası yok, yalnız silsilede
   SALAF = new Map(Object.entries(d.salaf || {}).map(([id, [ar, dd, tr, trs]]) => [id, { id, ar, tr: tr || ar, trs: trs || tr || ar, d: dd, salaf: true,
     get name() { return LANG === "tr" ? this.tr : this.ar; } }]));
+  KATKI = kt.items || []; ktCounts(KATKI);
   window.addEventListener("hashchange", route);
   kenarlar();
   setupA11y();
@@ -67,7 +68,7 @@ async function init() {
 const shardOf = id => { const d = id.replace(/\D/g, ""); return d ? (+d % 64) : 0; };
 async function person(id) {
   const s = await load(`p/${String(shardOf(id)).padStart(2, "0")}.json`);
-  return s[id];
+  return s[id] && ktPerson(id, s[id]);
 }
 // vefat: ت ١٥٠هـ / (ö. 150/767); tahminî: نحو … / [?]
 const yearTxt = (d, est) => LANG === "tr" ? `ö. ${d}/${CE(d)}${est ? " [?]" : ""}` : `${est ? "نحو" : "ت"} ${AR(d)}هـ`;
@@ -120,6 +121,7 @@ async function route() {
     else if (v === "kitap") await viewBooks(view, decodeURIComponent(arg));
     else if (v === "map") await viewMap(view, decodeURIComponent(arg));
     else if (v === "about") viewAbout(view);
+    else if (v === "yonetim") await viewAdmin(view);
     else if (v === "c") await viewList(view, "c", +arg);
     else if (v === "b") await viewList(view, "b", decodeURIComponent(arg));
     else if (v === "search") await viewSearch(view);
@@ -569,6 +571,7 @@ function relItem(r) {
   return `<li class="rrow${r.weak ? " weak" : ""}${p.salaf ? " salaf" : ""}">
       <div class="rtop">${plink(r.id, "nm")} <span class="d num">${deathTxt(p)}</span></div>
       <span class="rtags">${p.salaf ? `<span class="tag weak">${T("من السلف", "selef")}</span>` : ""}${r.rels.map(x => `<span class="tag">${REL[x] || esc(x)}</span>`).join("")}
+        ${r.user ? `<span class="tag user" title="${T("أضيفت باقتراح قارئ بعد المراجعة", "Okur önerisiyle, incelenerek eklendi")}">${T("إضافة", "katkı")}</span>` : ""}
         ${r.weak ? `<span class="tag weak" title="${T("ربط بالنسبة أو الشهرة وحدها", "Yalnız nisbe ya da şöhretle eşleştirildi")}">${T("ترجيح", "tercih")}</span>` : ""}
         ${r.n > 1 ? `<span class="d num">${AR(r.n)} ${T("مواضع", "atıf")}</span>` : ""}</span>
       ${!p.salaf && P.has(r.id) && (P.get(r.id).nt || P.get(r.id).ns) ? `<a class="silsile-lnk" href="#/net/${esc(r.id)}">${T("سلسلته", "silsilesi")}</a>` : `<span class="silsile-lnk"></span>`}
@@ -605,7 +608,8 @@ async function viewPerson(view, id) {
       <div class="filters">${p.nt || p.ns ? `<a class="btn" href="#/net/${id}">${T("سلسلة شيوخه وتلاميذه", "Hoca–talebe silsilesi")}</a>` : ""}
         ${p.d ? `<a class="btn" href="#/zaman/${id}">${T("في خريطة الزمن", "Zaman haritasında")}</a>` : ""}
         ${d.places.length ? `<a class="btn" href="#/map/@${id}">${T("بلدانه على الخريطة", "Haritada yerleri")}</a>` : ""}
-        <button type="button" class="btn" data-go="texts">${T("نصوص الترجمة", "Biyografi metinleri")}</button>${shareBtn()}</div>
+        <button type="button" class="btn" data-go="texts">${T("نصوص الترجمة", "Biyografi metinleri")}</button>
+        <button type="button" class="btn" id="ktbtn">${T("اقتراح أو تصحيح", "Katkı / düzeltme")}</button>${shareBtn()}</div>
     </div>
     <div class="pgrid">
       <div class="relcard">
@@ -635,6 +639,7 @@ async function viewPerson(view, id) {
         <div class="body" lang="ar" dir="rtl"><p class="empty">${T("جارٍ التحميل…", "Yükleniyor…")}</p></div></article>`).join("")}</div>
     </section>`;
   setupTexts(id, d);
+  $("#ktbtn").onclick = () => katkiBox(id, d);
   bookNet().then(N => { const sec = $("#works"); if (!sec || !location.hash.startsWith(`#/p/${id}`)) return;
     const ws = N.works.filter(w => w.a === id).sort((a, b) => WK_ORDER.indexOf(wkind(a.k)) - WK_ORDER.indexOf(wkind(b.k)));
     if (!ws.length) return;
@@ -1058,7 +1063,8 @@ async function graph() {
     get name() { return LANG === "tr" ? this.tr : this.ar; } }));
   const up = nodes.map(() => []), down = nodes.map(() => []);
   g.edges.forEach(([t, s, n, weak]) => { up[s].push([t, n, weak]); down[t].push([s, n, weak]); });
-  G = { nodes, up, down, edges: g.edges, byId: new Map(nodes.map((n, i) => [n.id, i])) };
+  G = { nodes, up, down, edges: g.edges.slice(), byId: new Map(nodes.map((n, i) => [n.id, i])) };
+  ktGraph(G);
   return G;
 }
 
@@ -2049,6 +2055,270 @@ const BOOK_DESC = {
   fawaid: ["Kefevî’nin Ketâib’inden seçilmiş biyografiler ve Leknevî’nin eklemeleri. Müellifin et-Ta‘lîkātü’s-seniyye adlı kendi hâşiyesiyle basılmıştır. Hint alt kıtası Hanefîleri için de başvuru kaynağıdır.",
     "انتخبه اللكنوي من كتائب أعلام الأخيار للكفوي وزاد عليه، وطُبع مع حاشيته «التعليقات السنية». وهو مرجع أيضًا لحنفية بلاد الهند."],
 };
+// ---------- katkı: okur önerileri ve yönetim ----------
+// Onaylanan katkılar data/katki.json'dadır ve yüklenirken şahıs sayfalarına ve ağa eklenir (pipeline'ı yeniden koşmak gerekmez).
+// Okur önerisi GitHub'da "[katkı]" başlıklı bir konu (issue) olur: KATKI_URL tanımlıysa hesap gerekmeden sunucu üzerinden,
+// değilse okurun kendi GitHub hesabıyla hazır doldurulmuş konu formundan. Yönetici (#/yonetim) jetonunu bir kez girer;
+// sonra hem kendi katkısını doğrudan yayımlar hem bekleyen önerileri onaylar ya da reddeder.
+const REPO = "fukaha/tabaqat";
+const KATKI_URL = "";   // öneri sunucusu (worker/README.md); boşsa GitHub konu formu kullanılır
+const KT_FILE = "site/data/katki.json", KT_MARK = "<!-- katki";
+const KT_REL = ["fiqh", "took", "hadith", "read", "companion"];
+let KATKI = [];
+const ktKey = x => `${x.t}>${x.s}`;
+// yükleme sonrası: hoca/talebe sayıları (silsile bağlantısı ve arama süzgeci bunlara bakar)
+function ktCounts(items, sign = 1) {
+  items.forEach(x => { const t = P.get(x.t), s = P.get(x.s), k = x.op === "del" ? -sign : sign;
+    if (t) t.ns = Math.max(0, t.ns + k); if (s) s.nt = Math.max(0, s.nt + k); });
+}
+// şahıs kaydına katkıları uygular (kopyası üzerinde; önbellekteki asıl kayıt değişmez)
+function ktPerson(id, d0) {
+  const mine = KATKI.filter(x => x.t === id || x.s === id);
+  if (!mine.length) return d0;
+  const d = { ...d0, teachers: d0.teachers.slice(), students: d0.students.slice() };
+  mine.forEach(x => {
+    const side = x.s === id ? "teachers" : "students", other = x.s === id ? x.t : x.s;
+    if (x.op === "del") { d[side] = d[side].filter(r => r.id !== other); return; }
+    const ev = [x.src, x.q || x.note || "", ""], i = d[side].findIndex(r => r.id === other);
+    if (i < 0) d[side].push({ id: other, rels: [x.rel || "took"], n: 1, ev: [ev], user: true });
+    else { const r = d[side][i]; d[side][i] = { ...r, n: r.n + 1, ev: [...r.ev, ev], rels: r.rels.includes(x.rel) ? r.rels : [...r.rels, x.rel], user: true }; }
+  });
+  return d;
+}
+// ağ: eklenen bağlar kenar, silinenler çıkarılır; ağda olmayan âlim düğüm olarak eklenir
+function ktGraph(G) {
+  const node = id => { if (G.byId.has(id)) return G.byId.get(id); const p = who(id); if (!p) return;
+    const i = G.nodes.length; G.nodes.push({ id, ar: p.ar, tr: p.tr, d: p.d, deg: 0, x: p.d || 0, y: 0, guess: !!p.est, salaf: !!p.salaf,
+      get name() { return LANG === "tr" ? this.tr : this.ar; } }); G.up.push([]); G.down.push([]); G.byId.set(id, i); return i; };
+  KATKI.forEach(x => {
+    if (x.op === "del") { const t = G.byId.get(x.t), s = G.byId.get(x.s); if (t === undefined || s === undefined) return;
+      G.up[s] = G.up[s].filter(e => e[0] !== t); G.down[t] = G.down[t].filter(e => e[0] !== s);
+      G.edges = G.edges.filter(e => !(e[0] === t && e[1] === s)); return; }
+    const t = node(x.t), s = node(x.s); if (t === undefined || s === undefined || G.up[s].some(e => e[0] === t)) return;
+    G.up[s].push([t, 1, 0]); G.down[t].push([s, 1, 0]); G.edges.push([t, s, 1, 0]); G.nodes[t].deg++; G.nodes[s].deg++;
+  });
+}
+// gelen öneriyi denetler: yalnız bilinen alanlar, bilinen âlimler, sınırlı uzunluk
+function ktClean(o) {
+  if (!o || typeof o !== "object") return null;
+  const str = (v, n) => String(v ?? "").replace(/\s+/g, " ").trim().slice(0, n);
+  const x = { op: str(o.op, 5), t: str(o.t, 12), s: str(o.s, 12), rel: str(o.rel, 12), p: str(o.p, 12),
+    src: str(o.src, 300), q: str(o.q, 1200), note: str(o.note, 1500), by: str(o.by, 80) };
+  Object.keys(x).forEach(k => { if (!x[k]) delete x[k]; });
+  if (!["add", "del", "note"].includes(x.op)) return null;
+  if (x.op === "note") return P.has(x.p) || !x.p ? (x.note ? x : null) : null;
+  if (!who(x.t) || !who(x.s) || x.t === x.s) return null;
+  if (x.op === "add" && (!KT_REL.includes(x.rel) || !x.src)) return null;
+  return x;
+}
+const ktName = id => { const p = who(id); return p ? `${p.tr || p.ar}${p.d ? ` (ö. ${p.d})` : ""}` : id; };
+function ktIssue(x) {
+  const pg = x.op === "note" ? x.p : x.s;
+  const title = x.op === "add" ? `[katkı] ${ktName(x.t)} → ${ktName(x.s)} (hoca–talebe)`
+    : x.op === "del" ? `[katkı] Hatalı bağ: ${ktName(x.t)} → ${ktName(x.s)}` : `[katkı] Düzeltme: ${x.p ? ktName(x.p) : "genel"}`;
+  const L = [x.op === "add" ? `**Önerilen bağ:** ${ktName(x.t)} → ${ktName(x.s)} (${REL_L.tr[x.rel] || x.rel})`
+    : x.op === "del" ? `**Hatalı olduğu bildirilen bağ:** ${ktName(x.t)} → ${ktName(x.s)}` : `**Düzeltme bildirimi**`];
+  if (pg) L.push(`Sayfa: https://fukaha.github.io/tabaqat/#/p/${pg}`);
+  if (x.src) L.push(`**Kaynak:** ${x.src}`);
+  if (x.q) L.push(`**Kanıt metni:**\n> ${x.q}`);
+  if (x.note) L.push(`**Açıklama:** ${x.note}`);
+  if (x.by) L.push(`**Gönderen:** ${x.by}`);
+  L.push("", `${KT_MARK}\n${JSON.stringify(x).replace(/--/g, "- -")}\n-->`);
+  return { title: title.slice(0, 200), body: L.join("\n\n") };
+}
+const ktParse = body => { const m = String(body || "").match(/<!-- katki\s*([\s\S]*?)\s*-->/); if (!m) return null;
+  try { return ktClean(JSON.parse(m[1])); } catch (e) { return null; } };
+
+// GitHub API (yalnız yönetici jetonuyla)
+const ktTok = () => { try { return localStorage.getItem("gh_token") || ""; } catch (e) { return ""; } };
+async function gh(path, opt = {}) {
+  const r = await fetch("https://api.github.com" + path, { ...opt, headers: { Accept: "application/vnd.github+json", Authorization: `Bearer ${ktTok()}`,
+    "X-GitHub-Api-Version": "2022-11-28", ...(opt.body ? { "Content-Type": "application/json" } : {}) } });
+  if (!r.ok) { const m = (await r.json().catch(() => ({}))).message || ""; const e = new Error(`GitHub ${r.status}${m ? ": " + m : ""}`); e.status = r.status; throw e; }
+  return r.status === 204 ? null : r.json();
+}
+const b64enc = s => { const b = new TextEncoder().encode(s); let t = ""; b.forEach(c => { t += String.fromCharCode(c); }); return btoa(t); };
+const b64dec = s => new TextDecoder().decode(Uint8Array.from(atob(s.replace(/\s/g, "")), c => c.charCodeAt(0)));
+let KT_BRANCH;
+async function ktRead() {
+  KT_BRANCH = KT_BRANCH || (await gh(`/repos/${REPO}`)).default_branch;
+  try { const f = await gh(`/repos/${REPO}/contents/${KT_FILE}?ref=${encodeURIComponent(KT_BRANCH)}`);
+    return { sha: f.sha, items: JSON.parse(b64dec(f.content)).items || [] }; }
+  catch (e) { if (e.status === 404) return { sha: undefined, items: [] }; throw e; }
+}
+// katki.json'u günceller; arada başkası değiştirdiyse bir kez yeniden okuyup dener
+async function ktWrite(mutate, message) {
+  for (let i = 0; ; i++) {
+    const { sha, items } = await ktRead(); mutate(items);
+    try { await gh(`/repos/${REPO}/contents/${KT_FILE}`, { method: "PUT", body: JSON.stringify({ message, branch: KT_BRANCH, sha,
+        content: b64enc(JSON.stringify({ items }, null, 1) + "\n") }) });
+      ktApply(items); return items; }
+    catch (e) { if (i || ![409, 422].includes(e.status)) throw e; }
+  }
+}
+// yayındaki kopyayı hemen günceller (site birkaç dakika içinde yeniden yayımlanır)
+function ktApply(items) { ktCounts(KATKI, -1); KATKI = items; ktCounts(KATKI); G = null; }
+const ktToday = () => new Date().toISOString().slice(0, 10);
+const ktMsg = x => x.op === "add" ? `Katkı: ${ktName(x.t)} → ${ktName(x.s)} hoca–talebe bağı` : `Katkı: ${ktName(x.t)} → ${ktName(x.s)} bağı kaldırıldı`;
+
+// şahıs sayfasındaki "Katkı / düzeltme" penceresi
+function katkiBox(id, d) {
+  if ($(".ktbox")) return;
+  const admin = !!ktTok(), me = P.get(id);
+  const box = document.createElement("div"); box.className = "expbox ktbox"; box.setAttribute("role", "dialog"); box.setAttribute("aria-modal", "true");
+  box.setAttribute("aria-label", T("اقتراح إضافة أو تصحيح", "Katkı ya da düzeltme öner"));
+  const rels = [...d.teachers.map(r => ["t", r.id]), ...d.students.map(r => ["s", r.id])];
+  box.innerHTML = `<form class="in ktform" novalidate><div class="hd"><b>${T("اقتراح إضافة أو تصحيح", "Katkı ya da düzeltme öner")}</b><span class="grow"></span>
+      <button type="button" class="btn" data-x>${T("إغلاق", "Kapat")}</button></div>
+    <p class="hint">${esc(me.name)} ${deathTxt(me)} — ${admin ? T("أنت مسجَّل مديرًا: ما تضيفه يُنشر مباشرة.", "Yönetici olarak girdiniz: eklediğiniz bağ doğrudan yayımlanır.")
+      : T("يُراجَع اقتراحك قبل النشر.", "Öneriniz incelendikten sonra yayımlanır.")}</p>
+    <fieldset class="ktop"><legend class="label">${T("نوع الاقتراح", "Ne önermek istiyorsunuz?")}</legend>
+      <label><input type="radio" name="op" value="t" checked> ${T("شيخ لم يُذكر", "Eksik hoca")}</label>
+      <label><input type="radio" name="op" value="s"> ${T("تلميذ لم يُذكر", "Eksik talebe")}</label>
+      ${rels.length ? `<label><input type="radio" name="op" value="del"> ${T("صلة خاطئة", "Hatalı bağ")}</label>` : ""}
+      <label><input type="radio" name="op" value="note"> ${T("خطأ آخر", "Başka bir hata")}</label></fieldset>
+    <div class="ktf" data-for="t s"><span class="label" id="ktwho">${T("العَلَم", "Âlim")}</span><div class="ktpick"></div><p class="ktsel" hidden></p></div>
+    <label class="ktf" data-for="t s"><span class="label">${T("نوع الصلة", "Bağ türü")}</span>
+      <select name="rel">${KT_REL.map(k => `<option value="${k}">${REL[k]}</option>`).join("")}</select></label>
+    <label class="ktf" data-for="del"><span class="label">${T("الصلة", "Hangi bağ?")}</span>
+      <select name="del">${rels.map(([k, o], i) => `<option value="${i}">${k === "t" ? T("شيخه: ", "Hocası: ") : T("تلميذه: ", "Talebesi: ")}${esc(who(o)?.name || o)}</option>`).join("")}</select></label>
+    <label class="ktf" data-for="t s"><span class="label">${T("المصدر والموضع (لازم)", "Kaynak ve sayfa (zorunlu)")}</span>
+      <input name="src" maxlength="300" placeholder="${T("مثلًا: الجواهر المضية ٢/٤٥", "ör. el-Cevâhirü’l-mudıyye, II, 45")}"></label>
+    <label class="ktf" data-for="t s"><span class="label">${T("نص الشاهد (اختياري)", "Kanıt metni (isteğe bağlı)")}</span>
+      <textarea name="q" rows="2" maxlength="1200"></textarea></label>
+    <label class="ktf" data-for="t s del note"><span class="label" data-l>${T("التوضيح", "Açıklama")}</span>
+      <textarea name="note" rows="3" maxlength="1500"></textarea></label>
+    ${admin ? "" : `<label class="ktf" data-for="t s del note"><span class="label">${T("اسمك (اختياري، يظهر للعموم)", "Adınız (isteğe bağlı, herkese açık görünür)")}</span>
+      <input name="by" maxlength="80" autocomplete="name"></label>`}
+    <input name="web" class="kthp" tabindex="-1" autocomplete="off" aria-hidden="true">
+    <p class="kterr" role="alert" hidden></p>
+    <div class="hd ktsub"><span class="grow"></span><button type="submit" class="btn gold">${admin ? T("انشر", "Yayımla") : T("أرسل", "Gönder")}</button></div>
+    <div class="ktdone" hidden></div></form>`;
+  const f = $("form", box), err = $(".kterr", box); let pick = "";
+  const pk = localSearch(T("ابحث عن العَلَم…", "Âlim ara…"), q => findPersons(q, 12).filter(p => p.id !== id)
+    .map(p => ({ id: p.id, html: `<span>${esc(p.name)}</span><span class="d">${deathTxt(p)}</span>` })), pid => {
+      pick = pid; const s = $(".ktsel", box); s.hidden = false; s.innerHTML = `✓ ${plink(pid)} <span class="d num">${deathTxt(P.get(pid))}</span>`; });
+  $(".ktpick", box).append(pk);
+  const sync = () => { const op = f.op.value; box.querySelectorAll(".ktf").forEach(el => { el.hidden = !el.dataset.for.split(" ").includes(op); });
+    $("#ktwho", box).textContent = op === "s" ? T("التلميذ", "Talebe") : T("الشيخ", "Hoca");
+    $("[data-l]", box).textContent = op === "note" ? T("ما الخطأ؟ (لازم)", "Hata nedir? (zorunlu)") : op === "del" ? T("لماذا هي خاطئة؟", "Neden hatalı?") : T("التوضيح", "Açıklama");
+    const b = $("[type=submit]", box); b.textContent = admin && op !== "note" ? T("انشر", "Yayımla") : T("أرسل", "Gönder"); };
+  f.addEventListener("change", e => e.target.name === "op" && sync()); sync();
+  const close = () => { box.remove(); document.removeEventListener("keydown", key, true); };
+  const key = e => { if (e.key === "Escape" && !e.target.closest(".lsearch")) { e.stopPropagation(); close(); } };
+  box.addEventListener("click", e => { if (e.target === box || e.target.closest("[data-x]")) close(); });
+  document.addEventListener("keydown", key, true);
+  f.addEventListener("submit", async e => {
+    e.preventDefault(); err.hidden = true;
+    const op = f.op.value, v = n => f[n] ? f[n].value : "";
+    let x = { op: op === "del" ? "del" : op === "note" ? "note" : "add", rel: v("rel"), src: v("src"), q: v("q"), note: v("note"), by: v("by") };
+    if (op === "t") Object.assign(x, { t: pick, s: id });
+    else if (op === "s") Object.assign(x, { t: id, s: pick });
+    else if (op === "del") { const [k, o] = rels[+v("del")] || []; Object.assign(x, k === "t" ? { t: o, s: id } : { t: id, s: o }); }
+    else x.p = id;
+    const fail = m => { err.textContent = m; err.hidden = false; };
+    if ((op === "t" || op === "s") && !pick) return fail(T("اختر العَلَم من القائمة.", "Listeden bir âlim seçin."));
+    if ((op === "t" || op === "s") && !x.src.trim()) return fail(T("اذكر المصدر والموضع.", "Kaynağı ve sayfasını yazın."));
+    if (op === "note" && !x.note.trim()) return fail(T("اكتب الخطأ.", "Hatayı kısaca yazın."));
+    x = ktClean(x); if (!x) return fail(T("تعذّر قبول الاقتراح.", "Öneri kabul edilemedi."));
+    const done = html => { f.querySelectorAll(".ktop, .ktf, .ktsub").forEach(el => { el.hidden = true; }); const dn = $(".ktdone", box); dn.innerHTML = html; dn.hidden = false; };
+    const btn = $("[type=submit]", box); btn.disabled = true;
+    try {
+      if (v("web")) return done(`<p>${T("شكرًا لك.", "Teşekkürler.")}</p>`);
+      if (admin && x.op !== "note") {
+        await ktWrite(items => items.push({ id: `k${Date.now().toString(36)}`, ...x, by: undefined, at: ktToday() }), ktMsg(x));
+        toast(T("نُشر", "Yayımlandı")); close(); route(); return;
+      }
+      const iss = ktIssue(x);
+      if (admin) { await gh(`/repos/${REPO}/issues`, { method: "POST", body: JSON.stringify({ ...iss, labels: ["katki"] }) }); return done(`<p>${T("سُجّل في لوحة الإدارة.", "Yönetim panelindeki listeye eklendi.")}</p>`); }
+      if (KATKI_URL) {
+        const r = await fetch(KATKI_URL, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(x) });
+        if (!r.ok) throw new Error(String(r.status));
+        return done(`<p><b>${T("وصل اقتراحك، شكرًا لك.", "Öneriniz ulaştı, teşekkürler.")}</b> ${T("يُنشر بعد المراجعة.", "İncelendikten sonra yayımlanacak.")}</p>`);
+      }
+      const url = `https://github.com/${REPO}/issues/new?labels=katki&title=${encodeURIComponent(iss.title)}&body=${encodeURIComponent(iss.body)}`;
+      done(`<p>${T("يُرسل الاقتراح عبر GitHub: افتح الرابط، وسجّل الدخول إن لزم، ثم اضغط «Create».", "Öneri GitHub üzerinden iletilir: bağlantıyı açın, gerekirse giriş yapın ve “Create” düğmesine basın. Öneri hazır doldurulmuş gelir.")}</p>
+        <p><a class="btn gold" href="${esc(url)}" target="_blank" rel="noopener">${T("افتح نموذج GitHub", "GitHub formunu aç")} ↗</a></p>`);
+    } catch (e2) { btn.disabled = false; fail(`${T("تعذّر الإرسال", "Gönderilemedi")} (${e2.message}).`); }
+  });
+  (document.fullscreenElement || document.body).append(box); f.op[0].focus();
+}
+
+// yönetim paneli (#/yonetim): jeton, bekleyen öneriler, yayındaki katkılar
+async function viewAdmin(view) {
+  document.title = `${T("لوحة الإدارة", "Yönetim")} — ${UI.brand[LANG === "ar" ? 0 : 1]}`;
+  if (!ktTok()) {
+    view.innerHTML = `<div class="about ktadmin"><h1>${T("لوحة الإدارة", "Yönetim paneli")}</h1>
+      <p class="lede">Buradan okur önerilerini onaylar ya da reddedersiniz; kendi eklediğiniz bağlar da doğrudan yayımlanır. Bunun için GitHub’da bir kez <b>ince ayarlı erişim jetonu</b> (fine-grained personal access token) oluşturun:</p>
+      <ol class="ktsteps"><li><a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">github.com/settings/personal-access-tokens/new ↗</a> sayfasını açın.</li>
+        <li><i>Repository access</i> → <i>Only select repositories</i> → <code>${REPO}</code>.</li>
+        <li><i>Permissions</i> → <i>Contents</i>: <b>Read and write</b>, <i>Issues</i>: <b>Read and write</b>.</li>
+        <li>Jetonu oluşturup aşağıya yapıştırın.</li></ol>
+      <form class="ktlogin"><input name="tok" type="password" autocomplete="off" placeholder="github_pat_…" aria-label="Jeton"><button class="btn gold">Giriş</button></form>
+      <p class="kterr" role="alert" hidden></p>
+      <p class="legend">Jeton yalnız bu tarayıcıda saklanır ve yalnız GitHub’a gönderilir. Ortak bir bilgisayarda işiniz bitince “Çıkış” deyin.</p></div>`;
+    $(".ktlogin", view).addEventListener("submit", async e => {
+      e.preventDefault(); const t = e.target.tok.value.trim(), er = $(".kterr", view); if (!t) return;
+      try { localStorage.setItem("gh_token", t); const r = await gh(`/repos/${REPO}`);
+        if (!r.permissions?.push) throw new Error(T("لا صلاحية كتابة", "Bu jetonun depoya yazma izni yok"));
+        route(); }
+      catch (x) { try { localStorage.removeItem("gh_token"); } catch (y) {} er.textContent = x.message; er.hidden = false; }
+    });
+    return;
+  }
+  view.innerHTML = `<div class="about ktadmin"><h1>${T("لوحة الإدارة", "Yönetim paneli")}<button type="button" class="btn small" id="ktout">${T("خروج", "Çıkış")}</button></h1>
+    <section><h2>${T("اقتراحات تنتظر المراجعة", "Bekleyen öneriler")}<span class="c num" id="ktn"></span></h2><div id="ktq"><p class="empty">${T("جارٍ التحميل…", "Yükleniyor…")}</p></div></section>
+    <section><h2>${T("الإضافات المنشورة", "Yayındaki katkılar")}<span class="c num" id="ktm"></span></h2><div id="ktl"></div>
+      <p class="legend">${T("", "Kendi katkınızı eklemek için ilgili âlimin sayfasındaki “Katkı / düzeltme” düğmesini kullanın. Değişiklik birkaç dakika içinde sitede görünür.")}</p></section></div>`;
+  $("#ktout").onclick = () => { try { localStorage.removeItem("gh_token"); } catch (e) {} route(); };
+  const pair = x => `${plink(x.t)} <span class="d num">${deathTxt(who(x.t) || {})}</span> → ${plink(x.s)} <span class="d num">${deathTxt(who(x.s) || {})}</span>`;
+  const desc = x => `<div class="ktrow-h"><span class="tag${x.op === "del" ? " del" : ""}">${x.op === "add" ? T("إضافة", "Ekleme") : x.op === "del" ? T("حذف", "Kaldırma") : T("تصحيح", "Düzeltme")}</span>
+      ${x.op === "note" ? (x.p ? plink(x.p) : "") : pair(x)}${x.rel && x.op === "add" ? ` <span class="tag">${REL[x.rel]}</span>` : ""}</div>
+    ${x.src ? `<p><span class="label">${T("المصدر", "Kaynak")}</span> ${esc(x.src)}</p>` : ""}
+    ${x.q ? `<blockquote dir="auto">${esc(x.q)}</blockquote>` : ""}${x.note ? `<p dir="auto">${esc(x.note)}</p>` : ""}`;
+  const fail = (el, e) => { el.insertAdjacentHTML("beforeend", `<p class="kterr" role="alert">${esc(e.message)}</p>`); };
+  const loadAll = async () => {
+    const [iss, { items }] = await Promise.all([gh(`/repos/${REPO}/issues?state=open&per_page=100`), ktRead()]);
+    ktApply(items);
+    const q = iss.filter(i => !i.pull_request).map(i => ({ i, x: ktParse(i.body) })).filter(o => o.x);
+    $("#ktn").textContent = AR(q.length);
+    $("#ktq").innerHTML = q.length ? q.map(({ i, x }, k) => `<article class="ktrow" data-k="${k}">${desc(x)}
+        <p class="legend"><a href="${esc(i.html_url)}" target="_blank" rel="noopener">#${i.number}</a> · ${esc(i.user?.login || "")}${x.by ? ` · ${esc(x.by)}` : ""} · ${esc(i.created_at.slice(0, 10))}</p>
+        <div class="ktact">${x.op === "note" ? `<button type="button" class="btn gold" data-a="ok">${T("تمّ", "Çözüldü")}</button>`
+          : `<button type="button" class="btn gold" data-a="ok">${T("اقبل وانشر", "Onayla ve yayımla")}</button>`}
+          <input type="text" placeholder="${T("سبب الرفض (اختياري)", "Ret gerekçesi (isteğe bağlı)")}" maxlength="300"><button type="button" class="btn" data-a="no">${T("ارفض", "Reddet")}</button></div></article>`).join("")
+      : `<p class="empty">${T("لا اقتراحات جديدة.", "Bekleyen öneri yok.")}</p>`;
+    $("#ktq").querySelectorAll(".ktrow").forEach(el => el.addEventListener("click", async e => {
+      const b = e.target.closest("[data-a]"); if (!b) return; const { i, x } = q[+el.dataset.k];
+      el.querySelectorAll("button").forEach(z => { z.disabled = true; });
+      try {
+        let msg;
+        if (b.dataset.a === "ok") {
+          if (x.op !== "note") await ktWrite(items => { if (!items.some(y => y.issue === i.number)) items.push({ id: `k${Date.now().toString(36)}`, ...x, at: ktToday(), issue: i.number }); },
+            `${ktMsg(x)} (#${i.number})`);
+          msg = x.op === "note" ? "Düzeltme yapıldı, teşekkürler." : "Onaylandı ve siteye eklendi, teşekkürler. Birkaç dakika içinde yayında görünür.";
+        } else msg = `Bu öneri eklenmedi.${$("input", el).value.trim() ? " Gerekçe: " + $("input", el).value.trim() : ""}`;
+        await gh(`/repos/${REPO}/issues/${i.number}/comments`, { method: "POST", body: JSON.stringify({ body: msg }) });
+        await gh(`/repos/${REPO}/issues/${i.number}`, { method: "PATCH", body: JSON.stringify({ state: "closed", state_reason: b.dataset.a === "ok" ? "completed" : "not_planned" }) });
+        toast(b.dataset.a === "ok" ? T("قُبل", "Onaylandı") : T("رُفض", "Reddedildi")); await loadAll();
+      } catch (x2) { el.querySelectorAll("button").forEach(z => { z.disabled = false; }); fail(el, x2); }
+    }));
+    $("#ktm").textContent = AR(items.length);
+    $("#ktl").innerHTML = items.length ? items.slice().reverse().map(x => `<article class="ktrow" data-id="${esc(x.id)}">${desc(x)}
+        <p class="legend">${esc(x.at || "")}${x.issue ? ` · <a href="https://github.com/${REPO}/issues/${+x.issue}" target="_blank" rel="noopener">#${+x.issue}</a>` : ""}${x.by ? ` · ${esc(x.by)}` : ""}</p>
+        <div class="ktact"><button type="button" class="btn" data-a="undo">${T("تراجع", "Geri al")}</button></div></article>`).join("")
+      : `<p class="empty">${T("لا شيء بعد.", "Henüz katkı yok.")}</p>`;
+    $("#ktl").querySelectorAll("[data-a=undo]").forEach(b => b.addEventListener("click", async () => {
+      const el = b.closest(".ktrow"), id = el.dataset.id, x = items.find(y => y.id === id); b.disabled = true;
+      try { await ktWrite(its => { const k = its.findIndex(y => y.id === id); if (k >= 0) its.splice(k, 1); }, `Katkı geri alındı: ${ktName(x.t)} → ${ktName(x.s)}`);
+        toast(T("أُلغي", "Geri alındı")); await loadAll(); }
+      catch (e) { b.disabled = false; fail(el, e); }
+    }));
+  };
+  try { await loadAll(); }
+  catch (e) { $("#ktq").innerHTML = `<p class="kterr">${esc(e.message)}${e.status === 401 ? ` — ${T("انتهت صلاحية الرمز", "Jetonun süresi dolmuş ya da geçersiz; çıkış yapıp yenisini girin.")}` : ""}</p>`; }
+}
+
 function viewAbout(view) {
   const tr = LANG === "tr", n = x => AR(Number(x).toLocaleString(tr ? "tr-TR" : "en-US"));
   // kitaplar: aynı kısa künyeyi taşıyan ciltler tek kartta, müellifin vefatına göre sıralı
@@ -2129,6 +2399,7 @@ function viewAbout(view) {
       <p class="lede" style="color:var(--ink)">Şahıs, eser ve yer adları TDV İslâm Ansiklopedisi (DİA) yazım usulüyle verilmiştir: Ebû Hanîfe, Muhammed b. Hasan eş-Şeybânî, Şemsüleimme el-Halvânî, el-Cevâhirü’l-muziyye… Adlar künye, isim, nesep, nisbe ve lakap sözlüklerinden otomatik kurulur; unvan ve tavsifler atılır. Tarihler hicrî/milâdî olarak verilir: (ö. 150/767). Milâdî yıl, hicrî yılın ortasına göre hesaplanmıştır; ay ve gün bilinmediğinden bir yıl sapabilir.</p>
       <p class="legend">“tercih” etiketli bağlar yalnız nisbe ya da şöhretle kurulmuştur. “[?]” işaretli vefat tarihleri kaynakta yoktur; hoca ve talebelerin vefatlarından tahmin edilmiştir. Hicrî yüzyıllar DİA’daki gibi yazılır: V. (XI.) yüzyıl. Eşleştirme ve çıkarımlar otomatik yapıldığından hata içerebilir; bildirimleriniz için yürütücüye yazabilirsiniz.</p></section>
     <section><h2>Türkçe başvuru kaynağı</h2><p class="lede">Ahmet Özel’in <i>Hanefî Fıkıh Âlimleri</i> (Ankara: Türkiye Diyanet Vakfı) adlı eserindeki maddeler sitedeki âlimlerle tek tek eşleştirilmiştir (213 kişi). Eşleşen âlimlerde kitaptaki vefat ve doğum tarihleri esas alınmış, sitedeki ad kitaptakiyle çeliştiğinde tam ad ve kısa ad kitaba göre düzeltilmiş (yalnız eksik olan doğru adlara dokunulmamıştır), kitapta açıkça geçen hoca–talebe bağları eklenmiş ve eser listeleri âlim sayfasına “Eserleri” başlığıyla konmuştur. Bu bağların “Kanıt” bölümünde kitaptaki cümle ve sayfa numarası görünür. Kitabın dipnotları metne karışık olduğundan bilgi yalnız madde metinlerinden alınmıştır.</p></section>
+    <section><h2>Katkı ve düzeltme</h2><p class="lede">Bir biyografide geçtiği hâlde sitede görünmeyen bir hoca–talebe bağı ya da bir hata fark ederseniz, ilgili âlimin sayfasındaki <b>Katkı / düzeltme</b> düğmesiyle bildirebilirsiniz. Eklenecek bağ için kaynağı ve sayfasını yazmanız gerekir. Öneriler incelendikten sonra yayımlanır; eklenen bağlar âlim sayfasında “katkı” etiketi ve verilen kaynakla görünür, ağa ve silsileye de katılır. <a href="#/yonetim" class="d">Yönetim</a></p></section>
     <section><h2>Açık kaynaklar</h2><p class="lede">Koordinatlar, şehirlerin bölge ve türleri, Mukaddesî’nin yol ağı ile Yâkūt, Himyerî ve Sem‘ânî’den alıntılar al-Thurayya Gazetteer’dan (CC BY 4.0) alınmıştır; Osmanlı ve Hint şehirleri için elle eklemeler yapılmıştır. Kara ve nehir sınırları Natural Earth’ten (kamu malı). Sitenin kodu ve üretilen veriler <a href="https://github.com/fukaha/tabaqat" target="_blank" rel="noopener">GitHub</a>’da açıktır.</p></section></div>`;
     return;
   }
@@ -2148,6 +2419,7 @@ function viewAbout(view) {
       ونصوص التراجم منشورة كاملة في آخر صفحة كل عَلَم، كلُّ كتاب على حدة مع حواشي محققه.</p>
       <p class="legend">ما وُسم «ترجيح» ربطٌ بالنسبة أو الشهرة وحدها. الوفيات المسبوقة بـ«نحو» تقدير من طبقة الشيوخ والتلاميذ. ولأن التوحيد والاستخراج آليّان فقد يقع فيهما خطأ، ويُرجى إبلاغ مدير المشروع بما يُلحظ منه.</p></section>
     <section><h2>المرجع التركي</h2><p class="lede">طوبقت مواد كتاب «فقهاء الحنفية» (Hanefî Fıkıh Âlimleri) لأحمد أوزل على أعلام الموقع علمًا علمًا (٢١٣ علمًا)، فاعتُمدت فيه سنوات الوفاة والولادة، وصُحّح الاسم التركي إذا خالفه، وأضيفت صلات الشيوخ والتلاميذ المصرّح بها فيه مع العبارة ورقم الصفحة، وقوائم المؤلفات تحت عنوان «مؤلفاته». ولم يؤخذ من حواشي الكتاب شيء لاختلاطها بالمتن.</p></section>
+    <section><h2>الإضافة والتصحيح</h2><p class="lede">إن وجدت صلة شيخ وتلميذ مذكورة في ترجمة ولا تظهر في الموقع، أو وقفت على خطأ، فاضغط زر <b>اقتراح أو تصحيح</b> في صفحة العَلَم. ولا بد في الإضافة من ذكر المصدر والموضع. تُنشر الاقتراحات بعد مراجعتها، وتظهر الصلة المضافة في صفحة العَلَم موسومة «إضافة» مع مصدرها، وتدخل في الشبكة والسلسلة. <a href="#/yonetim" class="d">الإدارة</a></p></section>
     <section><h2>المصادر المفتوحة</h2><p class="lede">الإحداثيات وأقاليم البلدان وأنواعها وشبكة طرق المقدسي والمقتطفات من ياقوت والحميري والسمعاني من مشروع الثريا (al-Thurayya Gazetteer، رخصة CC BY 4.0) مع إضافات يدوية لبلدان العهد العثماني والهند؛ وحدود اليابسة والأنهار من Natural Earth (ملك عام). وشفرة الموقع وبياناته مفتوحة على <a href="https://github.com/fukaha/tabaqat" target="_blank" rel="noopener">GitHub</a>.</p></section></div>`;
 }
 

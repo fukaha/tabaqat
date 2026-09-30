@@ -834,3 +834,33 @@ html[lang="ar"] .rnode .yr { font-family: var(--f-body); }
 .rnode:hover polygon, .rnode:focus-visible polygon { fill: var(--gold2); transform: scale(1.25); }
 .rnode:hover .nm, .rnode:focus-visible .nm { fill: var(--rubric); }
 @media (prefers-reduced-motion: reduce) { .rnode, .rnode polygon { transition: none; } }
+
+/* katkı: öneri penceresi ve yönetim paneli */
+.tag.user { background: color-mix(in srgb, var(--k-hashiya, #11927a) 14%, transparent); color: var(--ink); border: 1px solid color-mix(in srgb, var(--k-hashiya, #11927a) 45%, transparent); }
+.tag.del { background: color-mix(in srgb, var(--rubric) 14%, transparent); color: var(--rubric); }
+.ktbox .in { width: min(38rem, 100%); overflow: auto; gap: .7rem; }
+.ktform fieldset { border: 0; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: .35rem .9rem; }
+.ktform fieldset legend { margin-bottom: .3rem; }
+.ktform label { cursor: pointer; }
+.ktf { display: flex; flex-direction: column; gap: .25rem; min-width: 0; }
+.ktf input, .ktf select, .ktf textarea, .ktact input, .ktlogin input { font: inherit; font-size: .95rem; color: var(--ink); background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: .4rem .6rem; min-width: 0; }
+.ktf textarea { resize: vertical; }
+.ktf input:focus, .ktf select:focus, .ktf textarea:focus, .ktact input:focus, .ktlogin input:focus { outline: 2px solid var(--gold); outline-offset: 1px; }
+.ktpick .lsearch { position: relative; }
+.ktpick .lsearch input { width: 100%; }
+.ktsel { margin: 0; font-size: .95rem; }
+.kthp { position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
+.kterr { color: var(--rubric); margin: 0; font-size: .9rem; }
+.ktdone p { margin: .2rem 0; }
+.ktadmin h1 { display: flex; align-items: center; gap: .8rem; flex-wrap: wrap; }
+.ktadmin section { margin-top: 1.4rem; }
+.ktsteps { line-height: 1.8; padding-inline-start: 1.3rem; }
+.ktlogin { display: flex; gap: .5rem; flex-wrap: wrap; max-width: 34rem; }
+.ktlogin input { flex: 1 1 16rem; }
+.ktrow { background: var(--paper); border: 1px solid var(--line); border-radius: 10px; padding: .7rem .9rem; margin-bottom: .6rem; display: flex; flex-direction: column; gap: .35rem; }
+.ktrow p { margin: 0; }
+.ktrow blockquote { margin: 0; padding-inline-start: .7rem; border-inline-start: 3px solid var(--line); color: var(--muted); }
+.ktrow-h { display: flex; flex-wrap: wrap; align-items: baseline; gap: .4rem; }
+.ktrow .label { display: inline; margin-inline-end: .3rem; }
+.ktact { display: flex; flex-wrap: wrap; gap: .5rem; align-items: center; }
+.ktact input { flex: 1 1 12rem; }
