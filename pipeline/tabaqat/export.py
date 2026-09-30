@@ -135,7 +135,21 @@ def _entries(root: Path) -> dict[str, dict]:
     return entries
 
 
-def _texts(root: Path, persons: list[dict], entries: dict[str, dict]) -> dict[int, dict]:
+def _quote(text: str, n: int = 320) -> str:
+    """Sitede yayımlanan kısa alıntı: maddenin ilk cümleleri (en çok n harf), cümle sonunda kesilir.
+    Tam metinler telifli modern neşirlerden geldiği için yalnız bu alıntı yayımlanır (bkz. export(full_text=...))."""
+    t = text.split("<hr>")[0]
+    t = re.sub(r"\[\^\w+\]|^#+\s*|<[^>]+>", " ", t, flags=re.M)
+    t = re.sub(r"\s+", " ", t).strip()
+    if len(t) <= n:
+        return t
+    ends = [m.end() for m in re.finditer(r"[.؛!؟:](?=\s)", t[:n + 1]) if m.end() >= n // 3]
+    if ends:
+        return t[:ends[-1]].rstrip() + " …"
+    return t[:n].rsplit(" ", 1)[0].rstrip("،,.:؛ ") + " …"
+
+
+def _texts(root: Path, persons: list[dict], entries: dict[str, dict], full_text: bool = False) -> dict[int, dict]:
     out: dict[int, dict] = defaultdict(dict)
     for p in persons:
         items = []
@@ -144,8 +158,13 @@ def _texts(root: Path, persons: list[dict], entries: dict[str, dict]) -> dict[in
             if not e:
                 continue
             # yayın metni: tarama kusurları giderilmiş, dipnotsuz
-            items.append({"book": s["book"], "cite": s["cite"], "heading": e.get("heading_raw") or "",
-                          "text": clean_text(e.get("text"))})
+            text = clean_text(e.get("text"))
+            item = {"book": s["book"], "cite": s["cite"], "heading": e.get("heading_raw") or "", "text": text}
+            if not full_text:
+                q = _quote(text)
+                if q != text:
+                    item.update(text=q, short=1)
+            items.append(item)
         if items:
             out[shard(p["id"])][p["id"]] = items
     return out
@@ -361,7 +380,9 @@ def _roads(root: Path, pp: dict, places: dict, salaf: set) -> dict | None:
     return {"e": edges, "r": r}
 
 
-def export(root: Path) -> dict:
+def export(root: Path, full_text: bool = False) -> dict:
+    """full_text=True: t/ parçalarına maddelerin tam metni yazılır (yalnız yerel kullanım içindir; telifli
+    neşir metni olduğundan yayımlanmaz, pages iş akışı bunu denetler). Varsayılan: kısa alıntı."""
     data, out = root / "data", root / "site" / "data"
     persons = json.loads((data / "persons.json").read_text(encoding="utf-8"))
     rel = json.loads((data / "relations.json").read_text(encoding="utf-8"))
@@ -456,11 +477,12 @@ def export(root: Path) -> dict:
     _dump(out / "index.json", {"books": books, "persons": index, "salaf": salaf_info})
     for k, v in shards.items():
         _dump(out / "p" / f"{k:02d}.json", v)
-    texts = _texts(root, listed, entries)
+    full = _texts(root, listed, entries, full_text=True)
+    texts = full if full_text else _texts(root, listed, entries)
     for k, v in texts.items():
         _dump(out / "t" / f"{k:02d}.json", v)
     # kartlar için kısa özet (ilk kaynağın metninin başı) ve öne çıkan âlimler
-    excerpts = {pid: _excerpt(items) for v in texts.values() for pid, items in v.items()}
+    excerpts = {pid: _excerpt(items) for v in full.values() for pid, items in v.items()}
     _dump(out / "excerpts.json", {k: v for k, v in excerpts.items() if v})
     score = {r[0]: r[4] * 3 + r[5] + r[6] for r in index}
     featured = sorted((r for r in index if excerpts.get(r[0])), key=lambda r: -score[r[0]])[:18]

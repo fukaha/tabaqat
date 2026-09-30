@@ -21,6 +21,18 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
+      # telifli neşirlerin tam metni yayımlanmaz: t/ parçalarında yalnız kısa alıntı olmalı
+      # ("python -m tabaqat.cli site --full-text" çıktısı yalnız yerel kullanım içindir)
+      - name: Biyografi metinleri kısa alıntı mı?
+        run: |
+          python3 - <<'EOF'
+          import glob, json, sys
+          long = [(f, pid) for f in glob.glob("site/data/t/*.json")
+                  for pid, items in json.load(open(f, encoding="utf-8")).items()
+                  for it in items if len(it["text"]) > 400]
+          if long:
+              sys.exit(f"{len(long)} madde tam metin görünüyor (ör. {long[:3]}); 'tabaqat.cli site' --full-text olmadan çalıştırılmalı.")
+          EOF
       - name: Siteyi topla (onay sayfaları hariç)
         run: |
           mkdir _site

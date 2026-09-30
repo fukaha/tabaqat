@@ -55,6 +55,8 @@ def main() -> None:
                                        "apply-review", "network", "apply-network", "geo", "site"])
     ap.add_argument("book", nargs="?")
     ap.add_argument("--out", default=str(ROOT / "data" / "entries"))
+    ap.add_argument("--full-text", action="store_true",
+                    help="site: biyografilerin tam metnini yaz (yalnız yerel kullanım; yayımlanmaz)")
     a = ap.parse_args()
     if a.cmd == "apply-review":  # onay sayfasının kararları (JSON) → review/decisions.yml
         from .match.review import apply_decisions
@@ -72,7 +74,7 @@ def main() -> None:
         return
     if a.cmd == "site":  # statik site verisi → site/data/
         from .export import export
-        print(export(ROOT))
+        print(export(ROOT, full_text=a.full_text))
         return
     if a.cmd == "geo":  # yer atıfları → data/places.json, data/person_places.json
         from .geo.build import build as build_geo

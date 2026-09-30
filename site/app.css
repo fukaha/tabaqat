@@ -864,3 +864,4 @@ html[lang="ar"] .rnode .yr { font-family: var(--f-body); }
 .ktrow .label { display: inline; margin-inline-end: .3rem; }
 .ktact { display: flex; flex-wrap: wrap; gap: .5rem; align-items: center; }
 .ktact input { flex: 1 1 12rem; }
+.tnote { margin: .4rem 0 0; padding-top: .45rem; border-top: 1px dashed var(--line); color: var(--muted); font-size: .88rem; line-height: 1.6; }
