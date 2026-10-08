@@ -57,8 +57,11 @@ def dia_cite(book: str, cite: str) -> str:
     b = BOOKS.get(book, {})
     short = b.get("cite_tr_s") or cite
     m = re.search(r"(\d+)/([\d\-]+)(?:\s*\(رقم\s*(\d+)\))?", cite)
-    if not m:
-        return short
+    if not m:   # tek ciltli: "تاج التراجم 203 (رقم 12)"
+        m1 = re.search(r"\s([\d\-]+)(?:\s*\(رقم\s*(\d+)\))?\s*$", cite)
+        if not m1:
+            return short
+        return f"{short}, s. {m1.group(1)}" + (f" (nr. {m1.group(2)})" if m1.group(2) else "")
     vol, pg, no = m.groups()
     if book == "ghuraf_v1":
         vol = "1"
