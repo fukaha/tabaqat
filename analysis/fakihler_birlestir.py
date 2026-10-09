@@ -20,7 +20,18 @@ def CE(h: int) -> int:
     return int(622.54 + (h - 1) * 0.970224 + 0.485)
 
 
+def flat(v):
+    """Ajan çıktısındaki beklenmedik iç içe değerleri hücreye yazılabilir metne çevirir."""
+    if isinstance(v, dict):
+        return "; ".join(f"{k}: {flat(x)}" for k, x in v.items() if x not in (None, "", [], {}))
+    if isinstance(v, (list, tuple)):
+        return "; ".join(str(flat(x)) for x in v if x not in (None, ""))
+    return v
+
+
 def hm(h):
+    if isinstance(h, dict):
+        h = h.get("hicri")
     try:
         h = int(h)
     except (TypeError, ValueError):
@@ -128,7 +139,8 @@ def rows(dos, oku):
             "görevleri": j(f"{x.get('gorev')}" + (f" ({x['yer']})" if x.get("yer") else "") for x in o.get("gorevler") or []),
             "ilmî ilgi alanları": j(o.get("ilmi_ilgi_alanlari") or [], ", "),
             "siyasî/sosyal olaylar": j(f"{x.get('olay')}" + (f": {x['etkisi']}" if x.get("etkisi") else "") for x in o.get("siyasi_sosyal_olaylar") or []),
-            "fakihlik gerekçesi": o.get("fakih_gerekce"),
+            "olası tekrar kaydı": j(o.get("olasi_tekrar") or []),
+            "fakihlik gerekçesi": flat(o.get("fakih_gerekce")),
             "notlar": o.get("notlar"),
             "kaynaklar": j(s["atif"] for s in d["kaynaklar"]) ,
             "sitede": f"https://fukaha.github.io/tabaqat/#/p/{pid}",
@@ -207,7 +219,7 @@ def write(R, out, L, path):
     WIDE = {"tam adı": 36, "meşhur adı": 22, "Arapça adı": 36, "lakap ve unvanlar": 22, "hocaları": 40, "talebeleri": 34,
             "eserleri": 44, "kaynaklar": 50, "notlar": 44, "fakihlik gerekçesi": 34, "tahmin gerekçesi": 40,
             "bulunduğu şehir/köy": 30, "seyahatleri": 26, "görevleri": 34, "siyasî/sosyal olaylar": 40, "göç kanıtı": 36,
-            "vefat ihtilafı": 30, "kanıt": 50, "etkisi": 40, "gerekçe": 50, "kaynak": 40, "eser": 34, "doğum kaynağı": 30,
+            "vefat ihtilafı": 30, "olası tekrar kaydı": 14, "kanıt": 50, "etkisi": 40, "gerekçe": 50, "kaynak": 40, "eser": 34, "doğum kaynağı": 30,
             "vefat kaynağı": 30, "göç güzergâhı": 26, "nisbe yerleri": 24, "doğum yeri": 20, "sitede": 16}
     AR = {"Arapça adı", "kanıt", "göç kanıtı"}
 
@@ -225,6 +237,7 @@ def write(R, out, L, path):
         for r, d in enumerate(data, 2):
             for c, k in enumerate(ks, 1):
                 v = d.get(k)
+                v = flat(v)
                 cell = ws.cell(r, c, v if v not in ("", None) else None)
                 cell.font = Font(name=F, size=10)
                 cell.border = Border(bottom=thin)
