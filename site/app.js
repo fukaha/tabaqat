@@ -2353,7 +2353,7 @@ async function viewAdmin(view) {
       <p class="legend">Jeton yalnız bu tarayıcıda saklanır ve yalnız GitHub’a gönderilir. Ortak bir bilgisayarda işiniz bitince “Çıkış” deyin.</p></div>`;
     $(".ktlogin", view).addEventListener("submit", async e => {
       e.preventDefault(); const t = e.target.tok.value.trim(), er = $(".kterr", view); if (!t) return;
-      try { localStorage.setItem("gh_token", t); const r = await gh(`/repos/${REPO}`);
+      try { localStorage.setItem("gh_token", t); FULL_OK = null; const r = await gh(`/repos/${REPO}`);
         if (!r.permissions?.push) throw new Error(T("لا صلاحية كتابة", "Bu jetonun depoya yazma izni yok"));
         route(); }
       catch (x) { try { localStorage.removeItem("gh_token"); } catch (y) {} er.textContent = x.message; er.hidden = false; }
@@ -2376,7 +2376,7 @@ async function viewAdmin(view) {
     <section><h2>${T("اقتراحات تنتظر المراجعة", "Bekleyen öneriler")}<span class="c num" id="ktn"></span></h2><div id="ktq"><p class="empty">${T("جارٍ التحميل…", "Yükleniyor…")}</p></div></section>
     <section><h2>${T("الإضافات المنشورة", "Yayındaki katkılar")}<span class="c num" id="ktm"></span></h2><div id="ktl"></div>
       <p class="legend">${"Kendi katkınızı eklemek için ilgili âlimin sayfasındaki “Katkı / düzeltme” düğmesini kullanın. Değişiklik birkaç dakika içinde sitede görünür."}</p></section></div>`;
-  $("#ktout").onclick = () => { try { localStorage.removeItem("gh_token"); } catch (e) {} FULL_OK = null; route(); };
+  $("#ktout").onclick = () => { try { localStorage.removeItem("gh_token"); } catch (e) {} FULL_OK = null; FK = null; Object.keys(cache).filter(k => k.startsWith("full/")).forEach(k => delete cache[k]); route(); };
   $("#ktfind").append(localSearch(T("ابحث عن عَلَم…", "Âlim ara…"), q => findPersons(q, 12)
     .map(p => ({ id: p.id, html: `<span>${esc(p.name)}</span><span class="d">${deathTxt(p)}</span>` })), pid => { KT_OPEN = pid; location.hash = `#/p/${pid}`; }));
   // tam metin erişimi: gizli depo bu jetonla okunabiliyor mu?
@@ -2772,19 +2772,42 @@ async function vtBox(id, PL, N, redraw) {
   document.body.append(box); f.tr.focus();
 }
 
-// ayrıntı pencerelerinde formun yanında biyografi metinleri (yönetici girişliyse gizli depodan tam metin)
+// ayrıntı pencerelerinde formun yanında biyografi metinleri: yalnız gizli depodaki tam metin (kısa alıntıya düşülmez);
+// alınamazsa nedeni yazılır ve yeniden denenebilir
+async function vtFull(id) {
+  if (!ktTok()) { const e = new Error("tok"); e.status = 0; throw e; }
+  const n = String(shardOf(id)).padStart(2, "0"), k = "full/" + n;
+  let sh = cache[k] && await cache[k];
+  if (!sh) {
+    delete cache[k];
+    let r;
+    try { r = await fetch(`https://api.github.com/repos/${KAYNAK}/contents/t/${n}.json`, { headers: {
+      Accept: "application/vnd.github.raw+json", Authorization: `Bearer ${ktTok()}`, "X-GitHub-Api-Version": "2022-11-28" }, cache: "no-store" }); }
+    catch (e) { const x = new Error("net"); x.status = -1; throw x; }
+    if (!r.ok) { const x = new Error(String(r.status)); x.status = r.status; throw x; }
+    sh = await r.json(); cache[k] = Promise.resolve(sh); FULL_OK = true;
+  }
+  return sh[id] || [];
+}
 async function vtTexts(host, id) {
-  host.innerHTML = `<p class="empty">Metinler yükleniyor…</p>`;
-  try {
-    const ts = await texts(id);
-    host.innerHTML = ts.length ? `${ts.some(t => !t.full) ? `<p class="kterr">Tam metin açılamadı; kısa alıntılar gösteriliyor. Yönetim panelinden gizli depo erişimini kontrol edin.</p>` : ""}
-      <div class="vttabs2">${ts.map((t, k) => `<button type="button" class="chip" data-tk="${k}" aria-pressed="${k ? "false" : "true"}">${esc((BOOKS[t.book]?.cite_tr_s || t.book).split(",")[0])} <span class="num">${esc(citeTr(t.cite))}</span></button>`).join("")}</div>
-      ${ts.map((t, k) => `<article class="vttext" data-tk="${k}"${k ? " hidden" : ""}><p class="isnad" dir="ltr" lang="tr">${isnadHtml(t.book, t.cite)}</p><div lang="ar" dir="rtl">${renderEntry({ ...t, full: 0 })}</div></article>`).join("")}`
-      : `<p class="empty">Bu kişinin biyografi metni yok.</p>`;
-    host.onclick = e => { const b = e.target.closest("button[data-tk]"); if (!b) return;
-      host.querySelectorAll("button[data-tk]").forEach(x => x.setAttribute("aria-pressed", String(x === b)));
-      host.querySelectorAll("article[data-tk]").forEach(a => { a.hidden = a.dataset.tk !== b.dataset.tk; }); host.scrollTop = 0; };
-  } catch (e) { host.innerHTML = `<p class="kterr">Metinler yüklenemedi (${esc(e.message)}).</p>`; }
+  host.innerHTML = `<p class="empty">Tam metinler gizli depodan yükleniyor…</p>`;
+  let ts;
+  try { ts = await vtFull(id); }
+  catch (e) {
+    const why = e.status === 0 ? `Giriş yapılmamış. <a href="#/yonetim">Yönetim paneline</a> jetonla girin.`
+      : e.status === 401 ? `Jeton geçersiz ya da süresi dolmuş (GitHub 401). Yönetim panelinden çıkış yapıp yeni jetonu girin.`
+      : e.status === 403 || e.status === 404 ? `Jetonunuz <code>${KAYNAK}</code> deposunu okuyamıyor (GitHub ${e.status}). <a href="https://github.com/settings/personal-access-tokens" target="_blank" rel="noopener">GitHub jeton ayarlarında</a> bu depoyu “Repository access” listesine ekleyin ve <i>Contents</i> iznini verin; sonra çıkış yapıp yeniden girin.`
+      : e.status === -1 ? `GitHub’a ulaşılamadı. Sayfayı <b>fukaha.github.io/tabaqat</b> adresinden açtığınızdan emin olun (önizleme sayfaları GitHub’a bağlanamaz) ve bağlantınızı kontrol edin.`
+      : `GitHub ${esc(e.message)} hatası.`;
+    host.innerHTML = `<p class="kterr">Tam metin alınamadı. ${why}</p><p><button type="button" class="btn" data-retry>Yeniden dene</button></p>`;
+    $("[data-retry]", host).onclick = () => vtTexts(host, id); return;
+  }
+  host.innerHTML = ts.length ? `<div class="vttabs2">${ts.map((t, k) => `<button type="button" class="chip" data-tk="${k}" aria-pressed="${k ? "false" : "true"}">${esc((BOOKS[t.book]?.cite_tr_s || t.book).split(",")[0])} <span class="num">${esc(citeTr(t.cite))}</span></button>`).join("")}</div>
+    ${ts.map((t, k) => `<article class="vttext" data-tk="${k}"${k ? " hidden" : ""}><p class="isnad" dir="ltr" lang="tr">${isnadHtml(t.book, t.cite)} <span class="tag">tam metin</span></p><div lang="ar" dir="rtl">${renderEntry({ ...t, full: 0, short: 0 })}</div></article>`).join("")}`
+    : `<p class="empty">Bu kişinin biyografi metni yok.</p>`;
+  host.onclick = e => { const b = e.target.closest("button[data-tk]"); if (!b) return;
+    host.querySelectorAll("button[data-tk]").forEach(x => x.setAttribute("aria-pressed", String(x === b)));
+    host.querySelectorAll("article[data-tk]").forEach(a => { a.hidden = a.dataset.tk !== b.dataset.tk; }); host.scrollTop = 0; };
 }
 
 // ---------- 620–750 fakihleri (#/veri/fakih) ----------
