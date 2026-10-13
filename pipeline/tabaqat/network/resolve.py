@@ -373,6 +373,15 @@ class Resolver:
             target = nm + chain[1:]
         elif kin == "grandson" and nm:
             target = None
+        if kin in ("son", "daughter") and not nm:
+            # adı anılmayan oğul ("تفقه عليه ولده قاضي القضاة"): nesebi "X b. <özne>" olan tek kişi
+            hits = {p.pid for p in self.persons.values() if p.pid != subject.pid
+                    and any(len(n.chain) > len(chain[:3]) and n.chain[1:1 + len(chain[:3])] == chain[:3]
+                            for n in p.names) and self._chrono_ok(p, subject, "student")}
+            if len(hits) == 1:
+                return Resolution(hits.pop(), "resolved", 5, f"akraba:{kin}")
+            return Resolution(None, "ambiguous" if hits else "unresolved", how=f"akraba:{kin}",
+                              candidates=sorted(hits)[:5])
         if not target:
             return Resolution(None, "unresolved", how="akraba")
         best: dict[str, int] = {}

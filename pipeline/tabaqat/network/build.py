@@ -8,6 +8,7 @@ review/relations.yml: insan kararları (reject: [[hoca, talebe], ...]; add: [...
 from __future__ import annotations
 
 import json
+import re
 from collections import Counter, defaultdict
 from pathlib import Path
 
@@ -69,10 +70,13 @@ def build(root: Path) -> dict:
         for e in json.loads((root / "data" / "entries" / f"{b}.json").read_text(encoding="utf-8")):
             entries[f"{b}:{e['seq']}"] = e
     recip = _Recip(entries, cid, people, res)
+    # muhakkikin "برقم N" atıfları yalnız bu kitaplarda aynı kitabın madde numarasıdır
+    by_number = {(e["book_id"], str(e["number"])): k for k, e in entries.items()
+                 if e.get("book_id") in XREF_BOOKS and str(e.get("number")) not in ("None", "")}
 
     chosen = {(c["key"], c["text"]): c["pid"] for c in decisions.get("choose") or []}
     ctx = dict(entries=entries, recs=recs, cid=cid, by_pid=by_pid, res=res, rejected=rejected,
-               chosen=chosen, recip=recip)
+               chosen=chosen, recip=recip, by_number=by_number)
     edges, unresolved, ext, stats = _pass(**ctx, prev=None)
     # Vefatı bilinmeyenlere ağdan tahmin: hocalarının vefatı + 30 / talebelerinin − 30
     est = _estimate_deaths(edges, by_pid)
@@ -206,7 +210,31 @@ class _Recip:
         return self._memo[k]
 
 
-def _pass(entries, recs, cid, by_pid, res, rejected, chosen, recip, prev):
+XREF_BOOKS = {"jawahir"}
+_OTHER_BOOK = re.compile(r"السنية|الجواهر|الفوائد|تاج التراجم|التاج|كتائب|الطبقات|الأثمار|الغرف")
+_DIG = str.maketrans("٠١٢٣٤٥٦٧٨٩", "0123456789")
+_XREF_NOTE = re.compile(r"برقم\s*([٠-٩\d]+)")
+
+
+def _xrefs(e: dict, by_number: dict, cid: dict) -> dict[str, str]:
+    """Dipnot no → şahıs: muhakkikin "برقم N" (aynı kitapta N numaralı madde) atfı; tek numaralı notlar."""
+    fn = e.get("footnotes")
+    if not isinstance(fn, dict):
+        return {}
+    out = {}
+    book = e.get("book_id")
+    for k, v in fn.items():
+        nums = re.findall(r"[٠-٩\d]+", v)
+        m = _XREF_NOTE.search(v)
+        if m and len(nums) == 1 and not _OTHER_BOOK.search(v[:m.start()]):
+            tk = by_number.get((book, m.group(1).translate(_DIG)))
+            if tk and tk in cid:
+                out[str(k)] = cid[tk]
+    return out
+
+
+def _pass(entries, recs, cid, by_pid, res, rejected, chosen, recip, prev, by_number=None):
+    by_number = by_number or {}
     edges: dict[tuple[str, str], list[dict]] = defaultdict(list)
     linked: dict[tuple[str, str], set[str]] = defaultdict(set)   # (özne, rol) → önceki bağlar
     if prev:
@@ -219,7 +247,8 @@ def _pass(entries, recs, cid, by_pid, res, rejected, chosen, recip, prev):
         if key not in cid or not e["text"]:
             continue
         subj = by_pid[cid[key]]
-        mentions = extract(e["text"], recs[key].book_id, res.isms)
+        xref = _xrefs(e, by_number, cid)
+        mentions = extract(e["text"], recs[key].book_id, res.isms, xref)
         chain_pid: dict[str, str | None] = {}
         for m in mentions:
             stats["mentions"] += 1
@@ -229,8 +258,12 @@ def _pass(entries, recs, cid, by_pid, res, rejected, chosen, recip, prev):
                 ctx = by_pid.get(sp) if sp else None
             role = "teacher" if m.role in ("teacher", "chain") else "student"
             r = None
+            xp = m.extra.get("xref")
             if (key, m.text) in chosen:  # onay sayfasında seçilen aday
                 r = Resolution(chosen[(key, m.text)], "resolved", 9, "insan")
+            elif xp and xp in by_pid and xp != (ctx.pid if ctx else None) and (
+                    ctx is None or res._chrono_ok(by_pid[xp], ctx, role)):
+                r = Resolution(xp, "resolved", 9, "dipnot atfı")   # muhakkik: "برقم N"
             elif m.text:  # "أبيه أبي حفص الكبير": önce adla
                 r = res.resolve(m.text, role, ctx, chain=m.role == "chain" or m.via_chain,
                                 context=m.snippet, kin=bool(m.kin))
@@ -261,6 +294,11 @@ def _pass(entries, recs, cid, by_pid, res, rejected, chosen, recip, prev):
                                    "reason": r.reason if r else "",
                                    "candidates": r.candidates if r else [],
                                    "snippet": m.snippet[:220]})
+                continue
+            # "فقيه من أصحاب أبي حنيفة": geç dönemde Hanefî mezhebinden demektir, Ebû Hanîfe'nin talebesi değil
+            if (r.pid == "jws1" and m.rel == "companion" and m.role == "teacher"
+                    and (ctx is None or not ctx.death or ctx.death > 230)):
+                stats["mezhep"] += 1
                 continue
             stats["resolved"] += 1
             if m.role == "teacher":

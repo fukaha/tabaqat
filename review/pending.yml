@@ -89,3 +89,56 @@
   benzerlik: 0.75
   gerekce:
   - künye
+- 'no': 6
+  karar: ''
+  a: tabaqat_saniyya:1369
+  b: taj_tarajim:157
+  a_ad: عبيد الله بن عبد الله بن أحمد بن محمد بن حسكان، أبو القاسم الحذاء، القرشى، النيسابورى
+  a_yer: الطبقات السنية 4/422 (رقم 1368)
+  a_vefat: 480
+  b_ad: عبيد الله بن عبد الله الحسكاني
+  b_yer: تاج التراجم 202 (رقم 157)
+  b_vefat: 480
+  a_sahis: jw897
+  b_sahis: tj157
+  tur: isim
+  puan: 3.0
+  benzerlik: 0.71
+  gerekce:
+  - vefat 480
+- 'no': 7
+  karar: ''
+  a: qand:804
+  b: taj_tarajim:167
+  a_ad: أبو الحسن علي بن الحسين بن علي
+  a_yer: القند 435-436 (رقم 804)
+  a_vefat: 460
+  b_ad: علي بن الحسين السغدي
+  b_yer: تاج التراجم 209 (رقم 167)
+  b_vefat: 461
+  a_sahis: qd804
+  b_sahis: qd757
+  tur: isim
+  puan: 4.0
+  benzerlik: 0.67
+  gerekce:
+  - vefat 460
+  - aynı kitapta birden çok aday
+- 'no': 8
+  karar: ''
+  a: qand:804
+  b: athmar:395
+  a_ad: أبو الحسن علي بن الحسين بن علي
+  a_yer: القند 435-436 (رقم 804)
+  a_vefat: 460
+  b_ad: علي بن الحسين السّغديّ
+  b_yer: الأثمار الجنية 2/510 (رقم 384)
+  b_vefat: 461
+  a_sahis: qd804
+  b_sahis: qd757
+  tur: isim
+  puan: 4.0
+  benzerlik: 0.67
+  gerekce:
+  - vefat 460
+  - aynı kitapta birden çok aday

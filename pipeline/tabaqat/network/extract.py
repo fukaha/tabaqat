@@ -81,10 +81,26 @@ class Mention:
     extra: dict = field(default_factory=dict)
 
 
-def clean_text(text: str) -> str:
+# Dipnot atfı: muhakkik "برقم N" diye kişinin maddesini gösterdiyse dipnot işareti XREFk olarak
+# metinde kalır; ad parçası temizlenirken ayrılıp Mention.extra["xref"]'e yazılır (bkz. build.py)
+_XREF = re.compile(r"\s*\bXREF(\d+)\b\s*")
+
+
+class Name(str):
+    """Dipnot atfını (xref) taşıyan ad."""
+    xref: str | None = None
+
+
+def clean_text(text: str, xref: dict[str, str] | None = None) -> str:
     text = text.split("<hr>")[0]
+    if xref:
+        text = re.sub(r"\[\^(\d+)\]", lambda m: f" XREF{m.group(1)} " if m.group(1) in xref else " ", text)
     text = re.sub(r"\[\^\d+\]|\(\^?[\d٠-٩*]+\)|<[^>]+>", " ", text)
-    return normalize(text)
+    text = normalize(text)
+    if xref:  # "…محمد بن إبراهيم، ويأتى XREF2": işaret, cümle sonu sayılan "ياتي"den önce ada taşınır
+        text = re.sub(r"((?:\s*،)?\s*(?:و|ف)?س?(?:ياتي|تقدم)(?:\s+(?:ذكره|في بابه|قريبا|ايضا|ترجمته))*)\s*XREF(\d+)",
+                      r" XREF\2\1", text)
+    return text
 
 
 def _split_items(seg: str) -> list[str]:
@@ -114,9 +130,19 @@ _KEEP_W = {"وهب", "وكيع", "واصل", "وضاح", "ورقاء", "واقد
 
 
 def _clean_item(s: str) -> str:
+    # yalnız adın sonundaki işaret o adın atfıdır ("أحمد بن يوسف[^1] الأزرق": not Yûsuf'a)
+    xr = re.findall(r"XREF(\d+)\s*$", s.strip(" ،.()«»:؛"))
+    s = _XREF.sub(" ", s)
+    out = Name(_clean_item0(s))
+    out.xref = xr[-1] if xr else None
+    return out
+
+
+def _clean_item0(s: str) -> str:
     s = s.strip(" ،()«»\"'-[]")
     s = re.sub(r"^(?:و)?(?:علي|من) ", "", s)
-    if s.startswith("و") and s.split()[0] not in _KEEP_W and len(s.split()[0]) > 2:
+    if (s.startswith("و") and s.split()[0] not in _KEEP_W and len(s.split()[0]) > 2
+            and s.split()[0] not in ("ولده", "والده", "ولداه", "ولديه", "والدي")):
         s = s[1:]
     s = _TAIL.sub("", s.rstrip(" .،؛")).strip()
     s = re.sub(r"^صاحب \S+ ", "", s)  # "صاحب الهداية علي بن أبي بكر"
@@ -155,6 +181,10 @@ def _names(seg: str, vocab) -> list[str]:
     out = []
     items = [_clean_item(x) for x in _split_items(seg)]
     for k, item in enumerate(items):
+        # "…، ويأتى [^2]" / "يأتى فى بابه [^2]": atıf önceki ada aittir
+        if item.xref and out and out[-1].xref is None and (not item.strip() or re.match(r"(?:س?ياتي|تقدم|المذكور|الاتي|الماضي)\b", item)):
+            out[-1].xref = item.xref
+            continue
         if not name_like(item, vocab):
             # sözlükte olmayan tek kelimelik ad ("سفيان، وشعبة، وأبو حنيفة"): ardından ad geliyorsa sür
             nxt = items[k + 1] if k + 1 < len(items) else ""
@@ -169,8 +199,9 @@ def _names(seg: str, vocab) -> list[str]:
     return out
 
 
-def extract(text: str, book: str = "", vocab: set[str] | None = None) -> list[Mention]:
-    t = clean_text(text)
+def extract(text: str, book: str = "", vocab: set[str] | None = None,
+            xref: dict[str, str] | None = None) -> list[Mention]:
+    t = clean_text(text, xref)
     if book == "qand":  # Kand: tercümeden sonrası müellifin rivayet isnadıdır
         t = re.split(r"قال: (?:وبه )?(?:اخبرنا|حدثنا|انبانا|انشدنا)|\bاخبرنا\b", t)[0]
     out: list[Mention] = []
@@ -186,7 +217,7 @@ def extract(text: str, book: str = "", vocab: set[str] | None = None) -> list[Me
         seg = rest[:end.start()] if end else rest[:160]
         if len(seg) > 600:  # çok uzun parça: cümle sınırı bulunamadı
             seg = seg[:600].rsplit(" ", 1)[0]
-        snippet = t[max(0, m.start() - 30): m.end() + len(seg) + 10].strip()
+        snippet = _XREF.sub(" ", t[max(0, m.start() - 30): m.end() + len(seg) + 10]).strip()
         links = [x.strip(" ،") for x in re.split(r"،?\s*\bعن ", " " + seg) if x.strip(" ،")]
         chain_from = None
         if role == "student" and m.group(0).endswith("عنه") and re.match(r"\s*،?\s*عن ", rest):
@@ -208,7 +239,7 @@ def extract(text: str, book: str = "", vocab: set[str] | None = None) -> list[Me
                     kin, nm = _kin(name)
                     out.append(Mention("teacher" if first else "chain", rel, nm, kin, snippet,
                                        None if first else prev, via_chain=True,
-                                       extra={"raw": name}))
+                                       extra={"raw": name, "xref": (xref or {}).get(getattr(name, "xref", None) or "")}))
                 prev = names[0]
                 if first:
                     last_teacher = names[0]
@@ -217,7 +248,8 @@ def extract(text: str, book: str = "", vocab: set[str] | None = None) -> list[Me
             seg = re.split(r"،?\s*\bعن ", seg)[0]
         for name in _names(seg, vocab):
             kin, nm = _kin(name)
-            out.append(Mention(role, rel, nm, kin, snippet, extra={"raw": name}))
+            out.append(Mention(role, rel, nm, kin, snippet,
+                               extra={"raw": name, "xref": (xref or {}).get(getattr(name, "xref", None) or "")}))
             if role == "teacher":
                 last_teacher = name
     return out

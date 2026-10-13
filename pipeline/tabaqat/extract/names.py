@@ -116,8 +116,12 @@ def death_year(text: str, window: int = 90) -> int | None:
             continue  # başkasının vefatı
         s = re.search(r"سنه\s+", seg)
         if not s:
-            continue
-        rest = seg[s.end():]
+            # "في حدود الاربعين وستمايه", "بعد ثلاث وعشرين واربعمايه" ("سنة" yazılmadan)
+            s = re.search(r"(?:في حدود|حدود|بعد|نحو|قبل)\s+(?=(?:ال)?\S+ و)", seg)
+            if not s:
+                continue
+        rest = re.sub(r"(^| و)ال", r"\1", seg[s.end():])   # "التسعين والاربعمايه"
+        rest = re.sub(r"^بضع(?:ه)? ", "ثلاث ", rest)   # "بضع وستين": yaklaşık
         d = re.match(r"([\d٠-٩]{2,4})", rest)
         if d:
             y = int(d.group(1).translate(_DIGITS))
