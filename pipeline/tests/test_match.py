@@ -54,6 +54,9 @@ def test_parse_refs():
 
 @pytest.fixture(scope="module")
 def res():
+    # madde dosyaları (data/entries) telif nedeniyle açık depoda yok; yoksa bu testler atlanır
+    if not any((ROOT / "data" / "entries").glob("*.json")):
+        pytest.skip("data/entries yok")
     return build(ROOT)
 
 
