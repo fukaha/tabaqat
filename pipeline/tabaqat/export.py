@@ -149,8 +149,16 @@ def _quote(text: str, n: int = 320) -> str:
     return t[:n].rsplit(" ", 1)[0].rstrip("،,.:؛ ") + " …"
 
 
+def _text_fixes(root: Path) -> dict:
+    """Veri giriş panelinde elle düzeltilen madde başlığı ve metinleri (gizli depo: kaynak/duzeltme/metin.json).
+    Anahtar "kitap|atıf"; değer {"heading", "text"}. Metin elle düzeltildiği için yeniden temizlenmez."""
+    p = root / "kaynak" / "duzeltme" / "metin.json"
+    return json.loads(p.read_text(encoding="utf-8")) if p.exists() else {}
+
+
 def _texts(root: Path, persons: list[dict], entries: dict[str, dict], full_text: bool = False) -> dict[int, dict]:
     out: dict[int, dict] = defaultdict(dict)
+    fixes = _text_fixes(root)
     for p in persons:
         items = []
         for s in p["sources"]:
@@ -160,6 +168,10 @@ def _texts(root: Path, persons: list[dict], entries: dict[str, dict], full_text:
             # yayın metni: tarama kusurları giderilmiş, dipnotsuz
             text = clean_text(e.get("text"))
             item = {"book": s["book"], "cite": s["cite"], "heading": e.get("heading_raw") or "", "text": text}
+            fx = fixes.get(f"{s['book']}|{s['cite']}")
+            if fx:
+                item.update(heading=fx.get("heading", item["heading"]), text=fx.get("text", text))
+                text = item["text"]
             if not full_text:
                 q = _quote(text)
                 if q != text:

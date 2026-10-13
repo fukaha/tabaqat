@@ -2803,11 +2803,89 @@ async function vtTexts(host, id) {
     $("[data-retry]", host).onclick = () => vtTexts(host, id); return;
   }
   host.innerHTML = ts.length ? `<div class="vttabs2">${ts.map((t, k) => `<button type="button" class="chip" data-tk="${k}" aria-pressed="${k ? "false" : "true"}">${esc((BOOKS[t.book]?.cite_tr_s || t.book).split(",")[0])} <span class="num">${esc(citeTr(t.cite))}</span></button>`).join("")}</div>
-    ${ts.map((t, k) => `<article class="vttext" data-tk="${k}"${k ? " hidden" : ""}><p class="isnad" dir="ltr" lang="tr">${isnadHtml(t.book, t.cite)} <span class="tag">tam metin</span></p><div lang="ar" dir="rtl">${renderEntry({ ...t, full: 0, short: 0 })}</div></article>`).join("")}`
+    ${ts.map((t, k) => `<article class="vttext" data-tk="${k}"${k ? " hidden" : ""}><p class="isnad" dir="ltr" lang="tr">${isnadHtml(t.book, t.cite)} <span class="tag">tam metin</span>${MT_DONE.has(`${t.book}|${t.cite}`) ? ` <span class="tag">düzeltildi</span>` : ""}
+        <button type="button" class="btn small" data-mt="${k}">Metni düzenle</button></p><div class="mtview" lang="ar" dir="rtl">${renderEntry({ ...t, full: 0, short: 0 })}</div></article>`).join("")}`
     : `<p class="empty">Bu kişinin biyografi metni yok.</p>`;
-  host.onclick = e => { const b = e.target.closest("button[data-tk]"); if (!b) return;
+  host.onclick = e => { const m = e.target.closest("button[data-mt]"); if (m) return mtEdit(host, id, ts[+m.dataset.mt], m.closest("article"));
+    const b = e.target.closest("button[data-tk]"); if (!b) return;
     host.querySelectorAll("button[data-tk]").forEach(x => x.setAttribute("aria-pressed", String(x === b)));
     host.querySelectorAll("article[data-tk]").forEach(a => { a.hidden = a.dataset.tk !== b.dataset.tk; }); host.scrollTop = 0; };
+}
+
+// ---------- tam metin düzeltmesi ----------
+// Kaydedilen başlık/metin tek seferde (1) gizli depoda t/NN.json'a ve duzeltme/metin.json'a (pipeline yeniden üretirken
+// uygular), (2) açık depoda site/data/t/NN.json'daki kısa alıntıya yazılır; site yeniden yayımlanınca herkes görür.
+const MT_DONE = new Set();
+// pipeline'daki export._quote ile aynı kural: ilk cümleler, en çok 320 harf, cümle sonunda kesilir
+function mtQuote(text, n = 320) {
+  const t = text.split("<hr>")[0].replace(/\[\^\w+\]|^#+\s*|<[^>]+>/gm, " ").replace(/\s+/g, " ").trim();
+  if (t.length <= n) return t;
+  const ends = [...t.slice(0, n + 1).matchAll(/[.؛!؟:](?=\s)/g)].map(m => m.index + 1).filter(e => e >= Math.floor(n / 3));
+  if (ends.length) return t.slice(0, ends[ends.length - 1]).trimEnd() + " …";
+  const c = t.slice(0, n), i = c.lastIndexOf(" ");
+  return (i > 0 ? c.slice(0, i) : c).replace(/[،,.:؛ ]+$/, "") + " …";
+}
+// Git veri API'siyle birden çok dosyayı tek kayıtta (commit) yazar; build(read) → {yol: içerik}. Arada başkası yazdıysa yeniden dener.
+async function ghCommit(repo, build, message) {
+  const br = (await gh(`/repos/${repo}`)).default_branch;
+  for (let i = 0; ; i++) {
+    const head = (await gh(`/repos/${repo}/git/ref/heads/${encodeURIComponent(br)}`)).object.sha;
+    const base = (await gh(`/repos/${repo}/git/commits/${head}`)).tree.sha;
+    const read = async path => { const r = await fetch(`https://api.github.com/repos/${repo}/contents/${path}?ref=${head}`, { cache: "no-store",
+        headers: { Accept: "application/vnd.github.raw+json", Authorization: `Bearer ${ktTok()}`, "X-GitHub-Api-Version": "2022-11-28" } });
+      if (r.status === 404) return null; if (!r.ok) { const e = new Error(`GitHub ${r.status} (${path})`); e.status = r.status; throw e; } return r.text(); };
+    const files = await build(read);
+    const tree = await gh(`/repos/${repo}/git/trees`, { method: "POST", body: JSON.stringify({ base_tree: base,
+      tree: Object.entries(files).map(([path, content]) => ({ path, mode: "100644", type: "blob", content })) }) });
+    const c = await gh(`/repos/${repo}/git/commits`, { method: "POST", body: JSON.stringify({ message, tree: tree.sha, parents: [head] }) });
+    try { await gh(`/repos/${repo}/git/refs/heads/${encodeURIComponent(br)}`, { method: "PATCH", body: JSON.stringify({ sha: c.sha }) }); return; }
+    catch (e) { if (i >= 2 || e.status !== 422) throw e; }
+  }
+}
+async function mtSave(id, t, heading, text) {
+  const n = String(shardOf(id)).padStart(2, "0"), key = `${t.book}|${t.cite}`, who_ = P.get(id)?.tr || id;
+  const msg = `Metin düzeltmesi: ${who_} (${t.cite})`;
+  const put = (sh, fn) => { const L = sh[id] || []; const it = L.find(x => x.book === t.book && x.cite === t.cite);
+    if (!it) throw new Error("Madde dosyada bulunamadı"); fn(it); return sh; };
+  await ghCommit(KAYNAK, async read => {
+    const sh = JSON.parse(await read(`t/${n}.json`) || "{}"), fx = JSON.parse(await read("duzeltme/metin.json") || "{}");
+    put(sh, it => { it.heading = heading; it.text = text; });
+    fx[key] = { heading, text, p: id, at: ktToday() };
+    return { [`t/${n}.json`]: JSON.stringify(sh), "duzeltme/metin.json": JSON.stringify(fx, null, 1) + "\n" };
+  }, msg);
+  await ghCommit(REPO, async read => {
+    const path = `site/data/t/${n}.json`, sh = JSON.parse(await read(path) || "{}");
+    put(sh, it => { const q = mtQuote(text); it.heading = heading; it.text = q; if (q !== text) it.short = 1; else delete it.short; });
+    return { [path]: JSON.stringify(sh) };
+  }, msg);
+  // bu oturumdaki önbellekler
+  const full = cache["full/" + n] && await cache["full/" + n].catch(() => null);
+  if (full) put(full, it => { it.heading = heading; it.text = text; });
+  const pub = cache[`t/${n}.json`] && await cache[`t/${n}.json`].catch(() => null);
+  if (pub && pub[id]) put(pub, it => { const q = mtQuote(text); it.heading = heading; it.text = q; q !== text ? (it.short = 1) : delete it.short; });
+  MT_DONE.add(key);
+}
+function mtEdit(host, id, t, art) {
+  if (!art || $(".mtform", art)) return;
+  const view = $(".mtview", art); view.hidden = true;
+  const fm = document.createElement("form"); fm.className = "mtform ktform";
+  fm.innerHTML = `<label class="ktf"><span class="label" dir="ltr" lang="tr">Madde başlığı</span><input name="h" dir="rtl" lang="ar" value="${esc(t.heading)}"></label>
+    <label class="ktf"><span class="label" dir="ltr" lang="tr">Metin (paragrafları boş satırla ayırın)</span><textarea name="t" dir="rtl" lang="ar" rows="${Math.min(30, Math.max(8, Math.ceil(t.text.length / 90)))}">${esc(t.text)}</textarea></label>
+    <p class="kterr" role="alert" hidden dir="ltr" lang="tr"></p>
+    <div class="hd" dir="ltr" lang="tr"><span class="legend">Kaydedince gizli depodaki tam metne ve sitedeki kısa alıntıya yazılır.</span><span class="grow"></span>
+      <button type="button" class="btn" data-no>Vazgeç</button><button type="submit" class="btn gold">Kaydet ve yayımla</button></div>`;
+  art.append(fm); fm.t.focus();
+  fm.addEventListener("click", e => { if (e.target.closest("[data-no]")) { fm.remove(); view.hidden = false; } });
+  fm.addEventListener("submit", async e => {
+    e.preventDefault(); e.stopPropagation();
+    const h = fm.h.value.trim(), x = fm.t.value.replace(/\r/g, "").replace(/[ \t]+\n/g, "\n").replace(/\n{3,}/g, "\n\n").trim(), err = $(".kterr", fm);
+    if (!x) { err.textContent = "Metin boş bırakılamaz."; err.hidden = false; return; }
+    if (h === t.heading && x === t.text) { fm.remove(); view.hidden = false; return; }
+    const b = $("[type=submit]", fm); b.disabled = true; b.textContent = "Kaydediliyor…"; err.hidden = true;
+    try { await mtSave(id, t, h, x); toast("Metin kaydedildi; site birkaç dakika içinde güncellenir"); vtTexts(host, id); }
+    catch (e2) { b.disabled = false; b.textContent = "Kaydet ve yayımla";
+      err.textContent = `Kaydedilemedi: ${e2.message}${e2.status === 403 || e2.status === 404 ? " — jetonunuzun her iki depoya da Contents: Read and write izni olmalı." : ""}`; err.hidden = false; }
+  });
 }
 
 // ---------- 620–750 fakihleri (#/veri/fakih) ----------

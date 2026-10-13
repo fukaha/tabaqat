@@ -953,3 +953,6 @@ html[lang="ar"] .rnode .yr { font-family: var(--f-body); }
 .vttext [lang=ar] { font-size: 1.12rem; line-height: 2; }
 .vtform .ktf.ch input, .vtform .ktf.ch textarea, .vtform .ktf.ch select { background: color-mix(in srgb, var(--butter) 70%, transparent); }
 @media (max-width: 900px) { .vtbox .in { height: auto; overflow: auto; } .vtcols { grid-template-columns: 1fr; } .vtmain, .vttexts { overflow: visible; } .vttexts { max-height: 70vh; overflow: auto; } }
+.vttext .isnad .btn.small { margin-inline-start: .5rem; }
+.mtform { display: flex; flex-direction: column; gap: .5rem; margin-top: .4rem; }
+.mtform textarea, .mtform input { font-family: "Noto Naskh Arabic", "Amiri", serif; font-size: 1.08rem; line-height: 1.9; }
