@@ -2926,7 +2926,10 @@ async function viewFakih(view, openId) {
   try { await fkLoad(); }
   catch (e) { view.innerHTML = `<div class="vt" dir="ltr" lang="tr">${tabs}<p class="kterr">Veri seti yüklenemedi (${esc(e.message)}). ${e.status === 404 ? `Jetonunuzun <code>${KAYNAK}</code> deposuna erişimi olduğundan emin olun.` : ""}</p></div>`; return; }
   const regs = [...new Set(FK.kayitlar.flatMap(r => String(fkCur(r.kimlik, "yaşadığı bölge")).split(/,\s*/)).filter(Boolean))].sort((a, b) => a.localeCompare(b, "tr"));
-  const st = { q: "", du: "veri setinde", reg: "", f: "", page: 0 };
+  const st = { q: "", du: "veri setinde", book: "", reg: "", f: "", page: 0 };
+  const groups = new Map();   // aynı kısa künyeyi taşıyan ciltler tek seçenek (Bütün âlimler sekmesindeki gibi)
+  Object.entries(BOOKS).forEach(([bid, b]) => { const k = b.cite_tr_s || bid; if (!groups.has(k)) groups.set(k, []); groups.get(k).push(bid); });
+  const inBook = (id, ids) => (P.get(id)?.books || []).some(b => ids.includes(b));
   try { Object.assign(st, JSON.parse(sessionStorage.getItem("fakih_st") || "{}")); } catch (e) {}
   view.innerHTML = `<div class="vt" dir="ltr" lang="tr">${tabs}
     <div class="vthead"><h1>620–750 fakihleri</h1><span class="c num" id="vtn"></span><span class="grow"></span>
@@ -2935,13 +2938,14 @@ async function viewFakih(view, openId) {
       Düzeltmeler önce taslak olarak saklanır; <b>Yayımla</b> dediğinizde gizli depodaki düzeltme dosyasına yazılır ve Excel yeniden üretilirken uygulanır.</p>
     <form class="vtbar" role="search"><input type="search" name="q" placeholder="Ad ya da kimlik ara" aria-label="Ara" autocomplete="off">
       <select name="du" aria-label="Durum"><option value="">Bütün kayıtlar</option>${FK.durumlar.map(d => `<option>${esc(d)}</option>`).join("")}<option value="çıkarıldı">çıkarılanların hepsi</option></select>
+      <select name="book" aria-label="Kaynak eser"><option value="">Bütün kaynaklar</option>${[...groups].map(([k, ids]) => `<option value="${esc(ids.join(","))}">${esc(k)} (${FK.kayitlar.filter(r => fkVal(r.kimlik, "durum") === "veri setinde" && inBook(r.kimlik, ids)).length})</option>`).join("")}</select>
       <select name="reg" aria-label="Bölge"><option value="">Bütün bölgeler</option>${regs.map(r => `<option>${esc(r)}</option>`).join("")}</select>
       <select name="f" aria-label="Süzgeç"><option value="">Hepsi</option><option value="draft">Taslakta olanlar</option><option value="fixed">Düzeltilmiş</option><option value="nod">Vefatı kayıtlı olmayan</option><option value="dup">Olası tekrar kaydı olan</option><option value="goc">Göç etmiş</option></select></form>
     <div class="vtwrap"><table class="vtt fkt"><thead><tr><th>Kimlik</th><th>Durum</th>${FK_COLS.map(([k]) => `<th>${esc(k)}</th>`).join("")}<th></th></tr></thead><tbody></tbody></table></div>
     <nav class="vtpager" aria-label="Sayfalar"></nav>
     <div class="vtdraft" hidden><span id="vtdn"></span><span class="grow"></span><button type="button" class="btn" id="vtrev">Gözden geçir</button><button type="button" class="btn gold" id="vtpub">Yayımla</button></div></div>`;
   const f = $(".vtbar", view), tb = $("tbody", view);
-  ["q", "du", "reg", "f"].forEach(k => { f[k].value = st[k]; });
+  ["q", "du", "book", "reg", "f"].forEach(k => { f[k].value = st[k]; });
   let rows = [];
   const list = () => {
     const q = fold(st.q);
@@ -2949,6 +2953,7 @@ async function viewFakih(view, openId) {
       if (st.q) { const isA = /[؀-ۿ]/.test(st.q);
         if (!(id === st.q.trim() || (isA ? norm(v("Arapça adı")).includes(norm(st.q)) : fold(`${v("tam adı")} ${v("meşhur adı")} ${v("lakap ve unvanlar")}`).includes(q)))) return false; }
       if (st.du && !(st.du === "çıkarıldı" ? v("durum").startsWith("çıkarıldı") : v("durum") === st.du)) return false;
+      if (st.book && !inBook(id, st.book.split(","))) return false;
       if (st.reg && !v("yaşadığı bölge").split(/,\s*/).includes(st.reg)) return false;
       if (st.f === "draft") return !!FKT[id]; if (st.f === "fixed") return !!FK.fix[id];
       if (st.f === "nod") return !v("vefat (h./m.)"); if (st.f === "dup") return !!v("olası tekrar kaydı");
