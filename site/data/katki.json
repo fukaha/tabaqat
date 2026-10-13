@@ -8,6 +8,27 @@
    "rel": "fiqh",
    "src": "el-Cevâhirü'l-mudıyye, II, 45",
    "at": "2026-09-30"
+  },
+  {
+   "id": "kmv6ljoqp0",
+   "op": "edit",
+   "p": "jw1490",
+   "pa": [
+    [
+     "x:khurasan",
+     "residence"
+    ]
+   ],
+   "at": "2026-10-13"
+  },
+  {
+   "id": "kmv6ljoqp1",
+   "op": "add",
+   "t": "jw1323",
+   "s": "jw1490",
+   "rel": "fiqh",
+   "src": "Veri girişi",
+   "at": "2026-10-13"
   }
  ]
 }
