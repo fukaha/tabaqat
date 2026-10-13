@@ -15,7 +15,7 @@ def load_book(book: str) -> dict:
     return yaml.safe_load((ROOT / "books" / f"{book}.yml").read_text(encoding="utf-8"))
 
 
-PARSE_OPTS = ("start_after_heading", "unnumbered_entry", "section_heading", "stop_at_heading",
+PARSE_OPTS = ("star_paragraphs", "start_after_heading", "unnumbered_entry", "section_heading", "stop_at_heading",
               "entry_sections", "series", "preamble_entry", "co_entries",
               "entry_paragraph")
 

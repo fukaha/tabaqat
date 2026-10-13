@@ -30,6 +30,7 @@ _HEADING = re.compile(r"^و?\[?\s*([\d٠-٩]+)\s*[-.]\s*(.+?)\s*\]?$")
 # Paragraftan başlığa terfi için yalnız tireli biçim (numaralı listelerle karışmasın)
 _P_HEADING = re.compile(r"^و?\[?\s*([\d٠-٩]+)\s*-\s*(.+?)\s*\]?$")
 _INLINE_HEADING = re.compile(r"([\d٠-٩]+)\s*-\s*\[[^\]]+\]")
+_STAR_NOTE = re.compile(r"^\*+\s*(انظر\s+)?(ترجمته|ترجمتها|ترجمة|له ترجمة|مصادر)")
 _FN_LINE = re.compile(r"\(\^([\d٠-٩]+|\*+)\)")
 # Başlıksız madde paragrafında künyenin bittiği yer: tercümeyi açan ilk fiil/kalıp
 _BIO_START = re.compile(r"\s(?:كان|أخذ|اخذ|تفقه|قرأ|ولد|روى|سمع|درس|له|هو|نسبة|نسبته|إمام|امام|قال|اشتغل)\s")
@@ -85,7 +86,8 @@ def parse(path: str, book_id: str, start_after_heading: str | None = None,
           unnumbered_entry: str | None = None, section_heading: str | None = None,
           stop_at_heading: str | None = None, entry_sections: str | None = None,
           series: dict[str, str] | None = None, preamble_entry: dict | None = None,
-          co_entries: bool = False, entry_paragraph: str | None = None) -> list[Entry]:
+          co_entries: bool = False, entry_paragraph: str | None = None,
+          star_paragraphs: bool = False) -> list[Entry]:
     """
     start_after_heading: bu başlığa kadar olan kısım (tahkik mukaddimesi vb.) atlanır.
     stop_at_heading: bu başlıktan sonrası (hâtime, fihristler) atlanır.
@@ -96,6 +98,8 @@ def parse(path: str, book_id: str, start_after_heading: str | None = None,
     series: {başlık regex: seri adı}; numaralamanın yeniden başladığı ek bölümler (zeyl).
     preamble_entry: {vol, page, title}; başlıksız başlayan madde (ör. mukaddimeden sonra
         doğrudan başlayan Ebû Hanîfe tercümesi).
+    star_paragraphs: "*" ile başlayan paragraflar metindir (Hulv neşrinde nüsha farkıyla gelen kısımlar);
+        yalnız muhakkikin "* ترجمته فى: ..." kaynak notları atlanır. Kapalıyken hepsi atlanır (eski davranış).
     co_entries: aralarında metin olmayan ardışık başlıklar tek metni paylaşır (Ketâib'deki
         ortak tercümeler). Kapalıyken her başlık ayrı maddedir (tercüme başlıkta bitebilir).
     entry_paragraph: `entry_sections` içinde başlık etiketi almamış, bu kalıpla başlayan
@@ -179,6 +183,8 @@ def parse(path: str, book_id: str, start_after_heading: str | None = None,
                         catchword = True
                     elif not txt.strip("* ") and not catchword:
                         events.append(("sep", ""))
+                    elif star_paragraphs and not catchword and not _STAR_NOTE.match(txt):
+                        events.append(("p", txt.lstrip("* ").strip()))
                 elif catchword:  # sayfa altındaki künye/dipnot dışında her şey atlanır
                     continue
                 elif txt:

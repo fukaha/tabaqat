@@ -10,3 +10,4 @@ start_after_heading: "^الباب الثالث فى الملتقط"
 # Ebû Hanîfe tercümesi ("البستان"dan seçmeler) numarasız madde olarak alınır.
 unnumbered_entry: "^الباب الثالث فى الملتقط"
 section_heading: "^حرف "
+star_paragraphs: true   # "*" ile başlayan paragraflar (nüsha farkı) metne dahil
