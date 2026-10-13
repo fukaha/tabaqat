@@ -1,7 +1,9 @@
 """Derin okuma çıktılarını (kaynak/analiz/okuma/parti_NN.json) Excel veri setine dönüştürür.
 
 Girdi: kaynak/analiz/dosya/parti_NN.json (kişi dosyaları) ve kaynak/analiz/okuma/parti_NN.json (okuma kayıtları;
-şema kaynak/analiz/YONERGE.md'de). Çıktı: kaynak/analiz/hanefi_fakihler_620_750.xlsx
+şema kaynak/analiz/YONERGE.md'de). Sitedeki veri giriş panelinde (#/veri, "620–750 fakihleri") yapılan elle
+düzeltmeler kaynak/analiz/fakihler_duzeltme.json'dadır ({kimlik: {sütun: değer}}) ve ana sayfaya uygulanır.
+Çıktı: kaynak/analiz/hanefi_fakihler_620_750.xlsx ve panelin okuduğu kaynak/analiz/fakihler_panel.json
     python analysis/fakihler_birlestir.py
 """
 from __future__ import annotations
@@ -70,17 +72,31 @@ def sort_key(o, d):
     return sum(map(int, m)) / len(m) if m else (d.get("vefat_tahmini_sitede") or 999)
 
 
-def rows(dos, oku):
+DURUM = ("veri setinde", "çıkarıldı: fakih değil", "çıkarıldı: kapsam dışı")
+
+
+def durum(o):
+    return DURUM[1] if o.get("fakih") is False else DURUM[2] if o.get("kapsam_disi") else DURUM[0]
+
+
+def load_fix():
+    p = A / "fakihler_duzeltme.json"
+    return json.load(open(p, encoding="utf-8")) if p.exists() else {}
+
+
+def rows(dos, oku, fix=None):
+    fix = fix or {}
     keep, out, L = [], [], {k: [] for k in ("yer", "hoca", "talebe", "eser", "gorev", "olay")}
     for pid, d in dos.items():
         o = oku.get(pid)
         if not o:
             continue
-        if o.get("fakih") is False or o.get("kapsam_disi"):
+        du = (fix.get(pid) or {}).get("durum") or durum(o)
+        if du != DURUM[0]:
+            gr = (fix.get(pid) or {}).get("çıkarılma gerekçesi") or (o.get("fakih_gerekce") if o.get("fakih") is False else o.get("kapsam_gerekce"))
             out.append({"kimlik": pid, "ad": o.get("tam_adi") or d["mevcut_turkce_ad"], "Arapça adı": d["arapca_ad"],
                         "vefat": hm(g(o, "vefat", "hicri")) or g(o, "vefat_donemi", "donem"),
-                        "çıkarılma sebebi": "fakih değil" if o.get("fakih") is False else "kapsam dışı",
-                        "gerekçe": o.get("fakih_gerekce") if o.get("fakih") is False else o.get("kapsam_gerekce"),
+                        "çıkarılma sebebi": du.split(": ", 1)[-1], "gerekçe": flat(gr),
                         "kaynaklar": j(s["atif"] for s in d["kaynaklar"])})
             continue
         keep.append((sort_key(o, d), pid))
@@ -155,6 +171,9 @@ def rows(dos, oku):
                 if len(txt) > CELL_MAX:
                     txt = txt[:CELL_MAX] + "\n[… hücre sınırı nedeniyle kesildi]"
             r[f"tam metin {i + 1}"] = txt
+        for k, v in (fix.get(pid) or {}).items():   # elle düzeltmeler (panel)
+            if k in r and k not in ("no", "kimlik"):
+                r[k] = v or None
         R.append(r)
     return R, out, L
 
@@ -267,9 +286,30 @@ def write(R, out, L, path):
     wb.save(path)
 
 
+PANEL_SKIP = {"no", "sitede", "kaynaklar"}
+
+
+def panel(dos, oku):
+    """Veri giriş paneli için düzeltmesiz temel kayıtlar (tam metinler hariç; panel onları t/ parçalarından okur)."""
+    R, _, _ = rows(dos, {k: {**o, "fakih": True, "kapsam_disi": False} for k, o in oku.items()})
+    by = {r["kimlik"]: r for r in R}
+    alanlar = [k for k in R[0] if k not in PANEL_SKIP and not k.startswith("tam metin")] if R else []
+    kayit = []
+    for _, pid in sorted((by[k]["no"], k) for k in by):
+        o, r = oku[pid], by[pid]
+        x = {"kimlik": pid, "durum": durum(o),
+             "çıkarılma gerekçesi": flat(o.get("fakih_gerekce") if o.get("fakih") is False else o.get("kapsam_gerekce") if o.get("kapsam_disi") else None),
+             "kaynaklar": [s["atif"] for s in dos[pid]["kaynaklar"]]}
+        x.update({k: "" if r.get(k) is None else str(r[k]) for k in alanlar if k != "kimlik"})
+        kayit.append(x)
+    return {"alanlar": ["durum", "çıkarılma gerekçesi"] + [k for k in alanlar if k != "kimlik"], "durumlar": list(DURUM), "kayitlar": kayit}
+
+
 if __name__ == "__main__":
     dos, oku = load()
-    R, out, L = rows(dos, oku)
+    fix = load_fix()
+    R, out, L = rows(dos, oku, fix)
+    (A / "fakihler_panel.json").write_text(json.dumps(panel(dos, oku), ensure_ascii=False, separators=(",", ":")) + "\n", encoding="utf-8")
     write(R, out, L, A / "hanefi_fakihler_620_750.xlsx")
     eksik = [k for k in dos if k not in oku]
-    print(f"okunan {len(oku)}/{len(dos)}, veri setinde {len(R)}, çıkarılan {len(out)}, okunmamış {len(eksik)}")
+    print(f"okunan {len(oku)}/{len(dos)}, veri setinde {len(R)}, çıkarılan {len(out)}, okunmamış {len(eksik)}, elle düzeltilen {len(fix)}")

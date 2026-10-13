@@ -122,6 +122,7 @@ async function route() {
     else if (v === "map") await viewMap(view, decodeURIComponent(arg));
     else if (v === "about") viewAbout(view);
     else if (v === "yonetim") await viewAdmin(view);
+    else if (v === "veri" && arg === "fakih") await viewFakih(view, decodeURIComponent(location.hash.split("/")[3] || ""));
     else if (v === "veri") await viewVeri(view, decodeURIComponent(arg));
     else if (v === "c") await viewList(view, "c", +arg);
     else if (v === "b") await viewList(view, "b", decodeURIComponent(arg));
@@ -2520,6 +2521,7 @@ async function viewVeri(view, openId) {
   const st = { q: "", book: "", c: "", f: "", sort: "d", page: 0 };
   try { Object.assign(st, JSON.parse(sessionStorage.getItem("veri_st") || "{}")); } catch (e) {}
   view.innerHTML = `<div class="vt" dir="ltr" lang="tr">
+    <nav class="vttabs" aria-label="Veri setleri"><a href="#/veri" class="on" aria-current="page">Bütün âlimler</a><a href="#/veri/fakih">620–750 fakihleri</a></nav>
     <div class="vthead"><h1>Veri girişi</h1><span class="c num" id="vtn"></span><span class="grow"></span>
       <a class="btn small" href="#/yonetim">Yönetim paneli</a>
       <span class="dlmenu"><button type="button" class="btn small" id="vtexp">Dışa aktar ▾</button>
@@ -2691,6 +2693,7 @@ async function vtBox(id, PL, N, redraw) {
   };
   box.innerHTML = `<form class="in ktform vtform" novalidate>
     <div class="hd"><b>${esc(p.tr)}</b> <span class="d num">${esc(id)}</span><span class="grow"></span><a class="btn" href="#/p/${esc(id)}" target="_blank" rel="noopener">Sayfası ↗</a><button type="button" class="btn" data-x>Vazgeç</button></div>
+    <div class="vtcols"><div class="vtmain">
     <datalist id="vtdnl">${VT_DN.map(v => `<option value="${esc(v)}">`).join("")}</datalist>
     <fieldset><legend class="label">Adlar</legend><div class="vtgrid">${inp("tr", { wide: 1 })}${inp("trs")}${inp("ar", { ar: 1, wide: 1 })}${inp("alt", { ph: "künye, lakap, şöhret; virgülle ayırın" })}</div></fieldset>
     <fieldset><legend class="label">Tarihler</legend><div class="vtgrid">${inp("b", { num: 1 })}${inp("d", { num: 1 })}
@@ -2705,9 +2708,11 @@ async function vtBox(id, PL, N, redraw) {
     <fieldset><legend class="label">Talebeleri</legend><ul class="vtl" id="vtsl"></ul><div class="vtadd"><div class="vtpick" data-dir="s"></div><select name="rs" aria-label="Bağ türü">${KT_REL.map(k => `<option value="${k}">${REL[k]}</option>`).join("")}</select></div></fieldset>
     <fieldset><legend class="label">Not ve kaynak</legend><div class="vtgrid">${inp("note", { area: 3, wide: 1 })}${inp("src", { wide: 1, ph: "ör. Kureşî, el-Cevâhir, III, 431 (nr. 1611)" })}</div>
       ${d.notes ? `<ul class="ktfix">${d.notes.map(n => `<li dir="auto">${esc(n.note)}${n.src ? ` <span class="d">(${esc(n.src)})</span>` : ""}</li>`).join("")}</ul>` : ""}</fieldset>
+    </div><aside class="vttexts" aria-label="Biyografi metinleri"></aside></div>
     <p class="kterr" role="alert" hidden></p>
     <div class="hd ktsub"><button type="button" class="btn" data-clear>Bu kaydın taslağını sil</button><span class="grow"></span><button type="submit" class="btn gold">Taslağa kaydet</button></div></form>`;
   const f = $("form", box), err = $(".kterr", box);
+  vtTexts($(".vttexts", box), id);
   const paint = () => { $("#vtpl", box).innerHTML = placeRows(); $("#vtwl", box).innerHTML = workRows(); $("#vttl", box).innerHTML = relRows("t"); $("#vtsl", box).innerHTML = relRows("s"); };
   paint();
   // eser satırlarındaki yazılanları x'e aktarır
@@ -2765,6 +2770,182 @@ async function vtBox(id, PL, N, redraw) {
     vtSave(); toast(VT[id] ? "Taslağa kaydedildi" : "Değişiklik yok"); close();
   });
   document.body.append(box); f.tr.focus();
+}
+
+// ayrıntı pencerelerinde formun yanında biyografi metinleri (yönetici girişliyse gizli depodan tam metin)
+async function vtTexts(host, id) {
+  host.innerHTML = `<p class="empty">Metinler yükleniyor…</p>`;
+  try {
+    const ts = await texts(id);
+    host.innerHTML = ts.length ? `${ts.some(t => !t.full) ? `<p class="kterr">Tam metin açılamadı; kısa alıntılar gösteriliyor. Yönetim panelinden gizli depo erişimini kontrol edin.</p>` : ""}
+      <div class="vttabs2">${ts.map((t, k) => `<button type="button" class="chip" data-tk="${k}" aria-pressed="${k ? "false" : "true"}">${esc((BOOKS[t.book]?.cite_tr_s || t.book).split(",")[0])} <span class="num">${esc(citeTr(t.cite))}</span></button>`).join("")}</div>
+      ${ts.map((t, k) => `<article class="vttext" data-tk="${k}"${k ? " hidden" : ""}><p class="isnad" dir="ltr" lang="tr">${isnadHtml(t.book, t.cite)}</p><div lang="ar" dir="rtl">${renderEntry({ ...t, full: 0 })}</div></article>`).join("")}`
+      : `<p class="empty">Bu kişinin biyografi metni yok.</p>`;
+    host.onclick = e => { const b = e.target.closest("button[data-tk]"); if (!b) return;
+      host.querySelectorAll("button[data-tk]").forEach(x => x.setAttribute("aria-pressed", String(x === b)));
+      host.querySelectorAll("article[data-tk]").forEach(a => { a.hidden = a.dataset.tk !== b.dataset.tk; }); host.scrollTop = 0; };
+  } catch (e) { host.innerHTML = `<p class="kterr">Metinler yüklenemedi (${esc(e.message)}).</p>`; }
+}
+
+// ---------- 620–750 fakihleri (#/veri/fakih) ----------
+// Temel kayıtlar gizli depodaki analiz/fakihler_panel.json'dadır (analysis/fakihler_birlestir.py üretir); elle düzeltmeler
+// analiz/fakihler_duzeltme.json'a {kimlik: {sütun: değer}} olarak yazılır ve betik Excel'i üretirken bunları uygular.
+const FK_KEY = "fakih_taslak", FK_BASE = "analiz/fakihler_panel.json", FK_FIX = "analiz/fakihler_duzeltme.json";
+const FK_COLS = [["meşhur adı", 12], ["tam adı", 16], ["vefat (h./m.)", 6], ["vefat dönemi (tahmin)", 12], ["yaşadığı bölge", 10], ["bulunduğu şehir/köy", 14], ["intikal/göç", 7]];
+const FK_GROUPS = [["Ad", ["tam adı", "meşhur adı", "Arapça adı", "lakap ve unvanlar"]],
+  ["Doğum ve vefat", ["doğum (h./m.)", "doğum tarihi", "doğum kaynağı", "vefat (h./m.)", "vefat tarihi", "vefat kaynağı", "vefat ihtilafı", "vefat dönemi (tahmin)", "tahminî aralık (h.)", "tahmin gerekçesi", "tahmin güveni"]],
+  ["Coğrafya", ["nisbe yerleri", "doğum yeri", "yaşadığı bölge", "bulunduğu şehir/köy", "seyahatleri", "intikal/göç", "göç güzergâhı", "göç sebebi", "göç kanıtı"]],
+  ["İlmî hayat", ["hocaları", "talebeleri", "eserleri", "eser türleri", "eserlerin ilim dalları", "görevleri", "ilmî ilgi alanları"]],
+  ["Diğer", ["siyasî/sosyal olaylar", "olası tekrar kaydı", "fakihlik gerekçesi", "notlar", "durum", "çıkarılma gerekçesi"]]];
+let FK = null, FKT = (() => { try { return JSON.parse(localStorage.getItem(FK_KEY) || "{}") || {}; } catch (e) { return {}; } })();
+const fkSave = () => { Object.keys(FKT).forEach(id => { if (!Object.keys(FKT[id]).length) delete FKT[id]; }); try { localStorage.setItem(FK_KEY, JSON.stringify(FKT)); } catch (e) {} };
+async function fkRaw(path) {
+  const r = await fetch(`https://api.github.com/repos/${KAYNAK}/contents/${path}`, { headers: { Accept: "application/vnd.github.raw+json", Authorization: `Bearer ${ktTok()}`, "X-GitHub-Api-Version": "2022-11-28" } });
+  if (!r.ok) { const e = new Error(`GitHub ${r.status}`); e.status = r.status; throw e; }
+  return r.json();
+}
+async function fkFixRead() {
+  try { const f = await gh(`/repos/${KAYNAK}/contents/${FK_FIX}`); return { sha: f.sha, fix: JSON.parse(b64dec(f.content)) || {} }; }
+  catch (e) { if (e.status === 404) return { sha: undefined, fix: {} }; throw e; }
+}
+async function fkLoad() {
+  if (FK) return FK;
+  const [base, { fix }] = await Promise.all([fkRaw(FK_BASE), fkFixRead()]);
+  return (FK = { ...base, fix, by: new Map(base.kayitlar.map(r => [r.kimlik, r])) });
+}
+const fkCur = (id, k) => { const f = FK.fix[id]; return f && k in f ? f[k] : FK.by.get(id)?.[k] ?? ""; };
+const fkVal = (id, k) => FKT[id] && k in FKT[id] ? FKT[id][k] : fkCur(id, k);
+function fkSet(id, k, v) { v = String(v ?? "").trim(); const d = FKT[id] || (FKT[id] = {}); if (v === fkCur(id, k)) delete d[k]; else d[k] = v; fkSave(); }
+const fkName = id => fkVal(id, "meşhur adı") || fkVal(id, "tam adı") || id;
+
+async function viewFakih(view, openId) {
+  document.title = `620–750 fakihleri — ${UI.brand[LANG === "ar" ? 0 : 1]}`;
+  const tabs = `<nav class="vttabs" aria-label="Veri setleri"><a href="#/veri">Bütün âlimler</a><a href="#/veri/fakih" class="on" aria-current="page">620–750 fakihleri</a></nav>`;
+  if (!ktTok()) { view.innerHTML = `<div class="vt" dir="ltr" lang="tr">${tabs}<p class="lede">Bu veri seti gizli depodadır. Görmek için <a href="#/yonetim">yönetim paneline</a> jetonla giriş yapın (jetonun <code>${KAYNAK}</code> deposuna okuma-yazma izni olmalı).</p></div>`; return; }
+  try { await fkLoad(); }
+  catch (e) { view.innerHTML = `<div class="vt" dir="ltr" lang="tr">${tabs}<p class="kterr">Veri seti yüklenemedi (${esc(e.message)}). ${e.status === 404 ? `Jetonunuzun <code>${KAYNAK}</code> deposuna erişimi olduğundan emin olun.` : ""}</p></div>`; return; }
+  const regs = [...new Set(FK.kayitlar.flatMap(r => String(fkCur(r.kimlik, "yaşadığı bölge")).split(/,\s*/)).filter(Boolean))].sort((a, b) => a.localeCompare(b, "tr"));
+  const st = { q: "", du: "veri setinde", reg: "", f: "", page: 0 };
+  try { Object.assign(st, JSON.parse(sessionStorage.getItem("fakih_st") || "{}")); } catch (e) {}
+  view.innerHTML = `<div class="vt" dir="ltr" lang="tr">${tabs}
+    <div class="vthead"><h1>620–750 fakihleri</h1><span class="c num" id="vtn"></span><span class="grow"></span>
+      <button type="button" class="btn small" id="fkcsv">Tabloyu indir (CSV)</button></div>
+    <p class="lede">Derin okumadan çıkan veri seti (gizli depo). Her satırdaki <b>Ayrıntı</b> bütün sütunları, kişinin tabakāt maddelerinin tam metniyle yan yana açar.
+      Düzeltmeler önce taslak olarak saklanır; <b>Yayımla</b> dediğinizde gizli depodaki düzeltme dosyasına yazılır ve Excel yeniden üretilirken uygulanır.</p>
+    <form class="vtbar" role="search"><input type="search" name="q" placeholder="Ad ya da kimlik ara" aria-label="Ara" autocomplete="off">
+      <select name="du" aria-label="Durum"><option value="">Bütün kayıtlar</option>${FK.durumlar.map(d => `<option>${esc(d)}</option>`).join("")}<option value="çıkarıldı">çıkarılanların hepsi</option></select>
+      <select name="reg" aria-label="Bölge"><option value="">Bütün bölgeler</option>${regs.map(r => `<option>${esc(r)}</option>`).join("")}</select>
+      <select name="f" aria-label="Süzgeç"><option value="">Hepsi</option><option value="draft">Taslakta olanlar</option><option value="fixed">Düzeltilmiş</option><option value="nod">Vefatı kayıtlı olmayan</option><option value="dup">Olası tekrar kaydı olan</option><option value="goc">Göç etmiş</option></select></form>
+    <div class="vtwrap"><table class="vtt fkt"><thead><tr><th>Kimlik</th><th>Durum</th>${FK_COLS.map(([k]) => `<th>${esc(k)}</th>`).join("")}<th></th></tr></thead><tbody></tbody></table></div>
+    <nav class="vtpager" aria-label="Sayfalar"></nav>
+    <div class="vtdraft" hidden><span id="vtdn"></span><span class="grow"></span><button type="button" class="btn" id="vtrev">Gözden geçir</button><button type="button" class="btn gold" id="vtpub">Yayımla</button></div></div>`;
+  const f = $(".vtbar", view), tb = $("tbody", view);
+  ["q", "du", "reg", "f"].forEach(k => { f[k].value = st[k]; });
+  let rows = [];
+  const list = () => {
+    const q = fold(st.q);
+    return FK.kayitlar.filter(r => { const id = r.kimlik, v = k => fkVal(id, k);
+      if (st.q) { const isA = /[؀-ۿ]/.test(st.q);
+        if (!(id === st.q.trim() || (isA ? norm(v("Arapça adı")).includes(norm(st.q)) : fold(`${v("tam adı")} ${v("meşhur adı")} ${v("lakap ve unvanlar")}`).includes(q)))) return false; }
+      if (st.du && !(st.du === "çıkarıldı" ? v("durum").startsWith("çıkarıldı") : v("durum") === st.du)) return false;
+      if (st.reg && !v("yaşadığı bölge").split(/,\s*/).includes(st.reg)) return false;
+      if (st.f === "draft") return !!FKT[id]; if (st.f === "fixed") return !!FK.fix[id];
+      if (st.f === "nod") return !v("vefat (h./m.)"); if (st.f === "dup") return !!v("olası tekrar kaydı");
+      if (st.f === "goc") return /evet|göç/i.test(v("intikal/göç")) && !/hayır|yok/i.test(v("intikal/göç"));
+      return true; });
+  };
+  const draw = () => {
+    rows = list(); const pages = Math.max(1, Math.ceil(rows.length / VT_PAGE)); st.page = Math.min(st.page, pages - 1);
+    try { sessionStorage.setItem("fakih_st", JSON.stringify(st)); } catch (e) {}
+    $("#vtn").textContent = `${rows.length} kayıt`;
+    tb.innerHTML = rows.slice(st.page * VT_PAGE, (st.page + 1) * VT_PAGE).map(r => { const id = r.kimlik, ch = k => FKT[id] && k in FKT[id];
+      return `<tr data-id="${esc(id)}"${FKT[id] ? ` class="dr"` : ""}><td class="id">${P.has(id) ? `<a href="#/p/${esc(id)}" target="_blank" rel="noopener">${esc(id)}</a>` : esc(id)}${FK.fix[id] ? ` <span class="tag" title="Düzeltilmiş">✓</span>` : ""}</td>
+        <td class="${ch("durum") ? "ch" : ""}"><select data-k="durum" aria-label="Durum">${FK.durumlar.map(d => `<option${d === fkVal(id, "durum") ? " selected" : ""}>${esc(d)}</option>`).join("")}</select></td>
+        ${FK_COLS.map(([k, w]) => `<td class="${ch(k) ? "ch" : ""}"><input data-k="${esc(k)}" value="${esc(fkVal(id, k))}" style="min-width:${w}rem" aria-label="${esc(k)}" title="${esc(fkVal(id, k))}"></td>`).join("")}
+        <td><button type="button" class="btn small" data-open>Ayrıntı</button></td></tr>`; }).join("") || `<tr><td colspan="${FK_COLS.length + 3}" class="empty">Kayıt yok.</td></tr>`;
+    const pg = $(".vtpager", view), b = (i, t) => `<button type="button" class="btn small" data-pg="${i}"${i < 0 || i >= pages ? " disabled" : ""}>${t}</button>`;
+    pg.innerHTML = pages > 1 ? `${b(st.page - 1, "‹ Önceki")}<span class="num">${st.page + 1} / ${pages}</span>${b(st.page + 1, "Sonraki ›")}` : "";
+    bar();
+  };
+  const bar = () => { const n = Object.keys(FKT).length; $(".vtdraft", view).hidden = !n; $("#vtdn").innerHTML = `<b>${n}</b> kayıtta taslak değişiklik`; };
+  let tq;
+  f.addEventListener("input", e => { if (e.target.name === "q") { clearTimeout(tq); tq = setTimeout(() => { st.q = f.q.value.trim(); st.page = 0; draw(); }, 200); } });
+  f.addEventListener("change", e => { if (e.target.name !== "q") { st[e.target.name] = e.target.value; st.page = 0; draw(); } });
+  f.addEventListener("submit", e => e.preventDefault());
+  $(".vtpager", view).addEventListener("click", e => { const b = e.target.closest("[data-pg]"); if (b) { st.page = +b.dataset.pg; draw(); } });
+  tb.addEventListener("change", e => { const inp = e.target.closest("[data-k]"), tr = e.target.closest("tr[data-id]"); if (!inp || !tr) return;
+    const id = tr.dataset.id; fkSet(id, inp.dataset.k, inp.value); inp.closest("td").classList.toggle("ch", !!(FKT[id] && inp.dataset.k in FKT[id])); tr.classList.toggle("dr", !!FKT[id]); bar(); });
+  tb.addEventListener("keydown", e => { const inp = e.target.closest("input[data-k]"); if (!inp || !["Enter", "ArrowDown", "ArrowUp"].includes(e.key)) return;
+    const tr = inp.closest("tr"), nx = e.key === "ArrowUp" ? tr.previousElementSibling : tr.nextElementSibling, t = nx && nx.querySelector(`[data-k="${CSS.escape(inp.dataset.k)}"]`);
+    if (t) { e.preventDefault(); inp.dispatchEvent(new Event("change", { bubbles: true })); t.focus(); t.select(); } });
+  tb.addEventListener("click", e => { const b = e.target.closest("[data-open]"); if (b) fkBox(b.closest("tr").dataset.id, draw); });
+  $("#fkcsv").onclick = () => { const q = v => `"${String(v ?? "").replace(/"/g, '""')}"`, cols = ["kimlik", ...FK.alanlar, "kaynaklar"];
+    const txt = "﻿" + [cols.map(q).join(","), ...rows.map(r => cols.map(k => q(k === "kaynaklar" ? r.kaynaklar.join("; ") : k === "kimlik" ? r.kimlik : fkVal(r.kimlik, k))).join(","))].join("\r\n");
+    const a = document.createElement("a"); a.href = URL.createObjectURL(new Blob([txt], { type: "text/csv;charset=utf-8" })); a.download = `fakihler-620-750-${ktToday()}.csv`; document.body.append(a); a.click(); setTimeout(() => a.remove(), 500); };
+  $("#vtrev").onclick = () => fkReview(draw);
+  $("#vtpub").onclick = async () => {
+    const btn = $("#vtpub"), n = Object.keys(FKT).length; if (!n) return; btn.disabled = true; btn.textContent = "Yayımlanıyor…";
+    try {
+      for (let i = 0; ; i++) {
+        const { sha, fix } = await fkFixRead();
+        Object.entries(FKT).forEach(([id, x]) => { fix[id] = { ...(fix[id] || {}), ...x };
+          Object.keys(fix[id]).forEach(k => { if (fix[id][k] === (FK.by.get(id)?.[k] ?? "")) delete fix[id][k]; }); if (!Object.keys(fix[id]).length) delete fix[id]; });
+        try { await gh(`/repos/${KAYNAK}/contents/${FK_FIX}`, { method: "PUT", body: JSON.stringify({ message: `Veri girişi: 620-750 fakihleri, ${n} kayıt düzeltildi`, sha,
+            content: b64enc(JSON.stringify(fix, null, 1) + "\n") }) }); FK.fix = fix; break; }
+        catch (e) { if (i || ![409, 422].includes(e.status)) throw e; }
+      }
+      FKT = {}; fkSave(); toast("Yayımlandı (gizli depo)"); draw();
+    } catch (e) { toast(`Yayımlanamadı: ${e.message}`); }
+    btn.disabled = false; btn.textContent = "Yayımla";
+  };
+  draw();
+  if (openId && FK.by.has(openId)) fkBox(openId, draw);
+}
+
+function fkReview(redraw) {
+  const box = document.createElement("div"); box.className = "expbox ktbox"; box.setAttribute("role", "dialog"); box.setAttribute("aria-modal", "true"); box.dir = "ltr"; box.lang = "tr";
+  const render = () => { const ids = Object.keys(FKT);
+    box.innerHTML = `<div class="in"><div class="hd"><b>Taslak değişiklikler (${ids.length} kayıt)</b><span class="grow"></span>${ids.length ? `<button type="button" class="btn" data-all>Hepsini sil</button>` : ""}<button type="button" class="btn" data-x>Kapat</button></div>
+      ${ids.length ? ids.map(id => `<article class="ktrow" data-id="${esc(id)}"><div class="ktrow-h"><b>${esc(fkName(id))}</b> <span class="d num">${esc(id)}</span><span class="grow"></span>
+        <button type="button" class="btn small" data-ed>Düzenle</button><button type="button" class="btn small" data-rm>Taslağı sil</button></div>
+        <ul class="ktfix">${Object.entries(FKT[id]).map(([k, v]) => `<li><span class="label">${esc(k)}</span> ${fkCur(id, k) ? `<s>${esc(fkCur(id, k))}</s> → ` : ""}<b>${esc(v || "(boş)")}</b></li>`).join("")}</ul></article>`).join("") : `<p class="empty">Taslak yok.</p>`}</div>`; };
+  render();
+  const close = () => { box.remove(); document.removeEventListener("keydown", key, true); redraw(); };
+  const key = e => { if (e.key === "Escape") { e.stopPropagation(); close(); } };
+  box.addEventListener("click", e => { if (e.target === box || e.target.closest("[data-x]")) return close();
+    const id = e.target.closest("[data-id]")?.dataset.id;
+    if (e.target.closest("[data-all]")) { FKT = {}; fkSave(); render(); } else if (e.target.closest("[data-rm]")) { delete FKT[id]; fkSave(); render(); }
+    else if (e.target.closest("[data-ed]")) { close(); fkBox(id, redraw); } });
+  document.addEventListener("keydown", key, true); document.body.append(box);
+}
+
+function fkBox(id, redraw) {
+  if ($(".vtbox")) return;
+  const r = FK.by.get(id); if (!r) return;
+  const box = document.createElement("div"); box.className = "expbox ktbox vtbox"; box.setAttribute("role", "dialog"); box.setAttribute("aria-modal", "true"); box.dir = "ltr"; box.lang = "tr";
+  const long = k => /gerekçe|kanıt|hocaları|talebeleri|eserleri|görevleri|olaylar|notlar|seyahat|şehir|nisbe/.test(k);
+  const fld = k => { const v = fkVal(id, k), ch = FKT[id] && k in FKT[id], ar = k === "Arapça adı";
+    const ctl = k === "durum" ? `<select name="${esc(k)}">${FK.durumlar.map(d => `<option${d === v ? " selected" : ""}>${esc(d)}</option>`).join("")}</select>`
+      : long(k) ? `<textarea name="${esc(k)}" rows="${Math.min(8, Math.max(2, Math.ceil(v.length / 70)))}" dir="auto">${esc(v)}</textarea>`
+      : `<input name="${esc(k)}" value="${esc(v)}"${ar ? ` dir="rtl" lang="ar"` : ""}>`;
+    return `<label class="ktf${long(k) || ar ? " w" : ""}${ch ? " ch" : ""}"><span class="label">${esc(k)}${FK.fix[id] && k in FK.fix[id] ? " ✓" : ""}</span>${ctl}</label>`; };
+  const known = new Set(FK_GROUPS.flatMap(g => g[1])), rest = FK.alanlar.filter(k => !known.has(k));
+  box.innerHTML = `<form class="in ktform vtform" novalidate>
+    <div class="hd"><b>${esc(fkName(id))}</b> <span class="d num">${esc(id)}</span><span class="grow"></span>${P.has(id) ? `<a class="btn" href="#/p/${esc(id)}" target="_blank" rel="noopener">Sitedeki sayfası ↗</a>` : ""}<button type="button" class="btn" data-x>Vazgeç</button></div>
+    <div class="vtcols"><div class="vtmain">${FK_GROUPS.concat(rest.length ? [["Diğer sütunlar", rest]] : []).map(([t, ks]) => `<fieldset><legend class="label">${t}</legend><div class="vtgrid">${ks.filter(k => FK.alanlar.includes(k)).map(fld).join("")}</div></fieldset>`).join("")}
+      <fieldset><legend class="label">Kaynaklar</legend><ul class="ktfix">${r.kaynaklar.map(c => `<li>${esc(c)}</li>`).join("")}</ul></fieldset></div>
+      <aside class="vttexts" aria-label="Biyografi metinleri"></aside></div>
+    <div class="hd ktsub"><button type="button" class="btn" data-clear>Bu kaydın taslağını sil</button><span class="grow"></span><button type="submit" class="btn gold">Taslağa kaydet</button></div></form>`;
+  const f = $("form", box);
+  vtTexts($(".vttexts", box), id);
+  const close = () => { box.remove(); document.removeEventListener("keydown", key, true); redraw(); };
+  const key = e => { if (e.key === "Escape") { e.stopPropagation(); close(); } };
+  box.addEventListener("click", e => { if (e.target === box || e.target.closest("[data-x]")) close();
+    else if (e.target.closest("[data-clear]")) { delete FKT[id]; fkSave(); close(); } });
+  f.addEventListener("submit", e => { e.preventDefault();
+    FK.alanlar.forEach(k => { const el = f.elements.namedItem(k); if (el) fkSet(id, k, el.value); });
+    toast(FKT[id] ? "Taslağa kaydedildi" : "Değişiklik yok"); close(); });
+  document.addEventListener("keydown", key, true); document.body.append(box); $("input, textarea", box)?.focus();
 }
 
 function viewAbout(view) {
