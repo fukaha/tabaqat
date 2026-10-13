@@ -122,6 +122,7 @@ async function route() {
     else if (v === "map") await viewMap(view, decodeURIComponent(arg));
     else if (v === "about") viewAbout(view);
     else if (v === "yonetim") await viewAdmin(view);
+    else if (v === "veri") await viewVeri(view, decodeURIComponent(arg));
     else if (v === "c") await viewList(view, "c", +arg);
     else if (v === "b") await viewList(view, "b", decodeURIComponent(arg));
     else if (v === "search") await viewSearch(view);
@@ -602,6 +603,9 @@ async function viewPerson(view, id) {
       <div class="death num">${LANG === "tr"
         ? (p.d ? `(${yearTxt(p.d, p.est)})${p.est ? ` <span class="est">vefatı hoca ve talebelerinin tabakasından tahmin edildi</span>` : ""}` : `<span class="est">vefatı zikredilmemiş</span>`)
         : (d.death ? esc(d.death) : p.d ? `نحو ${AR(p.d)}هـ <span class="est">(تقدير من طبقة شيوخه وتلاميذه)</span>` : `<span class="est">لم تُذكر وفاته</span>`)}</div>
+      ${d.alt ? `<p class="palt" dir="auto">${esc(d.alt)}</p>` : ""}
+      ${d.dn ? `<p class="legend">${T("زمن الوفاة تقديرًا", "Vefat dönemi (tahminî)")}: ${esc(d.dn)}</p>` : ""}
+      ${d.notes ? `<ul class="pnotes">${d.notes.map(n => `<li dir="auto">${esc(n.note)}${n.src ? ` <span class="d">(${esc(n.src)})</span>` : ""}</li>`).join("")}</ul>` : ""}
       ${d.fixed ? `<p class="legend fixnote">${T("صُحّح الاسم أو الوفاة بإضافة", "Ad ya da vefat katkıyla düzeltildi")}: ${d.fixed.map(x => esc(x.src)).join("; ")}</p>` : ""}
       <div class="facts num"><span><b>${AR(d.sources.length)}</b> ${T(d.sources.length > 1 ? "مصادر" : "مصدر", "kaynak")}</span>
         <span><b>${AR(d.teachers.length)}</b> ${T("شيوخ", "hoca")}</span><span><b>${AR(d.students.length)}</b> ${T("تلاميذ", "talebe")}</span>
@@ -610,7 +614,7 @@ async function viewPerson(view, id) {
         ${p.d ? `<a class="btn" href="#/zaman/${id}">${T("في خريطة الزمن", "Zaman haritasında")}</a>` : ""}
         ${d.places.length ? `<a class="btn" href="#/map/@${id}">${T("بلدانه على الخريطة", "Haritada yerleri")}</a>` : ""}
         <button type="button" class="btn" data-go="texts">${T("نصوص الترجمة", "Biyografi metinleri")}</button>
-        <button type="button" class="btn" id="ktbtn">${T("اقتراح أو تصحيح", "Katkı / düzeltme")}</button>${shareBtn()}</div>
+        <button type="button" class="btn" id="ktbtn">${T("اقتراح أو تصحيح", "Katkı / düzeltme")}</button>${ktTok() ? `<a class="btn" href="#/veri/${esc(id)}">${T("تحرير البيانات", "Veriyi düzenle")}</a>` : ""}${shareBtn()}</div>
     </div>
     <section id="psec" class="pmapband"><h2>${T("البلدان", "Şehirler")}<span class="c num">${AR(new Set(d.places.map(x => x[0])).size)}</span>
           ${d.places.length ? `<a class="btn small" href="#/map/@${id}">${T("الخريطة الكبيرة", "Büyük harita")}</a>` : ""}</h2>
@@ -1879,12 +1883,22 @@ async function viewTime(view, sel) {
 let BOOKS_NET;
 const bookNet = async () => {
   if (BOOKS_NET) return BOOKS_NET;
-  const d = await load("books.json");
+  const d0 = await load("books.json"), d = { ...d0, works: ktWorks(d0.works) };
   const byId = new Map(d.works.map(w => [w.id, w])), kids = new Map();
   d.works.forEach(w => { if (w.b && byId.has(w.b)) { if (!kids.has(w.b)) kids.set(w.b, []); kids.get(w.b).push(w); } });
   const root = w => { let x = w, n = 0; while (x.b && byId.has(x.b) && n++ < 20) x = byId.get(x.b); return x; };
   return (BOOKS_NET = { ...d, byId, kids, root });
 };
+// veri girişi (op "edit"): wd kaldırılan eser kimlikleri, we düzeltilen eserler [kimlik, Arapça, Türkçe, tür], wa eklenen eserler
+function ktWorks(works) {
+  const ed = KATKI.filter(x => x.op === "edit"); if (!ed.length) return works;
+  const del = new Set(ed.flatMap(x => x.wd || [])), fix = new Map();
+  ed.forEach(x => (x.we || []).forEach(([id, ar, tr, k]) => fix.set(id, { ...(fix.get(id) || {}), ...(ar && { ar }), ...(tr && { tr }), ...(k && { k }) })));
+  const out = works.filter(w => !del.has(w.id)).map(w => fix.has(w.id) ? { ...w, ...fix.get(w.id), user: true } : w);
+  ed.forEach(x => (x.wa || []).forEach(([ar, tr, k], i) => { const id = `u-${x.id}-${i}`; if (del.has(id)) return;
+    out.push({ id, ar, tr, a: x.p, y: P.get(x.p)?.d || 0, k: k || "asl", s: [], user: true, ...(fix.get(id) || {}) }); }));
+  return out;
+}
 const WK_ORDER = ["asl", "sharh", "hashiya", "ikhtisar", "nazm", "other"];
 const WK = { asl: ["متن", "Ana metin"], sharh: ["شرح", "Şerh"], hashiya: ["حاشية وتعليق", "Hâşiye / ta‘lîk"], ikhtisar: ["اختصار", "İhtisar"],
   nazm: ["نظم", "Nazım"], other: ["أخرى", "Diğer (tahrîc, tekmile, fetâvâ)"], tahric: ["تخريج", "Tahrîc"], tekmile: ["تكملة", "Tekmile"], fetava: ["فتاوى", "Fetâvâ"] };
@@ -2088,18 +2102,20 @@ let KATKI = [], KT_OPEN = "";
 const ktKey = x => `${x.t}>${x.s}`;
 // yükleme sonrası: hoca/talebe sayıları (silsile bağlantısı ve arama süzgeci bunlara bakar)
 function ktCounts(items, sign = 1) {
-  items.filter(x => x.op !== "fix").forEach(x => { const t = P.get(x.t), s = P.get(x.s), k = x.op === "del" ? -sign : sign;
+  items.filter(x => x.op === "add" || x.op === "del").forEach(x => { const t = P.get(x.t), s = P.get(x.s), k = x.op === "del" ? -sign : sign;
     if (t) t.ns = Math.max(0, t.ns + k); if (s) s.nt = Math.max(0, s.nt + k); });
 }
-// ad / vefat düzeltmeleri (op "fix"): dizindeki kayda uygulanır; asıl değerler saklanır, geri alınınca döner
+// ad / vefat düzeltmeleri (op "fix") ve veri girişi kayıtları (op "edit"): dizindeki kayda uygulanır;
+// asıl değerler saklanır, geri alınınca döner. "edit"te "-" alanı boşaltır, est "1"/"0" tahminî vefat işaretidir.
 function ktFix(items) {
   P.forEach(p => { if (p._orig) { Object.assign(p, p._orig); delete p._orig; } });
-  items.filter(x => x.op === "fix" && P.has(x.p)).forEach(x => {
-    const p = P.get(x.p); p._orig = p._orig || { ar: p.ar, tr: p.tr, trs: p.trs, d: p.d, est: p.est, key: p.key, tkey: p.tkey };
+  items.filter(x => (x.op === "fix" || x.op === "edit") && P.has(x.p)).forEach(x => {
+    const p = P.get(x.p); p._orig = p._orig || { ar: p.ar, tr: p.tr, trs: p.trs, d: p.d, b: p.b, est: p.est, key: p.key, tkey: p.tkey };
     if (x.ar) { p.ar = x.ar; p.key = norm(x.ar); }
     if (x.tr) { p.tr = x.tr; p.tkey = fold(x.tr); }
     if (x.trs) p.trs = x.trs;
-    if (x.d) { p.d = +x.d; p.est = false; }
+    if (x.d) { p.d = x.d === "-" ? null : +x.d; p.est = x.est === "1"; } else if (x.est) p.est = x.est === "1";
+    if (x.b) p.b = x.b === "-" ? 0 : +x.b;
   });
 }
 // şahıs kaydına katkıları uygular (kopyası üzerinde; önbellekteki asıl kayıt değişmez)
@@ -2113,6 +2129,17 @@ function ktPerson(id, d0) {
       if (x.ar) d.name = x.ar; if (x.tr) d.tr = x.tr; if (x.trs) d.trs = x.trs;
       if (x.d) { d.death_h = +x.d; d.est = false; d.death = `ت ${AR(x.d)}هـ`; }
       d.fixed = [...(d.fixed || []), x]; return;
+    }
+    if (x.op === "edit") {
+      if (x.ar) d.name = x.ar; if (x.tr) d.tr = x.tr; if (x.trs) d.trs = x.trs;
+      if (x.d === "-") { d.death_h = null; d.death = ""; }
+      else if (x.d) { d.death_h = +x.d; d.est = x.est === "1"; d.death = `${d.est ? "نحو" : "ت"} ${AR(x.d)}هـ`; }
+      ["dn", "alt"].forEach(k => { if (x[k]) d[k] = x[k] === "-" ? "" : x[k]; });
+      if (x.pd) d.places = d.places.filter(pl => !x.pd.some(([i, k]) => i === pl[0] && k === pl[1]));
+      if (x.pa) d.places = [...d.places, ...x.pa.map(([i, k]) => [i, k, x.src || T("إضافة", "katkı"), ""])];
+      if (x.note) d.notes = [...(d.notes || []), x];
+      if (x.src && (x.ar || x.tr || x.trs || x.d)) d.fixed = [...(d.fixed || []), x];
+      return;
     }
     const side = x.s === id ? "teachers" : "students", other = x.s === id ? x.t : x.s;
     if (x.op === "del") { d[side] = d[side].filter(r => r.id !== other); return; }
@@ -2128,8 +2155,9 @@ function ktGraph(G) {
     const i = G.nodes.length; G.nodes.push({ id, ar: p.ar, tr: p.tr, d: p.d, deg: 0, x: p.d || 0, y: 0, guess: !!p.est, salaf: !!p.salaf,
       get name() { return LANG === "tr" ? this.tr : this.ar; } }); G.up.push([]); G.down.push([]); G.byId.set(id, i); return i; };
   KATKI.forEach(x => {
-    if (x.op === "fix") { const i = G.byId.get(x.p); if (i === undefined) return; const n = G.nodes[i];
-      if (x.ar) n.ar = x.ar; if (x.tr) n.tr = x.trs || x.tr; else if (x.trs) n.tr = x.trs; if (x.d) { n.d = +x.d; n.guess = false; } return; }
+    if (x.op === "fix" || x.op === "edit") { const i = G.byId.get(x.p); if (i === undefined) return; const n = G.nodes[i];
+      if (x.ar) n.ar = x.ar; if (x.tr) n.tr = x.trs || x.tr; else if (x.trs) n.tr = x.trs; if (x.d) { n.d = x.d === "-" ? 0 : +x.d; n.guess = x.est === "1"; } return; }
+    if (x.op === "note") return;
     if (x.op === "del") { const t = G.byId.get(x.t), s = G.byId.get(x.s); if (t === undefined || s === undefined) return;
       G.up[s] = G.up[s].filter(e => e[0] !== t); G.down[t] = G.down[t].filter(e => e[0] !== s);
       G.edges = G.edges.filter(e => !(e[0] === t && e[1] === s)); return; }
@@ -2205,11 +2233,11 @@ async function ktWrite(mutate, message) {
   }
 }
 // yayındaki kopyayı hemen günceller (site birkaç dakika içinde yeniden yayımlanır)
-function ktApply(items) { ktCounts(KATKI, -1); KATKI = items; ktCounts(KATKI); ktFix(KATKI); G = null; }
+function ktApply(items) { ktCounts(KATKI, -1); KATKI = items; ktCounts(KATKI); ktFix(KATKI); G = null; BOOKS_NET = null; }
 const ktToday = () => new Date().toISOString().slice(0, 10);
-const ktMsg = x => x.op === "add" ? `Katkı: ${ktName(x.t)} → ${ktName(x.s)} hoca–talebe bağı` : x.op === "fix" ? `Katkı: ${ktName(x.p)} ad / vefat düzeltmesi`
+const ktMsg = x => x.op === "edit" ? `Veri girişi: ${ktName(x.p)}` : x.op === "add" ? `Katkı: ${ktName(x.t)} → ${ktName(x.s)} hoca–talebe bağı` : x.op === "fix" ? `Katkı: ${ktName(x.p)} ad / vefat düzeltmesi`
   : `Katkı: ${ktName(x.t)} → ${ktName(x.s)} bağı kaldırıldı`;
-const ktWhat = x => x.op === "fix" || x.op === "note" ? ktName(x.p) : `${ktName(x.t)} → ${ktName(x.s)}`;
+const ktWhat = x => x.op === "fix" || x.op === "note" || x.op === "edit" ? ktName(x.p) : `${ktName(x.t)} → ${ktName(x.s)}`;
 
 // şahıs sayfasındaki "Katkı / düzeltme" penceresi
 function katkiBox(id, d) {
@@ -2332,6 +2360,9 @@ async function viewAdmin(view) {
     return;
   }
   view.innerHTML = `<div class="about ktadmin"><h1>${T("لوحة الإدارة", "Yönetim paneli")}<button type="button" class="btn small" id="ktout">${T("خروج", "Çıkış")}</button></h1>
+    <section class="ktedit"><h2>Veri girişi</h2>
+      <p class="lede">Bütün âlimlerin ad, tarih, yer, eser ve hoca–talebe bilgilerini mevcut değerleriyle dolu bir tabloda toplu olarak düzeltmek ve yeni bilgi eklemek için:</p>
+      <p><a class="btn gold" href="#/veri">Veri giriş panelini aç</a></p></section>
     <section class="ktedit"><h2>${T("تصحيح", "Düzeltme yap")}</h2>
       <p class="lede">${T("ابحث عن العَلَم، فتُفتح صفحته ونافذة التصحيح معًا.", "Düzeltmek istediğiniz âlimi arayın; sayfası düzeltme penceresiyle birlikte açılır.")}</p>
       <div id="ktfind"></div>
@@ -2353,10 +2384,11 @@ async function viewAdmin(view) {
       ? `Tam metinler kapalı: <code>${KAYNAK}</code> deposu yok ya da jetonunuzun erişim listesinde değil. Jetonu <a href="https://github.com/settings/personal-access-tokens" target="_blank" rel="noopener">GitHub ayarlarından</a> düzenleyip bu depoyu ekleyin, sonra çıkış yapıp yeniden girin.`
       : esc(e.message); });
   const pair = x => `${plink(x.t)} <span class="d num">${deathTxt(who(x.t) || {})}</span> → ${plink(x.s)} <span class="d num">${deathTxt(who(x.s) || {})}</span>`;
-  const desc = x => `<div class="ktrow-h"><span class="tag${x.op === "del" ? " del" : ""}">${x.op === "add" ? T("إضافة", "Ekleme") : x.op === "del" ? T("حذف", "Kaldırma") : x.op === "fix" ? T("الاسم / الوفاة", "Ad / vefat") : T("تصحيح", "Düzeltme")}</span>
-      ${x.op === "note" || x.op === "fix" ? (x.p ? plink(x.p) : "") : pair(x)}${x.rel && x.op === "add" ? ` <span class="tag">${REL[x.rel]}</span>` : ""}</div>
+  const desc = x => `<div class="ktrow-h"><span class="tag${x.op === "del" ? " del" : ""}">${x.op === "add" ? T("إضافة", "Ekleme") : x.op === "del" ? T("حذف", "Kaldırma") : x.op === "fix" ? T("الاسم / الوفاة", "Ad / vefat") : x.op === "edit" ? "Veri girişi" : T("تصحيح", "Düzeltme")}</span>
+      ${x.op === "note" || x.op === "fix" || x.op === "edit" ? (x.p ? plink(x.p) : "") : pair(x)}${x.rel && x.op === "add" ? ` <span class="tag">${REL[x.rel]}</span>` : ""}</div>
     ${x.op === "fix" ? `<ul class="ktfix">${[["tr", "Tam ad"], ["trs", "Kısa ad"], ["ar", "Arapça ad"], ["d", "Vefat (hicrî)"]].filter(([k]) => x[k])
       .map(([k, l]) => `<li><span class="label">${l}</span> <span dir="auto">${esc(x[k])}</span>${P.get(x.p)?._orig && String(P.get(x.p)._orig[k] ?? "") !== x[k] ? ` <span class="d">(önce: <span dir="auto">${esc(P.get(x.p)._orig[k] ?? "—")}</span>)</span>` : ""}</li>`).join("")}</ul>` : ""}
+    ${x.op === "edit" ? vtDiff(x.p, { ...x, src: undefined }, PLACES_BY_ID || new Map(), BOOKS_NET) : ""}
     ${x.src ? `<p><span class="label">${T("المصدر", "Kaynak")}</span> ${esc(x.src)}</p>` : ""}
     ${x.q ? `<blockquote dir="auto">${esc(x.q)}</blockquote>` : ""}${x.note ? `<p dir="auto">${esc(x.note)}</p>` : ""}`;
   const fail = (el, e) => { el.insertAdjacentHTML("beforeend", `<p class="kterr" role="alert">${esc(e.message)}</p>`); };
@@ -2400,6 +2432,339 @@ async function viewAdmin(view) {
   };
   try { await loadAll(); }
   catch (e) { $("#ktq").innerHTML = `<p class="kterr">${esc(e.message)}${e.status === 401 ? ` — ${T("انتهت صلاحية الرمز", "Jetonun süresi dolmuş ya da geçersiz; çıkış yapıp yenisini girin.")}` : ""}</p>`; }
+}
+
+// ---------- veri girişi (#/veri) ----------
+// Bütün kayıtlar tabloda mevcut değerleriyle dolu gelir; değişiklikler önce bu tarayıcıda taslak olarak tutulur,
+// "Yayımla" ile tek seferde katki.json'a "edit" (ad, tarih, yer, eser, not) ve "add"/"del" (hoca–talebe) kayıtları olarak yazılır.
+const VT_KEY = "veri_taslak", VT_PAGE = 50;
+const VT_F = { tr: "Türkçe tam ad", trs: "Kısa ad", ar: "Arapça ad", alt: "Diğer adları / lakap", b: "Doğum (hicrî)", d: "Vefat (hicrî)",
+  est: "Vefat tahminî", dn: "Vefat dönemi", note: "Not / ek bilgi", src: "Kaynak" };
+const VT_DN = ["7./13. yüzyılın ilk çeyreği", "7./13. yüzyılın ortası", "7./13. yüzyılın son çeyreği", "7./13. yüzyılın sonları",
+  "8./14. yüzyılın başları", "8./14. yüzyılın ilk yarısı", "8./14. yüzyılın ortası"];
+let VT = (() => { try { return JSON.parse(localStorage.getItem(VT_KEY) || "{}") || {}; } catch (e) { return {}; } })();
+const vtSave = () => { Object.keys(VT).forEach(id => { if (!Object.keys(VT[id]).length) delete VT[id]; });
+  try { localStorage.setItem(VT_KEY, JSON.stringify(VT)); } catch (e) {} };
+// yayındaki değer (katkılar uygulanmış): dizinden ya da son "edit" kaydından
+const vtLast = (id, k) => { let v = ""; KATKI.forEach(x => { if (x.op === "edit" && x.p === id && x[k]) v = x[k] === "-" ? "" : x[k]; }); return v; };
+function vtCur(id, k) {
+  const p = P.get(id); if (!p) return "";
+  if (k === "d") return p.d ? String(p.d) : ""; if (k === "b") return p.b ? String(p.b) : "";
+  if (k === "est") return p.est ? "1" : "0";
+  if (k === "tr" || k === "trs" || k === "ar") return p[k] || "";
+  return k === "note" || k === "src" ? "" : vtLast(id, k);
+}
+const vtVal = (id, k) => VT[id] && k in VT[id] ? VT[id][k] : vtCur(id, k);
+function vtSet(id, k, v) {
+  v = String(v ?? "").replace(/\s+/g, " ").trim();
+  const d = VT[id] || (VT[id] = {});
+  if (v === vtCur(id, k)) delete d[k]; else d[k] = v;
+  vtSave();
+}
+const vtYear = v => !v || v === "-" || (/^\d{1,4}$/.test(v) && +v >= 1 && +v <= 1500);
+const vtCount = () => Object.keys(VT).length;
+const vtPlace = (PL, i) => { const x = PL.get(i); return x ? plName(x) : i; };
+
+// bir kaydın değişiklik listesi (taslak ya da yayımlanmış "edit")
+function vtDiff(id, x, PL, N) {
+  const L = [], cur = k => vtCur(id, k);
+  ["tr", "trs", "ar", "alt", "b", "d", "dn"].forEach(k => { if (k in x && x[k] !== undefined) L.push(`<li><span class="label">${VT_F[k]}</span> ${cur(k) && cur(k) !== x[k] ? `<s dir="auto">${esc(cur(k))}</s> → ` : ""}<b dir="auto">${esc(x[k] === "-" || x[k] === "" ? "(boş)" : x[k])}</b></li>`); });
+  if ("est" in x) L.push(`<li><span class="label">${VT_F.est}</span> ${x.est === "1" ? "evet" : "hayır"}</li>`);
+  (x.pa || []).forEach(([i, k]) => L.push(`<li><span class="label">Yer ekle</span> ${esc(KIND[k])}: ${esc(vtPlace(PL, i))}</li>`));
+  (x.pd || []).forEach(([i, k]) => L.push(`<li><span class="label">Yer kaldır</span> <s>${esc(KIND[k])}: ${esc(vtPlace(PL, i))}</s></li>`));
+  (x.wa || []).forEach(([ar, tr, k]) => L.push(`<li><span class="label">Eser ekle</span> ${esc(wkName(k))}: ${esc(tr || ar)}${tr && ar ? ` <span dir="rtl" lang="ar">${esc(ar)}</span>` : ""}</li>`));
+  (x.we || []).forEach(([i, ar, tr, k]) => { const w = N && N.byId.get(i);
+    L.push(`<li><span class="label">Eser düzelt</span> ${w ? `<s>${esc(w.tr || w.ar)}</s> → ` : ""}${esc(tr || ar || (w && (w.tr || w.ar)) || i)}${k ? ` (${esc(wkName(k))})` : ""}</li>`); });
+  (x.wd || []).forEach(i => { const w = N && N.byId.get(i); L.push(`<li><span class="label">Eser kaldır</span> <s>${esc(w ? w.tr || w.ar : i)}</s></li>`); });
+  (x.ra || []).forEach(r => L.push(`<li><span class="label">${r.dir === "t" ? "Hoca ekle" : "Talebe ekle"}</span> ${plink(r.id)} <span class="tag">${REL[r.rel]}</span></li>`));
+  (x.rd || []).forEach(r => L.push(`<li><span class="label">${r.dir === "t" ? "Hoca kaldır" : "Talebe kaldır"}</span> <s>${esc(who(r.id)?.name || r.id)}</s></li>`));
+  if (x.note) L.push(`<li><span class="label">${VT_F.note}</span> <span dir="auto">${esc(x.note)}</span></li>`);
+  if (x.src) L.push(`<li><span class="label">${VT_F.src}</span> ${esc(x.src)}</li>`);
+  return L.length ? `<ul class="ktfix">${L.join("")}</ul>` : "";
+}
+
+// taslakları katki.json kayıtlarına çevirir
+function vtItems(src0) {
+  const out = [], s = (v, n) => String(v ?? "").replace(/\s+/g, " ").trim().slice(0, n);
+  Object.entries(VT).forEach(([id, x]) => {
+    if (!P.has(id)) return;
+    const src = s(x.src || src0, 300);
+    const e = { op: "edit", p: id };
+    [["tr", 200], ["trs", 120], ["ar", 300], ["alt", 300], ["dn", 120], ["note", 3000]].forEach(([k, n]) => { if (k in x) e[k] = s(x[k], n) || "-"; });
+    ["b", "d"].forEach(k => { if (k in x && vtYear(x[k])) e[k] = x[k] || "-"; });
+    if ("est" in x) e.est = x.est === "1" ? "1" : "0";
+    if (e.d && e.d !== "-" && !("est" in x)) e.est = "0";
+    if (e.note === "-") delete e.note;
+    ["tr", "trs", "ar"].forEach(k => { if (e[k] === "-") delete e[k]; });   // ad boşaltılamaz
+    const pl = a => (a || []).filter(([i, k]) => i && KIND_ORDER.includes(k)).map(([i, k]) => [s(i, 120), k]);
+    if (pl(x.pa).length) e.pa = pl(x.pa); if (pl(x.pd).length) e.pd = pl(x.pd);
+    const wk = k => (WK[k] ? k : "other");
+    if ((x.wa || []).length) e.wa = x.wa.map(([ar, tr, k]) => [s(ar, 300), s(tr, 300), wk(k)]).filter(w => w[0] || w[1]);
+    if ((x.we || []).length) e.we = x.we.map(([i, ar, tr, k]) => [s(i, 80), s(ar, 300), s(tr, 300), k ? wk(k) : ""]);
+    if ((x.wd || []).length) e.wd = x.wd.map(i => s(i, 80));
+    ["wa", "we", "wd"].forEach(k => { if (e[k] && !e[k].length) delete e[k]; });
+    if (src) e.src = src;
+    if (Object.keys(e).some(k => !["op", "p", "src"].includes(k))) out.push(e);
+    (x.ra || []).forEach(r => { if (who(r.id) && r.id !== id) out.push({ op: "add", ...(r.dir === "t" ? { t: r.id, s: id } : { t: id, s: r.id }), rel: KT_REL.includes(r.rel) ? r.rel : "took", src: src || "Veri girişi" }); });
+    (x.rd || []).forEach(r => { if (who(r.id)) out.push({ op: "del", ...(r.dir === "t" ? { t: r.id, s: id } : { t: id, s: r.id }), ...(src && { src }) }); });
+  });
+  return out;
+}
+
+async function viewVeri(view, openId) {
+  document.title = `Veri girişi — ${UI.brand[LANG === "ar" ? 0 : 1]}`;
+  const [PL, N] = await Promise.all([placesById(), bookNet().catch(() => null)]);
+  const admin = !!ktTok();
+  const groups = new Map();
+  Object.entries(BOOKS).forEach(([id, b]) => { const k = b.cite_tr_s || id; if (!groups.has(k)) groups.set(k, []); groups.get(k).push(id); });
+  const st = { q: "", book: "", c: "", f: "", sort: "d", page: 0 };
+  try { Object.assign(st, JSON.parse(sessionStorage.getItem("veri_st") || "{}")); } catch (e) {}
+  view.innerHTML = `<div class="vt" dir="ltr" lang="tr">
+    <div class="vthead"><h1>Veri girişi</h1><span class="c num" id="vtn"></span><span class="grow"></span>
+      <a class="btn small" href="#/yonetim">Yönetim paneli</a>
+      <span class="dlmenu"><button type="button" class="btn small" id="vtexp">Dışa aktar ▾</button>
+        <span class="vtmenu" hidden><button type="button" data-x="csv">Tablo (CSV, Excel’de açılır)</button><button type="button" data-x="json">Taslak yedeği (JSON)</button>
+        <label>Taslak yedeğini yükle<input type="file" accept=".json,application/json" hidden></label></span></span></div>
+    <p class="lede">Bütün âlimler mevcut değerleriyle dolu gelir. Ad ve tarihleri tabloda doğrudan düzeltebilirsiniz; yer, eser, hoca–talebe, not ve kaynak için satırdaki <b>Ayrıntı</b>’yı açın.
+      Değişiklikler önce bu tarayıcıda <b>taslak</b> olarak saklanır; aşağıdaki çubuktan <b>Yayımla</b> dediğinizde hepsi tek seferde siteye işlenir.${admin ? "" : ` Yayımlamak için önce <a href="#/yonetim">yönetim paneline</a> jetonla giriş yapın.`}</p>
+    <form class="vtbar" role="search">
+      <input type="search" name="q" placeholder="Ad ya da kimlik ara (Türkçe ya da Arapça)" aria-label="Ara" autocomplete="off">
+      <select name="book" aria-label="Kaynak"><option value="">Bütün kaynaklar</option>${[...groups].map(([k, ids]) => `<option value="${esc(ids.join(","))}">${esc(k)}</option>`).join("")}</select>
+      <select name="c" aria-label="Yüzyıl"><option value="">Bütün yüzyıllar</option>${Array.from({ length: 14 }, (_, i) => `<option value="${i + 1}">${ROM(i + 1)}. (${ROM(Math.floor((CE(i * 100 + 50) - 1) / 100) + 1)}.) yüzyıl</option>`).join("")}<option value="0">Vefatı bilinmeyen</option></select>
+      <select name="f" aria-label="Süzgeç"><option value="">Hepsi</option><option value="draft">Taslakta olanlar</option><option value="edited">Yayında düzeltilmiş</option>
+        <option value="notr">Türkçe adı eksik</option><option value="est">Vefatı tahminî</option><option value="nob">Doğumu bilinmeyen</option></select>
+      <select name="sort" aria-label="Sıra"><option value="d">Vefata göre</option><option value="tr">Türkçe ada göre</option><option value="ar">Arapça ada göre</option><option value="id">Kimliğe göre</option></select>
+    </form>
+    <div class="vtwrap"><table class="vtt"><thead><tr><th>Kimlik</th><th>Türkçe tam ad</th><th>Kısa ad</th><th>Arapça ad</th><th class="n">Doğum</th><th class="n">Vefat</th><th class="n" title="Vefat tahminî">≈</th><th>Kaynak</th><th></th></tr></thead><tbody></tbody></table></div>
+    <nav class="vtpager" aria-label="Sayfalar"></nav>
+    <div class="vtdraft" hidden><span id="vtdn"></span><input id="vtsrc" maxlength="300" placeholder="Kaynak (ayrıca yazılmayan kayıtlar için; isteğe bağlı)" aria-label="Ortak kaynak">
+      <button type="button" class="btn" id="vtrev">Gözden geçir</button><button type="button" class="btn gold" id="vtpub">Yayımla</button></div>
+  </div>`;
+  const f = $(".vtbar", view), tb = $(".vtt tbody", view);
+  ["q", "book", "c", "f", "sort"].forEach(k => { f[k].value = st[k]; });
+  const edited = new Set(KATKI.filter(x => x.op === "edit" || x.op === "fix").map(x => x.p));
+  const isAr = s => /[؀-ۿ]/.test(s || "");
+  const list = () => {
+    let L = IDX;
+    const m = st.q ? matcher(st.q) : null;
+    if (st.q) L = L.filter(p => p.id === st.q.trim() || (m && m(p)));
+    if (st.book) { const ids = st.book.split(","); L = L.filter(p => p.books.some(b => ids.includes(b))); }
+    if (st.c === "0") L = L.filter(p => !p.d); else if (st.c) L = L.filter(p => century(p.d) === +st.c);
+    if (st.f === "draft") L = L.filter(p => VT[p.id]); else if (st.f === "edited") L = L.filter(p => edited.has(p.id));
+    else if (st.f === "notr") L = L.filter(p => !p.tr || p.tr === p.ar || isAr(p.tr)); else if (st.f === "est") L = L.filter(p => p.est);
+    else if (st.f === "nob") L = L.filter(p => !p.b);
+    const cmp = { d: (a, b) => (a.d || 9999) - (b.d || 9999) || a.tr.localeCompare(b.tr, "tr"), tr: (a, b) => a.tr.localeCompare(b.tr, "tr"),
+      ar: (a, b) => a.ar.localeCompare(b.ar, "ar"), id: (a, b) => a.id.localeCompare(b.id, "en", { numeric: true }) }[st.sort];
+    return L.slice().sort(cmp);
+  };
+  const cell = (id, k, cls = "") => { const v = vtVal(id, k), ch = VT[id] && k in VT[id];
+    return `<td class="${cls}${ch ? " ch" : ""}"><input data-k="${k}" value="${esc(v)}"${k === "ar" ? ` dir="rtl" lang="ar"` : ""}${k === "b" || k === "d" ? ` inputmode="numeric" maxlength="4"` : ""} aria-label="${VT_F[k]}"${ch ? ` title="Yayındaki: ${esc(vtCur(id, k) || "(boş)")}"` : ""}></td>`; };
+  let rows = [];
+  const draw = () => {
+    rows = list(); const pages = Math.max(1, Math.ceil(rows.length / VT_PAGE)); st.page = Math.min(st.page, pages - 1);
+    try { sessionStorage.setItem("veri_st", JSON.stringify(st)); } catch (e) {}
+    $("#vtn").textContent = `${rows.length.toLocaleString("tr-TR")} kayıt`;
+    tb.innerHTML = rows.slice(st.page * VT_PAGE, (st.page + 1) * VT_PAGE).map(p => { const dr = VT[p.id];
+      const more = dr && Object.keys(dr).some(k => !["tr", "trs", "ar", "b", "d", "est"].includes(k));
+      return `<tr data-id="${esc(p.id)}"${dr ? ` class="dr"` : ""}><td class="id"><a href="#/p/${esc(p.id)}" title="Sayfasını aç">${esc(p.id)}</a>${edited.has(p.id) ? ` <span class="tag" title="Yayında düzeltilmiş">✓</span>` : ""}</td>
+        ${cell(p.id, "tr")}${cell(p.id, "trs")}${cell(p.id, "ar")}${cell(p.id, "b", "n")}${cell(p.id, "d", "n")}
+        <td class="n${VT[p.id] && "est" in VT[p.id] ? " ch" : ""}"><input type="checkbox" data-k="est"${vtVal(p.id, "est") === "1" ? " checked" : ""} aria-label="${VT_F.est}"></td>
+        <td class="bk">${p.books.map(b => esc((BOOKS[b]?.cite_tr_s || b).split(",")[0])).filter((v, i, a) => a.indexOf(v) === i).join(", ")}</td>
+        <td><button type="button" class="btn small${more ? " on" : ""}" data-open>Ayrıntı</button></td></tr>`; }).join("")
+      || `<tr><td colspan="9" class="empty">Kayıt yok.</td></tr>`;
+    const pg = $(".vtpager", view); const b = (i, t) => `<button type="button" class="btn small${i === st.page ? " on" : ""}" data-pg="${i}"${i < 0 || i >= pages ? " disabled" : ""}>${t}</button>`;
+    pg.innerHTML = pages > 1 ? `${b(st.page - 1, "‹ Önceki")}<span class="num">${st.page + 1} / ${pages}</span>${b(st.page + 1, "Sonraki ›")}` : "";
+    bar();
+  };
+  const bar = () => { const n = vtCount(), el = $(".vtdraft", view); el.hidden = !n;
+    $("#vtdn").innerHTML = `<b>${n}</b> kayıtta taslak değişiklik`; $("#vtpub").disabled = !admin; $("#vtpub").title = admin ? "" : "Önce yönetim paneline giriş yapın"; };
+  let tq;
+  f.addEventListener("input", e => { if (e.target.name === "q") { clearTimeout(tq); tq = setTimeout(() => { st.q = f.q.value.trim(); st.page = 0; draw(); }, 200); } });
+  f.addEventListener("change", e => { if (e.target.name !== "q") { st[e.target.name] = e.target.value; st.page = 0; draw(); } });
+  f.addEventListener("submit", e => e.preventDefault());
+  $(".vtpager", view).addEventListener("click", e => { const b = e.target.closest("[data-pg]"); if (!b) return; st.page = +b.dataset.pg; draw(); $(".vtwrap", view).scrollIntoView({ block: "start" }); });
+  tb.addEventListener("change", e => {
+    const inp = e.target.closest("[data-k]"), tr = e.target.closest("tr[data-id]"); if (!inp || !tr) return;
+    const id = tr.dataset.id, k = inp.dataset.k, v = k === "est" ? (inp.checked ? "1" : "0") : inp.value;
+    if ((k === "b" || k === "d") && !vtYear(v.trim())) { inp.setCustomValidity("1–1500 arası hicrî yıl ya da boş"); inp.reportValidity(); return; }
+    inp.setCustomValidity(""); vtSet(id, k, v);
+    if (k === "d" && v.trim()) { const c = tr.querySelector("[data-k=est]"); c.checked = false; vtSet(id, "est", "0"); c.closest("td").classList.toggle("ch", !!(VT[id] && "est" in VT[id])); }
+    const ch = !!(VT[id] && k in VT[id]); inp.closest("td").classList.toggle("ch", ch); tr.classList.toggle("dr", !!VT[id]); bar();
+  });
+  tb.addEventListener("keydown", e => {   // Enter / ok tuşlarıyla aynı sütunda alt/üst satıra geç
+    const inp = e.target.closest("input[data-k]"); if (!inp || inp.type === "checkbox" || !["Enter", "ArrowDown", "ArrowUp"].includes(e.key)) return;
+    const tr = inp.closest("tr"), nx = e.key === "ArrowUp" ? tr.previousElementSibling : tr.nextElementSibling;
+    const t = nx && nx.querySelector(`[data-k="${inp.dataset.k}"]`); if (t) { e.preventDefault(); inp.dispatchEvent(new Event("change", { bubbles: true })); t.focus(); t.select(); }
+  });
+  tb.addEventListener("click", e => { const b = e.target.closest("[data-open]"); if (b) vtBox(b.closest("tr").dataset.id, PL, N, draw); });
+  // dışa aktarma ve taslak yedeği
+  const menu = $(".vtmenu", view);
+  $("#vtexp").onclick = () => { menu.hidden = !menu.hidden; };
+  const save = (text, name, type) => { const a = document.createElement("a"); a.href = URL.createObjectURL(new Blob([text], { type })); a.download = name; document.body.append(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 500); };
+  menu.addEventListener("click", e => { const x = e.target.closest("[data-x]")?.dataset.x; if (!x) return; menu.hidden = true;
+    if (x === "json") return save(JSON.stringify(VT, null, 1), `veri-taslak-${ktToday()}.json`, "application/json");
+    const q = v => `"${String(v ?? "").replace(/"/g, '""')}"`;
+    const head = ["Kimlik", "Türkçe tam ad", "Kısa ad", "Arapça ad", "Doğum (h.)", "Vefat (h.)", "Vefat tahminî", "Vefat dönemi", "Diğer adları", "Ana yer", "Kaynaklar", "Taslakta"];
+    const lines = rows.map(p => [p.id, vtVal(p.id, "tr"), vtVal(p.id, "trs"), vtVal(p.id, "ar"), vtVal(p.id, "b"), vtVal(p.id, "d"), vtVal(p.id, "est") === "1" ? "evet" : "",
+      vtVal(p.id, "dn"), vtVal(p.id, "alt"), vtPlace(PL, p.place || ""), p.books.join(" "), VT[p.id] ? "evet" : ""].map(q).join(","));
+    save("﻿" + [head.map(q).join(","), ...lines].join("\r\n"), `tabaqat-veri-${ktToday()}.csv`, "text/csv;charset=utf-8"); });
+  $("input[type=file]", menu).addEventListener("change", async e => { const fl = e.target.files[0]; if (!fl) return; menu.hidden = true;
+    try { const o = JSON.parse(await fl.text()); if (!o || typeof o !== "object") throw 0;
+      Object.entries(o).forEach(([id, x]) => { if (P.has(id) && x && typeof x === "object") VT[id] = { ...(VT[id] || {}), ...x }; }); vtSave(); draw(); toast("Taslak yüklendi"); }
+    catch (x) { toast("Dosya okunamadı"); } e.target.value = ""; });
+  $("#vtrev").onclick = () => vtReview(PL, N, draw);
+  $("#vtpub").onclick = async () => {
+    const items = vtItems($("#vtsrc").value); if (!items.length) { toast("Yayımlanacak değişiklik yok"); return; }
+    const btn = $("#vtpub"); btn.disabled = true; btn.textContent = "Yayımlanıyor…";
+    try {
+      const n = vtCount(), t = Date.now().toString(36);
+      await ktWrite(its => items.forEach((x, i) => its.push({ id: `k${t}${i.toString(36)}`, ...x, at: ktToday() })), `Veri girişi: ${n} kayıt düzenlendi`);
+      VT = {}; vtSave(); edited.clear(); KATKI.filter(x => x.op === "edit" || x.op === "fix").forEach(x => edited.add(x.p));
+      toast("Yayımlandı; site birkaç dakika içinde güncellenir"); draw();
+    } catch (e) { toast(`Yayımlanamadı: ${e.message}`); }
+    btn.disabled = !admin; btn.textContent = "Yayımla";
+  };
+  draw();
+  if (openId && P.has(openId)) vtBox(openId, PL, N, draw);
+}
+
+// taslakların toplu gözden geçirilmesi
+function vtReview(PL, N, redraw) {
+  const box = document.createElement("div"); box.className = "expbox ktbox"; box.setAttribute("role", "dialog"); box.setAttribute("aria-modal", "true"); box.dir = "ltr"; box.lang = "tr";
+  const render = () => { const ids = Object.keys(VT);
+    box.innerHTML = `<div class="in"><div class="hd"><b>Taslak değişiklikler (${ids.length} kayıt)</b><span class="grow"></span>
+      ${ids.length ? `<button type="button" class="btn" data-all>Hepsini sil</button>` : ""}<button type="button" class="btn" data-x>Kapat</button></div>
+      ${ids.length ? ids.map(id => `<article class="ktrow" data-id="${esc(id)}"><div class="ktrow-h">${plink(id)} <span class="d num">${esc(id)}</span><span class="grow"></span>
+        <button type="button" class="btn small" data-ed>Düzenle</button><button type="button" class="btn small" data-rm>Taslağı sil</button></div>${vtDiff(id, VT[id], PL, N)}</article>`).join("")
+        : `<p class="empty">Taslak yok.</p>`}</div>`; };
+  render();
+  const close = () => { box.remove(); document.removeEventListener("keydown", key, true); redraw(); };
+  const key = e => { if (e.key === "Escape") { e.stopPropagation(); close(); } };
+  box.addEventListener("click", e => {
+    if (e.target === box || e.target.closest("[data-x]")) return close();
+    if (e.target.closest("a[href^='#/p/']")) return close();
+    const row = e.target.closest("[data-id]"), id = row?.dataset.id;
+    if (e.target.closest("[data-all]")) { VT = {}; vtSave(); render(); }
+    else if (e.target.closest("[data-rm]")) { delete VT[id]; vtSave(); render(); }
+    else if (e.target.closest("[data-ed]")) { close(); vtBox(id, PL, N, redraw); }
+  });
+  document.addEventListener("keydown", key, true); document.body.append(box);
+}
+
+// tek kaydın ayrıntılı düzenleme penceresi
+async function vtBox(id, PL, N, redraw) {
+  if ($(".vtbox")) return;
+  const p = P.get(id), d = await person(id); if (!p || !d) return;
+  const x = JSON.parse(JSON.stringify(VT[id] || {}));   // pencere içinde çalışılan kopya
+  ["pa", "pd", "wa", "we", "wd", "ra", "rd"].forEach(k => { x[k] = x[k] || []; });
+  const val = k => k in x ? x[k] : vtCur(id, k);
+  const myWorks = () => (N ? N.works.filter(w => w.a === id) : []);
+  const box = document.createElement("div"); box.className = "expbox ktbox vtbox"; box.setAttribute("role", "dialog"); box.setAttribute("aria-modal", "true"); box.setAttribute("aria-label", "Kaydı düzenle"); box.dir = "ltr"; box.lang = "tr";
+  const inp = (k, o = {}) => `<label class="ktf${o.wide ? " w" : ""}"><span class="label">${VT_F[k]}</span>${o.area
+    ? `<textarea name="${k}" rows="${o.area}" maxlength="3000" dir="auto">${esc(val(k))}</textarea>`
+    : `<input name="${k}" value="${esc(val(k))}"${o.ar ? ` dir="rtl" lang="ar"` : ""}${o.num ? ` inputmode="numeric" maxlength="4" placeholder="ör. 683"` : ""}${o.list ? ` list="${o.list}"` : ""}${o.ph ? ` placeholder="${esc(o.ph)}"` : ""}>`}</label>`;
+  const placeRows = () => {
+    const cur = [...new Map(d.places.map(([i, k]) => [`${i}|${k}`, [i, k]])).values()];
+    const del = new Set(x.pd.map(([i, k]) => `${i}|${k}`));
+    return [...cur.map(([i, k]) => `<li class="${del.has(`${i}|${k}`) ? "rm" : ""}"><span class="tag">${esc(KIND[k])}</span> ${esc(vtPlace(PL, i))}
+        <button type="button" class="x" data-pt="${esc(i)}" data-pk="${k}" title="${del.has(`${i}|${k}`) ? "Geri al" : "Kaldır"}">${del.has(`${i}|${k}`) ? "↺" : "×"}</button></li>`),
+      ...x.pa.map(([i, k], n) => `<li class="add"><span class="tag">${esc(KIND[k])}</span> ${esc(vtPlace(PL, i))} <button type="button" class="x" data-pa="${n}" title="Kaldır">×</button></li>`)].join("")
+      || `<li class="empty">Yer kaydı yok.</li>`;
+  };
+  const wkSel = (name, v) => `<select name="${name}" aria-label="Tür">${WK_ORDER.concat(["tahric", "tekmile", "fetava"]).map(k => `<option value="${k}"${k === v ? " selected" : ""}>${esc(WK[k][1])}</option>`).join("")}</select>`;
+  const workRows = () => {
+    const del = new Set(x.wd), ed = new Map(x.we.map(e => [e[0], e]));
+    return [...myWorks().map(w => { const e = ed.get(w.id) || [], rm = del.has(w.id);
+        return `<li class="wrow${rm ? " rm" : ""}" data-w="${esc(w.id)}">${wkSel("wk", e[3] || w.k)}<input name="wtr" value="${esc(e[2] || w.tr || "")}" placeholder="Türkçe adı" aria-label="Türkçe adı">
+          <input name="war" value="${esc(e[1] || w.ar || "")}" dir="rtl" lang="ar" placeholder="Arapça adı" aria-label="Arapça adı">
+          <button type="button" class="x" data-wd="${esc(w.id)}" title="${rm ? "Geri al" : "Kaldır"}">${rm ? "↺" : "×"}</button></li>`; }),
+      ...x.wa.map(([ar, tr, k], n) => `<li class="wrow add" data-wn="${n}">${wkSel("wk", k)}<input name="wtr" value="${esc(tr)}" placeholder="Türkçe adı" aria-label="Türkçe adı">
+          <input name="war" value="${esc(ar)}" dir="rtl" lang="ar" placeholder="Arapça adı" aria-label="Arapça adı"><button type="button" class="x" data-wa="${n}" title="Kaldır">×</button></li>`)].join("")
+      || `<li class="empty">Eser kaydı yok.</li>`;
+  };
+  const relRows = dir => {
+    const L = dir === "t" ? d.teachers : d.students, del = new Set(x.rd.filter(r => r.dir === dir).map(r => r.id));
+    return [...L.map(r => `<li class="${del.has(r.id) ? "rm" : ""}">${esc(who(r.id)?.name || r.id)} <span class="d num">${deathTxt(who(r.id) || {})}</span>
+        <button type="button" class="x" data-rd="${esc(r.id)}" data-dir="${dir}" title="${del.has(r.id) ? "Geri al" : "Bağı kaldır"}">${del.has(r.id) ? "↺" : "×"}</button></li>`),
+      ...x.ra.map((r, n) => r.dir === dir ? `<li class="add">${esc(who(r.id)?.name || r.id)} <span class="tag">${REL[r.rel]}</span> <button type="button" class="x" data-ra="${n}" title="Kaldır">×</button></li>` : "")].join("")
+      || `<li class="empty">Kayıt yok.</li>`;
+  };
+  box.innerHTML = `<form class="in ktform vtform" novalidate>
+    <div class="hd"><b>${esc(p.tr)}</b> <span class="d num">${esc(id)}</span><span class="grow"></span><a class="btn" href="#/p/${esc(id)}" target="_blank" rel="noopener">Sayfası ↗</a><button type="button" class="btn" data-x>Vazgeç</button></div>
+    <datalist id="vtdnl">${VT_DN.map(v => `<option value="${esc(v)}">`).join("")}</datalist>
+    <fieldset><legend class="label">Adlar</legend><div class="vtgrid">${inp("tr", { wide: 1 })}${inp("trs")}${inp("ar", { ar: 1, wide: 1 })}${inp("alt", { ph: "künye, lakap, şöhret; virgülle ayırın" })}</div></fieldset>
+    <fieldset><legend class="label">Tarihler</legend><div class="vtgrid">${inp("b", { num: 1 })}${inp("d", { num: 1 })}
+      <label class="ktf chk"><span class="label">${VT_F.est}</span><span><input type="checkbox" name="est"${val("est") === "1" ? " checked" : ""}> tahminî</span></label>
+      ${inp("dn", { list: "vtdnl", ph: "ör. 7./13. yüzyılın ortası" })}</div></fieldset>
+    <fieldset><legend class="label">Yerler</legend><ul class="vtl" id="vtpl"></ul>
+      <div class="vtadd"><select name="pk" aria-label="Yer türü">${KIND_ORDER.map(k => `<option value="${k}">${esc(KIND[k])}</option>`).join("")}</select><div class="vtpick" id="vtplp"></div>
+        <button type="button" class="btn" data-padd>Ekle</button></div>
+      <p class="legend">Listede olmayan bir yer için adını yazıp “Ekle” deyin; haritada görünmez, listede görünür.</p></fieldset>
+    <fieldset><legend class="label">Eserler</legend><ul class="vtl" id="vtwl"></ul><button type="button" class="btn" data-wadd>+ Eser ekle</button></fieldset>
+    <fieldset><legend class="label">Hocaları</legend><ul class="vtl" id="vttl"></ul><div class="vtadd"><div class="vtpick" data-dir="t"></div><select name="rt" aria-label="Bağ türü">${KT_REL.map(k => `<option value="${k}">${REL[k]}</option>`).join("")}</select></div></fieldset>
+    <fieldset><legend class="label">Talebeleri</legend><ul class="vtl" id="vtsl"></ul><div class="vtadd"><div class="vtpick" data-dir="s"></div><select name="rs" aria-label="Bağ türü">${KT_REL.map(k => `<option value="${k}">${REL[k]}</option>`).join("")}</select></div></fieldset>
+    <fieldset><legend class="label">Not ve kaynak</legend><div class="vtgrid">${inp("note", { area: 3, wide: 1 })}${inp("src", { wide: 1, ph: "ör. Kureşî, el-Cevâhir, III, 431 (nr. 1611)" })}</div>
+      ${d.notes ? `<ul class="ktfix">${d.notes.map(n => `<li dir="auto">${esc(n.note)}${n.src ? ` <span class="d">(${esc(n.src)})</span>` : ""}</li>`).join("")}</ul>` : ""}</fieldset>
+    <p class="kterr" role="alert" hidden></p>
+    <div class="hd ktsub"><button type="button" class="btn" data-clear>Bu kaydın taslağını sil</button><span class="grow"></span><button type="submit" class="btn gold">Taslağa kaydet</button></div></form>`;
+  const f = $("form", box), err = $(".kterr", box);
+  const paint = () => { $("#vtpl", box).innerHTML = placeRows(); $("#vtwl", box).innerHTML = workRows(); $("#vttl", box).innerHTML = relRows("t"); $("#vtsl", box).innerHTML = relRows("s"); };
+  paint();
+  // eser satırlarındaki yazılanları x'e aktarır
+  const readWorks = () => {
+    box.querySelectorAll("#vtwl .wrow").forEach(li => {
+      const k = $("[name=wk]", li).value, tr = $("[name=wtr]", li).value.trim(), ar = $("[name=war]", li).value.trim();
+      if (li.dataset.wn !== undefined) { x.wa[+li.dataset.wn] = [ar, tr, k]; return; }
+      const w = N.byId.get(li.dataset.w); x.we = x.we.filter(e => e[0] !== w.id);
+      if (tr !== (w.tr || "") || ar !== (w.ar || "") || k !== w.k) x.we.push([w.id, ar !== (w.ar || "") ? ar : "", tr !== (w.tr || "") ? tr : "", k !== w.k ? k : ""]);
+    });
+  };
+  // yer arama: gazetteer (Arapça / Türkçe ad) ya da serbest yazı
+  let plPick = "";
+  const plBox = localSearch("Yer ara ya da yazın…", q => { const a = /[؀-ۿ]/.test(q), t = a ? norm(q) : fold(q);
+      return [...PL.values()].filter(pl => a ? norm(pl.name).includes(t) : fold(pl.name_tr || "").includes(t)).slice(0, 12)
+        .map(pl => ({ id: pl.id, html: `<span>${esc(plName(pl))}</span><span class="d">${esc(pl.name)}${pl.info?.region_tr ? ` · ${esc(pl.info.region_tr)}` : ""}</span>` })); },
+    pid => { plPick = pid; });
+  $("#vtplp", box).append(plBox); $("input", plBox).addEventListener("input", () => { plPick = ""; });
+  box.querySelectorAll(".vtpick[data-dir]").forEach(host => { const dir = host.dataset.dir;
+    host.append(localSearch(dir === "t" ? "Hoca ekle: âlim ara…" : "Talebe ekle: âlim ara…", q => findPersons(q, 12).filter(o => o.id !== id)
+      .map(o => ({ id: o.id, html: `<span>${esc(o.name)}</span><span class="d">${deathTxt(o)}</span>` })), oid => {
+        readWorks(); if (!x.ra.some(r => r.id === oid && r.dir === dir)) x.ra.push({ dir, id: oid, rel: f[dir === "t" ? "rt" : "rs"].value });
+        $("input", host).value = ""; paint(); })); });
+  box.addEventListener("click", e => {
+    const b = e.target.closest("button"); if (!b) { if (e.target === box) close(); return; }
+    if (b.matches("[data-x]")) return close();
+    readWorks();
+    if (b.dataset.pt !== undefined) { const key = [b.dataset.pt, b.dataset.pk], i = x.pd.findIndex(([a, k]) => a === key[0] && k === key[1]);
+      i >= 0 ? x.pd.splice(i, 1) : x.pd.push(key); }
+    else if (b.dataset.pa !== undefined) x.pa.splice(+b.dataset.pa, 1);
+    else if (b.matches("[data-padd]")) { const t = plPick || $("input", plBox).value.trim(); if (!t) return;
+      x.pa.push([t, f.pk.value]); plPick = ""; $("input", plBox).value = ""; }
+    else if (b.dataset.wd !== undefined) { const i = x.wd.indexOf(b.dataset.wd); i >= 0 ? x.wd.splice(i, 1) : x.wd.push(b.dataset.wd); }
+    else if (b.dataset.wa !== undefined) x.wa.splice(+b.dataset.wa, 1);
+    else if (b.matches("[data-wadd]")) x.wa.push(["", "", "asl"]);
+    else if (b.dataset.rd !== undefined) { const i = x.rd.findIndex(r => r.id === b.dataset.rd && r.dir === b.dataset.dir);
+      i >= 0 ? x.rd.splice(i, 1) : x.rd.push({ dir: b.dataset.dir, id: b.dataset.rd }); }
+    else if (b.dataset.ra !== undefined) x.ra.splice(+b.dataset.ra, 1);
+    else if (b.matches("[data-clear]")) { delete VT[id]; vtSave(); return close(); }
+    else return;
+    paint();
+  });
+  const close = () => { box.remove(); document.removeEventListener("keydown", key, true); redraw(); };
+  const key = e => { if (e.key === "Escape" && !e.target.closest(".lsearch")) { e.stopPropagation(); close(); } };
+  document.addEventListener("keydown", key, true);
+  f.addEventListener("submit", e => {
+    e.preventDefault(); err.hidden = true; readWorks();
+    for (const k of ["b", "d"]) if (!vtYear(f[k].value.trim())) { err.textContent = `${VT_F[k]}: 1–1500 arası hicrî yıl yazın ya da boş bırakın.`; err.hidden = false; return; }
+    if (["tr", "trs", "ar"].some(k => !f[k].value.trim())) { err.textContent = "Ad alanları boş bırakılamaz."; err.hidden = false; return; }
+    ["tr", "trs", "ar", "alt", "b", "d", "dn", "note", "src"].forEach(k => vtSet(id, k, f[k].value));
+    vtSet(id, "est", f.est.checked ? "1" : "0");
+    const dr = VT[id] || (VT[id] = {});
+    x.wa = x.wa.filter(w => w[0] || w[1]);
+    ["pa", "pd", "wa", "we", "wd", "ra", "rd"].forEach(k => { if (x[k].length) dr[k] = x[k]; else delete dr[k]; });
+    vtSave(); toast(VT[id] ? "Taslağa kaydedildi" : "Değişiklik yok"); close();
+  });
+  document.body.append(box); f.tr.focus();
 }
 
 function viewAbout(view) {
