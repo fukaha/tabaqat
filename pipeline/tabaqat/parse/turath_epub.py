@@ -164,9 +164,19 @@ def parse(path: str, book_id: str, start_after_heading: str | None = None,
             page_notes: dict[str, str] = {}
             events: list[tuple[str, str]] = []
             catchword = False
+            plain_notes = False   # bazı sayfalarda dipnotlar "hamesh" yerine düz "<hr>" + paragraflar hâlinde
             for el in body.find_all(["h2", "h3", "h4", "h5", "p"], recursive=False):
                 txt = _unescape(el.get_text(" ", strip=True))
                 classes = el.get("class") or []
+                if el.name == "p" and "text-center" not in classes:
+                    if txt == "<hr>":
+                        plain_notes = True
+                        continue
+                    if plain_notes:   # sayfa sonuna kadar dipnot; metin sonraki sayfada sürer
+                        m = _FN_LINE.match(txt)
+                        if m:
+                            page_notes[m.group(1).translate(_DIGITS)] = txt[m.end():].strip()
+                        continue
                 if el.name in ("h2", "h3", "h4"):
                     if not catchword:
                         events.append(("h", txt))

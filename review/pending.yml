@@ -38,3 +38,54 @@
   benzerlik: 1.0
   gerekce:
   - 'nisbe: الولوالجي'
+- 'no': 3
+  karar: ''
+  a: ghuraf_v1:99
+  b: jawahir:155
+  a_ad: أحمد بن علي بن محمد، الحنفي، الشيخ شِهاب الدين، أبو بكر
+  a_yer: الغرف العلية 1/237-238 (رقم 99)
+  a_vefat: 704
+  b_ad: أحمد بن على، أبو بكر، الوراق
+  b_yer: الجواهر المضية 1/219 (رقم 154)
+  b_vefat: null
+  a_sahis: gh99
+  b_sahis: jw154
+  tur: isim
+  puan: 3.0
+  benzerlik: 0.75
+  gerekce:
+  - künye
+- 'no': 4
+  karar: ''
+  a: ghuraf_v1:109
+  b: jawahir:155
+  a_ad: أحمد بن علي بن يوسف ابن نجيب الدين أبي بكر يحيى ابن أبي الفَتح، شيخ الإسلام المُعَمَّر، شِهاب الدين، السِّجِسْتاني المَك
+  a_yer: الغرف العلية 1/255-256 (رقم 109)
+  a_vefat: 762
+  b_ad: أحمد بن على، أبو بكر، الوراق
+  b_yer: الجواهر المضية 1/219 (رقم 154)
+  b_vefat: null
+  a_sahis: gh109
+  b_sahis: jw154
+  tur: isim
+  puan: 3.0
+  benzerlik: 0.75
+  gerekce:
+  - künye
+- 'no': 5
+  karar: ''
+  a: jawahir:155
+  b: tabaqat_saniyya:269
+  a_ad: أحمد بن على، أبو بكر، الوراق
+  a_yer: الجواهر المضية 1/219 (رقم 154)
+  a_vefat: null
+  b_ad: أحمد بن على، أبو بكر الرازى
+  b_yer: الطبقات السنية 1/412-414 (رقم 268)
+  b_vefat: 344
+  a_sahis: jw154
+  b_sahis: jw155
+  tur: isim
+  puan: 3.0
+  benzerlik: 0.75
+  gerekce:
+  - künye
