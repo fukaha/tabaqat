@@ -103,7 +103,7 @@ def words_to_year(words: list[str]) -> int | None:
     return total if used and 0 < total < 1400 else None
 
 
-_DEATH_VERB = re.compile(r"(توفي|مات|وفاته|توفاه|قتل|استشهد|درج|المتوفي|المتوفى)")
+_DEATH_VERB = re.compile(r"(توفي|مات|وفاته|توفاه|قتل|استشهد|درج|المتوفي|المتوفى|هلك)")
 _SANA = re.compile(r"سنه\s+(?:[^\s\d٠-٩]+\s+)?")
 
 

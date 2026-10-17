@@ -216,6 +216,26 @@ _DIG = str.maketrans("٠١٢٣٤٥٦٧٨٩", "0123456789")
 _XREF_NOTE = re.compile(r"برقم\s*([٠-٩\d]+)")
 
 
+_GENERIC = {"ابي", "ابو", "ابا", "بن", "ابن", "الامام", "القاضي", "الشيخ", "قاضي", "القضاه", "الفقيه",
+            "الحافظ", "العلامه", "شيخ", "الاسلام", "الدين", "الايمه", "الكبير", "الصغير", "عبد", "محمد", "احمد", "علي"}
+
+
+def _name_fits(text: str, p) -> bool:
+    """Dipnot atfının hedefi metindeki adla çelişmemeli (muhakkik numarası yanlış olabilir:
+    "محمد بن علي" için "برقم ١٤٤٢" = Muhammed b. Ömer). Ad yoksa (ولده) kabul."""
+    words = [w for w in normalize(text).split() if len(w) > 2 and w not in _GENERIC]
+    if not words:
+        return True
+    toks = set()
+    for n in p.names:
+        toks.update(n.chain)
+        toks.update(n.kunya.split())
+        toks.update(n.nisbas)
+        toks.update(w for lq in n.laqabs for w in lq.split())
+        toks.update(normalize(n.raw).split())
+    return any(w in toks for w in words)
+
+
 def _xrefs(e: dict, by_number: dict, cid: dict) -> dict[str, str]:
     """Dipnot no → şahıs: muhakkikin "برقم N" (aynı kitapta N numaralı madde) atfı; tek numaralı notlar."""
     fn = e.get("footnotes")
@@ -262,7 +282,7 @@ def _pass(entries, recs, cid, by_pid, res, rejected, chosen, recip, prev, by_num
             if (key, m.text) in chosen:  # onay sayfasında seçilen aday
                 r = Resolution(chosen[(key, m.text)], "resolved", 9, "insan")
             elif xp and xp in by_pid and xp != (ctx.pid if ctx else None) and (
-                    ctx is None or res._chrono_ok(by_pid[xp], ctx, role)):
+                    ctx is None or res._chrono_ok(by_pid[xp], ctx, role)) and _name_fits(m.text, by_pid[xp]):
                 r = Resolution(xp, "resolved", 9, "dipnot atfı")   # muhakkik: "برقم N"
             elif m.text:  # "أبيه أبي حفص الكبير": önce adla
                 r = res.resolve(m.text, role, ctx, chain=m.role == "chain" or m.via_chain,

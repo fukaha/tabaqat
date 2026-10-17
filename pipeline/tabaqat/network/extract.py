@@ -32,7 +32,7 @@ TRIGGERS: list[tuple[str, str, str]] = [
     (r"قرا (?:[^ .،]+ )?علي\b", "teacher", "read"),
     (r"تخرج (?:به|عليه)\b", "student", "fiqh"),
     (r"تخرج (?:علي|ب)\b", "teacher", "fiqh"),
-    (r"(?:صحب|لازم)\b", "teacher", "companion"),
+    (r"(?:صحب|لازم|لزم)\b", "teacher", "companion"),
     (r"(?:من اصحاب|تلميذ|من تلامذه|من تلاميذ)\b", "teacher", "companion"),
     (r"(?:هو |وهو |كان )?استاذ\b", "student", "fiqh"),
     (r"وعنه\b", "student", "took"),
@@ -227,7 +227,8 @@ def extract(text: str, book: str = "", vocab: set[str] | None = None,
                      if x.strip(" ،")]
             if not chain_from:
                 continue
-        if role == "teacher" and (chain_from or (len(links) > 1 and rel in ("took", "fiqh"))):
+        if role == "teacher" and (chain_from or (len(links) > 1 and rel in ("took", "fiqh"))
+                                  or (len(links) > 2 and rel == "read")):
             # Zincir: "أخذ عن A عن B عن C" → A öznenin, B A'nın, C B'nin hocası
             prev = chain_from
             for j, link in enumerate(links):
