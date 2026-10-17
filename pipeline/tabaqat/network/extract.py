@@ -29,7 +29,7 @@ TRIGGERS: list[tuple[str, str, str]] = [
     (r"سمع من\b", "teacher", "hadith"),
     (r"سمع(?= (?:ابا|ابي|ابن|\S+ بن )\S)", "teacher", "hadith"),   # "سمع أنس بن مالك"
     (r"قرا عليه\b", "student", "read"),
-    (r"قرا (?:[^ .،]+ )?علي\b", "teacher", "read"),
+    (r"قرا (?:[^ .،]+ ){0,3}علي\b", "teacher", "read"),          # "قرأ التفسير والنحو على"
     (r"تخرج (?:به|عليه)\b", "student", "fiqh"),
     (r"تخرج (?:علي|ب)\b", "teacher", "fiqh"),
     (r"(?:صحب|لازم|لزم)\b", "teacher", "companion"),
@@ -206,6 +206,15 @@ def extract(text: str, book: str = "", vocab: set[str] | None = None,
         t = re.split(r"قال: (?:وبه )?(?:اخبرنا|حدثنا|انبانا|انشدنا)|\bاخبرنا\b", t)[0]
     out: list[Mention] = []
     last_teacher: str | None = None
+    # maddenin başındaki "صاحب محمد بن الحسن، تفقه عليه": madde sahibinin hocası. Metin içindeki "صاحب"
+    # çoğunlukla başkasını tanıtır ("علاء الدين المروزي صاحب ابي زيد") ya da eser bildirir ("صاحب الهدايه").
+    m0 = re.match(r"^(?:(?:الفقيه|الامام|القاضي|الشيخ|العلامه|المحدث|الزاهد|المقري)،? ){0,3}صاحب "
+                  r"((?:الامام |الشيخ |القاضي )?(?!ال)[^\s«\"'(]\S*(?: [^\s،.«]+){0,6})", t)
+    if m0:
+        seg0 = re.split(r" (?:و?كان|و?تفقه|و?روي|و?سمع|و?اخذ|و?هو|ثقه|يكني|مات|توفي)\b", m0.group(1))[0]
+        for name in _names(seg0, vocab)[:1]:
+            kin, nm = _kin(name)
+            out.append(Mention("teacher", "companion", nm, kin, t[:120], extra={"raw": name}))
     for m in _TRIG.finditer(t):
         i = next(int(k[1:]) for k, v in m.groupdict().items() if v)
         _, role, rel = TRIGGERS[i]

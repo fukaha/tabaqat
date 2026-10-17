@@ -5,6 +5,9 @@
 # ignore: yer adı sanılan yaygın kelimeler
 # prefixed_only: ignore'dakilerden yalnız "ب" edatıyla yer sayılanlar ("ببصرى")
 alias:
+  أنكوريا: x:ankara
+  انكوريه: x:ankara
+  أنكورية: x:ankara
   بصرى الشام: BUSRA_364E325N_S
   المزة: DIMASHQ_363E335N_S          # Dımaşk'ın köyü/mahallesi
   رأس عين: RASAYN_400E368N_S
@@ -55,6 +58,8 @@ alias:
   غزنين: GHAZNA_684E335N_S
 # yeni yerler: kimlik → [adlar, enlem, boylam, tür, bölge]
 new:
+  x:kashgar: [[كاشغر, كاشغار], 39.4704, 75.9898, towns, Turkistan]       # Kureşî nr. 82
+  x:harput: [[خرتبرت, خربرت, خرت برت, حصن زياد], 38.7076, 39.2537, towns, Rum]   # nr. 88, 93
   x:damghan: [[دامغان, الدامغان], 36.1683, 54.3480, towns, Daylam]          # Kûmis'in merkezi (Kureşî nr. 7)
   x:sarkhad: [[صرخد], 32.4925, 36.7106, towns, Sham]                      # Havran'da kale şehir (nr. 21)
   x:qarqisiya: [[قرقيسيا, قرقيسياء], 35.1563, 40.4300, towns, Aqur]       # Hâbûr–Fırat birleşimi (nr. 81)
@@ -108,6 +113,9 @@ new:
   x:azerbaijan: [[أذربيجان, اذربيجان], 38.07, 46.3, regions, Rihab]
   x:maghrib: [[المغرب, بلاد المغرب], 34.0, -5.0, regions, Maghrib]
 nisba:
+  الكاشغري: x:kashgar
+  الخرتبرتي: x:harput
+  الخربرتي: x:harput
   البصراوي: BUSRA_364E325N_S          # Kureşî'nin yazımı (Busrâ)
   البصروي: BUSRA_364E325N_S
   الاذرعي: ADHRIAT_360E326N_S         # Ezriât

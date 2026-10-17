@@ -95,11 +95,13 @@ def derive(title: str) -> tuple[str | None, str | None]:
 
 # ---------- Arapça metinlerden çıkarım ----------
 _CUE = re.compile(r"(صنّ?ف|ألّ?ف|التصانيف|تصانيفه|تصانيف|مصنفاته|المصنفات|مصنفات|تآليفه|التآليف|مؤلفاته|له كتاب|وله|له|"
-                  r"شرحه|شرح|اختصره|اختصر|نظم|جمع|علّ?ق|حشّ?ى|كتب على|رتّ?ب|خرّ?ج أحاديث|وضع|عمل)\s*(?:كتاب|كتابا)?\s*$")
+                  r"شرحه|شرح|اختصره|اختصر|انتخب|انتقى|نظم|جمع|علّ?ق|حشّ?ى|كتب على|رتّ?ب|خرّ?ج أحاديث|وضع|عمل)\s*(?:كتاب|كتابا)?\s*$")
 _NEG = re.compile(r"(قال|ذكره|ذكر|نقل|رأيت|رأيته|حكى|روى|كذا|قرأ|قرأت|سمع|سمعت|درّ?س|أقرأ|حفظ|عرض|صاحب|مصنّ?ف|مؤلف|تفقه|أخذ|"
                   r"نظر|طالع|أفتى|انظر|ترجمته|ليس له|نحوا من|مثل|فى كتاب|في كتاب|المذكورة|يعرف|اشتهر)")
 _GENERIC = {"كتابا", "كتاب", "حواشي", "حواشى", "حاشيه", "حاشية", "مختصر", "مختصرا", "تاريخ", "شرحا", "رساله", "رسالة", "الفتاوى",
             "تصانيف", "مصنف", "مجلد", "منه", "فيه", "تفسير", "ديوان", "مشيخه", "مشيخة", "معجم شيوخه", "التاريخ", "تعليقه", "تعليقة"}
+_GENERIC_HEAD = {"شرحا": "شرح", "شرح": "شرح", "حاشية": "حاشية على", "حاشيه": "حاشية على", "حواشي": "حاشية على",
+                 "حواشى": "حاشية على", "مختصرا": "مختصر", "مختصر": "مختصر", "تعليقة": "تعليقة على", "تعليقه": "تعليقة على"}
 _BADTITLE = re.compile(r"(قال|رحمه|رضى|رضي|اللهم|سنة|سنه|توفى|توفي|مات|حدثنا|أخبرنا|بن\s)")
 
 
@@ -112,6 +114,7 @@ def extract_ar(entries: dict, owner: dict) -> list[dict]:
         if not pid or "«" not in text:
             continue
         prev_end, prev_ok = -999, False
+        prev_generic, ok_generic = None, False
         for m in re.finditer(r"«([^«»]{2,90})»", text):
             before = text[max(0, m.start() - 70):m.start()]
             seg = re.split(r"[.؛:]\s|\n", before)[-1]
@@ -119,9 +122,19 @@ def extract_ar(entries: dict, owner: dict) -> list[dict]:
             chained = prev_ok and 0 < m.start() - prev_end < 45 and not re.search(r"[.؛\n]", gap) and not _NEG.search(gap)
             cue = _CUE.search(seg.strip())
             ok = chained or ((cue or re.search(r"(صنّ?ف|التصانيف|تصانيف|مصنفات|تآليف|مؤلفات)", seg)) and not _NEG.search(seg[-30:]))
+            if not ok and re.search(r"رأيت (?:له|لهذا)\s*(?:كتابا|كتاب)?\s*$", seg.strip()):
+                ok = True
             title = re.sub(r"\s+", " ", m.group(1)).strip(" ،,")
+            # "ووضع «شرحا» على «الهداية»": genel ad + على «X» → "شرح X"
+            if prev_generic and ok_generic and re.fullmatch(r"\s*على\s*", text[prev_end:m.start()]):
+                title = f"{prev_generic} {title}"
+                ok, cue = True, None
+            prev_generic = None
             prev_end = m.end()
-            if not ok or _BADTITLE.search(title) or len(title.split()) > 12 or _TASHKEEL.sub("", title) in _GENERIC:
+            g = _TASHKEEL.sub("", title)
+            if ok and g in _GENERIC_HEAD:
+                prev_generic, ok_generic = _GENERIC_HEAD[g], True
+            if not ok or _BADTITLE.search(title) or len(title.split()) > 12 or g in _GENERIC:
                 prev_ok = False
                 continue
             prev_ok = True
