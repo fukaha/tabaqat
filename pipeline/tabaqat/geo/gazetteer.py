@@ -99,6 +99,8 @@ class Gazetteer:
         for nb, pid in (extra.get("nisba") or {}).items():
             if pid in self.places:
                 self.by_nisba[key(nb)] = pid
+        for nb in extra.get("nisba_ignore") or []:   # meslek nisbeleri (الحلواني: helvacı)
+            self.by_nisba.pop(key(nb), None)
         self.max_words = max(len(n.split()) for n in self.by_name)
 
     def lookup(self, name: str) -> str | None:

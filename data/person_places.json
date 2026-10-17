@@ -10531,13 +10531,6 @@
    "key": "jawahir:131",
    "text": "البخاري",
    "snippet": ""
-  },
-  {
-   "place": "HULWAN_459E344N_S",
-   "kind": "nisba",
-   "key": "jawahir:131",
-   "text": "الحلواني",
-   "snippet": ""
   }
  ],
  "jw131": [
@@ -37251,13 +37244,6 @@
    "key": "jawahir:822",
    "text": "البخاري",
    "snippet": ""
-  },
-  {
-   "place": "HULWAN_459E344N_S",
-   "kind": "nisba",
-   "key": "jawahir:822",
-   "text": "الحلواني",
-   "snippet": ""
   }
  ],
  "jw823": [
@@ -39044,13 +39030,6 @@
    "key": "jawahir:706",
    "text": "نيسابور",
    "snippet": "ي القاضي ابو القاسم النيسابوري، ببغداد، سمعت واعظا بنيسابور يعظ الناس، وهو ينشد: ايا شاب من الشبان عاص … اتدري ما جزاء ذوي المعاصي سعير بالشباب لها ثبور … فويل يوم يوخذ بالنواصي فا"
-  },
-  {
-   "place": "HULWAN_459E344N_S",
-   "kind": "nisba",
-   "key": "jawahir:706",
-   "text": "الحلواني",
-   "snippet": ""
   }
  ],
  "jw706": [
@@ -55546,15 +55525,6 @@
    "kind": "nisba",
    "key": "ghuraf_v2:167",
    "text": "الدمشقي",
-   "snippet": ""
-  }
- ],
- "jw1408": [
-  {
-   "place": "HULWAN_459E344N_S",
-   "kind": "nisba",
-   "key": "jawahir:1409",
-   "text": "الحلواني",
    "snippet": ""
   }
  ],

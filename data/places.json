@@ -2969,22 +2969,6 @@
   }
  },
  {
-  "id": "HULWAN_459E344N_S",
-  "name": "حلوان",
-  "lat": 34.47862,
-  "lon": 45.93468,
-  "type": "capitals",
-  "region": "Iraq",
-  "n": 4,
-  "kinds": {
-   "nisba": 4
-  },
-  "centuries": {
-   "?": 3,
-   "5": 1
-  }
- },
- {
   "id": "AHWAZ_486E313N_S",
   "name": "الأهواز",
   "lat": 31.32986,

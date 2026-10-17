@@ -296,9 +296,13 @@ def _pass(entries, recs, cid, by_pid, res, rejected, chosen, recip, prev, by_num
             if m.kin and (r is None or r.pid is None) and ctx is not None:
                 r = res.kin(m.kin, m.text, ctx)
             # Dış kişi (Buhârî, İbn Maîn…): Hanefî aday güçlü değilse ve vefat uyuyorsa
-            if r is not None and not m.kin and r.how not in ("insan", "elle", "tam ad") and (
-                    r.pid is None or r.score < 6 or "meşhur" in r.how or "zayıf" in r.how):
-                x = res.external(m.text, role, ctx, bool(r.scored) and m.rel != "hadith")
+            if r is not None and not m.kin and r.how not in ("insan", "elle", "tam ad", "dipnot atfı") and (
+                    r.pid is None or r.score < 6 or "meşhur" in r.how or "zayıf" in r.how
+                    or (r.how.startswith("nesep") and len(m.text.split()) >= 4)):
+                # zayıf eşleşmede ya da dış listede tam adıyla geçen kişide (ör. "السلفي", "ابو المحاسن عمر بن
+                # علي القرشي") aynı adlı Hanefî aday olması dış kişiyi engellemez
+                x = res.external(m.text, role, ctx, bool(r.scored) and m.rel != "hadith"
+                                 and "zayıf" not in r.how and len(m.text.split()) < 4)
                 hanafi = (r.pid and m.rel == "fiqh" and res.chron(r.pid, ctx, role) == "near")
                 if x and not hanafi:
                     r = Resolution(None, "external", external=(x.name, x.death))

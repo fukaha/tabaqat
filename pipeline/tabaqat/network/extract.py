@@ -22,6 +22,8 @@ TRIGGERS: list[tuple[str, str, str]] = [
     (r"تفقه ب(?=[^\s.،]{3,})", "teacher", "fiqh"),          # "تفقه بإبراهيم"
     (r"(?:اخذ|يروي|روي) (?:الفقه |العلم |العلوم |الادب |الحديث |القراءات |التفسير )?عنه\b",
      "student", "took"),
+    (r"(?:يروي|روي) (?:هذا |ذلك )?(?:الكتاب|كتابه|الحديث|تصانيفه|مصنفاته) عنه\b", "student", "took"),   # "روى هذا الكتاب عنه صاحبه"
+    (r"(?:احد|من) (?:مشايخ|شيوخ|اشياخ)\b", "student", "took"),   # "أحد مشايخ صاحب الهداية": X onun talebesi
     (r"اخذ (?:الفقه |العلم |العلوم |العلوم الشرعيه |الادب |الحديث |القراءات |التفسير |الطريقه )?عن\b",
      "teacher", "took"),
     (r"(?:يروي|روي|حدث)(?: بها| ب\S+)? عن\b", "teacher", "hadith"),   # "حدث بها عن", "حدث ببغداد عن"
@@ -139,8 +141,14 @@ def _clean_item(s: str) -> str:
     return out
 
 
+_SAHIB_BOOK = re.compile(r"^صاحب (?:ال)?(?:هدايه|كنز|منار|وافي|بدايع|تحفه|نهايه|قنيه|مختار)$")   # aliases.yml'de kişiye bağlı
+
+
 def _clean_item0(s: str) -> str:
-    s = s.strip(" ،()«»\"'-[]")
+    s = re.sub(r"[«»\"]", "", s).strip(" ،()'-[]")
+    s = re.sub(r"^(?:صاحبه|صاحباه|تلميذه) (?=(?:ابو|ابي|ابا|الامام|القاضي|الشيخ|\S+ بن ))", "", s)
+    if _SAHIB_BOOK.match(s.rstrip(" .،؛")):
+        return s.rstrip(" .،؛")
     s = re.sub(r"^(?:و)?(?:علي|من) (?!بن )", "", s)   # "وعلي بن موسى" addır
     if (s.startswith("و") and s.split()[0] not in _KEEP_W and len(s.split()[0]) > 2
             and s.split()[0] not in ("ولده", "والده", "ولداه", "ولديه", "والدي")):
@@ -159,6 +167,8 @@ def name_like(s: str, vocab: set[str] | None = None) -> bool:
     w = s.split()
     if not w or len(w) > 14 or _NOT_PERSON.match(s):
         return False
+    if _SAHIB_BOOK.match(s):
+        return True
     if s in KIN or any(s.startswith(k + " ") for k in KIN):
         return True
     if re.search(r"(^| )(بن|ابن|بنت)( |$)", s) or re.match(r"(ابي|ابو|ابا|ام) ", s):
