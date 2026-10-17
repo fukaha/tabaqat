@@ -16,7 +16,7 @@ KINDS = {
     "birth": r"ولد|مولده|مولدي",
     "death": r"مات|توفي|توفاه|وفاته|قتل|استشهد|درج|وفاتي",
     "burial": r"دفن|قبره|ضريحه|مدفون",
-    "travel": r"رحل|ارتحل|سافر|قدم|دخل|ورد|انتقل|توجه|وصل|حج|عاد|رجع|خرج|هاجر|وفد|اتي|جاء",
+    "travel": r"رحل|ارتحل|سافر|قدم|دخل|ورد|انتقل|توجه|وصل|حج|عاد|رجع|خرج|هاجر|وفد|اتي|جاء|هرب|فر|جال",
     "residence": r"سكن|استوطن|نزل|قطن|اقام|جاور|توطن|نشا|استقر|مقيما|نزيل",
     "office": r"قضاء|قاضي|قاضيا|ولي|تولي|وظيفه|مدرسا|درس|خطيب|خطابه|مفتي|افتي|مشيخه|امامه",
     "activity": r"حدث|سمع|تفقه|قرا|اخذ|روي|املي|اشتغل|تخرج|برع|اجتمع|لقي",
@@ -60,7 +60,10 @@ def _match_at(gz: Gazetteer, toks: list[tuple[str, int]], i: int) -> tuple[str, 
                 variants.append("ا" + first[m.end():])  # "لبخارى" / "للري" → "الري"
         for v in variants:
             s = key(" ".join([v] + words[1:]))
+            # yaygın kelimeyle karışan ad (ör. "بصرى" ~ "البصري") yalnız "ب/ل" önekiyle yer sayılır: "ببصرى"
             if s in gz.ignore:
+                if v is not first and re.match(r"^[وف]?ب", first) and s in gz.ignored_places and n == 1:
+                    return gz.ignored_places[s], n, s
                 continue
             ids = gz.by_name.get(s)
             if ids:
@@ -81,8 +84,18 @@ def extract(text: str, gz: Gazetteer) -> list[PlaceMention]:
     pos2i = {p: i for i, (_, p) in enumerate(toks)}
     starts = sorted((pos2i[p], k) for p, k in trig_at.items() if p in pos2i)
     # ayrıca "بها/فيها" yalnız bir tetikleyicinin penceresindeyse sayılır
+    # tetikleyiciden bağımsız, edatla anılan yerler ("فهرب إلى بسطام، فتوفى بها"): sonraki "بها" için
+    seen: list[tuple[int, str]] = []
+    for i, (w, p) in enumerate(toks):
+        if re.match(r"^[وف]?ب\S{2,}", w) or (i and toks[i - 1][0] in ("الي", "الى", "في", "من")):
+            hit = _match_at(gz, toks, i)
+            if hit:
+                seen.append((p, hit[0]))
     for ti, kind in starts:
         j = ti + 1
+        before = [x for x in seen if x[0] < toks[ti][1]]
+        if before and before[-1][0] > last_pos:
+            last_place, last_pos = before[-1][1], before[-1][0]
         if kind == "origin" and toks[ti][0] == "ابن":
             continue
         end = min(len(toks), ti + WINDOW)

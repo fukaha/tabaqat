@@ -45,6 +45,7 @@ def _nisba_of(name: str) -> str | None:
     base = name[2:] if name.startswith("ال") else name
     if " " in base or len(base) < 3:
         return None
+    base = re.sub(r"يه$", "", base) if len(base) > 5 else base   # "الاسكندريه" → "الاسكندري"
     base = re.sub(r"[هاي]$", "", base)
     return "ال" + base + "ي" if len(base) >= 2 else None
 
@@ -53,6 +54,8 @@ class Gazetteer:
     def __init__(self, root: Path):
         extra = yaml.safe_load((root / "review" / "places_extra.yml").read_text(encoding="utf-8"))
         self.ignore = {key(x) for x in extra.get("ignore") or []}
+        self.ignored_places: dict[str, str] = {}
+        self.prefixed_only = {key(x) for x in extra.get("prefixed_only") or []}
         self.places: dict[str, Place] = {}
         self.by_name: dict[str, list[str]] = {}
         cand: dict[str, list[tuple]] = {}
@@ -65,6 +68,8 @@ class Gazetteer:
                           row["region"], names)
                 self.places[p.id] = p
                 for n in names:
+                    if n in self.prefixed_only and p.type in ("towns", "capitals", "metropoles"):
+                        self.ignored_places.setdefault(n, p.id)   # yalnız edatla ("ببصرى") kullanılır
                     if n and n not in self.ignore and len(n.replace("ال", "", 1)) >= 3:
                         cand.setdefault(n, []).append((TYPE_RANK[p.type],
                                                        REGION_RANK.get(p.region, 3), p.id))
