@@ -220,6 +220,12 @@ _GENERIC = {"ابي", "ابو", "ابا", "بن", "ابن", "الامام", "ا�
             "الحافظ", "العلامه", "شيخ", "الاسلام", "الدين", "الايمه", "الكبير", "الصغير", "عبد", "محمد", "احمد", "علي"}
 
 
+def _longer_nasab(text: str, p) -> bool:
+    from ..extract.names import parse_name
+    m = parse_name(text).chain
+    return bool(m) and all(len(m) > len(n.chain) for n in p.names if n.chain)
+
+
 def _name_fits(text: str, p) -> bool:
     """Dipnot atfının hedefi metindeki adla çelişmemeli (muhakkik numarası yanlış olabilir:
     "محمد بن علي" için "برقم ١٤٤٢" = Muhammed b. Ömer). Ad yoksa (ولده) kabul."""
@@ -296,6 +302,11 @@ def _pass(entries, recs, cid, by_pid, res, rejected, chosen, recip, prev, by_num
                 hanafi = (r.pid and m.rel == "fiqh" and res.chron(r.pid, ctx, role) == "near")
                 if x and not hanafi:
                     r = Resolution(None, "external", external=(x.name, x.death))
+            # "علي بن ابي طالب بن ابي العلاء" ≠ Hz. Ali: erken dönem adaya yalnız nesep benzerliğiyle bağlanırken
+            # metindeki nesep adayınkinden uzunsa (fazla halka) başka kişidir
+            if (r is not None and r.pid and r.how.startswith("nesep") and by_pid.get(r.pid)
+                    and (by_pid[r.pid].death or 999) < 150 and _longer_nasab(m.text, by_pid[r.pid])):
+                r = Resolution(None, "unresolved", reason="nesep fazla halka (erken dönem adı)")
             if r is not None and r.status == "ambiguous" and prev is not None:
                 r = res.disambiguate(r, m.text, role, ctx, linked.get((ctx.pid, role), set())
                                      if ctx else set(), (lambda c, _s=ctx: _s is not None and recip(c, _s.pid)))

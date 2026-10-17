@@ -24,7 +24,7 @@ TRIGGERS: list[tuple[str, str, str]] = [
      "student", "took"),
     (r"اخذ (?:الفقه |العلم |العلوم |العلوم الشرعيه |الادب |الحديث |القراءات |التفسير |الطريقه )?عن\b",
      "teacher", "took"),
-    (r"(?:يروي|روي|حدث) عن\b", "teacher", "hadith"),
+    (r"(?:يروي|روي|حدث)(?: بها| ب\S+)? عن\b", "teacher", "hadith"),   # "حدث بها عن", "حدث ببغداد عن"
     (r"سمع منه\b", "student", "hadith"),
     (r"سمع من\b", "teacher", "hadith"),
     (r"سمع(?= (?:ابا|ابي|ابن|\S+ بن )\S)", "teacher", "hadith"),   # "سمع أنس بن مالك"
@@ -131,7 +131,8 @@ _KEEP_W = {"وهب", "وكيع", "واصل", "وضاح", "ورقاء", "واقد
 
 def _clean_item(s: str) -> str:
     # yalnız adın sonundaki işaret o adın atfıdır ("أحمد بن يوسف[^1] الأزرق": not Yûsuf'a)
-    xr = re.findall(r"XREF(\d+)\s*$", s.strip(" ،.()«»:؛"))
+    xr = re.findall(r"XREF(\d+)(?:\s+(?:الحافظ|الفقيه|القاضي|الامام|المحدث|الحنفي|الزاهد|المقري|الشيخ))*\s*$",
+                    s.strip(" ،.()«»:؛"))
     s = _XREF.sub(" ", s)
     out = Name(_clean_item0(s))
     out.xref = xr[-1] if xr else None
@@ -140,7 +141,7 @@ def _clean_item(s: str) -> str:
 
 def _clean_item0(s: str) -> str:
     s = s.strip(" ،()«»\"'-[]")
-    s = re.sub(r"^(?:و)?(?:علي|من) ", "", s)
+    s = re.sub(r"^(?:و)?(?:علي|من) (?!بن )", "", s)   # "وعلي بن موسى" addır
     if (s.startswith("و") and s.split()[0] not in _KEEP_W and len(s.split()[0]) > 2
             and s.split()[0] not in ("ولده", "والده", "ولداه", "ولديه", "والدي")):
         s = s[1:]
@@ -181,6 +182,9 @@ def _names(seg: str, vocab) -> list[str]:
     out = []
     items = [_clean_item(x) for x in _split_items(seg)]
     for k, item in enumerate(items):
+        # "تفقه على A، تلميذ B": B, A'nın vasfıdır; liste burada biter
+        if out and re.match(r"(?:تلميذ|تلامذه|صاحب|استاذ|شيخ|شارح|مصنف|مولف|والد|خال|جد)\b", item):
+            break
         # "…، ويأتى [^2]" / "يأتى فى بابه [^2]": atıf önceki ada aittir
         if item.xref and out and out[-1].xref is None and (not item.strip() or re.match(r"(?:س?ياتي|تقدم|المذكور|الاتي|الماضي)\b", item)):
             out[-1].xref = item.xref
@@ -217,6 +221,11 @@ def extract(text: str, book: str = "", vocab: set[str] | None = None,
             out.append(Mention("teacher", "companion", nm, kin, t[:120], extra={"raw": name}))
     for m in _TRIG.finditer(t):
         i = next(int(k[1:]) for k, v in m.groupdict().items() if v)
+        # "تفقه على A، تلميذ B": "تلميذ B" A'nın vasfıdır, madde sahibinin değil
+        if re.match(r"(?:تلميذ|من تلامذه|من تلاميذ)", m.group(0).strip()) and re.search(r"،\s*$", t[max(0, m.start() - 3):m.start()]):
+            prev = re.split(r"[.؛:]", t[max(0, m.start() - 120):m.start()])[-1]
+            if re.search(r"(?:تفقه|اخذ|قرا|سمع|روي|تخرج|تلميذ|تلامذه|صحب|لازم) ", prev):
+                continue
         _, role, rel = TRIGGERS[i]
         rest = re.sub(r"^\s*[:،]\s*", " ", t[m.end():])
         # "على" edatından sonra "بن": "علي بن ..." adıdır, edat değil (Fevâid imlası)

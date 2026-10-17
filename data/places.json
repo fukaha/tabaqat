@@ -6,20 +6,20 @@
   "lon": 36.30199,
   "type": "metropoles",
   "region": "Sham",
-  "n": 552,
+  "n": 551,
   "kinds": {
-   "birth": 41,
-   "travel": 133,
+   "birth": 42,
+   "travel": 132,
    "office": 123,
    "death": 128,
    "nisba": 277,
-   "residence": 54,
+   "residence": 55,
    "activity": 83,
    "burial": 50,
    "origin": 2
   },
   "centuries": {
-   "?": 57,
+   "?": 56,
    "6": 25,
    "1": 10,
    "7": 109,
@@ -38,27 +38,27 @@
   "lon": 67.03225,
   "type": "metropoles",
   "region": "Transoxiana",
-  "n": 522,
+  "n": 525,
   "kinds": {
    "nisba": 88,
-   "residence": 87,
+   "residence": 86,
    "burial": 20,
-   "travel": 148,
-   "activity": 225,
+   "travel": 150,
+   "activity": 227,
    "birth": 13,
    "death": 69,
-   "office": 42,
+   "office": 43,
    "origin": 2
   },
   "centuries": {
-   "?": 306,
+   "?": 307,
    "5": 35,
    "4": 56,
    "6": 63,
    "3": 35,
    "2": 5,
    "1": 3,
-   "9": 6,
+   "9": 8,
    "8": 7,
    "10": 3,
    "7": 3
@@ -80,7 +80,8 @@
    "nisba": 92,
    "death": 122,
    "office": 105,
-   "birth": 54
+   "birth": 54,
+   "origin": 1
   },
   "centuries": {
    "4": 14,
@@ -105,14 +106,14 @@
   "region": "Iraq",
   "n": 427,
   "kinds": {
-   "activity": 156,
+   "activity": 157,
    "death": 62,
    "travel": 210,
    "nisba": 57,
    "residence": 70,
    "burial": 15,
-   "birth": 21,
-   "office": 59
+   "office": 60,
+   "birth": 21
   },
   "centuries": {
    "6": 82,
@@ -135,17 +136,17 @@
   "lon": 64.46489,
   "type": "capitals",
   "region": "Transoxiana",
-  "n": 275,
+  "n": 276,
   "kinds": {
    "nisba": 122,
    "travel": 34,
    "death": 75,
    "activity": 77,
-   "residence": 22,
+   "residence": 23,
    "office": 29,
-   "origin": 4,
+   "origin": 5,
    "burial": 16,
-   "birth": 11
+   "birth": 12
   },
   "centuries": {
    "?": 93,
@@ -156,8 +157,8 @@
    "7": 30,
    "2": 3,
    "10": 6,
-   "8": 7,
-   "9": 6
+   "9": 7,
+   "8": 7
   }
  },
  {
@@ -167,12 +168,12 @@
   "lon": 37.17518,
   "type": "capitals",
   "region": "Sham",
-  "n": 248,
+  "n": 251,
   "kinds": {
    "travel": 56,
-   "activity": 69,
+   "activity": 70,
    "nisba": 117,
-   "office": 67,
+   "office": 69,
    "death": 53,
    "burial": 2,
    "residence": 40,
@@ -180,13 +181,13 @@
    "origin": 2
   },
   "centuries": {
-   "?": 33,
+   "?": 34,
    "9": 64,
    "6": 21,
    "8": 56,
    "7": 52,
    "4": 2,
-   "10": 13,
+   "10": 15,
    "2": 1,
    "5": 6
   }
@@ -198,21 +199,21 @@
   "lon": 32.8,
   "type": "regions",
   "region": "Rum",
-  "n": 225,
+  "n": 223,
   "kinds": {
    "travel": 68,
    "activity": 21,
    "residence": 14,
-   "office": 29,
+   "office": 27,
    "nisba": 137,
-   "birth": 7,
+   "birth": 6,
    "death": 4,
    "origin": 1
   },
   "centuries": {
-   "?": 71,
+   "?": 70,
    "5": 2,
-   "9": 58,
+   "9": 57,
    "10": 56,
    "8": 26,
    "7": 7,
@@ -261,11 +262,11 @@
   "lon": 58.79841,
   "type": "metropoles",
   "region": "Khurasan",
-  "n": 169,
+  "n": 170,
   "kinds": {
    "office": 30,
    "travel": 32,
-   "death": 20,
+   "death": 21,
    "nisba": 80,
    "activity": 31,
    "residence": 12,
@@ -279,8 +280,8 @@
    "3": 21,
    "4": 33,
    "6": 21,
+   "7": 6,
    "2": 5,
-   "7": 5,
    "8": 8,
    "1": 3,
    "9": 1
@@ -442,6 +443,58 @@
   }
  },
  {
+  "id": "x:bursa",
+  "name": "بروسة",
+  "lat": 40.1826,
+  "lon": 29.0665,
+  "type": "capitals",
+  "region": "Rum",
+  "n": 93,
+  "kinds": {
+   "office": 62,
+   "nisba": 1,
+   "death": 24,
+   "burial": 6,
+   "residence": 14,
+   "travel": 16,
+   "activity": 5
+  },
+  "centuries": {
+   "6": 1,
+   "10": 32,
+   "?": 32,
+   "9": 27,
+   "8": 1
+  }
+ },
+ {
+  "id": "x:istanbul",
+  "name": "القسطنطينية",
+  "lat": 41.0082,
+  "lon": 28.9784,
+  "type": "metropoles",
+  "region": "Rum",
+  "n": 90,
+  "kinds": {
+   "office": 59,
+   "death": 28,
+   "burial": 9,
+   "residence": 4,
+   "travel": 31,
+   "nisba": 1,
+   "activity": 4,
+   "birth": 1
+  },
+  "centuries": {
+   "6": 1,
+   "10": 39,
+   "9": 19,
+   "?": 29,
+   "8": 1,
+   "5": 1
+  }
+ },
+ {
   "id": "MADINA_396E244N_S",
   "name": "المدينة",
   "lat": 24.47782,
@@ -485,7 +538,7 @@
    "residence": 18,
    "death": 12,
    "origin": 3,
-   "travel": 20,
+   "travel": 21,
    "nisba": 26,
    "activity": 8,
    "birth": 8,
@@ -533,32 +586,6 @@
   }
  },
  {
-  "id": "x:istanbul",
-  "name": "القسطنطينية",
-  "lat": 41.0082,
-  "lon": 28.9784,
-  "type": "metropoles",
-  "region": "Rum",
-  "n": 72,
-  "kinds": {
-   "office": 49,
-   "death": 17,
-   "travel": 25,
-   "nisba": 1,
-   "burial": 4,
-   "activity": 3,
-   "residence": 2,
-   "birth": 1
-  },
-  "centuries": {
-   "6": 1,
-   "10": 32,
-   "?": 23,
-   "9": 15,
-   "8": 1
-  }
- },
- {
   "id": "x:egypt",
   "name": "الديار المصرية",
   "lat": 30.05,
@@ -586,28 +613,33 @@
   }
  },
  {
-  "id": "x:bursa",
-  "name": "بروسة",
-  "lat": 40.1826,
-  "lon": 29.0665,
+  "id": "RAYY_515E356N_S",
+  "name": "الري",
+  "lat": 35.62754,
+  "lon": 51.50831,
   "type": "capitals",
-  "region": "Rum",
+  "region": "Jibal",
   "n": 70,
   "kinds": {
-   "office": 41,
-   "nisba": 1,
-   "death": 19,
-   "burial": 6,
-   "residence": 7,
-   "travel": 6,
-   "activity": 3
+   "nisba": 51,
+   "office": 13,
+   "travel": 4,
+   "death": 8,
+   "activity": 3,
+   "origin": 1,
+   "burial": 1,
+   "birth": 1
   },
   "centuries": {
-   "6": 1,
-   "10": 25,
-   "?": 23,
-   "9": 20,
-   "8": 1
+   "8": 6,
+   "?": 35,
+   "5": 7,
+   "7": 6,
+   "4": 4,
+   "6": 4,
+   "1": 1,
+   "2": 3,
+   "3": 4
   }
  },
  {
@@ -617,11 +649,11 @@
   "lon": 59.97545,
   "type": "regions",
   "region": "Transoxiana",
-  "n": 69,
+  "n": 68,
   "kinds": {
    "nisba": 50,
    "death": 6,
-   "office": 6,
+   "office": 5,
    "origin": 3,
    "travel": 7,
    "activity": 5,
@@ -632,7 +664,7 @@
    "?": 31,
    "6": 9,
    "9": 4,
-   "8": 7,
+   "8": 6,
    "7": 13,
    "2": 1,
    "3": 1,
@@ -641,33 +673,25 @@
   }
  },
  {
-  "id": "RAYY_515E356N_S",
-  "name": "الري",
-  "lat": 35.62754,
-  "lon": 51.50831,
+  "id": "x:edirne",
+  "name": "أدرنة",
+  "lat": 41.6771,
+  "lon": 26.5557,
   "type": "capitals",
-  "region": "Jibal",
-  "n": 69,
+  "region": "Rum",
+  "n": 64,
   "kinds": {
-   "nisba": 51,
-   "office": 13,
-   "death": 8,
-   "travel": 3,
-   "activity": 3,
-   "origin": 1,
+   "office": 51,
+   "activity": 1,
+   "travel": 10,
+   "death": 9,
    "burial": 1,
-   "birth": 1
+   "residence": 2
   },
   "centuries": {
-   "8": 6,
-   "?": 35,
-   "7": 6,
-   "4": 4,
-   "5": 6,
-   "6": 4,
-   "1": 1,
-   "2": 3,
-   "3": 4
+   "?": 24,
+   "10": 23,
+   "9": 17
   }
  },
  {
@@ -741,7 +765,7 @@
   "n": 55,
   "kinds": {
    "nisba": 30,
-   "travel": 20,
+   "travel": 21,
    "activity": 3,
    "origin": 2,
    "birth": 2,
@@ -795,46 +819,26 @@
   "lon": 62.15235,
   "type": "capitals",
   "region": "Khurasan",
-  "n": 45,
+  "n": 46,
   "kinds": {
    "nisba": 29,
    "death": 9,
+   "office": 6,
    "travel": 6,
    "birth": 1,
-   "office": 5,
    "activity": 2,
    "burial": 1
   },
   "centuries": {
    "4": 2,
    "?": 9,
+   "8": 7,
    "9": 3,
-   "8": 6,
    "6": 13,
    "3": 3,
    "5": 5,
    "10": 2,
    "7": 2
-  }
- },
- {
-  "id": "x:edirne",
-  "name": "أدرنة",
-  "lat": 41.6771,
-  "lon": 26.5557,
-  "type": "capitals",
-  "region": "Rum",
-  "n": 42,
-  "kinds": {
-   "office": 33,
-   "travel": 6,
-   "death": 4,
-   "residence": 2
-  },
-  "centuries": {
-   "?": 16,
-   "10": 13,
-   "9": 13
   }
  },
  {
@@ -948,34 +952,6 @@
   }
  },
  {
-  "id": "x:hind",
-  "name": "الهند",
-  "lat": 28.6,
-  "lon": 77.2,
-  "type": "regions",
-  "region": "Hind",
-  "n": 34,
-  "kinds": {
-   "travel": 8,
-   "nisba": 20,
-   "residence": 2,
-   "origin": 2,
-   "birth": 2,
-   "death": 2,
-   "activity": 2,
-   "burial": 1
-  },
-  "centuries": {
-   "?": 5,
-   "6": 1,
-   "10": 3,
-   "9": 15,
-   "7": 2,
-   "8": 7,
-   "1": 1
-  }
- },
- {
   "id": "JURJAN_549E373N_R",
   "name": "جرجان",
   "lat": 37.33269,
@@ -984,7 +960,7 @@
   "region": "Daylam",
   "n": 32,
   "kinds": {
-   "birth": 1,
+   "birth": 2,
    "activity": 7,
    "nisba": 16,
    "residence": 2,
@@ -1002,6 +978,32 @@
    "4": 7,
    "9": 1,
    "6": 1
+  }
+ },
+ {
+  "id": "x:hind",
+  "name": "الهند",
+  "lat": 28.6,
+  "lon": 77.2,
+  "type": "regions",
+  "region": "Hind",
+  "n": 32,
+  "kinds": {
+   "travel": 7,
+   "nisba": 20,
+   "origin": 2,
+   "birth": 2,
+   "death": 2,
+   "residence": 1,
+   "activity": 2
+  },
+  "centuries": {
+   "?": 5,
+   "10": 3,
+   "9": 15,
+   "7": 2,
+   "8": 6,
+   "1": 1
   }
  },
  {
@@ -1033,6 +1035,32 @@
   }
  },
  {
+  "id": "FARGHANA_720E403N_R",
+  "name": "فرغانة",
+  "lat": 40.33989,
+  "lon": 72.02839,
+  "type": "regions",
+  "region": "Transoxiana",
+  "n": 28,
+  "kinds": {
+   "nisba": 18,
+   "death": 2,
+   "travel": 8,
+   "activity": 1,
+   "origin": 1
+  },
+  "centuries": {
+   "?": 15,
+   "4": 3,
+   "2": 1,
+   "9": 2,
+   "6": 3,
+   "5": 2,
+   "8": 1,
+   "7": 1
+  }
+ },
+ {
   "id": "ATRABULUS_358E344N_S",
   "name": "طرابلس الشام",
   "lat": 34.44044,
@@ -1057,31 +1085,6 @@
    "6": 1,
    "10": 2,
    "7": 2
-  }
- },
- {
-  "id": "FARGHANA_720E403N_R",
-  "name": "فرغانة",
-  "lat": 40.33989,
-  "lon": 72.02839,
-  "type": "regions",
-  "region": "Transoxiana",
-  "n": 27,
-  "kinds": {
-   "nisba": 18,
-   "death": 2,
-   "travel": 7,
-   "activity": 1
-  },
-  "centuries": {
-   "?": 15,
-   "4": 2,
-   "2": 1,
-   "9": 2,
-   "6": 3,
-   "5": 2,
-   "8": 1,
-   "7": 1
   }
  },
  {
@@ -1131,6 +1134,30 @@
    "7": 1,
    "4": 1,
    "5": 5
+  }
+ },
+ {
+  "id": "GHAZNA_684E335N_S",
+  "name": "غزنة",
+  "lat": 33.56409,
+  "lon": 68.40733,
+  "type": "capitals",
+  "region": "Khurasan",
+  "n": 24,
+  "kinds": {
+   "nisba": 19,
+   "travel": 3,
+   "activity": 1,
+   "residence": 2,
+   "origin": 2,
+   "death": 1
+  },
+  "centuries": {
+   "?": 11,
+   "6": 10,
+   "7": 1,
+   "8": 1,
+   "5": 1
   }
  },
  {
@@ -1259,30 +1286,6 @@
   }
  },
  {
-  "id": "GHAZNA_684E335N_S",
-  "name": "غزنة",
-  "lat": 33.56409,
-  "lon": 68.40733,
-  "type": "capitals",
-  "region": "Khurasan",
-  "n": 23,
-  "kinds": {
-   "nisba": 19,
-   "travel": 2,
-   "activity": 1,
-   "origin": 2,
-   "residence": 1,
-   "death": 1
-  },
-  "centuries": {
-   "?": 11,
-   "6": 9,
-   "7": 1,
-   "8": 1,
-   "5": 1
-  }
- },
- {
   "id": "HAMADHAN_485E347N_S",
   "name": "همذان",
   "lat": 34.77554,
@@ -1369,7 +1372,7 @@
   "kinds": {
    "activity": 5,
    "death": 2,
-   "birth": 3,
+   "birth": 2,
    "residence": 2,
    "nisba": 15,
    "office": 5,
@@ -1382,6 +1385,35 @@
    "?": 1,
    "2": 1,
    "6": 3
+  }
+ },
+ {
+  "id": "SHIRAZ_525E296N_S",
+  "name": "شيراز",
+  "lat": 29.61884,
+  "lon": 52.52867,
+  "type": "metropoles",
+  "region": "Faris",
+  "n": 20,
+  "kinds": {
+   "office": 3,
+   "residence": 4,
+   "travel": 8,
+   "death": 3,
+   "nisba": 6,
+   "burial": 2,
+   "activity": 1,
+   "birth": 2
+  },
+  "centuries": {
+   "5": 2,
+   "4": 1,
+   "?": 2,
+   "9": 3,
+   "7": 2,
+   "6": 3,
+   "8": 3,
+   "10": 4
   }
  },
  {
@@ -1411,32 +1443,51 @@
   }
  },
  {
-  "id": "SHIRAZ_525E296N_S",
-  "name": "شيراز",
-  "lat": 29.61884,
-  "lon": 52.52867,
-  "type": "metropoles",
-  "region": "Faris",
-  "n": 19,
+  "id": "x:amasya",
+  "name": "أماسية",
+  "lat": 40.6499,
+  "lon": 35.8353,
+  "type": "towns",
+  "region": "Rum",
+  "n": 20,
   "kinds": {
-   "office": 3,
-   "residence": 4,
-   "travel": 7,
    "death": 2,
-   "nisba": 6,
+   "nisba": 4,
+   "office": 10,
+   "travel": 2,
    "burial": 1,
-   "activity": 1,
-   "birth": 2
+   "residence": 1,
+   "birth": 1
   },
   "centuries": {
-   "5": 2,
-   "4": 1,
-   "?": 2,
-   "9": 3,
-   "7": 2,
-   "6": 3,
-   "8": 3,
-   "10": 3
+   "?": 7,
+   "8": 1,
+   "9": 1,
+   "10": 11
+  }
+ },
+ {
+  "id": "x:konya",
+  "name": "قونية",
+  "lat": 37.8746,
+  "lon": 32.4932,
+  "type": "capitals",
+  "region": "Rum",
+  "n": 19,
+  "kinds": {
+   "nisba": 13,
+   "office": 3,
+   "burial": 1,
+   "activity": 1,
+   "origin": 1,
+   "travel": 2,
+   "residence": 2
+  },
+  "centuries": {
+   "9": 4,
+   "?": 3,
+   "8": 10,
+   "7": 2
   }
  },
  {
@@ -1469,7 +1520,7 @@
   "kinds": {
    "travel": 3,
    "nisba": 11,
-   "birth": 1,
+   "birth": 2,
    "office": 3,
    "residence": 1,
    "activity": 1,
@@ -1486,29 +1537,28 @@
   }
  },
  {
-  "id": "x:maghrib",
-  "name": "المغرب",
-  "lat": 34.0,
-  "lon": -5.0,
-  "type": "regions",
-  "region": "Maghrib",
+  "id": "x:karaman",
+  "name": "لارندة",
+  "lat": 37.1811,
+  "lon": 33.215,
+  "type": "towns",
+  "region": "Rum",
   "n": 17,
   "kinds": {
-   "nisba": 5,
-   "office": 4,
-   "travel": 6,
-   "death": 1,
+   "travel": 2,
+   "nisba": 10,
    "activity": 1,
-   "birth": 1
+   "death": 3,
+   "burial": 1,
+   "residence": 1
   },
   "centuries": {
-   "4": 1,
-   "?": 7,
-   "3": 1,
-   "2": 2,
-   "8": 1,
-   "1": 1,
-   "7": 4
+   "5": 1,
+   "?": 3,
+   "8": 3,
+   "10": 4,
+   "9": 5,
+   "7": 1
   }
  },
  {
@@ -1535,26 +1585,28 @@
   }
  },
  {
-  "id": "x:konya",
-  "name": "قونية",
-  "lat": 37.8746,
-  "lon": 32.4932,
-  "type": "capitals",
-  "region": "Rum",
+  "id": "x:maghrib",
+  "name": "المغرب",
+  "lat": 34.0,
+  "lon": -5.0,
+  "type": "regions",
+  "region": "Maghrib",
   "n": 16,
   "kinds": {
-   "nisba": 13,
-   "office": 3,
-   "burial": 1,
-   "activity": 1,
-   "origin": 1,
-   "residence": 1
+   "nisba": 5,
+   "office": 4,
+   "travel": 6,
+   "death": 1,
+   "activity": 1
   },
   "centuries": {
-   "9": 2,
-   "?": 3,
-   "8": 9,
-   "7": 2
+   "4": 1,
+   "?": 6,
+   "3": 1,
+   "2": 2,
+   "8": 1,
+   "1": 1,
+   "7": 4
   }
  },
  {
@@ -1715,6 +1767,28 @@
   }
  },
  {
+  "id": "x:kefe",
+  "name": "كفه",
+  "lat": 45.0314,
+  "lon": 35.3825,
+  "type": "towns",
+  "region": "Crimea",
+  "n": 15,
+  "kinds": {
+   "nisba": 9,
+   "office": 4,
+   "travel": 1,
+   "activity": 1
+  },
+  "centuries": {
+   "8": 6,
+   "9": 4,
+   "10": 2,
+   "2": 1,
+   "?": 2
+  }
+ },
+ {
   "id": "BISTAM_550E364N_S",
   "name": "بسطام",
   "lat": 36.45952,
@@ -1761,65 +1835,24 @@
   }
  },
  {
-  "id": "x:karaman",
-  "name": "لارندة",
-  "lat": 37.1811,
-  "lon": 33.215,
-  "type": "towns",
-  "region": "Rum",
-  "n": 14,
-  "kinds": {
-   "nisba": 10,
-   "activity": 1,
-   "death": 1,
-   "travel": 1,
-   "residence": 1
-  },
-  "centuries": {
-   "?": 2,
-   "8": 3,
-   "10": 4,
-   "9": 4,
-   "7": 1
-  }
- },
- {
-  "id": "x:kefe",
-  "name": "كفه",
-  "lat": 45.0314,
-  "lon": 35.3825,
-  "type": "towns",
-  "region": "Crimea",
-  "n": 12,
-  "kinds": {
-   "nisba": 9,
-   "office": 2,
-   "activity": 1
-  },
-  "centuries": {
-   "8": 6,
-   "9": 4,
-   "2": 1,
-   "?": 1
-  }
- },
- {
   "id": "x:kayseri",
   "name": "قيصرية",
   "lat": 38.7205,
   "lon": 35.4826,
   "type": "towns",
   "region": "Rum",
-  "n": 12,
+  "n": 14,
   "kinds": {
    "nisba": 12,
    "office": 1,
-   "death": 1
+   "death": 3,
+   "burial": 1
   },
   "centuries": {
    "9": 3,
+   "?": 5,
    "8": 5,
-   "?": 4
+   "10": 1
   }
  },
  {
@@ -1869,27 +1902,6 @@
    "2": 1,
    "3": 1,
    "9": 1
-  }
- },
- {
-  "id": "x:amasya",
-  "name": "أماسية",
-  "lat": 40.6499,
-  "lon": 35.8353,
-  "type": "towns",
-  "region": "Rum",
-  "n": 11,
-  "kinds": {
-   "office": 5,
-   "death": 1,
-   "nisba": 4,
-   "residence": 1,
-   "birth": 1
-  },
-  "centuries": {
-   "?": 5,
-   "8": 1,
-   "10": 5
   }
  },
  {
@@ -1947,7 +1959,8 @@
    "birth": 2,
    "activity": 1,
    "office": 1,
-   "residence": 1
+   "residence": 1,
+   "travel": 1
   },
   "centuries": {
    "8": 4,
@@ -1990,6 +2003,29 @@
   "centuries": {
    "?": 9,
    "5": 1
+  }
+ },
+ {
+  "id": "x:turk",
+  "name": "بلاد الترك",
+  "lat": 43.3,
+  "lon": 68.3,
+  "type": "regions",
+  "region": "Turkestan",
+  "n": 10,
+  "kinds": {
+   "death": 2,
+   "nisba": 5,
+   "travel": 2,
+   "birth": 1
+  },
+  "centuries": {
+   "6": 1,
+   "9": 1,
+   "7": 1,
+   "?": 4,
+   "3": 1,
+   "8": 2
   }
  },
  {
@@ -2044,13 +2080,58 @@
   "n": 9,
   "kinds": {
    "nisba": 8,
-   "birth": 1
+   "birth": 1,
+   "travel": 1,
+   "death": 1
   },
   "centuries": {
    "?": 3,
    "1": 1,
    "8": 4,
    "9": 1
+  }
+ },
+ {
+  "id": "x:iznik",
+  "name": "إزنيق",
+  "lat": 40.4292,
+  "lon": 29.7211,
+  "type": "towns",
+  "region": "Rum",
+  "n": 9,
+  "kinds": {
+   "death": 4,
+   "activity": 2,
+   "burial": 1,
+   "travel": 3,
+   "office": 2,
+   "birth": 1,
+   "nisba": 1
+  },
+  "centuries": {
+   "?": 5,
+   "9": 3,
+   "10": 1
+  }
+ },
+ {
+  "id": "x:kastamonu",
+  "name": "قسطموني",
+  "lat": 41.3887,
+  "lon": 33.7827,
+  "type": "towns",
+  "region": "Rum",
+  "n": 9,
+  "kinds": {
+   "nisba": 3,
+   "travel": 2,
+   "residence": 2,
+   "office": 3
+  },
+  "centuries": {
+   "10": 4,
+   "9": 4,
+   "?": 1
   }
  },
  {
@@ -2201,6 +2282,29 @@
   }
  },
  {
+  "id": "QUS_327E259N_S",
+  "name": "قوص",
+  "lat": 25.91848,
+  "lon": 32.74342,
+  "type": "towns",
+  "region": "Egypt",
+  "n": 8,
+  "kinds": {
+   "travel": 2,
+   "nisba": 2,
+   "death": 2,
+   "residence": 1,
+   "office": 1,
+   "birth": 1
+  },
+  "centuries": {
+   "6": 3,
+   "8": 2,
+   "9": 1,
+   "7": 2
+  }
+ },
+ {
   "id": "TARSUS_349E369N_S",
   "name": "طرسوس",
   "lat": 36.90807,
@@ -2281,6 +2385,30 @@
   }
  },
  {
+  "id": "x:ankara",
+  "name": "أنقرة",
+  "lat": 39.9334,
+  "lon": 32.8597,
+  "type": "towns",
+  "region": "Rum",
+  "n": 7,
+  "kinds": {
+   "birth": 3,
+   "office": 3,
+   "residence": 3,
+   "death": 2,
+   "burial": 2,
+   "travel": 1,
+   "nisba": 1
+  },
+  "centuries": {
+   "8": 1,
+   "?": 3,
+   "9": 1,
+   "10": 2
+  }
+ },
+ {
   "id": "BAKRABADH_658E315N_S",
   "name": "بكراباذ",
   "lat": 31.59434,
@@ -2318,29 +2446,6 @@
   }
  },
  {
-  "id": "QUS_327E259N_S",
-  "name": "قوص",
-  "lat": 25.91848,
-  "lon": 32.74342,
-  "type": "towns",
-  "region": "Egypt",
-  "n": 7,
-  "kinds": {
-   "travel": 2,
-   "nisba": 2,
-   "death": 1,
-   "residence": 1,
-   "office": 1,
-   "birth": 1
-  },
-  "centuries": {
-   "6": 2,
-   "8": 2,
-   "9": 1,
-   "7": 2
-  }
- },
- {
   "id": "ZUZAN_598E343N_S",
   "name": "زوزن",
   "lat": 34.3105,
@@ -2357,26 +2462,6 @@
    "4": 1,
    "?": 5,
    "5": 1
-  }
- },
- {
-  "id": "x:turk",
-  "name": "بلاد الترك",
-  "lat": 43.3,
-  "lon": 68.3,
-  "type": "regions",
-  "region": "Turkestan",
-  "n": 7,
-  "kinds": {
-   "nisba": 5,
-   "birth": 1,
-   "travel": 1
-  },
-  "centuries": {
-   "7": 1,
-   "?": 3,
-   "3": 1,
-   "8": 2
   }
  },
  {
@@ -2497,7 +2582,7 @@
   "kinds": {
    "activity": 2,
    "nisba": 4,
-   "birth": 1
+   "birth": 2
   },
   "centuries": {
    "2": 1,
@@ -2624,6 +2709,27 @@
   }
  },
  {
+  "id": "x:saray",
+  "name": "سراي",
+  "lat": 47.425,
+  "lon": 46.049,
+  "type": "capitals",
+  "region": "Qipchaq",
+  "n": 5,
+  "kinds": {
+   "nisba": 4,
+   "birth": 1,
+   "activity": 1,
+   "travel": 1
+  },
+  "centuries": {
+   "1": 1,
+   "8": 2,
+   "10": 1,
+   "9": 1
+  }
+ },
+ {
   "id": "RAMLA_348E319N_S",
   "name": "الرملة",
   "lat": 31.92484,
@@ -2698,6 +2804,23 @@
   }
  },
  {
+  "id": "KARMIINIYYA_654E401N_S",
+  "name": "كرمينية",
+  "lat": 40.14581,
+  "lon": 65.40937,
+  "type": "towns",
+  "region": "Transoxiana",
+  "n": 5,
+  "kinds": {
+   "nisba": 4,
+   "residence": 1
+  },
+  "centuries": {
+   "?": 4,
+   "5": 1
+  }
+ },
+ {
   "id": "ZARAND_565E308N_S",
   "name": "زرند",
   "lat": 30.82737,
@@ -2745,7 +2868,8 @@
    "travel": 1,
    "nisba": 3,
    "activity": 1,
-   "death": 2
+   "death": 2,
+   "origin": 1
   },
   "centuries": {
    "?": 2,
@@ -2779,7 +2903,7 @@
   "region": "Jazirat al-Arab",
   "n": 4,
   "kinds": {
-   "travel": 2,
+   "travel": 1,
    "birth": 1,
    "residence": 1,
    "activity": 1
@@ -2810,20 +2934,21 @@
   }
  },
  {
-  "id": "x:saray",
-  "name": "سراي",
-  "lat": 47.425,
-  "lon": 46.049,
+  "id": "BARDHAA_472E404N_S",
+  "name": "برذعة",
+  "lat": 40.45334,
+  "lon": 47.23624,
   "type": "capitals",
-  "region": "Qipchaq",
+  "region": "Rihab",
   "n": 4,
   "kinds": {
+   "travel": 1,
    "nisba": 4
   },
   "centuries": {
-   "1": 1,
-   "8": 2,
-   "10": 1
+   "4": 1,
+   "5": 1,
+   "?": 2
   }
  },
  {
@@ -2879,6 +3004,25 @@
   }
  },
  {
+  "id": "KARKH_443E333N_S",
+  "name": "الكرخ",
+  "lat": 33.31703,
+  "lon": 44.35293,
+  "type": "quarters",
+  "region": "Iraq",
+  "n": 4,
+  "kinds": {
+   "residence": 1,
+   "burial": 2,
+   "office": 1
+  },
+  "centuries": {
+   "5": 1,
+   "?": 2,
+   "4": 1
+  }
+ },
+ {
   "id": "FALLUJA_443E325N_S",
   "name": "فلوجة",
   "lat": 32.55902,
@@ -2913,26 +3057,6 @@
   }
  },
  {
-  "id": "x:ankara",
-  "name": "أنقرة",
-  "lat": 39.9334,
-  "lon": 32.8597,
-  "type": "towns",
-  "region": "Rum",
-  "n": 4,
-  "kinds": {
-   "office": 1,
-   "residence": 2,
-   "death": 1,
-   "burial": 1,
-   "nisba": 1
-  },
-  "centuries": {
-   "?": 3,
-   "10": 1
-  }
- },
- {
   "id": "BIYAR_558E360N_S",
   "name": "بيار",
   "lat": 36.05824,
@@ -2948,6 +3072,23 @@
   "centuries": {
    "?": 3,
    "5": 1
+  }
+ },
+ {
+  "id": "x:gelibolu",
+  "name": "كليبولي",
+  "lat": 40.4103,
+  "lon": 26.6706,
+  "type": "towns",
+  "region": "Rum",
+  "n": 4,
+  "kinds": {
+   "residence": 1,
+   "office": 3
+  },
+  "centuries": {
+   "?": 2,
+   "10": 2
   }
  },
  {
@@ -2971,39 +3112,22 @@
   }
  },
  {
-  "id": "KARMIINIYYA_654E401N_S",
-  "name": "كرمينية",
-  "lat": 40.14581,
-  "lon": 65.40937,
-  "type": "towns",
-  "region": "Transoxiana",
-  "n": 4,
-  "kinds": {
-   "nisba": 4
-  },
-  "centuries": {
-   "?": 3,
-   "5": 1
-  }
- },
- {
-  "id": "x:iznik",
-  "name": "إزنيق",
-  "lat": 40.4292,
-  "lon": 29.7211,
+  "id": "x:tokat",
+  "name": "توقات",
+  "lat": 40.3167,
+  "lon": 36.55,
   "type": "towns",
   "region": "Rum",
   "n": 4,
   "kinds": {
-   "travel": 2,
    "office": 1,
-   "activity": 1,
-   "birth": 1,
-   "nisba": 1
+   "travel": 1,
+   "nisba": 2,
+   "burial": 1
   },
   "centuries": {
-   "?": 1,
-   "9": 3
+   "10": 3,
+   "?": 1
   }
  },
  {
@@ -3024,23 +3148,6 @@
   }
  },
  {
-  "id": "x:kastamonu",
-  "name": "قسطموني",
-  "lat": 41.3887,
-  "lon": 33.7827,
-  "type": "towns",
-  "region": "Rum",
-  "n": 4,
-  "kinds": {
-   "nisba": 3,
-   "residence": 1
-  },
-  "centuries": {
-   "10": 3,
-   "?": 1
-  }
- },
- {
   "id": "RUHBA_364E276N_R",
   "name": "رحبة",
   "lat": 27.67097,
@@ -3057,6 +3164,24 @@
    "8": 1,
    "7": 1,
    "5": 2
+  }
+ },
+ {
+  "id": "x:delhi",
+  "name": "دهلي",
+  "lat": 28.6139,
+  "lon": 77.209,
+  "type": "metropoles",
+  "region": "Hind",
+  "n": 4,
+  "kinds": {
+   "nisba": 2,
+   "activity": 1,
+   "burial": 1
+  },
+  "centuries": {
+   "?": 2,
+   "8": 2
   }
  },
  {
@@ -3321,24 +3446,6 @@
   }
  },
  {
-  "id": "KARKH_443E333N_S",
-  "name": "الكرخ",
-  "lat": 33.31703,
-  "lon": 44.35293,
-  "type": "quarters",
-  "region": "Iraq",
-  "n": 3,
-  "kinds": {
-   "residence": 1,
-   "burial": 1,
-   "office": 1
-  },
-  "centuries": {
-   "5": 1,
-   "?": 2
-  }
- },
- {
   "id": "KHULM_677E367N_S",
   "name": "خلم",
   "lat": 36.74621,
@@ -3389,6 +3496,42 @@
    "?": 1,
    "1": 1,
    "7": 1
+  }
+ },
+ {
+  "id": "BILBAYS_315E304N_S",
+  "name": "بلبيس",
+  "lat": 30.41776,
+  "lon": 31.57097,
+  "type": "capitals",
+  "region": "Egypt",
+  "n": 3,
+  "kinds": {
+   "nisba": 2,
+   "death": 1
+  },
+  "centuries": {
+   "10": 1,
+   "9": 1,
+   "8": 1
+  }
+ },
+ {
+  "id": "x:manisa",
+  "name": "مغنيسا",
+  "lat": 38.6191,
+  "lon": 27.4289,
+  "type": "towns",
+  "region": "Rum",
+  "n": 3,
+  "kinds": {
+   "birth": 1,
+   "office": 2,
+   "death": 1
+  },
+  "centuries": {
+   "9": 2,
+   "?": 1
   }
  },
  {
@@ -3548,23 +3691,6 @@
   }
  },
  {
-  "id": "x:delhi",
-  "name": "دهلي",
-  "lat": 28.6139,
-  "lon": 77.209,
-  "type": "metropoles",
-  "region": "Hind",
-  "n": 3,
-  "kinds": {
-   "nisba": 2,
-   "activity": 1
-  },
-  "centuries": {
-   "?": 2,
-   "8": 1
-  }
- },
- {
   "id": "HULA_356E329N_S",
   "name": "الحلة",
   "lat": 32.97543,
@@ -3683,6 +3809,23 @@
   }
  },
  {
+  "id": "FUSTAT_312E300N_S",
+  "name": "الفسطاط",
+  "lat": 30.04325,
+  "lon": 31.24964,
+  "type": "metropoles",
+  "region": "Egypt",
+  "n": 2,
+  "kinds": {
+   "activity": 1,
+   "travel": 1
+  },
+  "centuries": {
+   "?": 1,
+   "9": 1
+  }
+ },
+ {
   "id": "SHARJA_428E163N_S",
   "name": "الشرجة",
   "lat": 16.32481,
@@ -3691,7 +3834,8 @@
   "region": "Yemen",
   "n": 2,
   "kinds": {
-   "nisba": 2
+   "nisba": 2,
+   "birth": 1
   },
   "centuries": {
    "9": 2
@@ -3727,22 +3871,6 @@
   "centuries": {
    "4": 1,
    "3": 1
-  }
- },
- {
-  "id": "BILBAYS_315E304N_S",
-  "name": "بلبيس",
-  "lat": 30.41776,
-  "lon": 31.57097,
-  "type": "capitals",
-  "region": "Egypt",
-  "n": 2,
-  "kinds": {
-   "nisba": 2
-  },
-  "centuries": {
-   "10": 1,
-   "9": 1
   }
  },
  {
@@ -3804,7 +3932,7 @@
   "n": 2,
   "kinds": {
    "travel": 1,
-   "death": 1,
+   "death": 2,
    "burial": 1
   },
   "centuries": {
@@ -3862,18 +3990,36 @@
   }
  },
  {
-  "id": "x:gelibolu",
-  "name": "كليبولي",
-  "lat": 40.4103,
-  "lon": 26.6706,
+  "id": "x:kutahya",
+  "name": "كوتاهية",
+  "lat": 39.4242,
+  "lon": 29.9833,
   "type": "towns",
   "region": "Rum",
   "n": 2,
   "kinds": {
-   "office": 2
+   "burial": 1,
+   "office": 1
   },
   "centuries": {
-   "?": 1,
+   "10": 1,
+   "?": 1
+  }
+ },
+ {
+  "id": "BARZA_462E365N_S",
+  "name": "برزة",
+  "lat": 36.5057,
+  "lon": 46.2141,
+  "type": "villages",
+  "region": "Rihab",
+  "n": 2,
+  "kinds": {
+   "death": 1,
+   "activity": 1
+  },
+  "centuries": {
+   "8": 1,
    "10": 1
   }
  },
@@ -3890,22 +4036,6 @@
   },
   "centuries": {
    "4": 2
-  }
- },
- {
-  "id": "x:tokat",
-  "name": "توقات",
-  "lat": 40.3167,
-  "lon": 36.55,
-  "type": "towns",
-  "region": "Rum",
-  "n": 2,
-  "kinds": {
-   "nisba": 2,
-   "burial": 1
-  },
-  "centuries": {
-   "10": 2
   }
  },
  {
@@ -4173,10 +4303,26 @@
   "region": "Khurasan",
   "n": 1,
   "kinds": {
+   "death": 1,
    "nisba": 1
   },
   "centuries": {
    "4": 1
+  }
+ },
+ {
+  "id": "DIRIZDAH_670E393N_S",
+  "name": "درزده",
+  "lat": 39.31836,
+  "lon": 67.06451,
+  "type": "villages",
+  "region": "Transoxiana",
+  "n": 1,
+  "kinds": {
+   "origin": 1
+  },
+  "centuries": {
+   "3": 1
   }
  },
  {
@@ -4189,21 +4335,6 @@
   "n": 1,
   "kinds": {
    "nisba": 1
-  },
-  "centuries": {
-   "?": 1
-  }
- },
- {
-  "id": "FUSTAT_312E300N_S",
-  "name": "الفسطاط",
-  "lat": 30.04325,
-  "lon": 31.24964,
-  "type": "metropoles",
-  "region": "Egypt",
-  "n": 1,
-  "kinds": {
-   "activity": 1
   },
   "centuries": {
    "?": 1
@@ -4556,6 +4687,21 @@
   }
  },
  {
+  "id": "x:lahore",
+  "name": "لاهور",
+  "lat": 31.5204,
+  "lon": 74.3587,
+  "type": "capitals",
+  "region": "Hind",
+  "n": 1,
+  "kinds": {
+   "birth": 1
+  },
+  "centuries": {
+   "7": 1
+  }
+ },
+ {
   "id": "ABBADAN_482E303N_S",
   "name": "عبادان",
   "lat": 30.33563,
@@ -4600,21 +4746,6 @@
   },
   "centuries": {
    "?": 1
-  }
- },
- {
-  "id": "x:kutahya",
-  "name": "كوتاهية",
-  "lat": 39.4242,
-  "lon": 29.9833,
-  "type": "towns",
-  "region": "Rum",
-  "n": 1,
-  "kinds": {
-   "burial": 1
-  },
-  "centuries": {
-   "10": 1
   }
  },
  {
@@ -4690,21 +4821,6 @@
   },
   "centuries": {
    "3": 1
-  }
- },
- {
-  "id": "BARZA_462E365N_S",
-  "name": "برزة",
-  "lat": 36.5057,
-  "lon": 46.2141,
-  "type": "villages",
-  "region": "Rihab",
-  "n": 1,
-  "kinds": {
-   "death": 1
-  },
-  "centuries": {
-   "8": 1
   }
  },
  {
@@ -5056,22 +5172,6 @@
   }
  },
  {
-  "id": "x:manisa",
-  "name": "مغنيسا",
-  "lat": 38.6191,
-  "lon": 27.4289,
-  "type": "towns",
-  "region": "Rum",
-  "n": 1,
-  "kinds": {
-   "office": 1,
-   "death": 1
-  },
-  "centuries": {
-   "9": 1
-  }
- },
- {
   "id": "ZANDARAMASH_720E402N_S",
   "name": "زندرامش",
   "lat": 40.24237,
@@ -5114,6 +5214,21 @@
   },
   "centuries": {
    "7": 1
+  }
+ },
+ {
+  "id": "x:tire",
+  "name": "تيره",
+  "lat": 38.0894,
+  "lon": 27.7353,
+  "type": "towns",
+  "region": "Rum",
+  "n": 1,
+  "kinds": {
+   "office": 1
+  },
+  "centuries": {
+   "9": 1
   }
  },
  {
@@ -5371,6 +5486,21 @@
   },
   "centuries": {
    "7": 1
+  }
+ },
+ {
+  "id": "MURSIYA_011W379N_S",
+  "name": "مرسية",
+  "lat": 37.99945,
+  "lon": -1.11443,
+  "type": "towns",
+  "region": "Andalus",
+  "n": 1,
+  "kinds": {
+   "birth": 1
+  },
+  "centuries": {
+   "?": 1
   }
  },
  {

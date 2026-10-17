@@ -118,12 +118,19 @@ def extract_ar(entries: dict, owner: dict) -> list[dict]:
         for m in re.finditer(r"«([^«»]{2,90})»", text):
             before = text[max(0, m.start() - 70):m.start()]
             seg = re.split(r"[.؛:]\s|\n", before)[-1]
+            # "وله من المصنفات: كتاب «X»"، "له من الكتب؛ كتاب «X»": iki nokta / noktalı virgülden önceki ipucu geçerli
+            b0 = _TASHKEEL.sub("", before)
+            m_list = re.search(r"(المصنفات|مصنفات|التصانيف|تصانيف|الكتب|مؤلفات|المؤلفات|تآليف)\s*[:؛]\s*(?:كتاب|كتابا)?\s*$", b0)
+            if m_list and not re.search(r"[.\n]", b0[m_list.start():]):
+                seg = "صنف " + seg
             gap = text[prev_end:m.start()] if prev_end > 0 else ""
             chained = prev_ok and 0 < m.start() - prev_end < 45 and not re.search(r"[.؛\n]", gap) and not _NEG.search(gap)
             cue = _CUE.search(seg.strip())
             ok = chained or ((cue or re.search(r"(صنّ?ف|التصانيف|تصانيف|مصنفات|تآليف|مؤلفات)", seg)) and not _NEG.search(seg[-30:]))
             if not ok and re.search(r"رأيت (?:له|لهذا)\s*(?:كتابا|كتاب)?\s*$", seg.strip()):
                 ok = True
+            if not ok and m.start() < 40 and re.fullmatch(r"\s*(?:وهو\s+)?صاحب\s+(?:كتاب\s*)?", text[:m.start()].split("\n")[-1]):
+                ok = True   # madde başı: "صاحب كتاب «النبات»"
             title = re.sub(r"\s+", " ", m.group(1)).strip(" ،,")
             # "ووضع «شرحا» على «الهداية»": genel ad + على «X» → "شرح X"
             if prev_generic and ok_generic and re.fullmatch(r"\s*على\s*", text[prev_end:m.start()]):

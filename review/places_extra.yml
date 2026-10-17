@@ -5,6 +5,7 @@
 # ignore: yer adı sanılan yaygın kelimeler
 # prefixed_only: ignore'dakilerden yalnız "ب" edatıyla yer sayılanlar ("ببصرى")
 alias:
+  بردعة: BARDHAA_472E404N_S
   أنكوريا: x:ankara
   انكوريه: x:ankara
   أنكورية: x:ankara
@@ -113,6 +114,8 @@ new:
   x:azerbaijan: [[أذربيجان, اذربيجان], 38.07, 46.3, regions, Rihab]
   x:maghrib: [[المغرب, بلاد المغرب], 34.0, -5.0, regions, Maghrib]
 nisba:
+  البردعي: BARDHAA_472E404N_S
+  البرذعي: BARDHAA_472E404N_S
   الكاشغري: x:kashgar
   الخرتبرتي: x:harput
   الخربرتي: x:harput
